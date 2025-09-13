@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#F44336</color>
+    <color name="green">#02B860</color>
+    <color name="blue">#00B0FF</color>
+    <color name="offWhite">#F5F5F5</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <!-- Light theme colors -->
+    <color name="primaryColor">#107634</color>
+    <color name="primaryMid">#46A35C</color>
+    <color name="primaryDark">#0B4C22</color>
+    <color name="secondaryColor">#e5ded4</color>
+    <color name="secondaryColor_dark">#81C784</color>       <!-- soft green -->
+    <color name="accentColor_dark">#FFAB40</color>          <!-- accent -->
+    <color name="accentColor">#000000</color>
+    <color name="warning">#f6821f</color>
+
+
+    <color name="gray">#808080</color>
+    <color name="back">#E6E6E6</color>
+
+    <!--Text color Light-->
+    <color name="text_primary">#212121</color> <!-- Dark gray -->
+    <color name="text_secondary">#757575</color> <!-- Medium gray -->
+
+    <!--background color-->
+    <color name="bg_color">#FCFCFC</color>
+    <color name="primary_light">#D8F2E0</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_mid">#E0E0E0</color>
+    <color name="icon_stroke">#F5F5F5</color> <!-- Light Mode -->
+    <color name="icon_color">#1F1F1F</color> <!-- যেমন: Dark gray -->
+    <color name="divider_color">#D9D9D9</color>
+    <color name="card_divider_color">#CACACA</color>
+
+    <!--Bottom design-->
+    <color name="bottom_light">#E7FBED</color>
+
+    <!-- Receiver bubble -->
+    <color name="chat_receiver_bg">#FFFFFF</color>
+
+    <!-- Sender bubble -->
+    <color name="chat_sender_bg">#CBEBFC</color>
+
+    <!--radio card color-->
+    <color name="radio_card_normal">#757575</color>
+    <color name="radio_card_normal_bg">#FCFCFC</color>
+    <color name="radio_card_selected">#46A35C</color>
+    <color name="radio_card_selected_bg">#C9E6D1</color>
+
+    <!--nav color-->
+    <color name="nav_color">#757575</color>
+    <color name="nav_active">#46A35C</color>
+    <color name="nav_selected_bg">#C9E6D1</color>
+    <color name="nav_selected_bg_dark">#3A3A3A</color>
+
+    <color name="background_dialog">#ffffff</color>
+
+
+    <!-- Light theme specific colors -->
+    <color name="background_light">#ffffff</color>
+    <color name="surface_light">#ffffff</color>
+    <color name="on_primary_light">#ffffff</color>
+    <color name="on_secondary_light">#000000</color>
+    <color name="on_background_light">#000000</color>
+    <color name="on_surface_light">#000000</color>
+
+    <!-- Dark theme specific colors -->
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1e1e1e</color>
+    <color name="on_primary_dark">#ffffff</color>
+    <color name="on_secondary_dark">#000000</color>
+    <color name="on_background_dark">#ffffff</color>
+    <color name="on_surface_dark">#ffffff</color>
+
+    <color name="tab_selected_text">#FFFFFF</color>
+    <color name="tab_unselected_text">#1e1e1e</color>
+    <color name="tab_selected_bg">#46A35C</color> <!-- Selected Tab Background -->
+    <color name="tab_unselected_bg">#FFFFFFFF</color> <!-- Unselected -->
+
+    <color name="card_bg_color">#F5F5F5</color> <!-- white -->
+    <color name="card_border_color">#E6E6E6</color> <!-- light gray -->
+    <color name="button_bg_primary_color">#46A35C</color> <!-- light gray -->
+    <color name="bg_row_light">#FFFFFF</color> <!-- darker border -->
+
+
+</resources>

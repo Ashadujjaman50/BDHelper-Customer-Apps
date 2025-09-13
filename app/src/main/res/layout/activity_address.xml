@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".user.AddressActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/fontStyle"
+            android:background="@color/bg_color">
+
+            <!--Toolbar-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="1dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/subCategoryNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:src="@drawable/bg_bottom_design" />
+
+            <LinearLayout
+                android:id="@+id/addressLl"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/loadingPointRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/loadLocationTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableStart="@drawable/ic_load_location"
+                        android:drawablePadding="10dp"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/loading_point_address"
+                        android:maxLines="1"
+                        android:maxHeight="48dp"
+                        android:padding="10dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:textCursorDrawable="@drawable/custom_cursor_drawable"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/loadingPointClear"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_clear"
+                        app:tint="@color/icon_color"
+                        android:layout_marginEnd="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/unloadingPointRl"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/unloadLocationTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableStart="@drawable/ic_unload_location"
+                        android:drawablePadding="10dp"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/unloading_point_address"
+                        android:maxLines="1"
+                        android:maxHeight="48dp"
+                        android:focusable="true"
+                        android:padding="10dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:textCursorDrawable="@drawable/custom_cursor_drawable"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+
+                    <ImageView
+                        android:id="@+id/unloadingPointClear"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_clear"
+                        app:tint="@color/icon_color"
+                        android:layout_marginEnd="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rentPointRl"
+                    android:visibility="visible"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/rentLocationTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawableStart="@drawable/ic_rent_location"
+                        android:drawablePadding="10dp"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/select_location"
+                        android:maxLines="1"
+                        android:maxHeight="48dp"
+                        android:padding="10dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:textCursorDrawable="@drawable/custom_cursor_drawable"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/rentPointClear"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_clear"
+                        app:tint="@color/icon_color"
+                        android:layout_marginEnd="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="15dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mapMenuLl"
+                android:layout_below="@+id/addressLl"
+                android:layout_marginHorizontal="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addressBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_stroke_gray"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="9dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/address_book"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_primary"
+                    android:textAllCaps="false"
+                    app:drawableStartCompat="@drawable/ic_address_book"
+                    app:drawableTint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/mapBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_stroke_gray"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="9dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/map"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_primary"
+                    android:textAllCaps="false"
+                    app:drawableStartCompat="@drawable/ic_map_location"
+                    app:drawableTint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/divisionBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_stroke_gray"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="9dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/division"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_primary"
+                    android:textAllCaps="false"
+                    app:drawableStartCompat="@drawable/ic_division_location"
+                    app:drawableTint="@color/icon_color" />
+
+
+            </LinearLayout>
+
+            <!--Hide Loading Progress Bar-->
+            <ProgressBar
+                android:id="@+id/loadingBar"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginHorizontal="15dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/progress_bar_color"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle"
+                android:layout_below="@+id/mapMenuLl"/>
+
+            <ListView
+                android:id="@+id/searchListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/loadingBar"
+                android:background="@color/transparent"
+                android:layout_above="@+id/continuePostBtn"
+                android:layout_marginTop="10dp"/>
+
+
+            <TextView
+                android:id="@+id/continuePostBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/custom_button_gradient"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/continue_button"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

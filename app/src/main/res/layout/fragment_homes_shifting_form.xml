@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".userFragment.HomesShiftingFormFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/fontStyle"
+            android:orientation="vertical">
+
+            <!--Post Success Animation-->
+            <LinearLayout
+                android:id="@+id/donePostRent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_marginVertical="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:lottie_autoPlay="true"
+                    app:lottie_rawRes="@raw/confirm" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mainBodyLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="6dp">
+
+                <LinearLayout
+                    android:id="@+id/shiftingTypeLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/capacitySizeProgramTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/will_you_shift"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:weightSum="3"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioBachelor"
+                            android:checked="true"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/radio_card_selector_homeshifting"
+                            app:buttonTint="@color/radio_button_tint"
+                            android:text="@string/bachelor_house"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textAlignment="center" />
+
+                        <RadioButton
+                            android:id="@+id/radioHome"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/radio_card_selector_homeshifting"
+                            app:buttonTint="@color/radio_button_tint"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="@string/family_house"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textAlignment="center" />
+
+                        <RadioButton
+                            android:id="@+id/radioOffice"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/radio_card_selector_homeshifting"
+                            app:buttonTint="@color/radio_button_tint"
+                            android:text="@string/office_shift"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textAlignment="center"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/what_date_will_shift"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/shiftingDateEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center_vertical"
+                        android:hint="ex: 20 july 2023"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_calendar"
+                        app:drawableTint="@color/icon_color"
+                        android:drawablePadding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/houseTypeLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="visible"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/roomTypeTitleTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/room_type"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/roomTypeTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center_vertical"
+                        android:hint="@string/room_type"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/countSubcategoryNameTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/which_floor_to_go_down"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/loadingFloorEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center_vertical"
+                        android:hint="@string/which_floor_to_go_down"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/how_many_floors_to_lift"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/unloadingFloorEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center_vertical"
+                        android:hint="@string/how_many_floors_to_lift"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:textSize="16sp"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="10dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/can_a_truck_come_in_front_of_the_house"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <RadioGroup
+                        android:id="@+id/truckAccessRG"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/yesRB"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="10dp"
+                            android:text="@string/yes"
+                            android:textAlignment="center"
+                            android:textSize="16sp"
+                            android:padding="8dp"
+                            android:background="@drawable/radio_card_selector_homeshifting"
+                            app:buttonTint="@color/radio_button_tint"
+                            android:textColor="@color/text_primary"/>
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/noRB"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/no"
+                            android:textAlignment="center"
+                            android:textSize="16sp"
+                            android:padding="8dp"
+                            android:background="@drawable/radio_card_selector_homeshifting"
+                            app:buttonTint="@color/radio_button_tint"
+                            android:textColor="@color/text_primary"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/distanceTimeLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="মেইন রোড থেকে আপনার বাসার দূরত্ব-"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                            android:id="@+id/timeSeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:max="12"
+                            android:progress="1"
+                            android:progressTint="@color/secondaryColor_dark"
+                            android:thumbTint="@color/primaryMid" />
+
+                        <TextView
+                            android:id="@+id/minuteText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="@string/zero_minute"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_primary"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/detailsLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/details"
+                        android:textColor="@color/text_primary" />
+
+                    <EditText
+                        android:id="@+id/detailsET"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="start"
+                        android:hint="Type here"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
+                        android:padding="12dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/continuePostBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/custom_button_gradient"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/continue_button"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

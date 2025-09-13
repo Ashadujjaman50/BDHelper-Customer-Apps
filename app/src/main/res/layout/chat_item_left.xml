@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/fontStyle"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="5dp">
+
+    <LinearLayout
+        android:id="@+id/messageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileIv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="1dp"
+            android:src="@drawable/ic_profile"
+            android:scaleType="centerCrop"
+            android:background="@color/back"
+            app:shapeAppearanceOverlay="@style/ImageStyle_Circle" />
+
+        <LinearLayout
+            android:background="@drawable/bg_receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/messageTv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="5dp"
+                android:textIsSelectable="true"
+                android:autoLink="all"
+                android:fontFamily="@font/solaimanlipi"
+                android:textColorLink="@color/colorPrimaryDark"
+                android:linksClickable="true"
+                android:text="His message"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"/>
+
+            <TextView
+                android:id="@+id/timeTv"
+                android:paddingStart="14dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02/03/2020 05:46AM"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/isSeenTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        android:text="delivered"
+        android:textAlignment="textEnd"/>
+
+</LinearLayout>

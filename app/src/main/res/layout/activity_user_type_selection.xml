@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/userTypeSelectionLayout"
+        style="@style/fontStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:baselineAligned="false"
+        tools:context=".authentication.UserTypeSelectionActivity">
+
+        <RelativeLayout
+            android:background="@color/bg_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/logoIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_login_design" />
+
+                <TextView
+                    android:id="@+id/titleTv"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/amaranth"
+                    android:text="@string/app_name_display"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/solaimanlipi"
+                    android:text="@string/how_you_want_to_use"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Customer Button -->
+                <RelativeLayout
+                    android:id="@+id/customerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_user_type_selector"
+                    android:clickable="true"
+                    android:elevation="4dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/cm_iconIv"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_customer" />
+
+                    <TextView
+                        android:id="@+id/cm_titleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/cm_iconIv"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/customer_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cm_titleTv"
+                        android:layout_marginTop="2dp"
+                        android:layout_toEndOf="@+id/cm_iconIv"
+                        android:text="@string/customer_desc"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </RelativeLayout>
+
+                <!-- Partner Button -->
+                <RelativeLayout
+                    android:id="@+id/partnerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_user_type_selector"
+                    android:clickable="true"
+                    android:elevation="4dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/ow_iconIv"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_owner" />
+
+                    <TextView
+                        android:id="@+id/ow_titleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/ow_iconIv"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/partner_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ow_titleTv"
+                        android:layout_toEndOf="@+id/ow_iconIv"
+                        android:text="@string/partner_desc"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout >
+
+</layout>

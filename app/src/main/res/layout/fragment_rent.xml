@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_color"
+        style="@style/fontStyle"
+        tools:context=".partnerFragment.RentFragment">
+
+        <!--Toolbar-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="2dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/subCategoryNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/rent_service"
+                    android:layout_centerVertical="true"
+                    android:textSize="17sp"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/bg_circle_white"
+                    android:layout_marginEnd="16dp">
+
+                    <ImageView
+                        android:id="@+id/notificationBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_notification"
+                        app:tint="@color/icon_color" />
+
+                    <TextView
+                        android:id="@+id/notificationCountTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-11dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_toEndOf="@+id/notificationBtn"
+                        android:background="@drawable/bg_circle_white"
+                        android:paddingHorizontal="3dp"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/rentTabLayout"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabTextColor="@color/tab_unselected_text"
+            app:tabSelectedTextColor="@color/tab_selected_text"
+            app:tabBackground="@drawable/tab_selector" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/rentViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rentTabLayout"
+            android:paddingTop="0dp" />
+
+        <!-- Add New Button -->
+        <TextView
+            android:id="@+id/addProductsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="24dp"
+            android:padding="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/custom_button_gradient"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="সার্ভিস যুক্ত করুন"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:drawablePadding="12dp"
+            app:drawableStartCompat="@drawable/ic_add_plus"
+            app:drawableTint="@color/white" />
+
+
+    </RelativeLayout>
+
+</layout>

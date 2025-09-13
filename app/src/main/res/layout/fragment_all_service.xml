@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/fontStyle"
+        tools:context=".partnerFragment.AllServiceFragment">
+
+        <!--Hide noOneBidYet Text-->
+        <TextView
+            android:id="@+id/notBidYetTv"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="আপনি কোনো সার্ভিস যুক্ত করেন নি !"
+            android:layout_centerInParent="true"
+            android:layout_margin="12dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/text_secondary" />
+
+        <!--Demo-->
+        <include layout="@layout/row_rent_service" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allRentServiceRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_rent_service" />
+
+    </RelativeLayout>
+
+</layout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/fontStyle"
+    android:layout_margin="6dp"
+    android:paddingHorizontal="15dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/categoryImage"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/card_square_light_bg"
+        android:padding="24dp"
+        android:src="@drawable/ic_transport"
+        app:tint="@color/icon_color" />
+
+    <TextView
+        android:id="@+id/categoryName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/road_transport"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

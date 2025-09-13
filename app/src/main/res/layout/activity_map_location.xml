@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:fitsSystemWindows="true"
+        android:background="@color/bg_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".user.MapLocationActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            style="@style/fontStyle"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <!--Toolbar-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="1dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/subCategoryNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:text="@string/select_location"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingBottom="6dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottomPart">
+
+                    <fragment
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/mMap"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        map:uiRotateGestures="true"/>
+
+
+                    <ImageView
+                        android:id="@+id/mapMarker"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_centerInParent="true"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_location_select"
+                        android:translationY="-21dp" />
+
+
+                    <com.mancj.materialsearchbar.MaterialSearchBar
+                        android:id="@+id/materialSearchBar"
+                        style="@style/MaterialSearchBarLight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:cursorVisible="true"
+                        android:elevation="5dp"
+                        android:outlineProvider="bounds"
+                        android:textCursorDrawable="@drawable/custom_cursor_drawable"
+                        app:mt_backIconTint="@color/icon_color"
+                        app:mt_searchIconTint="@color/icon_color"
+                        app:mt_textColor="@color/text_primary"
+                        app:mt_hintColor="@color/text_secondary"
+                        app:mt_hint="@string/search_location"
+                        app:mt_maxSuggestionsCount="10"
+                        app:mt_placeholder="@string/search_location"
+                        app:mt_speechMode="false" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottomPart"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rentLocationTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:gravity="center_vertical"
+                        android:hint="@string/select_location"
+                        android:padding="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:drawablePadding="10dp"
+                        app:drawableStartCompat="@drawable/ic_unload_location" />
+
+
+                    <TextView
+                        android:id="@+id/continuePostBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/custom_button_gradient"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:text="@string/continue_button"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

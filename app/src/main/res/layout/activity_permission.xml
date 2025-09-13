@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        style="@style/fontStyle"
+        tools:context=".PermissionActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Toolbar-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="1dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/categoryTypeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:text="@string/permission"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:src="@drawable/bg_bottom_design" />
+
+            <LinearLayout
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="3dp"
+                android:layout_centerHorizontal="true">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cameraPermissionCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:background="@drawable/permission_camera_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/titleTv"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amaranth"
+                                android:textStyle="bold"
+                                android:text="Enable Camera"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary"/>
+
+                            <TextView
+                                android:layout_marginTop="2dp"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/camera_permission_detail"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"/>
+
+                            <TextView
+                                android:id="@+id/cameraPermissionTv"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="3dp"
+                                android:paddingHorizontal="30dp"
+                                android:paddingVertical="5dp"
+                                android:background="@drawable/bg_round_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/permission"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/storagePermissionCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:background="@drawable/permission_storage_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amaranth"
+                                android:textStyle="bold"
+                                android:text="Enable Storage"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary"/>
+
+                            <TextView
+                                android:layout_marginTop="2dp"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/storage_permission_detail"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"/>
+
+                            <TextView
+                                android:id="@+id/storagePermissionTv"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="3dp"
+                                android:paddingHorizontal="30dp"
+                                android:paddingVertical="5dp"
+                                android:background="@drawable/bg_round_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/permission"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/locationPermissionCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:background="@drawable/permission_location_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/amaranth"
+                                android:textStyle="bold"
+                                android:text="Enable Location"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary"/>
+
+                            <TextView
+                                android:layout_marginTop="2dp"
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/location_permission_detail"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"/>
+
+                            <TextView
+                                android:id="@+id/locationPermissionTv"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginBottom="3dp"
+                                android:paddingHorizontal="30dp"
+                                android:paddingVertical="5dp"
+                                android:background="@drawable/bg_round_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/permission"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

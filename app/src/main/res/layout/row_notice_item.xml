@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/fontStyle"
+    android:layout_marginVertical="1dp"
+    android:layout_marginHorizontal="5dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--Notice Icon-->
+            <ImageView
+                android:id="@+id/noticeIv"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:padding="5dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_notification"
+                android:layout_marginEnd="5dp"/>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--Notice Title-->
+                <TextView
+                    android:id="@+id/noticeTitleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="ট্রাক লাগবে"/>
+
+                <!--Notice Description-->
+                <TextView
+                    android:id="@+id/noticeDescriptionTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/text_secondary"
+                    android:text="নোটিশ বিবরণ"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/noticeImageIV"
+                    android:visibility="gone"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/app_name" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/noticeTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="১২/১০/২১ ৩:৪৫ এএম"
+            android:textAlignment="textEnd"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

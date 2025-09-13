@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_color"
+        style="@style/fontStyle"
+        tools:context=".fragment.HelpFragment">
+
+        <!--Toolbar-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/backIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                app:srcCompat="@drawable/ic_back_arrow"
+                app:tint="@color/icon_color" />
+
+            <TextView
+                android:id="@+id/subCategoryNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    app:cardBackgroundColor="@color/bg_color"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="0dp">
+
+
+                    <com.denzcoskun.imageslider.ImageSlider
+                        android:id="@+id/image_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        app:iss_auto_cycle="true"
+                        app:iss_delay="1000"
+                        app:iss_no_dots="true"
+                        app:iss_period="3000"
+                        app:iss_text_align="CENTER"
+                        app:iss_title_background="@color/grey_font"
+                        tools:ignore="MissingClass" />
+
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/anyQuestionTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:letterSpacing=".05"
+                    android:text="@string/have_queries"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/we_are_here_24_7_only_to_serve_you_please_call_us_16434_or_chat_with_us_for_any_quires"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:id="@+id/chatLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:padding="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/bg_card_clickable">
+
+                    <ImageView
+                        android:id="@+id/icon1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/chat_icon_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon1"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/lets_chat"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="@color/icon_color" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/talkLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="15dp"
+                    android:padding="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/bg_card_clickable">
+
+
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/phone_white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon2"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/lets_talk"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="@color/icon_color" />
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/reqServiceLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="15dp"
+                    android:padding="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/bg_card_clickable">
+
+
+                    <ImageView
+                        android:id="@+id/icon3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:padding="10dp"
+                        app:srcCompat="@drawable/ask_service" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon3"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/request_service"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="@color/icon_color" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

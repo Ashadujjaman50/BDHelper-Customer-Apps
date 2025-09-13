@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color"
+        style="@style/fontStyle"
+        tools:context=".partnerFragment.PaymentHistoryFragment">
+
+        <!-- Add New Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_color"
+            android:orientation="vertical"
+            android:paddingHorizontal="2dp">
+
+            <!-- Income Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_card_clickable"
+                android:elevation="4dp"
+                android:orientation="horizontal">
+
+                <!-- Total Income -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="৳ ০"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/total_income"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="4dp"
+                    android:background="@color/card_divider_color" />
+
+                <!-- Commission -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="৳ ০"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/partner_commission"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="4dp"
+                    android:background="@color/card_divider_color" />
+
+                <!-- Company Income -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="৳ ০"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:fontFamily="@font/solaimanlipi"
+                        android:text="@string/company_commission"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/noPaymentAccountFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/solaimanlipi"
+                android:text="@string/no_payment_history"
+                android:textColor="@color/text_secondary"
+                android:textSize="22sp"
+                android:visibility="visible" />
+
+            <!--Demo-->
+            <include layout="@layout/row_payment_account" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/paymentAccountRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_payment_account" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/addPaymentAccountButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="24dp"
+            android:padding="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/custom_button_gradient"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/add_payment_account"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:drawablePadding="12dp"
+            app:drawableStartCompat="@drawable/ic_payment_withdraw"
+            app:drawableTint="@color/white" />
+
+    </RelativeLayout>
+</layout>

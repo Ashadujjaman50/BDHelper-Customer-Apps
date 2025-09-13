@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/fontStyle"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toStartOf="@+id/accountStatusTv"
+                android:padding="8dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:elevation="2dp"
+                    android:layout_margin="2dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="6dp">
+
+                    <ImageView
+                        android:id="@+id/mfsImageIv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_mfs_rocket" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!--Account  Info-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/accountNumberTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="01835612169"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:drawablePadding="5dp" />
+
+                    <View
+                        android:layout_marginVertical="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/accountNameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="bKash"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_marginVertical="3dp"
+                            android:layout_marginHorizontal="7dp"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/gray"/>
+
+                        <TextView
+                            android:id="@+id/contactNameTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Personal"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/accountStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card"
+                android:layout_toStartOf="@+id/moreBtn"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="10dp"
+                android:layout_centerVertical="true"
+                android:text="Default"
+                android:textColor="@color/text_secondary"
+                android:visibility="visible"
+                app:drawableStartCompat="@drawable/ic_default_payment"
+                app:drawableTint="@color/icon_color"
+                android:drawablePadding="8dp" />
+
+            <ImageButton
+                android:id="@+id/moreBtn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:background="@null"
+                android:src="@drawable/gs_more_vert_vd_24"
+                app:tint="@color/gray" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

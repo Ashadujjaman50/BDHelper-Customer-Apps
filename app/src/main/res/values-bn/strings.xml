@@ -1,0 +1,1875 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BD Helper</string>
+
+    <string name="app_name_display">BD Helper</string>
+
+    <string name="home">হোম</string>
+    <string name="rent">রেন্ট </string>
+    <string name="help">হেল্প</string>
+    <string name="profile">প্রোফাইল</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--Requirement Post -->
+    <string name="skip">স্কিপ করুন</string>
+    <string name="back">পিছনে যান</string>
+    <string name="next">পরে যান</string>
+    <string name="continue_button">এগিয়ে যান</string>
+    <string name="finish">শেষ</string>
+    <string name="search">আপনার লোকেশন সার্চ করুন</string>
+    <string name="set_location_from_map">মানচিত্র থেকে লোকেশন সেট করুন</string>
+    <string name="select_your_location">আপনার লোকেশন নির্বাচন করুন</string>
+    <string name="my_current_location">আমার বর্তমান লোকেশন</string>
+    <string name="search_location">লোকেশন সার্চ করুন</string>
+    <string name="confirm">নিশ্চিত</string>
+    <string name="agent">এজেণ্ট</string>
+    <string name="owner">মালিক</string>
+    <string name="to_rent">ভাড়া নিব</string>
+    <string name="cancel">বাতিল</string>
+    <string name="apply">ওকে</string>
+    <string name="verification_notice">একাউন্ট ভেরিফাই করতে আপনার প্রোফাইল ও এনআইডি\'র ছবি সাবমিট করুন</string>
+    <string name="pickup_location">ভাড়া প্রদানের এলাকা</string>
+    <string name="delivery_location">ভাড়া নেওয়ার  এলাকা</string>
+    <string name="service_description">ভাড়ার বর্ণনা</string>
+    <string name="pickup_date">ভাড়া নেওয়ার তারিখ</string>
+    <string name="pickup_time">ভাড়া নেওয়ার সময়</string>
+    <string name="city">সিটি</string>
+    <string name="loading_point_address">লোডিং পয়েন্ট (ঠিকানা)</string>
+    <string name="unloading_point_address">আনলোডিং পয়েন্ট (ঠিকানা)</string>
+    <string name="select_location">সিলেক্ট লোকেশন</string>
+    <string name="area_wise">এলাকা ভিত্তিক</string>
+    <string name="map">ম্যাপ</string>
+    <string name="set_map">সেট ম্যাপ</string>
+    <string name="division">বিভাগ</string>
+    <string name="address_book">অ্যাড্রেসবুক</string>
+
+    <!--Trending/Popular/Promo/Recommended-->
+    <string name="trending">ট্রেন্ডিং</string>
+    <string name="popular">পপুলার</string>
+    <string name="promotion">অফার</string>
+    <string name="recommended">রিকমেন্ড</string>
+
+    <string name="category">ক্যাটাগরি</string>
+
+    <!--Category-->
+    <string name="road_transport">রোড ট্রান্সপোর্ট</string>
+    <string name="equipment">ইকুইপমেন্ট</string>
+    <string name="home_office_shifting">বাসা শিফটিং</string>
+    <string name="harvester">হারভেস্টার</string>
+    <string name="rent_a_car">রেন্ট-এ কার</string>
+    <string name="skilled_labor">দক্ষ লেবার</string>
+    <string name="lo_bet">লো বেড</string>
+    <string name="shop">শপ</string>
+    <string name="coming_soon">শীঘ্রই আসছে</string>
+
+    <!--Transport-->
+    <string name="truck">ট্রাক</string>
+    <string name="pickup">পিকাপ</string>
+    <string name="trailer">ট্রেইলর</string>
+    <string name="dump_truck">ড্রাম্প ট্রাক</string>
+    <string name="coveredvan">কাভার্ড ভ্যান</string>
+    <string name="freezervan">ফ্রিজার ভ্যান</string>
+    <string name="charger_van">চার্জার ভ্যান</string>
+
+    <!--Rent a car-->
+    <string name="car">কার</string>
+    <string name="microbus">মাইক্রোবাস</string>
+    <string name="ambulance">অ্যাম্বুলেন্স</string>
+
+    <!--Equipment-->
+    <string name="crane">ক্রেন</string>
+    <string name="tractor">ট্রাক্টর</string>
+    <string name="rice_transplanter">রাইস ট্রান্সপ্লান্টার</string>
+    <string name="excavator">এক্সকাভেটর</string>
+
+    <!--Skilled Labourer-->
+    <string name="driver">ড্রাইভার </string>
+    <string name="mechanic">মেকানিক</string>
+    <string name="electrician">ইলেক্ট্রিশিয়ান</string>
+    <string name="stove_mechanic">চুলার মিস্ত্রি</string>
+    <string name="plumber">পানির লাইনের মিস্ত্রি</string>
+
+    <string name="send">পাঠিয়ে দিন</string>
+    <string name="help_need">আপনি কি জানতে চাচ্ছেন তা আমাকে লিখে পাঠান</string>
+    <string name="modelBid">বিড করুন</string>
+    <string name="budget">ভাড়াঃ</string>
+    <string name="budget_amount">কত টাকায় ভাড়া দিতে পারবেন</string>
+    <string name="description_product">বর্ণনা</string>
+    <string name="pick_up_location">আপনার পণ্য কোথায় লোড হবে?</string>
+    <string name="drop_location">আপনার পণ্য কোথায় আনলোড হবে?</string>
+    <string name="select_date_and_time">তারিখ এবং সময় নির্বাচন করুন</string>
+    <string name="capacity">ধারনক্ষমতা</string>
+    <string name="details">বিস্তারিত</string>
+    <string name="size">সাইজ</string>
+    <string name="size_and_capacity">সাইজ এবং ধারনক্ষমতা</string>
+    <string name="size_and_capacitys">সাইজ এবং ধারনক্ষমতাঃ</string>
+    <string name="duration_for_rent">ভাড়ার সময়কাল</string>
+    <string name="how_many_are_needed">কতগুলো প্রয়োজন?</string>
+    <string name="duration">কত সময়ের জন্যঃ </string>
+    <string name="more_than_1_week">১ সপ্তাহের বেশি ভাড়া নিতে চান?</string>
+    <string name="person">জন</string>
+    <string name="area_location">ঠিকানা</string>
+    <string name="ton">টন</string>
+    <string name="feet">ফিট</string>
+    <string name="which_types">কি ধরনের</string>
+    <string name="types">ধরন</string>
+
+    <string name="pay_now">Pay now</string>
+    <string name="support_24_hours">সাপোর্ট টিম ২৪/৭ ঘন্টা</string>
+    <string name="contact_us">ম্যাসেজ</string>
+
+    <!--Rent post Fragment-->
+    <string name="current_rent_post">চলমান রেন্ট</string>
+    <string name="all_rent_post">সকল রেন্ট</string>
+
+    <string name="you_have_no_ongoing_post">আপনার চলমান কোনো পোস্ট নেই!</string>
+    <string name="you_didnot_any_post">আপনি কোনো পোস্ট করেন নি!</string>
+
+    <!--Help Fragment-->
+    <string name="enter_your_message">টাইপ করুন</string>
+    <string name="have_queries">কোন প্রশ্ন আছে?</string>
+    <string name="we_are_here_24_7_only_to_serve_you_please_call_us_16434_or_chat_with_us_for_any_quires">আমরা কেবল আপনার সেবা করতে এখানে ২৪/৭ রয়েছি। দয়া করে আমাদের কল করুন 09666700722 বা যেকোন জিজ্ঞাসার জন্য আমাদের সাথে চ্যাট করুন</string>
+    <string name="lets_chat">মেসেজ করুন</string>
+    <string name="lets_talk">কল করুন</string>
+    <string name="request_service">সার্ভিস অনুরোধ</string>
+    <string name="save">সেভ করুন</string>
+    <string name="service">সার্ভিস</string>
+
+    <!--Profile Fragment-->
+    <string name="settings">সেটিং</string>
+    <string name="payment">পেমেন্ট</string>
+    <string name="discount">ডিসকাউন্ট</string>
+    <string name="promo">প্রোমো</string>
+    <string name="permission">পারমিশন</string>
+    <string name="terms_and_condition">শর্তাবলী</string>
+    <string name="privacy_policy">গোপনীয়তা নীতি</string>
+    <string name="complain">অভিযোগ</string>
+    <string name="accountInformation">একাউন্ট</string>
+    <string name="offer">অফার</string>
+    <string name="legal">লিগ্যাল</string>
+    <string name="others">অন্যান্য</string>
+    <string name="language">ভাষা - Language</string>
+    <string name="share">শেয়ার করুন</string>
+    <string name="logOut">লগ আউট</string>
+    <string name="theme">থিম</string>
+
+    <!--Post Card -->
+    <string name="seven_seat">৭ সিট</string>
+    <string name="eleven_seat">১১ সিট</string>
+    <string name="date">তারিখ</string>
+    <string name="date_dote">তারিখঃ</string>
+    <string name="date_require">Require date:</string>
+    <string name="date_issue">ইস্যু তারিখঃ </string>
+    <string name="how_many">কত</string>
+    <string name="time">সময়</string>
+
+    <!--Row Post/modelBid/review-->
+    <string name="see_bid_rental">বিডের ভাড়া দেখুন</string>
+    <string name="review">রিভিউ লিখুন</string>
+    <string name="post">পোস্টঃ</string>
+    <string name="or">অথবা</string>
+    <string name="call_to_confirm">প্রয়োজনে কল করুন</string>
+    <string name="model_and_type">মডেল ও ধরনঃ</string>
+    <string name="rent_date">ভাড়ার তারিখঃ</string>
+    <string name="this_post_has_been_canceled">এই পোস্টটি বাতিল করা হয়েছে</string>
+    <string name="return_dot">রিটার্নঃ </string>
+    <string name="return_date">ফিরে আসার তারিখ *</string>
+    <string name="return_time">ফিরে আসার সময়</string>
+    <string name="location_name">প্রজেক্ট লোকেশন</string>
+    <string name="bidding">বিড দেখুন</string>
+
+    <!--Size-->
+    <string name="seven_feet_one_ton_open">৭ ফিট ১ টন</string>
+    <string name="nine_feet_one_half_ton_open">৯ ফিট ১.৫ টন</string>
+    <string name="twelve_feet_two_ton_open">১২ ফিট ২ টন</string>
+    <string name="forteen_feet_three_half_ton_open">১৪ ফিট ৩.৫ টন</string>
+    <string name="seven_feet_one_ton_covered">৭ ফিট ১ টন</string>
+    <string name="nine_feet_one_half_ton_covered">৯ ফিট ১.৫ টন</string>
+    <string name="twelve_feet_two_ton_covered">১২ ফিট ২ টন</string>
+    <string name="forteen_feet_three_half_ton_covered">১৪ ফিট ৩.৫ টন</string>
+    <string name="sixteen_feet_seven_half">১৬ ফিট ৭.৫ টন</string>
+    <string name="eighteen_feet_fifteen_ton">১৮ ফিট ১৫ টন</string>
+    <string name="twenty_feet_fifteen_ton">২০ ফিট ১৫ টন</string>
+    <string name="twenty_three_feet_fifteen_ton">২৩ ফিট ১৫ টন</string>
+    <string name="twenty_three_feet_twenty_five_ton">২৩ ফিট ২৫ টন</string>
+    <string name="twelve_feet">১২ ফিট</string>
+    <string name="forteen_feet">১৪ ফিট</string>
+    <string name="sixteen_feet">১৬ ফিট</string>
+    <string name="eighteen_feet">১৮ ফিট</string>
+    <string name="twenty_feet">২০ ফিট</string>
+    <string name="fourty_feet">৪০ ফিট</string>
+
+    <string name="onehundred_and_twentytwo">১২০ সিএফটি</string>
+    <string name="one_hundren_eighty_cft">১৮০ সিএফটি</string>
+    <string name="two_hundren_cft">২০০ সিএফটি</string>
+    <string name="two_hundren_and_fifty_cft">২৫০ সিএফটি</string>
+    <string name="three_hundred_cft">৩০০ সিএফটি</string>
+    <string name="four_hundred_cft">৪০০ সিএফটি</string>
+    <string name="five_hundred_cft">৫০০ সিএফটি</string>
+    <string name="five_hundred_and_fifty_cft">৫৫০ সিএফটি</string>
+    <string name="six_hundred_cft">৬০০ সিএফটি</string>
+    <string name="six_hundred_and_fifty_cft">৬৫০ সিএফটি</string>
+    <string name="seven_hundred_cft">৭০০ সিএফটি</string>
+    <string name="seven_hundred_and_fifty_cft">৭৫০ সিএফটি</string>
+    <string name="eight_hundred">৮০০ সিএফটি</string>
+    <string name="eight_hundred_and_fifty">৮৫০ সিএফটি</string>
+
+    <string name="trip_based">ট্রিপ ভিত্তিক</string>
+    <string name="single_trip">সিঙ্গেল ট্রিপ</string>
+    <string name="round_trip">রাউন্ড ট্রিপ</string>
+    <string name="body_rent">বডি ভাড়া</string>
+    <string name="daily">দৈনিক</string>
+    <string name="weekly">সাপ্তাহিক</string>
+    <string name="monthly">মাসিক</string>
+    <string name="yearly">বাৎসরিক</string>
+
+    <string name="zero_minute">০ মিনিট</string>
+    <string name="zero">০</string>
+    <string name="one">১</string>
+    <string name="two">২</string>
+    <string name="three">৩</string>
+    <string name="four">৪</string>
+    <string name="five">৫</string>
+    <string name="six">৬</string>
+    <string name="seven">৭</string>
+    <string name="eight">৮</string>
+    <string name="nine">৯</string>
+    <string name="ten">১০</string>
+    <string name="eleven">১১</string>
+    <string name="twelve">১২</string>
+    <string name="thirteen">১৩</string>
+    <string name="forteen">১৪</string>
+    <string name="fifteen">১৫</string>
+    <string name="sixteen">১৬</string>
+    <string name="seventeen">১৭</string>
+    <string name="eighteen">১৮</string>
+    <string name="nineteen">১৯</string>
+    <string name="twenty">২০</string>
+
+    <string name="low_bed">লো বেড</string>
+    <string name="flat_bed">ফ্লাট বেড</string>
+    <string name="six_wheel"> ৬ চাকা</string>
+    <string name="ten_wheel">১০ চাকা</string>
+
+    <string name="regular">রেগুলার</string>
+    <string name="bls_ambulances">বেসিক লাইফ সাপোর্ট (BLS)</string>
+    <string name="als_ambulances">অ্যাডভান্সড লাইফ সাপোর্ট (ALS)</string>
+
+    <string name="ac_ambulances">এসি অ্যাম্বুলেন্স</string>
+    <string name="non_ac_ambulances">নন-এসি অ্যাম্বুলেন্স</string>
+    <string name="icu_ambulances">আইসিইউ অ্যাম্বুলেন্স</string>
+
+    <string name="ac_microbus">এসি মাইক্রোবাস</string>
+    <string name="non_ac_microbus">নন-এসি মাইক্রোবাস</string>
+
+    <string name="program">প্রোগ্রাম</string>
+    <string name="ac_car">এসি কার</string>
+    <string name="non_ac_car">নন-এসি কার</string>
+
+    <string name="transport">পরিবহন</string>
+    <string name="passenger_carrier">যাত্রী বাহী</string>
+    <string name="groceries">মুদি সামগ্রী</string>
+    <string name="passenger_transport">যাত্রী পরিবহন</string>
+
+    <string name="airport_trip">এয়ারপোর্ট ট্রিপ</string>
+    <string name="wedding_trip">বিয়ে বাড়ির ট্রিপ</string>
+    <string name="travel_trip">ভ্রমণ ট্রিপ</string>
+
+    <string name="container">কন্টেইনার</string>
+
+    <string name="meat">মাংস</string>
+    <string name="fish">মাছ</string>
+    <string name="medicine">ওষুধ</string>
+
+    <string name="animal">পশুপ্রাণী</string>
+    <string name="feed">পশুখাদ্য</string>
+    <string name="furniture">ফার্ণিচার</string>
+    <string name="glassware">কাচের জিনিসপত্র</string>
+    <string name="household_products">বাসাবাড়ির মালামাল</string>
+    <string name="construction_product">নির্মাণ পন্য/সামগ্রী</string>
+
+    <!--Shifting/Caring Service-->
+    <string name="industrial_shifting">ইন্ডাস্ট্রিয়াল শিফটিং</string>
+    <string name="industrial_shifting_service">ইন্ডাস্ট্রিয়াল শিফটিং সার্ভিস</string>
+    <string name="home_shifting_service">বাসা/অফিস শিফটিং সার্ভিস</string>
+    <string name="shiftingNull">আপনি কোনো\n সার্ভিস নেন নি!</string>
+    <string name="will_you_shift">আপনি কি শিফট করবেন ?</string>
+    <string name="home_shift">বাসা</string>
+    <string name="office_shift">অফিস শিফট</string>
+    <string name="room_type">রুমের ধরণ</string>
+    <string name="bachelor">ব্যাচেলর</string>
+    <string name="bachelor_house">ব্যাচেলর বাসা</string>
+    <string name="family_house">ফ্যামিলি বাসা</string>
+    <string name="one_room">১ রুম</string>
+    <string name="two_room">২ রুম</string>
+    <string name="three_room">৩ রুম</string>
+    <string name="four_room">৪ রুম</string>
+    <string name="five_room">৫ রুম</string>
+    <string name="six_room">৬ রুম</string>
+    <string name="seven_room">৭ রুম</string>
+    <string name="eight_room">৯ রুম</string>
+    <string name="nine_room">৯ রুম</string>
+    <string name="ten_room">১০ রুম</string>
+    <string name="more_room">১০+ রুম</string>
+
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="which_floor_to_go_down">কত তলা থেকে নামাতে হবে</string>
+    <string name="how_many_floors_to_lift">কত তলায় উঠাতে হবে</string>
+    <string name="what_date_will_shift">কত তারিখ শিফট করবেন</string>
+    <string name="can_a_truck_come_in_front_of_the_house">বাসার সামনে ট্রাক আসতে পারবে?</string>
+
+    <string name="floor_info">ফ্লোরের তথ্য</string>
+    <string name="ground_floor">১ম/নিচতলা</string>
+    <string name="second_floor">২য় তলা</string>
+    <string name="third_floor">৩য় তলা</string>
+    <string name="fourth_floor">৪র্থ তলা</string>
+    <string name="fifth_floor">৫ম তলা</string>
+    <string name="sixth_floor">৬ষ্ঠ তলা</string>
+    <string name="seventh_floor">৭ম তলা</string>
+    <string name="eighth_floor">৮ম তলা</string>
+    <string name="ninth_floor">৯ম তলা</string>
+    <string name="tenth_floor">১০ম তলা</string>
+    <string name="tenth_plus_floor">১০+ তলা</string>
+
+    <!--Laborer-->
+    <string name="how_many_laborers">কতজন লেবার প্রয়োজন</string>
+    <string name="driver_required">ড্রাইভার প্রয়োজন</string>
+    <string name="mechanic_required">মেকানিক প্রয়োজন</string>
+    <string name="electrician_required">ইলেক্ট্রিশিয়ান প্রয়োজন</string>
+    <string name="plumber_required">পানির লাইনের মিস্ত্রি প্রয়োজন</string>
+    <string name="stove_mechanic_required">চুলার মিস্ত্রি প্রয়োজন</string>
+    <string name="which_type_laborer">কি কাজের জন্য</string>
+    <string name="experience">অভিজ্ঞতা</string>
+    <string name="work_experience">কাজের অভিজ্ঞতা</string>
+    <string name="year">বছর</string>
+
+    <!--Electrician-->
+    <string name="ceiling_fan_install_uninstall">সিলিং ফ্যান খোলা/ফিটিং</string>
+    <string name="ceiling_fan_service">সিলিং ফ্যান সার্ভিস</string>
+    <string name="electric_line_check_up">ইলেক্টিক লাইন চেক-আপ</string>
+    <string name="light_service_fitting">লাইট সার্ভিস/ফিটিং</string>
+    <string name="switch_board_servicing_setup">সুইচ বোর্ড সার্ভিসিং/সেটাপ</string>
+    <string name="main_circuit_breaker_servicing">মেইন সার্কিট ব্রেকার সার্ভিসিং</string>
+    <string name="main_distribution_board_servicing">মেইন ডিস্ট্রিবিউশন বোর্ড সার্ভিসিং</string>
+
+    <!--Stove Mechanic-->
+    <string name="gas_stove_burner_check_up">গ্যাসের চুলা/বার্নার চেক আপ</string>
+    <string name="gas_stove_cabinet_stove_and_burner_setup">গ্যাসের চুলা,ক্যাবিনেটের চুলা এবং বার্নার সেটআপ</string>
+    <string name="gas_stove_leak_repair">গ্যাস চুলার লিক মেরামত</string>
+    <string name="gas_stove_component_change">গ্যাস চুলার যন্ত্রাংশ পরিবর্তন</string>
+    <string name="gas_cabinet_stove_cleaning">গ্যাস/ক্যাবিনেটের চুলা পরিষ্কার করা</string>
+    <string name="cabinet_stove_burner_repair">ক্যাবিনেট স্টোভ বার্নার মেরামত</string>
+
+    <!--PLumber-->
+    <string name="plumbing_check_up">প্লাম্বিং চেক আপ</string>
+    <string name="water_tap_servicing">জলের কল সার্ভিসিং</string>
+    <string name="shower_servicing">ঝরনা সার্ভিসিং</string>
+    <string name="sink_issue">সিঙ্ক সমস্যা</string>
+
+    <!--Mechanic-->
+    <string name="motorcycle_servicing">মোটর সাইকেল সার্ভিসিং</string>
+    <string name="car_servicing">কার সার্ভিসিং</string>
+    <string name="microbus_servicing">মাইক্রোবাস সার্ভিসিং</string>
+    <string name="generator_servicing">জেনারেটর সার্ভিসিং</string>
+    <string name="diesel_engine_servicing">ডিজেল ইঞ্জিন সার্ভিসিং</string>
+
+    <!--Driver-->
+    <string name="car_microbus_driver">কার/মাইক্রোবাস ড্রাইভার</string>
+    <string name="ambulance_driver">অ্যাম্বুলেন্স ড্রাইভার</string>
+    <string name="pickup_driver">পিকাপ ড্রাইভার</string>
+    <string name="truck_driver">ট্রাক ড্রাইভার</string>
+    <string name="drum_truck_driver">ড্রাম ট্রাক ড্রাইভার</string>
+    <string name="freezer_van_driver">ফ্রিজার ভ্যান ড্রাইভার</string>
+    <string name="trailer_low_bed_driver">ট্রেইলর/লো-বেড ড্রাইভার</string>
+
+    <!--Excavator-->
+    <string name="point_three">.৩</string>
+    <string name="point_five">.৫</string>
+    <string name="point_seven">.৭</string>
+    <string name="point_nine">.৯</string>
+    <string name="short_boom">সর্ট বুম</string>
+    <string name="long_boom">লং বুম</string>
+
+    <!--Rice Transplanter-->
+    <string name="riding_type">রাইডিং টাইপ</string>
+    <string name="walking_type">ওয়াকিং টাইপ</string>
+    <string name="four_line_machine">৪ সারির যন্ত্র</string>
+    <string name="six_Line_machine">৬ সারির যন্ত্র</string>
+
+    <!--Tractor-->
+    <string name="standard_tractor">আদর্শ ট্রাক্টর</string>
+    <string name="mini_tractor">মিনি ট্রাক্টর</string>
+
+    <string name="power_tiller">পাওয়ার টিলার</string>
+    <string name="utility_tractor">ইউটিলিটি ট্রাক্টর</string>
+    <string name="compact_tractor">কমপ্যাক্ট ট্রাক্টর</string>
+
+    <!--Harvester-->
+    <string name="combine_harvester">কম্বাইন হারভেস্টার</string>
+    <string name="specialized_harvester">স্পেশালাইজড হারভেস্টার</string>
+    <string name="working">কাজের</string>
+
+    <string name="rice_harvesting">ধান কাটা</string>
+    <string name="wheat_harvesting">গম কাটা</string>
+    <string name="corn_harvesting">ভুট্টা কাটা</string>
+    <string name="soybean_harvesting">সয়াবিন কাটা</string>
+
+    <!--Sign up-->
+    <string name="registration">রেজিস্ট্রেশন</string>
+    <string name="mobile">মোবাইল</string>
+    <string name="address">ঠিকানা</string>
+    <string name="mobile_number">মোবাইল নাম্বার</string>
+    <string name="enter_mobile_number">আপনার মোবাইল নাম্বার</string>
+    <string name="enter_your_mobile">আপনার মোবাইল লিখুন</string>
+    <string name="enter_your_email">আপনার ইমেল লিখুন</string>
+    <string name="enter_your_password">আপনার পাসওয়ার্ড লিখুন</string>
+    <string name="enter_confirm_password">পাসওয়ার্ড আবার দিন</string>
+    <string name="enter_your_name">আপনার নাম</string>
+    <string name="sign_in">সাইন ইন</string>
+    <string name="sign_up">সাইন আপ</string>
+    <string name="log_in">লগইন</string>
+    <string name="password">পাসওয়ার্ড</string>
+    <string name="don_t_have_an_account">নতুন ব্যবহারকারী?</string>
+    <string name="already_have_an_account">অ্যাকাউন্ট আছে?</string>
+    <string name="log_in_now">লগইন করুন</string>
+    <string name="sign_up_now">রেজিস্টার করুন</string>
+    <string name="phone">ফোন</string>
+    <string name="name">নাম</string>
+    <string name="name_dot">নামঃ</string>
+    <string name="email">ইমেইল</string>
+    <string name="location">লোকেশন</string>
+    <string name="district">জেলা</string>
+    <string name="submit">সাবমিট</string>
+    <string name="update">আপডেট</string>
+    <string name="your_email">আপনার ই-মেইল</string>
+    <string name="bangla">বাংলা</string>
+    <string name="english">English</string>
+    <string name="gmail_login">জিমেইল দিয়ে লগইন করুন</string>
+    <string name="business_name">ব্যবসার নাম</string>
+    <string name="your_business_name">আপনার ব্যবসার নাম</string>
+    <string name="business_or_ocp_name">ব্যবসা / পেশার নাম</string>
+    <string name="your_business_or_ocp_name">আপনার ব্যবসা / পেশার নাম</string>
+    <string name="partner">পার্টনার</string>
+    <string name="customer">কাস্টমার</string>
+    <string name="document">ডকুমেন্ট</string>
+    <string name="edit_profile">এডিট প্রোফাইল</string>
+    <string name="edit">এডিট করুন</string>
+    <string name="delete">ডিলিট করুন</string>
+    <string name="enter_the_otp_sent_to_your_phone">মেসেজে পাঠানো কোডটি এখানে লিখুন</string>
+    <string name="did_not_receive_the_otp">কোড পাননি?</string>
+    <string name="resend_otp">পুনরায় পাঠান</string>
+
+    <!--User Type Selected Screen-->
+    <string name="how_you_want_to_use">আপনি কীভাবে অ্যাপটি ব্যবহার করতে চান?</string>
+    <string name="customer_title">সার্ভিস নিতে চাই (Customer)</string>
+    <string name="customer_desc">বাসা বদল, নির্মাণ সামগ্রী পরিবহন, কৃষিকাজ বা অন্য যেকোনো কাজের জন্য সার্ভিস খুঁজছেন? তাহলে আপনি সঠিক জায়গায় এসেছেন !</string>
+    <string name="partner_title">সার্ভিস দিতে চাই (Partner)</string>
+    <string name="partner_desc">আপনার কাছে ট্রাক, পিকআপ, ক্রেইন, এক্সকাভেটর, হারভেস্টার বা অন্য কোনো যন্ত্রপাতি আছে? তাহলে এখনই যুক্ত হন! সার্ভিস প্রদান করে আয় করুন।</string>
+
+    <!--NID Activity-->
+    <string name="upload_pictures">ছবি আপলোড করুন</string>
+    <string name="update_pictures">ছবি আপডেট করুন</string>
+    <string name="profile_picture">প্রোফাইল ছবি</string>
+    <string name="nid_front_picture">এনআইডি সামনের ছবি</string>
+    <string name="nid_back_picture">এনআইডি পেছনের ছবি</string>
+    <string name="upload">আপলোড করুন</string>
+    <string name="camera">ক্যামেরা</string>
+    <string name="gallery">ক্যামেরা</string>
+
+
+
+    <!--Partner Part-->
+    <string name="rent_service">রেন্ট সার্ভিস</string>
+    <string name="notification">নোটিফিকেশন</string>
+    <string name="all_service">সকল সার্ভিস</string>
+    <string name="need_document">ডকুমেন্ট প্রয়োজন</string>
+    <string name="product">প্রোডাক্ট</string>
+    <string name="product_or_service">প্রোডাক্ট / সার্ভিস</string>
+    <string name="battery_exchange">ব্যাটারি এক্সচেঞ্জ</string>
+    <string name="job_recruitment">নিয়োগ / বিজ্ঞপ্তি</string>
+    <string name="profile_update">প্রোফাইল আপডেট</string>
+    <string name="category_change">ক্যাটাগরি চেঞ্জ</string>
+
+    <!--more Fragment-->
+    <string name="company_commission">কোম্পানি পাবে</string>
+    <string name="partner_commission">আপনি পাবেন</string>
+    <string name="total_income">মোট আয়</string>
+    <string name="all_bid">বিড</string>
+    <string name="accepted_bid">সফল বিড</string>
+    <string name="pending_bid">পেন্ডিং বিড</string>
+    <string name="cancel_bid">বাতিল বিড</string>
+    <string name="total_bid">মোট বিড</string>
+    <string name="referral_code">রেফারেল কোড</string>
+    <string name="refer_a_friend">রেফার করুন এবং ডিসকাউন্ট পান</string>
+    <string name="payment_history">পেমেন্ট তালিকা</string>
+    <string name="payment_account">পেমেন্ট একাউন্ট</string>
+    <string name="no_payment_account">কোন পেমেন্ট একাউন্ট নেই</string>
+    <string name="payment_account_found">আপনার পেমেন্ট একাউন্ট সমূহ</string>
+    <string name="add_payment_account">একাউন্ট যোগ করুন</string>
+    <string name="no_payment_history">কোন পেমেন্ট নেই</string>
+
+    <string name="select_payment_method">পেমেন্ট মেথড সিলেক্ট করুন</string>
+    <string name="account_no">একাউন্ট নাম্বার দিন</string>
+    <string name="account_contact_name">একাউন্টের পরিচিতি নাম</string>
+    <string name="use_as_primary_payment_account">প্রাথমিক পেমেন্ট অ্যাকাউন্ট সেট করুন</string>
+    <string name="bKash">বিকাশ</string>
+    <string name="nagad">নগদ</string>
+    <string name="rocket">রকেট</string>
+    <string name="uPay">উপায়</string>
+
+    <!--All Rent Service-->
+    <string name="rent_service_verification_pending">আপনার সার্ভিসটি যাচাই করে শিগগিরই ভেরিফিকেশন সম্পন্ন করা হবে।</string>
+    <string name="warning_message">আপনি রেজিস্ট্রেশনের সময় যে ক্যাটাগরি গুলো সিলেক্ট করেছেন,
+        শুধুমাত্র সেই ক্যাটাগরির সার্ভিস গুলো যুক্ত করুন। কারন আপনার সিলেক্ট করা ক্যাটাগরি অনুযায়ী আপনার কাছে বিড দেখা যাবে।
+        ক্যাটাগরি চেঞ্জ করতে বিডি হেল্পার এর সাথে যোগাযোগ করুন</string>
+    <string name="rent_service_verified_warning">সার্ভিসটি ভেরিফাই করার জন্য প্রয়োজনীয় ডকুমেন্টের ছবি জমা দিন</string>
+
+
+    <!--Permission -->
+    <string name="camera_permission_detail">
+        আপনার প্রোফাইল ছবি ও\n পরিচয় যাচাইয়ের জন্য ক্যামেরা\n অ্যাক্সেস প্রয়োজন।
+    </string>
+    <string name="storage_permission_detail">
+        প্রোফাইল ছবি ও আইডি কার্ড\n আপলোডের জন্য স্টোরেজ \nঅ্যাক্সেস প্রয়োজন।
+    </string>
+    <string name="location_permission_detail">
+        আপনার সঠিক অবস্থান অনুযায়ী\n সেবা দিতে শুধু প্রয়োজনের সময়\n লোকেশন এক্সেস নেয়া হবে।
+    </string>
+
+
+
+    <!--Area Location List-->
+    <string name="dhaka_city">ঢাকা সিটি</string>
+    <string name="chittagong_city">চট্টগ্রাম সিটি</string>
+    <string name="dhaka_division">ঢাকা</string>
+    <string name="barisal_division">বরিশাল</string>
+    <string name="chittagong_division">চট্টগ্রাম</string>
+    <string name="mymensingh_division">ময়মনসিংহ</string>
+    <string name="khulna_division">খুলনা</string>
+    <string name="rajshahi_division">রাজশাহী</string>
+    <string name="rangpur_division">রংপুর</string>
+    <string name="sylhet_division">সিলেট</string>
+
+    <string name="uttara">উত্তরা</string>
+    <string name="kafrul">কাফরুল</string>
+    <string name="kamrangir_char">কামরাঙ্গির চর</string>
+    <string name="kotoyali">কোতোয়ালী</string>
+    <string name="cantonment">ক্যান্টনমেন্ট</string>
+    <string name="khilgaon">খিলগাঁও</string>
+    <string name="gulsan">গুলশান</string>
+    <string name="demra">ডেমরা</string>
+    <string name="tejgaon">তেজগাঁও</string>
+    <string name="dhanmondi">ধানমন্ডি</string>
+    <string name="pollobi">পল্লবী</string>
+    <string name="bosundhara">বসুন্ধরা</string>
+    <string name="badda">বাড্ডা</string>
+    <string name="motijhil">মতিঝিল</string>
+    <string name="mirpur">মিরপুর</string>
+    <string name="mohammadpur">মোহাম্মদপুর</string>
+    <string name="ramona">রমনা</string>
+    <string name="lalbug">লালবাগ</string>
+    <string name="shampur">শ্যামপুর</string>
+    <string name="sobuj_bug">সবুজ বাগ</string>
+    <string name="sutrapur">সুত্রাপুর</string>
+    <string name="hajaribug">হাজারীবাগ</string>
+
+    <string name="akbor_shah">আকবরশাহ</string>
+    <string name="andhar_killa">আন্দারকিল্লা</string>
+    <string name="amirbug_abashik_alaka">আমিরবাগ আবাসিক এলাকা</string>
+    <string name="ali_shapara">আলী শাহপারা</string>
+    <string name="asadganj_commercial_area">আসাদ্গঞ্জ কমার্শিয়াল এরিয়া</string>
+    <string name="epz">ই পি জেড</string>
+    <string name="uttar_pathantuli">উত্তর পাঠানটুলি</string>
+    <string name="anayet_bazar">এনায়েত বাজার</string>
+    <string name="karnafuli_residential_area">কর্ণফুলী রেসিডেনসিয়াল এরিয়া</string>
+    <string name="kotoyali2">কোতোয়ালি</string>
+    <string name="khatungonj">খাতুনগঞ্জ</string>
+    <string name="khulshi">খুলশি</string>
+    <string name="gosaildanga">গোসাইলডাঙ্গা</string>
+    <string name="chowk_bazar">চক বাজার</string>
+    <string name="chor_para">চর পাড়া</string>
+    <string name="chor_halda">চর হালডা</string>
+    <string name="chadgao">চাঁদগাও</string>
+    <string name="gem_officers_colony">জি ই এম অফিসারস কলোনি</string>
+    <string name="jhawtola">ঝাউতলা</string>
+    <string name="tigerpass_railway_colony">টাইগারপাস রেলওয়ে কলোনি</string>
+    <string name="tsp_colony">টি এস পি কলোনি</string>
+    <string name="teri_bazar">তেরি বাজার</string>
+    <string name="double_muring">ডাবল মুরিং</string>
+    <string name="doijpara">দইজপারা</string>
+    <string name="south_patenga">দক্ষিণ পতেঙ্গা</string>
+    <string name="south_bondar">দক্ষিণ বন্দর</string>
+    <string name="dokkhin_moddho_holyshohor">দক্ষিণ মধ্য হালিশহর</string>
+    <string name="dampara">দামপারা</string>
+    <string name="deoyan_ghat">দেওয়ান ঘাট</string>
+    <string name="deoyan_bazar">দেওয়ান বাজার</string>
+    <string name="dhumpara">ধূমপাড়া</string>
+    <string name="north_middle_holishohor">উত্তর মধ্য হালিশহর</string>
+    <string name="nasirabadh">নাসিরাবাধ</string>
+    <string name="new_muring">নিউ মুরিং</string>
+    <string name="navy_port">নেভি পোর্ট</string>
+    <string name="podma_abashik_alaka">পদ্মা আবাসিক এলাকা</string>
+    <string name="paslaish">পসলাইস</string>
+    <string name="pathantuli">পাঠানতুলি</string>
+    <string name="potenga">পতেঙ্গা</string>
+    <string name="patharghata">পাথরঘাটা</string>
+    <string name="pahartali">পাহাড়তলি</string>
+    <string name="purbo_nimtala">পূর্ব নিমতলা</string>
+    <string name="purbo_madar_bari">পূর্ব মাদারবাড়ি</string>
+    <string name="bahaddarhat">বহদ্দারহাট</string>
+    <string name="bangladesh_bank_colony">বাংলাদেশ ব্যাংক কলোনি</string>
+    <string name="bakolia">বাকলিয়া</string>
+    <string name="bayazid_bostami">বায়েজিদ বোস্তামী</string>
+    <string name="mansurabad">মনসুরবাদ</string>
+    <string name="majipara">মাঝিপাড়া</string>
+    <string name="rangipara_bank_colony">রঙ্গিপারা ব্যাংক কলোনি</string>
+    <string name="laldair_char">লালদাইর চর</string>
+    <string name="shadorghat">সদরঘাট</string>
+    <string name="sondip_para">সন্দীপ পাড়া</string>
+    <string name="south_agrabad">দক্ষিণ আগ্রাবাদ</string>
+    <string name="cgs_colony">সিজিএস কলোনি</string>
+    <string name="hali_shohor">হালি শহর</string>
+    <string name="hali_shohor_munshipara">হালি শহর মুন্সিপাড়া</string>
+    <string name="hali_shohor_senanibash">হালি শহর সেনানিবাস</string>
+    <string name="hosen_ahmedpara">হোসেন আহমেদ পাড়া</string>
+
+    //Dhaka Division- District
+    <string name="kishorgonj">কিশোরগঞ্জ</string>
+    <string name="gazipur">গাজীপুর</string>
+    <string name="gopalgonj">গোপালগঞ্জ</string>
+    <string name="tangail">টাঙ্গাইল</string>
+    <string name="dhaka">ঢাকা</string>
+    <string name="narsingdi">নরসিংদী</string>
+    <string name="narayanganj">নারায়ণগঞ্জ</string>
+    <string name="faridpur">ফরিদপুর</string>
+    <string name="madaripur">মাদারীপুর</string>
+    <string name="manikgonj">মানিকগঞ্জ</string>
+    <string name="munshigonj">মুন্সিগঞ্জ</string>
+    <string name="rajbari">রাজবাড়ী</string>
+    <string name="shariatpur">শরীয়তপুর</string>
+
+    //Barisal Division- District
+    <string name="jhalokati">ঝালোকাঠি</string>
+    <string name="patuakhali">পটুয়াখালী</string>
+    <string name="pirojpur">পিরোজপুর</string>
+    <string name="barguna">বরগুনা</string>
+    <string name="barisal">বরিশাল</string>
+    <string name="bhola">ভোলা</string>
+
+    //Chittagong Division- District
+    <string name="cox_bazar">কক্সবাজার</string>
+    <string name="comilla">কুমিল্লা</string>
+    <string name="khagrasori">খাগড়াছড়ি</string>
+    <string name="chattogram">চট্টগ্রাম</string>
+    <string name="chandpur">চাঁদপুর</string>
+    <string name="noakhali">নোয়াখালী</string>
+    <string name="feni">ফেনী</string>
+    <string name="bandarban">বান্দরবন</string>
+    <string name="brahmanbaria">ব্রাহ্মণবাড়িয়া</string>
+    <string name="rangamati">রাঙ্গামাটি</string>
+    <string name="lokkhipur">লক্ষ্মীপুর</string>
+
+    //Mymensingh Division- District
+    <string name="jamalpur">জামালপুর</string>
+    <string name="netrokona">নেত্রকোনা</string>
+    <string name="mymensingh">ময়মনসিংহ</string>
+    <string name="sherpur">শেরপুর</string>
+
+    //Khulna Division- District
+    <string name="kustia">কুষ্টিয়া</string>
+    <string name="khulna">খুলনা</string>
+    <string name="chuadanga">চুয়াডাঙ্গা</string>
+    <string name="jhenaidah">ঝিনাইদাহ</string>
+    <string name="norail">নড়াইল</string>
+    <string name="bagerhat">বাগেরহাট</string>
+    <string name="magura">মাগুরা</string>
+    <string name="meherpur">মেহেরপুর</string>
+    <string name="jessore">যশোর</string>
+    <string name="satkhira">সাতক্ষীরা</string>
+
+    //Rajshahi Division- District
+    <string name="chapainawabganj">চাপাইনবাবগঞ্জ</string>
+    <string name="joypurhat">জয়পুরহাট</string>
+    <string name="nouga">নওগাঁ</string>
+    <string name="natore">নাটোর</string>
+    <string name="pabna">পাবনা</string>
+    <string name="bagura">বগুড়া</string>
+    <string name="rajshahi">রাজশাহী</string>
+    <string name="sirajgonj">সিরাজগঞ্জ</string>
+
+    //Rangpur Division- District
+    <string name="kurigram">কুড়িগ্রাম</string>
+    <string name="gaibandha">গাইবান্দা</string>
+    <string name="thakurgaon">ঠাকুরগাও</string>
+    <string name="dinajpur">দিনাজপুর</string>
+    <string name="nilfamari">নীলফামারী</string>
+    <string name="ponchogor">পঞ্চগড়</string>
+    <string name="rangpur">রংপুর</string>
+    <string name="lalmoni">লালমনিহাট</string>
+
+    //Sylhet Division- District
+    <string name="moulvibazar">মৌলভীবাজার</string>
+    <string name="sylhet">সিলেট</string>
+    <string name="sunamganj">সুনামগঞ্জ</string>
+    <string name="habiganj">হবিগঞ্জ</string>
+
+    /*--sub area---*/
+    /*--Dhaka city--*/
+    <!--Uttara-->
+    <string name="aisnubug">আইনুসবাগ</string>
+    <string name="ajompur">আজমপুর</string>
+    <string name="anurbug">আনুরবাগ</string>
+    <string name="abdullahpur">আব্দুল্লাহপুর</string>
+    <string name="asiyan_city">এশিয়ান সিটি</string>
+    <string name="amtola">আমতলী</string>
+    <string name="ahalia">আহালিয়া</string>
+    <string name="uttorkhan">উত্তরখান</string>
+    <string name="kaola">কাওলা</string>
+    <string name="kajibari">কাজিবাড়ি</string>
+    <string name="kamarpara">কামারপাড়া</string>
+    <string name="khilkhet">খিলক্ষেত</string>
+    <string name="gaoyair">গাওয়াইর</string>
+    <string name="joshimuddin">জসিমুদ্দিন</string>
+    <string name="dhaka_airport">ঢাকা বিমানবন্দর</string>
+    <string name="south_mollertech">দক্ষিণ মল্লারটেক</string>
+    <string name="dokkhinkhan">দক্ষিণখান</string>
+    <string name="diyabari">দিয়াবাড়ি</string>
+    <string name="dhour">ধউর</string>
+    <string name="noddapara">নদ্দাপাড়া</string>
+    <string name="noya_nogor">নয়া নগর</string>
+    <string name="fulbaria">ফুলবাড়িয়া</string>
+    <string name="romnar_tech">রমনার টেক</string>
+    <string name="bepari_bari">ব্যাপারী বাড়ি</string>
+    <string name="vatira">ভাটারা</string>
+    <string name="moddho_para">মধ্যপাড়া</string>
+    <string name="madar_bari">মাদার বাড়ি</string>
+    <string name="raj_bari">রাজ বাড়ি</string>
+    <string name="shekherpara">শেখেরপাড়া</string>
+    <string name="shona_khola">সোনাখোলা</string>
+    <string name="hajipara">হাজীপাড়া</string>
+    <string name="viyapara">ভুইয়াপাড়া</string>
+    <string name="_10_no_sector_uttara">উত্তরা ১০ নং সেক্টর</string>
+    <string name="_11_no_sector_uttara">উত্তরা ১১ নং সেক্টর</string>
+    <string name="_12_no_sector_uttara">উত্তরা ১২ নং সেক্টর</string>
+    <string name="_13_no_sector_uttara">উত্তরা ১৩ নং সেক্টর</string>
+    <string name="_14_no_sector_uttara">উত্তরা ১৪ নং সেক্টর</string>
+    <string name="_15_no_sector_uttara">উত্তরা ১৫ নং সেক্টর</string>
+    <string name="_16_no_sector_uttara">উত্তরা ১৬ নং সেক্টর</string>
+    <string name="_17_no_sector_uttara">উত্তরা ১৭ নং সেক্টর</string>
+    <string name="_2_no_sector_uttara">উত্তরা ২ নং সেক্টর</string>
+    <string name="_3_no_sector_uttara">উত্তরা ৩ নং সেক্টর</string>
+    <string name="_4_no_sector_uttara">উত্তরা ৪ নং সেক্টর</string>
+    <string name="_5_no_sector_uttara">উত্তরা ৫ নং সেক্টর</string>
+    <string name="_6_no_sector_uttara">উত্তরা ৬ নং সেক্টর</string>
+    <string name="_7_no_sector_uttara">উত্তরা ৭ নং সেক্টর</string>
+    <string name="_8_no_sector_uttara">উত্তরা ৮ নং সেক্টর</string>
+    <string name="_9_no_sector_uttara">উত্তরা ৯ নং সেক্টর</string>
+
+    <!--Kafrul-->
+    <string name="ajij_polli">আজিজ পল্লী</string>
+    <string name="dhaka_navy_colony">ঢাকা নেভী কলোনি</string>
+    <string name="dhamal_kot">ধামাল কোট</string>
+    <string name="vasantech">ভাসানটেক</string>
+    <string name="mohakhali_dohs">মহাখালী ডিওএইচএস</string>
+    <string name="matikata">মাটিকাটা</string>
+    <string name="soudi_koloni">সৌদি কলোনি</string>
+
+    <!--KamrangirChor-->
+    <string name="abu_soiyod_bazar">আবু সৈয়দ বাজার</string>
+    <string name="koyla_ghat">কয়লা ঘাট</string>
+    <string name="karim_bug">করিমবাগ</string>
+    <string name="nurbug">নুরবাগ</string>
+    <string name="munshi_hat">মুন্সীহাট</string>
+    <string name="muslimbug">মুসলিমবাগ</string>
+    <string name="zaullar_hati_chourasta">জাউলার হাট চৌরাস্তা</string>
+    <string name="sultanganj">সুলতানগঞ্জ</string>
+    <string name="hajirpara">হাজিরপাড়া</string>
+    <string name="hasan_nagor">হাসান নগর</string>
+
+    <!--Kotoyaly-->
+    <string name="islampur">ইসলামপুর</string>
+    <string name="jinda_bazar">জিন্দাবাজার</string>
+    <string name="tati_bazar">তাতিবাজার</string>
+    <string name="potuyatoli">পটুয়াখালী</string>
+    <string name="badam_toli">বাদামতলি</string>
+    <string name="ray_ssaheb_bazar">রায়সাহেব বাজার</string>
+    <string name="lokkhi_bazar">লক্ষ্মী বাজার</string>
+    <string name="sadarghat">সদরঘাট</string>
+
+    <!--Cantonment-->
+    <string name="ecb_chottor">ই সি বি চত্বর</string>
+    <string name="mes_colony">এম ই এস কলোনি</string>
+    <string name="kalibari">কালীবাড়ি</string>
+    <string name="noya_bazar">নয়াবাজার</string>
+    <string name="kirmitola">কুর্মিটোলা</string>
+    <string name="goaltech">গোয়ালটেক</string>
+    <string name="jamtola">জামতলা</string>
+    <string name="zia_colony">জিয়া কলোনি</string>
+    <string name="dali_market">ডালি মার্কেট</string>
+    <string name="deoyanpara">দেওয়ানপাড়া</string>
+    <string name="nikung">নিকুঞ্জ</string>
+    <string name="nirjhor">নির্ঝর</string>
+    <string name="barontech">বারনটেক</string>
+    <string name="balurghat">বালুরঘাট</string>
+    <string name="manikdi">মানিকডি</string>
+    <string name="mastertech">মাস্টারটেক</string>
+    <string name="mostafa_kamal_chottor">মোস্তফাকামালচত্বর</string>
+
+    <!--Khilgaon-->
+    <string name="adarsh">আদর্শবাগ</string>
+    <string name="ansar_bug">আনসারবাগ</string>
+    <string name="aftab_nagar">আফতাব নগর</string>
+    <string name="ulon">উলন</string>
+    <string name="khilgoan_bagicha">খিলগাঁও বাগিচা</string>
+    <string name="khilgoan_block_a">খিলগাঁও ব্লক -এ</string>
+    <string name="khilgoan_block_b">খিলগাঁও ব্লক -বি</string>
+    <string name="khilgoan_block_c">খিলগাঁও ব্লক -সি</string>
+    <string name="khilgoan_railgate">খিলগাঁও রেলগেট</string>
+    <string name="goran">গোরান</string>
+    <string name="chowdhury_para">চৌধুরীপাড়া</string>
+    <string name="tilpa_para">টিলপা পাড়া</string>
+    <string name="notun_bug">নতুনবাগ</string>
+    <string name="nondi_para">নন্দিপাড়া</string>
+    <string name="bonosri">বনশ্রী</string>
+    <string name="malibug">মালিবাগ</string>
+    <string name="meradiya">মেরাদিয়া</string>
+    <string name="rampura">রামপুরা</string>
+    <string name="riyai_bug">রিয়াজবাগ</string>
+    <string name="sipahi_bug">সিপাহিবাগ</string>
+
+    <!--Gulshan-->
+    <string name="korail">করাইল</string>
+    <string name="gulshan_avenue">গুলশান এভিনিউ</string>
+    <string name="gulshan_2">গুলশান ২</string>
+    <string name="gulshan_1">গুলশান ১</string>
+    <string name="niketon">নিকেতন</string>
+    <string name="bonani">বনানী</string>
+    <string name="bari_dhara">বারিধারা</string>
+    <string name="bari_dhara_dohs">বারিধারা ডিওএস</string>
+    <string name="mohakhali">মহাখালী</string>
+
+    <!--Demra-->
+    <string name="ahmed_nagar">আহমেদ নগর</string>
+    <string name="konapara">কোনাপাড়া</string>
+    <string name="green_model_town">গ্রিন মডেল টাউন</string>
+    <string name="chonpara">কোনাপাড়া</string>
+    <string name="dogair">ডগাইর</string>
+    <string name="tarabo">তাড়াবো</string>
+    <string name="south_rupsi">দক্ষিণ রূপসী</string>
+    <string name="naopara">নাওপাড়া</string>
+    <string name="bamoli_bazar">বামৈল বাজার</string>
+    <string name="bahir_tengra">বাহির টেংরা</string>
+    <string name="rasul_nagor">রসুলনগর</string>
+    <string name="saar_para">সানারপাড়া</string>
+    <string name="saruliya">সারুলিয়া</string>
+    <string name="haji_nagor">হাজী নগর</string>
+
+    <!--Tejgaon-->
+    <string name="kawran_bazar">কাওরান বাজার</string>
+    <string name="tejkuni_para">তেজকুনিপাড়া</string>
+    <string name="nakhal_para">নাখালপাড়া</string>
+    <string name="tejturi_bazar">তেজতুরি বাজার</string>
+    <string name="nabisko">নাবিস্কো</string>
+    <string name="farmgate">ফার্মগেট</string>
+    <string name="monipuripara">মনিপুরিপাড়া</string>
+    <string name="rsul_bug">রসুলবাগ</string>
+    <string name="raja_bazar">রাজাবাজার</string>
+    <string name="shahin_bug">শাহিনবাগ</string>
+    <string name="shukrabad">শুক্রাবাদ</string>
+
+    <!--Dhanmondi-->
+    <string name="kalabagan">কলাবাগান</string>
+    <string name="green_road">গ্রিনরোড</string>
+    <string name="jiga_tola">জিগাতলা</string>
+    <string name="dhanmondi_1">ধানমন্ডি -১</string>
+    <string name="dhanmondi_2">ধানমন্ডি -২</string>
+    <string name="dhanmondi_3">ধানমন্ডি -৩</string>
+    <string name="dhanmondi_4">ধানমন্ডি -৪</string>
+    <string name="dhanmondi_5">ধানমন্ডি -৫</string>
+    <string name="dhanmondi_6">ধানমন্ডি -৬</string>
+    <string name="dhanmondi_7">ধানমন্ডি -৭</string>
+    <string name="dhanmondi_8a">ধানমন্ডি -৮এ</string>
+    <string name="dhanmondi_9a">ধানমন্ডি -৯এ</string>
+    <string name="dhanmondi_10a">ধানমন্ডি -১০এ</string>
+    <string name="dhanmondi_11">ধানমন্ডি -১১</string>
+    <string name="dhanmondi_12">ধানমন্ডি -১২</string>
+    <string name="dhanmondi_13">ধানমন্ডি -১৩</string>
+    <string name="dhanmondi_14">ধানমন্ডি -১৪</string>
+    <string name="dhanmondi_15">ধানমন্ডি -১৫</string>
+    <string name="dhanmondi_27">ধানমন্ডি -২৭</string>
+    <string name="dhanmondi_32">ধানমন্ডি -৩২</string>
+    <string name="newmarket">নিউমার্কেট</string>
+    <string name="panthapath">পান্থপথ</string>
+    <string name="kalashankarbagan">কালো সংকর বাগান</string>
+    <string name="shobhan_bug">সোবহানবাগ</string>
+
+    <!--Pollobi-->
+    <string name="kalshi">কালশি</string>
+    <string name="duip_nagar">দ্বৈপনগর</string>
+    <string name="bordhito_polli">বর্ধিত পল্লী</string>
+    <string name="mirpur_dohs">মিরপুর ডিওএইচএস</string>
+    <string name="mirpur_senanibas">মিরপুর সেনানিবাস</string>
+    <string name="shagufta">সাগুপ্তা</string>
+    <string name="section_12_mirpur">মিরপুর ১২</string>
+
+    <!--Bashundhara-->
+    <string name="kuril">কুড়িল</string>
+    <string name="cococola">কোকাকোলা</string>
+    <string name="neela_market">নীলা মার্কেট</string>
+    <string name="nodda">নদ্দা</string>
+    <string name="bashundhara_block_i">বসুন্ধরা ব্লক -আই</string>
+    <string name="bashundhara_block_e">বসুন্ধরা ব্লক -ই</string>
+    <string name="bashundhara_block_a">বসুন্ধরা ব্লক -এ</string>
+    <string name="bashundhara_block_h">বসুন্ধরা ব্লক -এইচ</string>
+    <string name="bashundhara_block_f">বসুন্ধরা ব্লক -এফ</string>
+    <string name="bashundhara_block_m">বসুন্ধরা ব্লক -এম</string>
+    <string name="bashundhara_block_L">বসুন্ধরা ব্লক -এল</string>
+    <string name="bashundhara_block_k">বসুন্ধরা ব্লক -কে</string>
+    <string name="bashundhara_block_g">বসুন্ধরা ব্লক -জি</string>
+    <string name="bashundhara_block_j">বসুন্ধরা ব্লক -জে</string>
+    <string name="bashundhara_block_d">বসুন্ধরা ব্লক -ডি</string>
+    <string name="bashundhara_block_b">বসুন্ধরা ব্লক -বি</string>
+    <string name="bashundhara_block_c">বসুন্ধরা ব্লক -সি</string>
+    <string name="beraid">বেরাইড</string>
+
+    <!--Badda-->
+    <string name="namapara">নামাপাড়া</string>
+    <string name="benurerchalaraid">বেনুরচালা</string>
+    <string name="east_nurer_chala">পূর্বনুরের চালা</string>
+    <string name="beyou_la_para">বাউলাপাড়া</string>
+    <string name="badda_dit_project">বাড্ডা ডিআইটি প্রোজেক্ট</string>
+    <string name="badda_link_road">বাড্ডা লিংকরোড</string>
+    <string name="middle_badda">মধ্য বাড্ডা</string>
+    <string name="merul">মেরুল</string>
+    <string name="vatara">ভাটারা</string>
+    <string name="merul_badda">মেরুল বাড্ডা</string>
+    <string name="rup_nagar">রূপনগর</string>
+    <string name="shahjadpur">শাহজাদপুর</string>
+    <string name="solmaid">সলমাইড</string>
+
+    <!--Motijhil-->
+    <string name="fakirapul">ফকিরাপুল</string>
+    <string name="razarbug">রাজারবাগ</string>
+    <string name="shahidbug">শহিদবাগ</string>
+    <string name="bershanti_nagaraid">বারশান্তি নগর</string>
+    <string name="shanti_bug">শান্তিবাগ</string>
+    <string name="shahjahanpur">শাহজাহানপুর</string>
+
+    <!--Mirpur-->
+    <string name="gabtoli">গাবতলি</string>
+    <string name="zoo">চিড়িয়াখানা</string>
+    <string name="zahurabad">যাহুরাবাদ</string>
+    <string name="tolarbug">টলারবাগ</string>
+    <string name="south_monipur">দক্ষিণ মনিপুর</string>
+    <string name="nonderbug">নন্দেরবাগ</string>
+    <string name="nobaberbug">নবাবেরবাগ</string>
+    <string name="west_kazipara">পশ্চিম কাজিপাড়া</string>
+    <string name="west_shewrapara">পশ্চিম শ্যাওড়াপাড়া</string>
+    <string name="paikpara">পাইকপাড়া</string>
+    <string name="palapara">পালাপাড়া</string>
+    <string name="pirerbug">পিরেরবাগ</string>
+    <string name="est_kazipara">পূর্ব কাজিপারা</string>
+    <string name="east_shewrapara">পূর্ব শ্যাওড়াপাড়া</string>
+    <string name="boshupara">বশুপারা</string>
+    <string name="baten_nagar">বাতেননগর</string>
+    <string name="beribadh">বেড়ীবাঁধ</string>
+    <string name="borobug">বরবাগ</string>
+    <string name="modina_nagar">মদিনানগর</string>
+    <string name="monipur">মনিপুর</string>
+    <string name="mirpur_6">মিরপুর ৬</string>
+    <string name="mirpur_2">মিরপুর ২</string>
+    <string name="mirpur_60_feet">মিরপুর ৬০ ফিট</string>
+    <string name="mirpur_rupnagar_abashik_alaka">মিরপুর রূপনগর আবাসিক এলাকা</string>
+    <string name="mirpur_11">মিরপুর ১১</string>
+    <string name="mirpur_12">মিরপুর ১২</string>
+    <string name="mirpur_10">মিরপুর ১০</string>
+    <string name="mirpur_13">মিরপুর ১৩</string>
+    <string name="mirpur_14">মিরপুর ১৪</string>
+    <string name="mirpur_1">মিরপুর ১</string>
+    <string name="mohammadiya_society">মহাম্মাদিয়া সোসাইটি</string>
+    <string name="rainlhola">রেইনখোলা</string>
+    <string name="shain_pukur">শাইনপুকুর</string>
+    <string name="shah_ali_bug">শাহালিবাগ</string>
+    <string name="shimul_tala">শিমুলতলা</string>
+    <string name="lalkuthi">লালকুঠি</string>
+    <string name="hariram_pur">হরিরামপুর</string>
+
+    <!--Mohammadpur-->
+    <string name="adabar">আদাবর</string>
+    <string name="ashadget">আসাদগেট</string>
+    <string name="chadmiya_housing">চাদমিয়া হাউসিং</string>
+    <string name="jafrabad">জাফ্রারাবাদ</string>
+    <string name="tajmohol_road">তাজমহল রোড</string>
+    <string name="bosila">বসিলা</string>
+    <string name="baitul_aman_housing">বাইতুল আমান হউসিং</string>
+    <string name="mohammadiya_abashik_alaka">মহাম্মাদিয়া আবাসিক এলাকা</string>
+    <string name="ringroad">রিংরোড</string>
+    <string name="lalmatia">লালমাটিয়া</string>
+    <string name="shongkar">শংকর</string>
+    <string name="shekhertek">শেখেরটেক</string>
+    <string name="shamoli">শ্যামলী</string>
+
+    <!--Ramona-->
+    <string name="elephant_road">এলিফ্যান্ট রোড</string>
+    <string name="old_iskaton">পুরান ইস্কাটন</string>
+    <string name="kakrail">কাকরাইল</string>
+    <string name="katabon">কাটাবন</string>
+    <string name="dhaka_versity">ঢাকা বিশ্ববিদ্যালয়</string>
+    <string name="new_iskaton">নতুন ইস্কাটন</string>
+    <string name="noya_tola">নায়াতলা</string>
+    <string name="poribug">পরিবাগ</string>
+    <string name="bangla_motor">বাংলামটর</string>
+    <string name="beili_road">বেইলিরোড</string>
+    <string name="boro_mogbazar">বড় মগবাজার</string>
+    <string name="mogbazar_tandt_colony">মগবাজার টি এন্ড টি কলোনি</string>
+    <string name="mirbug">মিরবাগ</string>
+    <string name="shahbug">শাহবাগ</string>
+    <string name="shiddessori">সিদ্ধেশ্বরী</string>
+    <string name="segunbagicha">সেগুনবাগিচা</string>
+    <string name="hatirpul">হাতিরপুল</string>
+
+    <!--Lalbag-->
+    <string name="azimpur">আজিমপুর</string>
+    <string name="amligola">আমলইগলা</string>
+    <string name="islambug">ইসলাম বাগ</string>
+    <string name="kamrangirchor">কামরাঙ্গিরচর</string>
+    <string name="chawkbazar">চকবাজার</string>
+    <string name="bakshibazar">বকশীবাজার</string>
+    <string name="babubazar">বাবুবাজার</string>
+    <string name="begumbazar">বেগম বাজার</string>
+    <string name="shahid_nagar">শহিদনগর</string>
+    <string name="soyari_ghat">সয়ারিঘাট</string>
+
+    <!--Shampur-->
+    <string name="kadamtali">কদমতলি</string>
+    <string name="kutub_khali">কুতুবখালি</string>
+    <string name="janata_market">জনতা মার্কেট</string>
+    <string name="japani_market">জাপান মার্কেট</string>
+    <string name="jurain">জুরাইন</string>
+    <string name="doniya">দনিয়া</string>
+    <string name="deul_para">ডেয়লপারা</string>
+    <string name="dholaipara">ধোলাইপাড়া</string>
+    <string name="pagla">পাগলা</string>
+    <string name="faridabad">ফরিদাবাদ</string>
+    <string name="munshibug">মুন্সিবাগ</string>
+    <string name="muradpur">মুরাদপুর</string>
+    <string name="meraznagar">মেরাজনগর</string>
+    <string name="mohammadbugg">মোহাম্মাদবাগ</string>
+    <string name="rasulpur">রাসুলবাগ</string>
+    <string name="rayerbug">রায়েরবাগ</string>
+
+    <!--ShobujBug-->
+    <string name="ahmedbug">আহমেদবাগ</string>
+    <string name="north_mugda_para">উত্তর মুগদাপাড়া</string>
+    <string name="kadamtala">কদমতলা</string>
+    <string name="south_mugdapara">দক্ষিণ মুগদাপাড়া</string>
+    <string name="natunpara">নতুনপাড়া</string>
+    <string name="east_nandipara">পূর্ব নন্দিপাড়া</string>
+    <string name="baganbari">বাগানবাড়ী</string>
+    <string name="basabo">বাসাবো</string>
+    <string name="madartech">মাদারটেক</string>
+    <string name="mugdapara">মুগদাপাড়া</string>
+
+    <!--Sutrapur-->
+    <string name="wari">ওয়ারী</string>
+    <string name="kaptan_bazar">কাপ্তানবাজার</string>
+    <string name="keraati_tola">কেরাতিতলা</string>
+    <string name="gendaria">গেন্ডারিয়া</string>
+    <string name="tikatuli">টিকাতুলি</string>
+    <string name="doyagang">দয়াগঞ্জ</string>
+    <string name="dhup_khola">ধুপখোলা</string>
+    <string name="nawabpur">নওয়াবপুর</string>
+    <string name="narinda">নারিন্দা</string>
+    <string name="jatrabari">যাত্রাবাড়ী</string>
+    <string name="saydabad">সায়দাবাদ</string>
+    <string name="soyamibug">সামিবাগ</string>
+    <string name="hatkhola">হাটখোলা</string>
+
+    <!--Hajaribug-->
+    <string name="anayetgang">এনায়েতগঞ্জ</string>
+    <string name="company_ghat">কম্পানিঘাট</string>
+    <string name="jigatola">জিগাতলা</string>
+    <string name="tollabug">তলাবাগ</string>
+    <string name="tinmazar">তিনমাজার</string>
+    <string name="nababganj">নবাবগঞ্জ</string>
+    <string name="pilkhana">পিলখানা</string>
+    <string name="borhanpur">বরহানপুর</string>
+    <string name="monesshor">মনেশশর</string>
+    <string name="rayerbazar">রায়েরবাজার</string>
+    <string name="hazaribug">হাজারীবাগ</string>
+
+    /*--chittagong city--*/
+    <!--Akborshah-->
+    <string name="alongkarmor">অলংকার মোড়</string>
+    <string name="ishapanimor">ইস্পাহানী মোড়</string>
+    <string name="akkhan">একে খান</string>
+    <string name="karnelhat">কার্নেলহাট</string>
+    <string name="kalir_choura">কালিরচৌরা</string>
+    <string name="kiobolo_badh_railway_station">কোইবোলো বাধঁ রেলওয়ে স্টেশন</string>
+    <string name="josim_market">জসীম মার্কেট</string>
+    <string name="pahartoli">পাহাড়তলি</string>
+    <string name="purobi_feroz_shah_mazar">পূর্ব ফিরোজশাহ মাজার</string>
+    <string name="firoz_shah_colony">ফিরোজশাহ কলোনি</string>
+    <string name="cda_1_no_bus_stop">সিডিএ ১ নং বাস স্টপ</string>
+
+    <!--EPZ-->
+    <string name="ishan_mistrir_hat">ইশান মিস্ত্রিরর হাট</string>
+    <string name="hritu_hostel">ঋতু হোস্টেল</string>
+    <string name="chowdhury_bazar">চৌধুরী বাজার</string>
+    <string name="dhup_pal">ধুপপাল</string>
+    <string name="nim_tola">নিমতলা</string>
+    <string name="bandortila">বন্দরটিলা</string>
+    <string name="bna_office">বিএনএ অফিস</string>
+    <string name="bna_upanibesh">বিএনএ উপনিবেশ</string>
+    <string name="bissho_rasta">বিশ্ব রাস্তা</string>
+    <string name="lohar_pul">লোহারপুল</string>
+    <string name="saltgola">সাল্টগোলা</string>
+    <string name="sagorika">সাগরিকা</string>
+    <string name="cepz_mailer_matha">সিইপিজেড মেইলের মাথা</string>
+    <string name="cement_crossing">সিমেন্ট ক্রসিং</string>
+    <string name="steel_mil_bazar">স্টিলমিল বাজার </string>
+    <string name="haspataler_get">হাসপাতালের বাজার</string>
+    <string name="_3_no_fakir_hat">৩ নং ফকির হাট</string>
+
+    <!--Kotoyali-->
+    <string name="amirbug">আমিরবাগ</string>
+    <string name="kajir_deuri">কাজির দেউরি</string>
+    <string name="khatun_ganj">খাতুনগঞ্জ</string>
+    <string name="gani_uponibesh">গনি উপনিবেশ</string>
+    <string name="chattagram_bandor">চট্রগ্রাম বন্দর</string>
+    <string name="jaotola">জাওতলা</string>
+    <string name="pathorghat">পাথরঘাট</string>
+    <string name="firingi_bazar">ফিরিঙ্গি বাজার</string>
+    <string name="station_road">ষ্টেশন রোড</string>
+    <string name="stand_rasta">স্ট্যান্ড রাস্তা</string>
+
+    <!--Khatungonj-->
+    <string name="khatunganj">খাতুনগঞ্জ</string>
+
+    <!--Khulshi-->
+    <string name="wirelessmor">ওয়ারলেস মোড়</string>
+    <string name="khulsi_shahid">খুলশি শহিদ</string>
+    <string name="chattagram_bandor_nagori_international_university">চট্রগ্রাম বন্দর নগরী জাতীয় বিশ্ববিদ্যালয়</string>
+    <string name="chittagong_government_women_college">চট্রগ্রাম সরকারি মহিলা কলেজ</string>
+    <string name="jautla_railway_station">জাউতলা রেলওয়ে স্টেশন</string>
+    <string name="polytechnic_institute">পলি টেকনিক ইন্সটিটিউট</string>
+    <string name="foyeslech">ফয়েজ লেক</string>
+    <string name="bangladesh_agricultural_research_centre">বাংলাদেশ কৃষি গবেষণা কেন্দ্র</string>
+    <string name="bgmea">বিজিএমইএ</string>
+    <string name="holy_crescent_bus_stop">হলি ক্রিসেন্ট বাস স্টপ</string>
+
+    <!--Chowkbazar-->
+    <string name="wasa_mor">ওয়াসা মোড়</string>
+    <string name="gani_bekari_mor">গনি বেকারি মোড়</string>
+    <string name="chawk_bazar_bus_stop">চক বাজার বাস স্টপ</string>
+    <string name="chawk_bazar_super_market">চক বাজার সুপার মার্কেট</string>
+    <string name="chattessori_mor">চট্টেশ্বরী মোড়</string>
+    <string name="jamal_khan">জামাল খান</string>
+    <string name="deb_pahar">দেব পাহাড়</string>
+    <string name="perad_moydan">প্যারেড ময়দান</string>
+    <string name="boddo_mondir">বৌদ্ধ মন্দির</string>
+
+    <!--Chattagrambondor-->
+    <string name="ekrampur_ispahani">একরামপুর ইস্পাহানি</string>
+    <string name="kalgachiya">কালগাছিয়া</string>
+    <string name="khaitkhali">খাইতখালী</string>
+    <string name="tin_gau">তিন গাউ</string>
+    <string name="boro_nayabazar">বড় নয়াবাজার</string>
+    <string name="bag_nayaghar">বাগ নায়াঘর</string>
+    <string name="madanapura_masjid">মদনপুর মসজিদ</string>
+    <string name="madanpur_khal">মাদানপুর খাল</string>
+    <string name="madhav_pasha">মাধব পাশা</string>
+    <string name="mahmud_nagar">মাহমুদ নগর</string>
+    <string name="rasulbagh">রসুলবাগ</string>
+    <string name="langalbrand">লাঙ্গলব্যান্ড</string>
+    <string name="sonakanda">সোনাকান্দা</string>
+
+    <!--Chadgao-->
+    <string name="kaptai_rastar_matha">কাপ্তাই রাস্তার মাথা</string>
+    <string name="kalurghat_bus_stop">কালুরঘাট বাস স্টপ</string>
+    <string name="chattragram_betar_kendro">চট্রগ্রাম বেতার কেন্দ্র</string>
+    <string name="chadgao_abashik">চাঁদ্গাঁও আবাসিক</string>
+    <string name="bohoddar_hat">বহদ্দার হাট</string>
+    <string name="bus_terminal">বাস টার্মিনাল</string>
+    <string name="bahir_signal">বাহির সিগন্যাল</string>
+    <string name="cnb">সিএনবি</string>
+    <string name="haji_saber_ahmed_timber">হাজী সাবের আহমেদ টিম্বার কোম্পানি লিমিটেড</string>
+    <string name="hajera_taju_degree_college">হাজেরা তাজু ডিগ্রী কলেজ</string>
+
+    <!--Doublemuring-->
+    <string name="chattagram_bondor">চট্রগ্রাম বন্দর</string>
+    <string name="noyabazar_pahartoli">নয়া বাজার</string>
+    <string name="bangladesh_bank">বাংলাদেশ ব্যাংক</string>
+    <string name="bou_bazar">বউবাজার</string>
+    <string name="mohuri_para">মহুরিপাড়া</string>
+    <string name="soray_para">সরাইপাড়া</string>
+
+    <string name="south_bondor">দক্ষিণ বন্দর</string>
+
+    <string name="deyan_ghat">দেওয়ানঘাট</string>
+
+    <string name="dewan_bazar">দেওয়ান বাজার</string>
+
+    <string name="nasirabad">নাসিরাবাদ</string>
+
+    <string name="aturar_dipu">আতুরার ডিপু</string>
+    <string name="amirbug_r_a">আমিরবাগ আর/এ</string>
+    <string name="chattroseri">চট্টশেরী</string>
+    <string name="gec_mor">জি ই সি মোড়</string>
+    <string name="pashlaish_ra">পাঁচলাইশ আর/এ</string>
+    <string name="payara_bagan">পায়েরা বাগান</string>
+    <string name="bagmoniram">বাগমনিরাম</string>
+    <string name="mufijur_rahman_abashik_alaka">মুফিজুর রহমান আবাসিক এলাকা</string>
+    <string name="medical_staff_quarter">মেডিকেল স্টাফ কোয়ার্টার</string>
+    <string name="mehedibug">মেহেদিবাগ</string>
+    <string name="shulkobohor">শুল্কবহর</string>
+    <string name="sholoshohor">ষোলশহর</string>
+    <string name="sholoshorer_railway_station">ষোলশহর রেলওয়ে স্টাশন </string>
+    <string name="hamjarbug">হামজারবাগ</string>
+    <string name="_2_n0_gate">২ নং গেট</string>
+
+    <string name="south_port">দক্ষিণ পোর্ট</string>
+    <string name="najirapara">নাজিরাপাড়া</string>
+    <string name="navy_colony">নেভি কলোনি</string>
+    <string name="patenga_beatch">পতেঙ্গা বিচ</string>
+    <string name="porapara">পোরাপাড়া</string>
+    <string name="banglladesh_navy_golf_club">বাংলাদেশ নেভি গলফ ক্লাব</string>
+    <string name="muslimabad">মুসলিমবাদ</string>
+    <string name="steel_industries">স্টিল কারখানা</string>
+
+    <string name="north_katrali">উত্তর কাট্টলী</string>
+    <string name="koibolo_dam_railway_station">কোইবোলো দাম  রেলওয়ে স্টেশন</string>
+    <string name="cricket_stadium_railway_station">ক্রিকেট স্টেডিয়াম রেলওয়ে স্টেশন</string>
+    <string name="south_katrail">দক্ষিণ কাট্টলী</string>
+    <string name="pahartoli_railway_station">পাহাড়তলী রেলওয়ে স্টেশন</string>
+    <string name="firoz_shah_railway_station">ফিরোজ শাহ উপনিবেশ</string>
+    <string name="bishorzopara">বিসরজ্যপাড়া</string>
+    <string name="samoli_abashik_alaka">শ্যামলী আবাসিক এলাকা</string>
+
+    <string name="kalmia_bazar">কালামিয়া বাজার</string>
+    <string name="goni_bakerimore">গনি বেকারি মোড়</string>
+    <string name="pathorghata">পাথরঘাটা</string>
+    <string name="bakshirhat">বক্সিরহাট</string>
+    <string name="maizpara">মাইজপাড়া</string>
+    <string name="rahattorpul">রাহাত্তরপুল</string>
+
+    <string name="oxygen_more">অক্সিজেন মোড়</string>
+    <string name="amin_jut_mile">আমিন জূট মিলস</string>
+    <string name="arefin_nagor">আরেফিন নগর</string>
+    <string name="ali_nagor">আলী নগর</string>
+    <string name="chittagong_cant_public_college">চট্টগ্রাম ক্যান্টমেন্ট পাবলিক কলেজ</string>
+    <string name="textile_gate">টেক্সটাইল গেট</string>
+    <string name="nobi_nagor">নবী নগর</string>
+    <string name="poly_technical">পলি টেকনিক্যাল</string>
+    <string name="bangladesh_forest_research_institute_gate">বাংলাদেশ বন গবেষণা ইনিষ্টিটিউট গেইট</string>
+    <string name="barma_coloni">বার্মা কলোনি</string>
+    <string name="rahaman_nagor">রহমান নগর</string>
+    <string name="rawfabad">রাউফাবাদ</string>
+    <string name="sher_shah_coloni">শেরশাহ কলোনি</string>
+    <string name="hamjarbag">হামজারবাগ</string>
+
+    <string name="shafi_motors_limited">শফি মটরস লিমিটেড</string>
+
+    <string name="abhayamitra">আভয়মিত্র</string>
+    <string name="karnaphuli_dockyard">কর্ণফুলী ডকইয়ার্ড</string>
+    <string name="kamal_gate_bazar">কামাল গেট বাজার</string>
+    <string name="choktai_khal">চকতাই খাল</string>
+    <string name="tin_pool_matha">তিন পুলের মাতা</string>
+    <string name="noton_bazar">নতুন বাজার</string>
+    <string name="baksirhat">বাকশিরহাট</string>
+    <string name="motherbari_railway_pump_station">মাদারবাড়ি রেলপথ পাম্প স্টেশন</string>
+    <string name="mia_khan_setu">মিয়া খাঁন সেতু</string>
+    <string name="riaz_uddin_bazar">রিয়াজ উদ্দিন বাজার</string>
+    <string name="laldigi_more">লালদিগির মোড়</string>
+    <string name="sadarghat_jt">সদরঘাট জেটি</string>
+    <string name="cinema_place">সিনেমা প্লেস</string>
+
+    <string name="knt_logistics_limited">কেএনটি লজিস্টিকস লিমিটেড</string>
+    <string name="chittagong_container_terminal">চট্টগ্রাম কনটেইনার টার্মিনাল</string>
+    <string name="chittagong_container_tran_co_ltd">চট্টগ্রাম কনটেইনার ট্রান্সপোর্টেশন কোং লিমিটেড</string>
+    <string name="chittagong_bondor_dharak">চট্টগ্রাম বন্দর ধারক</string>
+    <string name="daksin_halishahar">দক্ষিণ হালিশহর</string>
+    <string name="noton_sidebar">নতুন সাইডবার</string>
+    <string name="newmooring_container_terminal">নিউমুরিং কনটেইনার টার্মিনাল</string>
+    <string name="nau_bondor">নৌ বন্দর</string>
+    <string name="bondor_new_mooring">বন্দর নতুন মুরিং</string>
+    <string name="bondor_link_road">বন্দর সংযোগ সড়ক</string>
+    <string name="munshiipara">মুন্সিপারা</string>
+    <string name="labor_colony">লেবার কলোনি</string>
+    <string name="halishahar_housing_society">হালিশহর হাউজিং সোসাইটি</string>
+
+
+    //Dhaka Division
+    <string name="keraniganj">কেরানীগঞ্জ</string>
+    <string name="dohar">দোহার</string>
+    <string name="dhamrai">ধামরাই</string>
+    <string name="nobabganj">নবাবগঞ্জ</string>
+    <string name="savar">সাভার</string>
+
+    <string name="araihazar">আড়াইহাজার</string>
+    <string name="bandar">বন্দর</string>
+    <string name="narayanganj_sadar">নারায়ণগঞ্জ সদর</string>
+    <string name="narayanganj_city">নারায়ণগঞ্জ সিটি</string>
+    <string name="rupganj">রূপগঞ্জ</string>
+    <string name="siddhirganj">সিদ্ধিরগঞ্জ</string>
+    <string name="sonargoan">সোনারগাঁও</string>
+    <string name="fatullah">ফতুল্লাহ</string>
+
+    <string name="kayaloti">কাউলতিয়া</string>
+    <string name="kapasia">কাপাসিয়া</string>
+    <string name="kaliganj">কালীগঞ্জ</string>
+    <string name="kaliakoir">কালিয়াকৈর</string>
+    <string name="konabari">কোনাবাড়ি</string>
+    <string name="basan">বাসান</string>
+    <string name="gasa">গাছা</string>
+    <string name="gazipur_sadar">গাজীপুর সদর</string>
+    <string name="gazipur_city_corporation">গাজীপুর সিটি কর্পোরেশন</string>
+    <string name="sripur">শ্রীপুর</string>
+    <string name="mirzapur">মির্জাপুর</string>
+    <string name="kashimpur">কাশিমপুর</string>
+
+    <string name="kalihati">কালিহাতি</string>
+    <string name="gopalpur">গোপালপুর</string>
+    <string name="ghatail">ঘাটাইল</string>
+    <string name="tangail_sadar">টাঙ্গাইল সদর</string>
+    <string name="delduar">দেলদুয়ার</string>
+    <string name="dhanbari">ধনবাড়ি</string>
+    <string name="nagarpur">নগরপুর</string>
+    <string name="basail">বাসাইল</string>
+    <string name="vuyapur">ভুয়াপুর</string>
+    <string name="madhupur">মধুপুর</string>
+    <string name="sakhipur">সখিপুর</string>
+
+    <string name="belabo">বেলাব</string>
+    <string name="narsingdi_sadar">নরসিংদী সদর</string>
+    <string name="monohardi">মনোহরদী</string>
+    <string name="polash">পলাশ</string>
+    <string name="raipura">রায়পুরা</string>
+    <string name="shibpur">শিবপুর</string>
+
+    <string name="ostogram">অষ্টগ্রাম</string>
+    <string name="itna">ইটনা</string>
+    <string name="katiadi">কটিয়াদী</string>
+    <string name="karimganj">করিমগঞ্জ</string>
+    <string name="kishoreganj_sadar">কিশোরগঞ্জ সদর</string>
+    <string name="kuliyachor">কুলিয়ারচর</string>
+    <string name="bhairab">ভৈরব</string>
+    <string name="bajitpur">বাজিতপুর</string>
+    <string name="hosenpur">হোসেনপুর</string>
+    <string name="mithamoin">মিঠামইন</string>
+    <string name="nikoli">নিকলি</string>
+    <string name="pakundia">পাকুন্দিয়া</string>
+    <string name="tarail">তাড়াইল</string>
+
+    <string name="kalukhali">কালুখালি</string>
+    <string name="goyalondo">গোয়ালন্দ</string>
+    <string name="pangsha">পাংশা</string>
+    <string name="baliakandi">বালাইকান্দি</string>
+    <string name="rajbari_sadar">রাজবাড়ী সদর</string>
+
+    <string name="ghior">ঘিওর</string>
+    <string name="doulotpur">দৌলতপুর</string>
+    <string name="manikganj_sadar">মানিকগঞ্জ সদর</string>
+    <string name="shibloy">শিবালয়</string>
+    <string name="saturia">সাটুরিয়া</string>
+    <string name="singair">সিঙ্গাইর</string>
+    <string name="harirampur">হরিরামপুর</string>
+
+    <string name="gozaria">গজারিয়া</string>
+    <string name="tongibari">টংগিবাড়ী</string>
+    <string name="munshiganj_sadar">মুন্সিগঞ্জ সদর</string>
+    <string name="louhajong">লৌহজং</string>
+    <string name="srinagar">শ্রীনগর</string>
+    <string name="sirajdikhan">সিরাজদিখান</string>
+
+    <string name="kashiyani">কাশিয়ানী</string>
+    <string name="kotalipara">কোটালীপাড়া</string>
+    <string name="gopalganj_sadar">গোপালগঞ্জ সদর</string>
+    <string name="muksudpur">মুকসুদপুর</string>
+    <string name="tungipara">টুঙ্গিপাড়া</string>
+
+    <string name="alfadanga">আলফাডাঙ্গা</string>
+    <string name="chorvodroson">চরভদ্রাসন</string>
+    <string name="nagarkanda">নগরকান্দা</string>
+    <string name="faridpur_sadar">ফরিদপুর সদর</string>
+    <string name="boyalmari">বোয়ালমারী</string>
+    <string name="vanga">ভাঙ্গা</string>
+    <string name="madhukhali">মধুখালি</string>
+    <string name="sadarpur">সদরপুর</string>
+    <string name="saltha">সালথা</string>
+
+    <string name="gosairhat">গোসাইরহাট</string>
+    <string name="jajira">জাজিরা</string>
+    <string name="demuda">ডামুড্যা</string>
+    <string name="vedorganj">ভেদরগঞ্জ</string>
+    <string name="noriya">নড়িয়া</string>
+    <string name="shariatpur_sadar">শরীয়তপুর সদর</string>
+
+    <string name="kalkini">কালকিনি</string>
+    <string name="dasar">ডাসার</string>
+    <string name="madaripur_sadar">মাদারীপুর সদর</string>
+    <string name="rajoiub">রাজৈর</string>
+    <string name="shibchar">শিবচর</string>
+
+    //Chittogram Division
+    <string name="anoyara">আনোয়ারা</string>
+    <string name="kornofuli">কর্ণফুলী</string>
+    <string name="chondonaish">চন্দনাইশ</string>
+    <string name="potiya">পটিয়া</string>
+    <string name="fotikchori">ফটিকছড়ি</string>
+    <string name="bashkhali">বাঁশখালী</string>
+    <string name="boalkhali">বোয়ালখালী</string>
+    <string name="mirsarai">মিরসরাই</string>
+    <string name="roujan">রাউজান</string>
+    <string name="rangunia">রাঙ্গুনিয়া</string>
+    <string name="hohagara">লোহাগড়া</string>
+    <string name="sondip">সন্দ্বীপ</string>
+    <string name="satkania">সাতকানিয়া</string>
+    <string name="sitakunda">সীতাকুণ্ড</string>
+    <string name="hathazari">হাটহাজারী</string>
+
+    <string name="ukhiya">উখিয়া</string>
+    <string name="kutubdia">কুতুবদিয়া</string>
+    <string name="coxsbazar_sadar">কক্সবাজার সদর</string>
+    <string name="chokoria">চকরিয়া</string>
+    <string name="teknaf">টেকনাফ</string>
+    <string name="pekuya">পেকুয়া</string>
+    <string name="moheshkhali">মহেশখালী</string>
+    <string name="ramu">রামু</string>
+
+    <string name="comilla_city">কুমিল্লা সিটি</string>
+    <string name="comilla_sadar">কুমিল্লা সদর</string>
+    <string name="chandina">চান্দিনা</string>
+    <string name="choddogram">চৌদ্দগ্রাম</string>
+    <string name="titas">তিতাস</string>
+    <string name="debidar">দেবিদ্বার</string>
+    <string name="daudkandi">দাউদকান্দি</string>
+    <string name="nangalkot">নাঙ্গলকোট</string>
+    <string name="borura">বরুড়া</string>
+    <string name="burichong">বুড়িচং</string>
+    <string name="brahmanpara">ব্রাহ্মণপাড়া</string>
+    <string name="monohorganj">মনোহরগঞ্জ</string>
+    <string name="muradnagar">মুরাদনগর</string>
+    <string name="megna">মেঘনা</string>
+    <string name="laksam">লাকসাম</string>
+    <string name="lalmai">লালমাই</string>
+    <string name="sadar_dokkhin">সদর দক্ষিণ</string>
+    <string name="homna">হোমনা</string>
+
+    <string name="kabirhat">কবিরহাট</string>
+    <string name="kompaniganj">কোম্পানীগঞ্জ</string>
+    <string name="chatkhil">চাটখিল</string>
+    <string name="noakhali_sadar">নোয়াখালী সদর</string>
+    <string name="begumganj">বেগমগঞ্জ</string>
+    <string name="subornochor">সুবর্ণচর</string>
+    <string name="senbug">সেনবাগ</string>
+    <string name="sonaimuri">সোনাইমুড়ী</string>
+    <string name="hatiya">হাতিয়া</string>
+
+    <string name="akhaura">আখাউড়া</string>
+    <string name="ashuganj">আশুগঞ্জ</string>
+    <string name="kosba">কসবা</string>
+    <string name="nabinagar">নবীনগর</string>
+    <string name="nasirnagar">নাসিরনগর</string>
+    <string name="bancharampur">বাঞ্ছারামপুর</string>
+    <string name="bijoynagar">বিজয়নগর</string>
+    <string name="brahmanbaria_sadar">ব্রাহ্মণবাড়িয়া সদর</string>
+    <string name="sarail">সরাইল</string>
+
+    <string name="changla_naiya">ছাগলনাইয়া</string>
+    <string name="dagunbhuiyan">দাগনভূঞা</string>
+    <string name="porshuram">পরশুরাম</string>
+    <string name="fulgazi">ফুলগাজী</string>
+    <string name="feni_sadar">ফেনী সদর</string>
+    <string name="sonagazi">সোনাগাজী</string>
+
+    <string name="kochuya">কচুয়া</string>
+    <string name="chandpur_sadar">চাঁদপুর সদর</string>
+    <string name="faridganj">ফরিদগঞ্জ</string>
+    <string name="motlob_sadar">মতলব উত্তর</string>
+    <string name="motlob_dokkhin">মতলব দক্ষিণ</string>
+    <string name="shahrasti">শাহরাস্তি</string>
+    <string name="hhaimchor">হাইমচর</string>
+    <string name="hajiganj">হাজীগঞ্জ</string>
+
+    <string name="komol_nagar">কমলনগর</string>
+    <string name="ramgoti">রামগতি</string>
+    <string name="ramganj">রামগঞ্জ</string>
+    <string name="raipur">রায়পুর</string>
+    <string name="laksmipur_sadar">লক্ষ্মীপুর সদর</string>
+
+    <string name="khagrachari_sadar">খাগড়াছড়ি সদর</string>
+    <string name="guimara">গুইমারা</string>
+    <string name="dighinala">দীঘিনালা</string>
+    <string name="panchori">পানছড়ি</string>
+    <string name="mohalchori">মহালছড়ি</string>
+    <string name="matiranga">মাটিরাঙ্গা</string>
+    <string name="manikchari">মানিকছড়ি</string>
+    <string name="ramgarh">রামগড়</string>
+    <string name="lokkhichori">লক্ষ্মীছড়ি</string>
+
+    <string name="alikodom">আলিকদম</string>
+    <string name="thanchi">থানচি</string>
+    <string name="naikkhonchori">নাইক্ষ্যংছড়ি</string>
+    <string name="ruma">রুমা</string>
+    <string name="bandarban_sadar">বান্দরবান সদর</string>
+    <string name="rongchori">রোয়াংছড়ি</string>
+    <string name="lama">লামা</string>
+
+    <string name="kaukhali">কাউখালী</string>
+    <string name="kaptai">কাপ্তাই</string>
+    <string name="jurachri">জুরাছড়ি</string>
+    <string name="naniarchar">নানিয়ারচর</string>
+    <string name="borkol">বরকল</string>
+    <string name="bagaichori">বাঘাইছড়ি</string>
+    <string name="bilaichori">বিলাইছড়ি</string>
+    <string name="rangamati_sadar">রাঙামাটি সদর</string>
+    <string name="rajstoli">রাজস্থলী</string>
+    <string name="longodu">লংগদু</string>
+
+    //Barisal Division
+    <string name="kathaliya">কাঁঠালিয়া</string>
+    <string name="jhalokati_sadar">ঝালকাঠি সদর</string>
+    <string name="nolsity">নলছিটি</string>
+    <string name="rajapur">রাজাপুর</string>
+
+    <string name="kalapara">কলাপাড়া</string>
+    <string name="galachipa">গলাচিপা</string>
+    <string name="doshmina">দশমিনা</string>
+    <string name="dumki">দুমকি</string>
+    <string name="baufal">বাউফল</string>
+    <string name="patuakhali_sadar">পটুয়াখালী সদর</string>
+    <string name="mirzaganj">মির্জাগঞ্জ</string>
+    <string name="rangabali">রাঙ্গাবালী</string>
+
+    <string name="agoilojhara">আগৈলঝাড়া</string>
+    <string name="ujirpur">উজিরপুর</string>
+    <string name="gournadi">গৌরনদী</string>
+    <string name="barishal_sadar">বরিশাল সদর</string>
+    <string name="barisal_city">বরিশাল সিটি</string>
+    <string name="banaripara">বানারীপাড়া</string>
+    <string name="babuganj">বাবুগঞ্জ</string>
+    <string name="bakerganj">বাকেরগঞ্জ</string>
+    <string name="mehendiganj">মেহেন্দিগঞ্জ</string>
+    <string name="muladi">মুলাদী</string>
+    <string name="hijla">হিজলা</string>
+
+    <string name="amtali">আমতলী</string>
+    <string name="taltoli">তালতলী</string>
+    <string name="barguna_sadar">বরগুনা সদর</string>
+    <string name="bamna">বামনা</string>
+    <string name="betagi">বেতাগী</string>
+
+    <string name="jiyanagar">জিয়ানগর</string>
+    <string name="najirpur">নাজিরপুর</string>
+    <string name="nesarabad">নেছারাবাদ</string>
+    <string name="pirojpur_sadar">পিরোজপুর সদর</string>
+    <string name="vandariya">ভান্ডারিয়া</string>
+    <string name="motbariya">মঠবাড়ীয়া</string>
+
+    <string name="charfashion">চরফ্যাশন</string>
+    <string name="tajumuddin">তজুমদ্দিন</string>
+    <string name="doulatkhan">দৌলতখান</string>
+    <string name="borhanuddn">বোরহান উদ্দিন</string>
+    <string name="bhola_sadar">ভোলা সদর</string>
+    <string name="monpura">মনপুরা</string>
+    <string name="lalmohan">লালমোহন</string>
+
+
+    //Khulna Division
+    <string name="kumarkhali">কুমারখালী</string>
+    <string name="kustia_sadar">কুষ্টিয়া সদর</string>
+    <string name="khoksa">খোকসা</string>
+    <string name="doulatpur">দৌলতপুর</string>
+    <string name="veramara">ভেড়ামারা</string>
+    <string name="mirpur_kustia">মিরপুর কুষ্টিয়া</string>
+
+    <string name="koyra">কয়রা</string>
+    <string name="khulna_city">খুলনা সিটি</string>
+    <string name="dumuriya">ডুমুরিয়া</string>
+    <string name="terokhada">তেরখাদা</string>
+    <string name="dakop">দাকোপ</string>
+    <string name="dhigliya">দিঘলিয়া</string>
+    <string name="paikgasa">পাইকগাছা</string>
+    <string name="fultola">ফুলতলা</string>
+    <string name="batiaghata">বাটিয়াঘাটা</string>
+    <string name="rupsa">রূপসা</string>
+
+    <string name="alamdanga">আলমডাঙ্গা</string>
+    <string name="chuadanga_sadar">চুয়াডাঙ্গা সদর</string>
+    <string name="damurhuda">দামুড়হুদা</string>
+    <string name="jibonnagar">জীবননগর</string>
+
+    <string name="kotchandpur">কোটচাঁদপুর</string>
+    <string name="jhenaidah_sadar">ঝিনাইদহ সদর</string>
+    <string name="maheshpur">মহেশপুর</string>
+    <string name="harinakundu">হরিণাকুন্ডু</string>
+    <string name="shailkupa">শৈলকূপা</string>
+
+    <string name="kaliya">কালিয়া</string>
+    <string name="lohagara">লোহাগড়া</string>
+    <string name="narail_sadar">নড়াইল সদর</string>
+
+    <string name="citolmari">চিতলমারী</string>
+    <string name="fakirhat">ফকিরহাট</string>
+    <string name="bagherhat_sadar">বাগেরহাট সদর</string>
+    <string name="mongla">মোংলা</string>
+    <string name="mollarhat">মোল্লাহাট</string>
+    <string name="morolganj">মোরেলগঞ্জ</string>
+    <string name="rampal">রামপাল</string>
+    <string name="shoronkhola">শরণখোলা</string>
+
+    <string name="mohommodpur">মহম্মদপুর</string>
+    <string name="magura_sadar">মাগুরা সদর</string>
+    <string name="shalikha">শালিখা</string>
+
+    <string name="gangni">গাংনী</string>
+    <string name="meherpur_sadar">মেহেরপুর সদর</string>
+    <string name="mujibnagar">মুজিবনগর</string>
+
+    <string name="avoynagar">অভয়নগর</string>
+    <string name="keshabpur">কেশবপুর</string>
+    <string name="chougasa">চৌগাছা</string>
+    <string name="jhikargacha">ঝিকরগাছা</string>
+    <string name="bagharpara">বাঘারপাড়া</string>
+    <string name="monirampur">মনিরামপুর</string>
+    <string name="jessore_sadar">যশোর সদর</string>
+    <string name="sharsha">শার্শা</string>
+
+    <string name="ashasuni">আশাশুনি</string>
+    <string name="kolaraya">কলারোয়া</string>
+    <string name="tala">তালা</string>
+    <string name="debhata">দেবহাটা</string>
+    <string name="satkhira_sadar">সাতক্ষীরা সদর</string>
+    <string name="shyamnagar">শ্যামনগর</string>
+
+
+    //Rajshahi Division
+    <string name="gomastapur">গোমস্তাপুর</string>
+    <string name="chapainawabganj_sadar">চাঁপাইনবাবগঞ্জ সদর</string>
+    <string name="nachole">নাচোল</string>
+    <string name="bholahat">ভোলাহাট</string>
+    <string name="shibganj">শিবগঞ্জ</string>
+
+    <string name="akkelpur">আক্কেলপুর</string>
+    <string name="kalai">কালাই</string>
+    <string name="khetlal">ক্ষেতলাল</string>
+    <string name="joypurhat_sadar">জয়পুরহাট সদর</string>
+    <string name="panchbibi">পাঁচবিবি</string>
+
+    <string name="atrai">আত্রাই</string>
+    <string name="dhamoirhat">ধামইরহাট</string>
+    <string name="naogaon_sadar">নওগাঁও সদর</string>
+    <string name="niamatpur">নিয়ামতপুর</string>
+    <string name="patnitala">পত্নীতলা</string>
+    <string name="porsha">পোরশা</string>
+    <string name="badalgachhi">বদলগাছী</string>
+    <string name="mahadebpur">মহাদেবপুর</string>
+    <string name="manda">মান্দা</string>
+    <string name="raninagar">রাণীনগর</string>
+    <string name="sapahar">সাপাহার</string>
+
+    <string name="gurudaspur">গুরুদাসপুর</string>
+    <string name="naldanga">নলডাঙ্গা</string>
+    <string name="natore_sadar">নাটোর সদর</string>
+    <string name="baraigram">বড়াইগ্রাম</string>
+    <string name="bagatipara">বাগাতিপাড়া</string>
+    <string name="lalpur">লালপুর</string>
+    <string name="singra">সিংড়া</string>
+
+    <string name="Atghoria">আটঘরিয়া</string>
+    <string name="Ishwardi">ঈশ্বরদী</string>
+    <string name="chatmohar">চাটমোহর</string>
+    <string name="Pabna_Sadar">পাবনা সদর</string>
+    <string name="bera">বেড়া</string>
+    <string name="bhangura">ভাঙ্গুড়া</string>
+    <string name="Sathia">সাঁথিয়া</string>
+    <string name="Sujanagar">সুজানগর</string>
+
+    <string name="adamdighi">আদমদীঘি</string>
+    <string name="kahaloo">কাহালু</string>
+    <string name="dupchachia">দুপচাঁচিয়া</string>
+    <string name="dhunat">ধুনট</string>
+    <string name="nandigram">নন্দীগ্রাম</string>
+    <string name="bogra_sadar">বগুড়া সদর</string>
+    <string name="sahajahanpur">শাজাহানপুর</string>
+    <string name="sariakandi">সারিয়াকান্দি</string>
+    <string name="sonatala">সোনাতলা</string>
+
+    <string name="Godagari">গোদাগাড়ী</string>
+    <string name="Charghat">চারঘাট</string>
+    <string name="Tanore">তানোর </string>
+    <string name="Durgapur">দুর্গাপুর</string>
+    <string name="Paba">পবা</string>
+    <string name="Puthia">পুঠিয়া</string>
+    <string name="Bagmara">বাগমারা</string>
+    <string name="Bagha">বাঘা</string>
+    <string name="Mohonpur">মোহনপুর</string>
+    <string name="rajshahi_city">রাজশাহী সিটি</string>
+
+    <string name="Ullapara">উল্লাপাড়া</string>
+    <string name="Kazipur">কাজীপুর</string>
+    <string name="Kamarkhanda">কামারখন্দ</string>
+    <string name="Chauhali">চৌহালি</string>
+    <string name="Tarash">তাড়াশ</string>
+    <string name="Belkuchi">বেলকুচি</string>
+    <string name="Raiganj">রায়গঞ্জ</string>
+    <string name="Shahjadpur">শাহজাদপুর</string>
+    <string name="Sirajganj_sadar">সিরাজগঞ্জ সদর</string>
+
+    //Rangpur Division
+    <string name="ulipur">উলিপুর</string>
+    <string name="kurigram_sadar">কুড়িগ্রাম সদর</string>
+    <string name="char_rajibpur">চর রাজিবপুর</string>
+    <string name="chilmari">চিলমারী</string>
+    <string name="nageswari">নাগেশ্বরী</string>
+    <string name="fulbari">ফুলবাড়ী</string>
+    <string name="bhurangamari">ভুরুঙ্গামারী</string>
+    <string name="rajarhat">রাজারহাট</string>
+    <string name="roumari">রৌমারী</string>
+
+    <string name="gaibandha_sadar">গাইবান্দা সদর</string>
+    <string name="gobindaganj">গোবিন্দগঞ্জ</string>
+    <string name="palashbari">পলাশবাড়ী</string>
+    <string name="fulsori">ফুলছড়ি</string>
+    <string name="saghata">সাঘাটা</string>
+    <string name="sadullahpur">সাদুল্লাহপুর</string>
+    <string name="sundorganj">সুন্দরগঞ্জ</string>
+
+    <string name="thakurgaon_sadar">ঠাকুরগাঁও সদর</string>
+    <string name="pirganj">পীরগঞ্জ</string>
+    <string name="baliya_dangi">বালিয়া ডাঙ্গী</string>
+    <string name="ranisankail">রাণীশংকৈল</string>
+    <string name="haripur">হরিপুর</string>
+
+    <string name="kaharol">কাহারোল</string>
+    <string name="khansama">খানসামা</string>
+    <string name="ghorahat">ঘোড়াঘাট</string>
+    <string name="chirirbandar">চিরিরবন্দর</string>
+    <string name="dinajpur_sadar">দিনাজপুর সদর</string>
+    <string name="parbatipur">পার্বতীপুর</string>
+    <string name="birol">বিরল</string>
+    <string name="birampur">বিরামপুর</string>
+    <string name="birganj">বীরগঞ্জ</string>
+    <string name="bochaganj">বোচাগঞ্জ</string>
+    <string name="hakimpur">হাকিমপুর</string>
+
+    <string name="jaldhaka">জলঢাকা</string>
+    <string name="dimla">ডিমলা</string>
+    <string name="domar">ডোমার</string>
+    <string name="nilphamari_sadar">নীলফামারী সদর</string>
+    <string name="saidpur">সৈয়দপুর</string>
+
+    <string name="atoyari">আটোয়ারী</string>
+    <string name="tetulia">তেতুলিয়া</string>
+    <string name="debiganj">দেবীগঞ্জ</string>
+    <string name="panchagar">পঞ্চগড়</string>
+    <string name="boda">বোদা</string>
+
+    <string name="kaunia">কাউনিয়া</string>
+    <string name="gangachar">গংগাচড়া</string>
+    <string name="taraganj">তারাগঞ্জ</string>
+    <string name="pirgasa">পীরগাছা</string>
+    <string name="badarganj">বদরগঞ্জ</string>
+    <string name="mithapukur">মিঠাপুকুর</string>
+    <string name="rangpur_sadar">রংপুর সদর</string>
+    <string name="rangpur_city">রংপুর সিটি</string>
+
+    <string name="aditmari">আদিতমারী</string>
+    <string name="patgram">পাটগ্রাম</string>
+    <string name="lalmonirhat_sadar">লালমনিরহাট সদর</string>
+    <string name="hatibandha">হাতীবান্ধা</string>
+
+
+    //Mymensingh Division
+    <string name="jamalpur_sadar">জামালপুর সদর</string>
+    <string name="dewanganj">দেওয়ানগঞ্জ</string>
+    <string name="bakshiganj">বকশীগঞ্জ</string>
+    <string name="madarganj">মাদারগঞ্জ</string>
+    <string name="melandho">মেলান্দহ</string>
+    <string name="sorisabari">সরিষাবাড়ী</string>
+
+    <string name="atpara">আটপাড়া</string>
+    <string name="komolakanter">কমলাকান্দা</string>
+    <string name="kenduwa">কেন্দুয়া</string>
+    <string name="khaliajuri">খালিয়াজুরী</string>
+    <string name="durgapur">দুর্গাপুর</string>
+    <string name="netrokona_sadar">নেত্রকোণা সদর</string>
+    <string name="purbadhala">পূর্বধলা</string>
+    <string name="barohatta">বারহাট্টা</string>
+    <string name="modon">মদন</string>
+    <string name="mohonganj">মোহনগঞ্জ</string>
+
+    <string name="issorganj">ঈশ্বরগঞ্জ</string>
+    <string name="goforgau">গফরগাঁও</string>
+    <string name="gouripur">গৌরীপুর</string>
+    <string name="tarakanda">তারাকান্দা</string>
+    <string name="trishal">ত্রিশাল</string>
+    <string name="bobaura">ধোবাউড়া</string>
+    <string name="nandail">নান্দাইল</string>
+    <string name="phulpur">ফুলপুর</string>
+    <string name="fulbariya">ফুলবাড়িয়া</string>
+    <string name="valuka">ভালুকা</string>
+    <string name="muktagacha">মুক্তাগাছা</string>
+    <string name="mymensingh_sadar">ময়মনসিংহ সদর</string>
+    <string name="mymensingh_city">ময়মনসিংহ সিটি</string>
+    <string name="haluaghat">হালুয়াঘাট</string>
+
+    <string name="jhinaigati">ঝিনাইগাতী</string>
+    <string name="nokla">নকলা</string>
+    <string name="nalitabari">নালিতাবাড়ি</string>
+    <string name="sherpur_sadar">শেরপুর সদর</string>
+    <string name="sreebordi">শ্রীবরদী</string>
+
+
+    //Sylhet Division
+    <string name="kamalganj">কমলগঞ্জ</string>
+    <string name="kulaura">কুলাউড়া</string>
+    <string name="juri">জুড়ী</string>
+    <string name="barlekha">বড়লেখা</string>
+    <string name="moulvibazar_sadar">মৌলভীবাজার সদর</string>
+    <string name="srimangal">শ্রীমঙ্গল</string>
+
+    <string name="osmaninagar">ওসমানী নগর</string>
+    <string name="kanaighat">কানাইঘাট</string>
+    <string name="companiganj">কোম্পানীগঞ্জ</string>
+    <string name="gopalganj">গোপালগঞ্জ</string>
+    <string name="goyainghat">গোয়াইনঘাট</string>
+    <string name="jokiganj">জকিগঞ্জ</string>
+    <string name="jointapur">জৈন্তাপুর</string>
+    <string name="dokkhin_surma">দক্ষিণ সুরমা</string>
+    <string name="fenchuganj">ফেঞ্চুগঞ্জ</string>
+    <string name="bishwanath">বিশ্বনাথ</string>
+    <string name="biyanibazar">বিয়ানীবাজার</string>
+    <string name="belalganj">বালাগঞ্জ</string>
+    <string name="sylhet_sadar">সিলেট সদর</string>
+    <string name="sylhet_city">সিলেট সিটি</string>
+
+    <string name="satok">ছাতক</string>
+    <string name="jagannathpur">জগন্নাথপুর</string>
+    <string name="jamalganj">জামালগঞ্জ</string>
+    <string name="tahirpur">তাহিরপুর</string>
+    <string name="dokkhin_sunamganj">দক্ষিণ সুনামগঞ্জ</string>
+    <string name="derai">দিরাই</string>
+    <string name="doyarabazar">দোয়ারাবাজার</string>
+    <string name="dharmapasha">ধর্মপাশা</string>
+    <string name="bissomvorpur">বিশ্বম্ভরপুর</string>
+    <string name="madhyanagar">মধ্যনগর</string>
+    <string name="salla">শাল্লা</string>
+    <string name="sunamganj_sadar">সুনামগঞ্জ সদর</string>
+
+    <string name="ajmiriganj">আজমিরীগঞ্জ</string>
+    <string name="chunarughat">চুনারুঘাট</string>
+    <string name="nabiganj">নবীগঞ্জ</string>
+    <string name="baniachong">বানিয়াচং</string>
+    <string name="bahubal">বাহুবল</string>
+    <string name="madhabpur">মাধবপুর</string>
+    <string name="lakhai">লাখাই</string>
+    <string name="shaistaganj">শায়েস্তাগঞ্জ</string>
+    <string name="habiganj_sadar">হবিগঞ্জ সদর</string>
+
+</resources>

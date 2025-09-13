@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bg_row_light" />
+
+            <corners android:radius="8dp" />
+
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="8dp" />
+
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/card_border_color" />
+        </shape>
+    </item>
+
+</ripple>

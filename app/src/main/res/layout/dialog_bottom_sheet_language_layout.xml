@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/banglaTV"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/solaimanlipi"
+        android:padding="12dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="বাংলা"
+        android:textColor="@color/text_primary" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_height="1dp"
+        android:background="#D9D9D9"/>
+
+    <TextView
+        android:id="@+id/englishTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amaranth"
+        android:padding="12dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:text="English"
+        android:textColor="@color/text_primary" />
+
+</LinearLayout>

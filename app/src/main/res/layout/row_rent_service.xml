@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rentLL"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/fontStyle"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="75dp"
+                    android:elevation="5dp"
+                    app:cardCornerRadius="6dp">
+
+                    <ImageView
+                        android:id="@+id/transportImageIv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_logo" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!--Rent Service Info-->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/subCategoryNameTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Sub Category"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:drawablePadding="5dp" />
+
+                    <View
+                        android:layout_marginVertical="3dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/back"/>
+
+                    <TextView
+                        android:id="@+id/serviceRegistrationNumberTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Registration"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/serviceModelNumberTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Model"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/serviceCategoryAndYearTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="category or year"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/uploadBtn"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg_card_clickable"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_upload_black"
+                    app:tint="@color/icon_color" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/serviceStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"
+                android:drawablePadding="8dp"
+                android:text="Verified"
+                android:textColor="#F001CC45"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_verified" />
+
+        </RelativeLayout>
+
+        <!--Info message Verified-->
+        <TextView
+            android:id="@+id/verifiedMessageTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:text="@string/rent_service_verification_pending"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_pending" />
+
+        <!--Info pending message-->
+        <TextView
+            android:id="@+id/verifiedMessagePendingTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_reject_red"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:text="@string/rent_service_verified_warning"
+            android:textColor="@color/warning"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

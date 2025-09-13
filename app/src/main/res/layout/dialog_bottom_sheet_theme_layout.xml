@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/defaultTV"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amaranth"
+        android:padding="12dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="System default"
+        android:textColor="@color/text_primary"
+        app:drawableStartCompat="@drawable/ic_theme_default" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="1dp"
+        android:background="#D9D9D9" />
+
+    <TextView
+        android:id="@+id/lightTV"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amaranth"
+        android:padding="12dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:text="Light"
+        android:textColor="@color/text_primary"
+        app:drawableLeftCompat="@drawable/ic_light_mode_toggle" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="1dp"
+        android:background="#D9D9D9"/>
+
+    <TextView
+        android:id="@+id/darkTV"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amaranth"
+        android:padding="12dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:text="Dark"
+        android:textColor="@color/text_primary"
+        app:drawableLeftCompat="@drawable/ic_dark_mode_toggle" />
+
+</LinearLayout>

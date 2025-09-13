@@ -1,0 +1,58 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="Base.Theme.BDHelper" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Light theme colors -->
+        <item name="android:colorPrimary">@color/transparent</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:background">@color/background_light</item>
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
+        <item name="colorOnPrimary">@color/on_primary_light</item>
+        <item name="colorOnSecondary">@color/on_secondary_light</item>
+        <item name="colorOnBackground">@color/on_background_light</item>
+        <item name="colorOnSurface">@color/on_surface_light</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/gray_mid</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.BDHelper" parent="Base.Theme.BDHelper">
+        <!-- Set global font directly -->
+        <item name="android:fontFamily">@font/solaimanlipi</item> <!-- ✅ for most Views -->
+        <item name="fontFamily">@font/solaimanlipi</item> <!-- ✅ for some components -->
+
+        <item name="android:background">@color/transparent</item>
+        <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
+    </style>
+
+    <!--Home Navigation BottomBar-->
+    <style name="fontStyle">
+        <item name="android:fontFamily">@font/solaimanlipi</item>
+        <item name="fontFamily">@font/solaimanlipi</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+    </style>
+
+    <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+    </style>
+
+    <!--progressbar Circle-->
+    <style name="AppTheme.Progressbar" parent="Base.Theme.BDHelper">
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:progressDrawable">@drawable/animated_circle</item>
+    </style>
+
+    <style name="Widget.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">@null</item>
+        <item name="itemRippleColor">@color/nav_selected_bg</item> <!-- Remove ripple effect -->
+        <item name="android:background">@color/white</item> <!-- Set white background for light mode -->
+        <item name="background">@color/background_dark</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_left</item>
+    </style>
+
+</resources>

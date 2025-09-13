@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".partnerFragment.PartnerRegisterFragment">
+
+    <ScrollView
+        style="@style/fontStyle"
+        android:background="@color/bg_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_color"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="85dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/partner"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/registration"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name" />
+
+                <EditText
+                    android:id="@+id/nameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_profile"
+                    android:drawablePadding="12dp"
+                    android:textSize="16sp"
+                    android:hint="@string/enter_your_name"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mobileLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/mobileTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mobile" />
+
+                <EditText
+                    android:id="@+id/mobileET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_phone_outline"
+                    android:drawablePadding="12dp"
+                    android:textSize="16sp"
+                    android:hint="@string/mobile_number"
+                    android:inputType="phone"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+
+            <!--Email Hide -->
+            <LinearLayout
+                android:id="@+id/emailLL"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/emailTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
+
+                <EditText
+                    android:id="@+id/emailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:hint="@string/your_email"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/business_or_ocp_name" />
+
+                <EditText
+                    android:id="@+id/businessNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_shop"
+                    android:drawablePadding="12dp"
+                    android:textSize="16sp"
+                    android:hint="@string/your_business_or_ocp_name"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address" />
+
+                <EditText
+                    android:id="@+id/locationET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_location_outline"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:hint="@string/address"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/district" />
+
+                <TextView
+                    android:id="@+id/districtET"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_location_outline"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:hint="@string/district"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/referral_code" />
+
+                <EditText
+                    android:id="@+id/referCodeEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:drawableStart="@drawable/ic_refer"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:hint="@string/referral_code"
+                    android:maxLength="10"
+                    android:inputType="text|textCapCharacters"
+                    android:paddingStart="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"/>
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/submitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="2dp"
+                android:background="@drawable/custom_button_gradient"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</layout>
