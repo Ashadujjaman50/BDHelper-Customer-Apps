@@ -21,6 +21,7 @@ import com.dropshep.bdhelper.RatingReviewActivity;
 import com.dropshep.bdhelper.ReferenceActivity;
 import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.LogoutHelper;
+import com.dropshep.bdhelper.user.AddressBookActivity;
 import com.dropshep.bdhelper.user.MainActivity;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentProfileBinding;
@@ -79,6 +80,15 @@ public class ProfileFragment extends Fragment {
         //profile Activity
         binding.profileRL.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfileActivity.class);
+            requireActivity().startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        //Address Book Activity
+        binding.addressBookRl.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AddressBookActivity.class);
+            intent.putExtra("controlType", "addressList");
+            intent.putExtra("isPicker", false);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });

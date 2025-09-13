@@ -38,7 +38,7 @@
 
         <!-- Message Text -->
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/messageTv"
             android:layout_below="@+id/title"
             android:layout_toEndOf="@+id/iconOnly"
             android:layout_width="match_parent"

@@ -173,6 +173,52 @@
 
                     </RelativeLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginHorizontal="14dp"
+                        android:background="@color/divider_color" />
+
+                    <RelativeLayout
+                        android:id="@+id/addressBookRl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_row_light"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/addressIcon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/card_square_light_bg"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_address_book"
+                            app:tint="@color/icon_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_toEndOf="@id/addressIcon"
+                            android:background="@color/transparent"
+                            android:text="@string/address_book"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/transparent"
+                            android:src="@drawable/ic_arrow_right"
+                            app:tint="@color/icon_color" />
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

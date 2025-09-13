@@ -380,6 +380,7 @@ public class AddressActivity extends BaseActivity {
         binding.addressBtn.setOnClickListener(v -> {
             Intent intent = new Intent(AddressActivity.this, AddressBookActivity.class);
             intent.putExtra("controlType", "addressList");
+            intent.putExtra("isPicker", true);
             if (categoryId.equals(MyUtils.SKILLED_LABOR_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || categoryId.equals(MyUtils.EQUIPMENT_ID)){
                 rentLocationResultLauncher.launch(intent);
             }

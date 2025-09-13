@@ -129,6 +129,6 @@ public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHol
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.mListener = onItemClickListener;
+        mListener = onItemClickListener;
     }
 }
