@@ -37,6 +37,7 @@ public class AdapterServiceRequest extends RecyclerView.Adapter<AdapterServiceRe
         return new HolderViewServiceRequest(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HolderViewServiceRequest holder, int position) {
         //get Data
@@ -45,10 +46,10 @@ public class AdapterServiceRequest extends RecyclerView.Adapter<AdapterServiceRe
         // Serial Number (1-based index)
         @SuppressLint("DefaultLocale")
         String serviceNo = String.format("%03d", position + 1);
-        String serviceId = modelServiceRequest.getServiceId();
+        //String serviceId = modelServiceRequest.getServiceId();
         String serviceName = modelServiceRequest.getServiceName();
         String district = modelServiceRequest.getDistrict();
-        String userId = modelServiceRequest.getUserId();
+        //String userId = modelServiceRequest.getUserId();
         String note = modelServiceRequest.getNote();
         String status = modelServiceRequest.getStatus();
         String timestamp = modelServiceRequest.getTimestamp();
@@ -66,8 +67,8 @@ public class AdapterServiceRequest extends RecyclerView.Adapter<AdapterServiceRe
         String statusText;
         if ("pending".equalsIgnoreCase(status)) {
             statusText = "Pending";
-        } else if (status != null && status.length() > 0) {
-            statusText = status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
+        } else if (status != null && !status.isEmpty()) {
+            statusText = status.substring(0, 1).toUpperCase(Locale.getDefault()) + status.substring(1).toLowerCase(Locale.getDefault());
         } else {
             statusText = "";
         }

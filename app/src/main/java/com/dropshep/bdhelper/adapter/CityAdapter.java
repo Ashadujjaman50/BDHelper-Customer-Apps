@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.dropshep.bdhelper.model.City;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHolder> implements Filterable {
 
@@ -90,10 +92,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHol
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(cityListFull);
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
                 for (City item : cityListFull) {
-                    if (item.getCityId().toLowerCase().contains(filterPattern)) {
+                    if (item.getCityId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -106,6 +108,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHol
         }
 
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             cityList.clear();

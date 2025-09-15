@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,7 @@ public class NotificationActivity extends BaseActivity {
 
     private ListenerRegistration noticeListener;
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadAllNotice() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

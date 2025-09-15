@@ -106,28 +106,33 @@ public class TrendingCategoryActivity extends BaseActivity {
         // master list বানাও
         List<ModelSubCategory> allList = new ArrayList<>();
 
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_TRUCK_ID, getString(R.string.truck), getURLForResource(R.drawable.ic_truck), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_PICKUP_ID, getString(R.string.pickup), getURLForResource(R.drawable.ic_pickup), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_COVERED_VAN_ID, getString(R.string.coveredvan), getURLForResource(R.drawable.ic_covered_van), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_TRAILER_ID, getString(R.string.trailer), getURLForResource(R.drawable.ic_trailer), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.LOW_BED_ID, getString(R.string.lo_bet), getURLForResource(R.drawable.ic_trailer), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_FREEZER_VAN_ID, getString(R.string.freezervan), getURLForResource(R.drawable.ic_freezer_van), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_CHARGER_VAN_ID, getString(R.string.charger_van), getURLForResource(R.drawable.ic_charger_van), false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_DUMP_TRUCK_ID, getString(R.string.dump_truck), getURLForResource(R.drawable.ic_dump_truck), false));
+        // Road Transport
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_TRUCK_ID, getString(R.string.truck), R.drawable.ic_truck, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_PICKUP_ID, getString(R.string.pickup), R.drawable.ic_pickup, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_COVERED_VAN_ID, getString(R.string.coveredvan), R.drawable.ic_covered_van, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_TRAILER_ID, getString(R.string.trailer), R.drawable.ic_trailer, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.LOW_BED_ID, getString(R.string.lo_bet), R.drawable.ic_trailer, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_FREEZER_VAN_ID, getString(R.string.freezervan), R.drawable.ic_freezer_van, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_CHARGER_VAN_ID, getString(R.string.charger_van), R.drawable.ic_charger_van, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_DUMP_TRUCK_ID, getString(R.string.dump_truck), R.drawable.ic_dump_truck, false));
 
-        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_CAR_ID, getString(R.string.car), getURLForResource(R.drawable.ic_car), false));
-        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_MICROBUS_ID, getString(R.string.microbus), getURLForResource(R.drawable.ic_microbus), false));
-        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_AMBULANCE_ID, getString(R.string.ambulance), getURLForResource(R.drawable.ic_ambulance), false));
+        // Rent A Car
+        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_CAR_ID, getString(R.string.car), R.drawable.ic_car, false));
+        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_MICROBUS_ID, getString(R.string.microbus), R.drawable.ic_microbus, false));
+        allList.add(new ModelSubCategory(MyUtils.RENT_A_CAR_ID, MyUtils.SUB_AMBULANCE_ID, getString(R.string.ambulance), R.drawable.ic_ambulance, false));
 
-        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_TRACTOR_ID, getString(R.string.tractor), getURLForResource(R.drawable.ic_tractor), false));
-        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_RICE_TRANSPLANTER_ID, getString(R.string.rice_transplanter), getURLForResource(R.drawable.ic_rice_transplanter), false));
-        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_EXCAVATOR_ID, getString(R.string.excavator), getURLForResource(R.drawable.ic_excavator), false));
+        // Equipment
+        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_TRACTOR_ID, getString(R.string.tractor), R.drawable.ic_tractor, false));
+        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_RICE_TRANSPLANTER_ID, getString(R.string.rice_transplanter), R.drawable.ic_rice_transplanter, false));
+        allList.add(new ModelSubCategory(MyUtils.EQUIPMENT_ID, MyUtils.SUB_EXCAVATOR_ID, getString(R.string.excavator), R.drawable.ic_excavator, false));
 
-        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_DRIVER_ID, getString(R.string.driver), getURLForResource(R.drawable.ic_driver), false));
-        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_MECHANIC_ID, getString(R.string.mechanic), getURLForResource(R.drawable.ic_mechanic), false));
-        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_ELECTRICIAN_ID, getString(R.string.electrician), getURLForResource(R.drawable.ic_electrician), false));
-        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_STOVE_TECHNICIAN_ID, getString(R.string.stove_mechanic), getURLForResource(R.drawable.ic_stove_technician), false));
-        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_PLUMBER_ID, getString(R.string.plumber), getURLForResource(R.drawable.ic_plumbing), false));
+        // Skilled Labor
+        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_DRIVER_ID, getString(R.string.driver), R.drawable.ic_driver, false));
+        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_MECHANIC_ID, getString(R.string.mechanic), R.drawable.ic_mechanic, false));
+        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_ELECTRICIAN_ID, getString(R.string.electrician), R.drawable.ic_electrician, false));
+        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_STOVE_TECHNICIAN_ID, getString(R.string.stove_mechanic), R.drawable.ic_stove_technician, false));
+        allList.add(new ModelSubCategory(MyUtils.SKILLED_LABOR_ID, MyUtils.SUB_PLUMBER_ID, getString(R.string.plumber), R.drawable.ic_plumbing, false));
+
 
         // এখন random shuffle করো
         Collections.shuffle(allList);

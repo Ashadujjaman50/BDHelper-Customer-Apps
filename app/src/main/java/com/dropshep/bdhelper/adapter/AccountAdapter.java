@@ -18,11 +18,12 @@ import com.dropshep.bdhelper.model.AccountModel;
 import com.dropshep.bdhelper.myUtils.Replacement;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHolder> {
 
 
-    private List<AccountModel> accountList;
+    List<AccountModel> accountList;
 
     private static OnItemClickListener mListener;
 
@@ -80,10 +81,10 @@ public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHol
             popupMenu.getMenu().add("Delete");
 
             popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getTitle().equals("Edit")) {
+                if (Objects.equals(item.getTitle(), "Edit")) {
                     if (mListener != null) mListener.onShowItemClick(holder.getAdapterPosition());
                     return true;
-                } else if (item.getTitle().equals("Delete")) {
+                } else if (Objects.equals(item.getTitle(), "Delete")) {
                     if (mListener != null) mListener.onDeleteItemClick(holder.getAdapterPosition());
                     return true;
                 }

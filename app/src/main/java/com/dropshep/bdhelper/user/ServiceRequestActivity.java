@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.user;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -136,7 +138,10 @@ public class ServiceRequestActivity extends BaseActivity {
 
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ServiceRequestActivity.this);
-        View view = LayoutInflater.from(ServiceRequestActivity.this).inflate(R.layout.bottom_sheet_dialog_listview, null);
+        View view = LayoutInflater.from(this)
+                .inflate(R.layout.bottom_sheet_dialog_listview,
+                        bottomSheetDialog.getDelegate().findViewById(com.google.android.material. R.id.design_bottom_sheet),
+                        false);
         bottomSheetDialog.setContentView(view);
 
         ListView listView = view.findViewById(R.id.listView);
@@ -197,6 +202,7 @@ public class ServiceRequestActivity extends BaseActivity {
 
     private ListenerRegistration listenerRegistration;
 
+    @SuppressLint("NotifyDataSetChanged")
     private void showBottomServiceRequestList() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ServiceRequestActivity.this);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_service_request);

@@ -7,20 +7,19 @@ public class ModelSubCategory {
     private String categoryId;
     private String subCategoryId;
     private String subCategoryName;
-    private Uri subCategoryImage;
-    private boolean yesOrNo;
+    private int iconResId; // Uri এর পরিবর্তে int রাখলাম
+    private boolean isSelected;
 
     public ModelSubCategory() {
     }
 
-    public ModelSubCategory(String categoryId, String subCategoryId, String subCategoryName, Uri subCategoryImage, boolean yesOrNo) {
+    public ModelSubCategory(String categoryId, String subCategoryId, String subCategoryName, int iconResId, boolean isSelected) {
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.subCategoryName = subCategoryName;
-        this.subCategoryImage = subCategoryImage;
-        this.yesOrNo = yesOrNo;
+        this.iconResId = iconResId;
+        this.isSelected = isSelected;
     }
-
 
     public String getCategoryId() {
         return categoryId;
@@ -46,19 +45,19 @@ public class ModelSubCategory {
         this.subCategoryName = subCategoryName;
     }
 
-    public Uri getSubCategoryImage() {
-        return subCategoryImage;
+    public int getIconResId() {
+        return iconResId;
     }
 
-    public void setSubCategoryImage(Uri subCategoryImage) {
-        this.subCategoryImage = subCategoryImage;
+    public void setIconResId(int iconResId) {
+        this.iconResId = iconResId;
     }
 
-    public boolean isYesOrNo() {
-        return yesOrNo;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setYesOrNo(boolean yesOrNo) {
-        this.yesOrNo = yesOrNo;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

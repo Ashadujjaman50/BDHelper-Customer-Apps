@@ -295,7 +295,10 @@ public class CustomerRegisterFragment extends Fragment {
 
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_dialog_listview, null);
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_dialog_listview,
+                        bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
+                        false);
         bottomSheetDialog.setContentView(view);
 
         ListView listView = view.findViewById(R.id.listView);

@@ -19,6 +19,8 @@
             android:layout_height="60dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_centerVertical="true"
+            android:layout_above="@+id/button_container"
             android:padding="8dp"
             android:src="@drawable/ic_delete"
             app:tint="@color/red" />
@@ -51,7 +53,7 @@
         <!-- Button Container -->
         <LinearLayout
             android:id="@+id/button_container"
-            android:layout_below="@+id/iconOnly"
+            android:layout_below="@+id/messageTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

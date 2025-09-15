@@ -16,19 +16,21 @@
             android:background="@color/bg_color"
             android:orientation="vertical">
 
-            <!-- Toolbar -->
-            <androidx.appcompat.widget.Toolbar
+            <!--Toolbar-->
+            <RelativeLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:elevation="1dp">
+                android:background="@color/bg_toolbar_color"
+                android:elevation="2dp">
 
                 <ImageView
                     android:id="@+id/backBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:padding="12dp"
+                    android:layout_marginStart="15dp"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/ic_back_arrow"
                     app:tint="@color/icon_color" />
 
@@ -36,12 +38,17 @@
                     android:id="@+id/subCategoryNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/backBtn"
+                    android:layout_centerVertical="true"
                     android:text="আপনার রেটিং &amp; রিভিউ"
                     android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     android:textSize="17sp" />
 
-            </androidx.appcompat.widget.Toolbar>
+
+
+            </RelativeLayout>
 
 
             <ScrollView
@@ -71,31 +78,19 @@
                             android:paddingHorizontal="10dp">
 
                             <!-- Average Rating -->
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="16dp">
+                                android:layout_marginEnd="16dp"
+                                android:text="৫.০"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:gravity="center_vertical"
+                                app:drawableStartCompat="@drawable/ic_star_rate_24"
+                                android:drawablePadding="8dp" />
 
-                                <ImageView
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/ic_star_rate_24"
-                                    android:layout_marginEnd="4dp"
-                                    app:tint="#FFC107" />
-
-                                <TextView
-                                    android:id="@+id/averageRatingTv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="৫.০"
-                                    android:textSize="28sp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/text_primary"/>
-
-                            </LinearLayout>
 
                             <!-- Rating Distribution -->
                             <LinearLayout

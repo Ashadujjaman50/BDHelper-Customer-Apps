@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.reserve;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,7 @@ public class VerifyPhoneFragment extends Fragment {
         countDownTimer = new CountDownTimer(RESEND_INTERVAL, 1000) {
             public void onTick(long millisUntilFinished) {
                 long seconds = millisUntilFinished / 1000;
+                @SuppressLint("DefaultLocale")
                 String time = String.format("00:%02d", seconds);
                 binding.timerText.setText(Replacement.NumberFormatFullTimer(time));
             }

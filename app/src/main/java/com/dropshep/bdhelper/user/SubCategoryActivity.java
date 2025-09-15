@@ -43,7 +43,7 @@ public class SubCategoryActivity extends BaseActivity {
 
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 
-        binding.categoryNameTv.setText(categoryName);
+        binding.titleTv.setText(categoryName);
 
         modelSubCategoryList = new ArrayList<>();
         subCategoryAdapter = new AdapterSubCategory(modelSubCategoryList, this);
@@ -84,53 +84,41 @@ public class SubCategoryActivity extends BaseActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public Uri getURLForResource(int resourceId) {
-        return Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + resourceId);
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     private void getSubCategoryList() {
-
         switch (categoryId) {
             case MyUtils.ROAD_TRANSPORT_ID:
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRUCK_ID, getString(R.string.truck), getURLForResource(R.drawable.ic_truck), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_PICKUP_ID, getString(R.string.pickup), getURLForResource(R.drawable.ic_pickup), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_COVERED_VAN_ID, getString(R.string.coveredvan), getURLForResource(R.drawable.ic_covered_van), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRAILER_ID, getString(R.string.trailer), getURLForResource(R.drawable.ic_trailer), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_FREEZER_VAN_ID, getString(R.string.freezervan), getURLForResource(R.drawable.ic_freezer_van), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_CHARGER_VAN_ID, getString(R.string.charger_van), getURLForResource(R.drawable.ic_charger_van), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_DUMP_TRUCK_ID, getString(R.string.dump_truck), getURLForResource(R.drawable.ic_dump_truck), false));
-
-
-                subCategoryAdapter.notifyDataSetChanged();
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRUCK_ID, getString(R.string.truck), R.drawable.ic_truck, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_PICKUP_ID, getString(R.string.pickup), R.drawable.ic_pickup, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_COVERED_VAN_ID, getString(R.string.coveredvan), R.drawable.ic_covered_van, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRAILER_ID, getString(R.string.trailer), R.drawable.ic_trailer, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_FREEZER_VAN_ID, getString(R.string.freezervan), R.drawable.ic_freezer_van, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_CHARGER_VAN_ID, getString(R.string.charger_van), R.drawable.ic_charger_van, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_DUMP_TRUCK_ID, getString(R.string.dump_truck), R.drawable.ic_dump_truck, false));
                 break;
+
             case MyUtils.RENT_A_CAR_ID:
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_CAR_ID, getString(R.string.car), getURLForResource(R.drawable.ic_car), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_MICROBUS_ID, getString(R.string.microbus), getURLForResource(R.drawable.ic_microbus), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_AMBULANCE_ID, getString(R.string.ambulance), getURLForResource(R.drawable.ic_ambulance), false));
-
-
-                subCategoryAdapter.notifyDataSetChanged();
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_CAR_ID, getString(R.string.car), R.drawable.ic_car, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_MICROBUS_ID, getString(R.string.microbus), R.drawable.ic_microbus, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_AMBULANCE_ID, getString(R.string.ambulance), R.drawable.ic_ambulance, false));
                 break;
+
             case MyUtils.EQUIPMENT_ID:
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRACTOR_ID, getString(R.string.tractor), getURLForResource(R.drawable.ic_tractor), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_RICE_TRANSPLANTER_ID, getString(R.string.rice_transplanter), getURLForResource(R.drawable.ic_rice_transplanter), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_EXCAVATOR_ID, getString(R.string.excavator), getURLForResource(R.drawable.ic_excavator), false));
-
-
-                subCategoryAdapter.notifyDataSetChanged();
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_TRACTOR_ID, getString(R.string.tractor), R.drawable.ic_tractor, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_RICE_TRANSPLANTER_ID, getString(R.string.rice_transplanter), R.drawable.ic_rice_transplanter, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_EXCAVATOR_ID, getString(R.string.excavator), R.drawable.ic_excavator, false));
                 break;
+
             case MyUtils.SKILLED_LABOR_ID:
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_DRIVER_ID, getString(R.string.driver), getURLForResource(R.drawable.ic_driver), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_MECHANIC_ID, getString(R.string.mechanic), getURLForResource(R.drawable.ic_mechanic), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_ELECTRICIAN_ID, getString(R.string.electrician), getURLForResource(R.drawable.ic_electrician), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_STOVE_TECHNICIAN_ID, getString(R.string.stove_mechanic), getURLForResource(R.drawable.ic_stove_technician), false));
-                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_PLUMBER_ID, getString(R.string.plumber), getURLForResource(R.drawable.ic_plumbing), false));
-
-
-                subCategoryAdapter.notifyDataSetChanged();
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_DRIVER_ID, getString(R.string.driver), R.drawable.ic_driver, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_MECHANIC_ID, getString(R.string.mechanic), R.drawable.ic_mechanic, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_ELECTRICIAN_ID, getString(R.string.electrician), R.drawable.ic_electrician, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_STOVE_TECHNICIAN_ID, getString(R.string.stove_mechanic), R.drawable.ic_stove_technician, false));
+                modelSubCategoryList.add(new ModelSubCategory(categoryId, MyUtils.SUB_PLUMBER_ID, getString(R.string.plumber), R.drawable.ic_plumbing, false));
                 break;
         }
 
+        subCategoryAdapter.notifyDataSetChanged();
     }
+
 }

@@ -26,7 +26,7 @@ public class FCMTokenManager {
                     if (auth.getCurrentUser() != null) {
                         String userId = auth.getCurrentUser().getUid();
                         FirebaseFirestore.getInstance()
-                                .collection("Token")
+                                .collection("users")
                                 .document(userId)
                                 .update("device_token", token)
                                 .addOnSuccessListener(aVoid -> Log.d(TAG, "✅ Token updated in Firestore"))

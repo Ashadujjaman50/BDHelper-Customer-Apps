@@ -206,46 +206,26 @@
                     android:layout_marginVertical="12dp"
                     android:background="@color/divider_color" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/postLoadLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1"
+                    android:drawablePadding="8dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    app:drawableStartCompat="@drawable/ic_load_location" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_load_location" />
-
-                    <TextView
-                        android:id="@+id/postLoadLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1" />
-
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/postUnLoadLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                    android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_unload_location" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_unload_location" />
 
-                    <TextView
-                        android:id="@+id/postUnLoadLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1" />
-
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -318,26 +298,17 @@
                 </LinearLayout>
 
                 <!--Hide Location/ Place-->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/locationNameTV"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:text="@string/location_name"
+                    android:textSize="14sp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_location_solid" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_location_solid" />
-
-                    <TextView
-                        android:id="@+id/locationNameTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@string/location_name"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -379,7 +350,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:text="Details"
-                        android:textAppearance="@android:style/TextAppearance.Small" />
+                        android:textColor="@color/primaryDark" />
 
                 </RelativeLayout>
 
@@ -415,13 +386,13 @@
                         android:id="@+id/confirmVendorPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_taka_symbol"
                         android:drawablePadding="5dp"
-                        android:drawableTint="@color/accentColor_dark"
                         android:padding="10dp"
                         android:textColor="@color/accentColor_dark"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_taka_symbol"
+                        app:drawableTint="@color/accentColor_dark" />
 
                 </LinearLayout>
 

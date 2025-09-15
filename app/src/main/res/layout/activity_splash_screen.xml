@@ -21,8 +21,8 @@
             <ImageView
                 android:id="@+id/logoIv"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:scaleType="centerInside"
+                android:layout_height="320dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_login_design" />
 
             <TextView

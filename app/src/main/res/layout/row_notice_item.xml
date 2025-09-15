@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/fontStyle"
-    android:layout_marginVertical="1dp"
+    android:orientation="vertical"
+    android:layout_marginVertical="2dp"
     android:layout_marginHorizontal="5dp"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="3dp">
+    android:background="@color/bg_color">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +28,8 @@
                 android:layout_gravity="center_vertical"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_notification"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp"
+                app:tint="@color/icon_color" />
 
             <LinearLayout
                 android:layout_gravity="center_vertical"
@@ -88,4 +88,12 @@
 
     </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="10dp"/>
+
+</LinearLayout>

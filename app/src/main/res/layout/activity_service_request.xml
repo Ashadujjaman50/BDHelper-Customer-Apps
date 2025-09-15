@@ -202,8 +202,8 @@
                 android:text="Request History"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_primary"
-                android:drawableStart="@drawable/ic_coming_soon"
                 android:drawablePadding="10dp"
+                app:drawableStartCompat="@drawable/ic_coming_soon"
                 app:drawableTint="@color/icon_color" />
 
 

@@ -62,7 +62,7 @@ public class AddressActivity extends BaseActivity {
         subCategoryId = getIntent().getStringExtra(MyUtils.subCategoryId);
         subCategoryName = getIntent().getStringExtra(MyUtils.subCategoryName);
 
-        binding.subCategoryNameTV.setText(subCategoryName);
+        binding.titleTv.setText(subCategoryName);
 
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 

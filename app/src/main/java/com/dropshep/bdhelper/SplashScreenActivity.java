@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
 
     private ActivitySplashScreenBinding binding;
@@ -76,7 +78,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }, 3000);
+            }, 3500);
         }
 
 

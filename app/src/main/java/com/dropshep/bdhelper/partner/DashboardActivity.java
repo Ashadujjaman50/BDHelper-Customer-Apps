@@ -43,6 +43,7 @@ public class DashboardActivity extends BaseActivity {
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
 
+
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);
@@ -60,7 +61,6 @@ public class DashboardActivity extends BaseActivity {
             int selectedTabId = savedInstanceState.getInt("selected_tab", R.id.home);
             binding.customBottomBar2.setSelectedItemId(selectedTabId);
         }
-
 
         binding.customBottomBar2.inflateMenu(R.menu.nav_bottom_menu_partner);
         binding.customBottomBar2.setOnItemSelectedListener(item -> {
@@ -88,8 +88,7 @@ public class DashboardActivity extends BaseActivity {
             return true;
         });
 
-        //Token Update
-        FCMTokenManager.updateFCMToken();
+
     }
 
     private void replaceFragment(Fragment fragment) {

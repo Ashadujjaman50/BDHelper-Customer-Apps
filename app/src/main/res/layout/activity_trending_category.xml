@@ -17,39 +17,38 @@
             android:orientation="vertical">
 
             <!--Toolbar-->
-            <androidx.appcompat.widget.Toolbar
+            <RelativeLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:elevation="1dp">
+                android:background="@color/bg_toolbar_color"
+                android:elevation="2dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
 
-                    <ImageView
-                        android:id="@+id/backBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:padding="12dp"
-                        app:srcCompat="@drawable/ic_back_arrow"
-                        app:tint="@color/icon_color" />
+                <TextView
+                    android:id="@+id/titleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/backBtn"
+                    android:layout_centerVertical="true"
+                    android:text="@string/service"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="17sp" />
 
-                    <TextView
-                        android:id="@+id/titleTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/backBtn"
-                        android:layout_centerVertical="true"
-                        android:text="@string/service"
-                        android:textColor="@color/text_primary"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+            </RelativeLayout>
 
-                </RelativeLayout>
 
-            </androidx.appcompat.widget.Toolbar>
 
             <ImageView
                 android:layout_width="match_parent"

@@ -17,6 +17,7 @@ import com.dropshep.bdhelper.model.Area;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHolder> implements Filterable {
     private final List<Area> areaList;
@@ -90,10 +91,10 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHol
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(areaListFull);
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
                 for (Area item : areaListFull) {
-                    if (item.getCityId().toLowerCase().contains(filterPattern)) {
+                    if (item.getCityId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

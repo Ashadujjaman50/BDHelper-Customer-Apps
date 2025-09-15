@@ -37,7 +37,7 @@ public class RentFormActivity extends BaseActivity {
 
         //show subCategoryName TV
         subCategoryName = getIntent().getStringExtra(MyUtils.subCategoryName);
-        binding.subCategoryNameTv.setText(subCategoryName);
+        binding.titleTv.setText(subCategoryName);
 
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 

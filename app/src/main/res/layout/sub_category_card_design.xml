@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/fontStyle"
     android:layout_margin="6dp"
     android:paddingHorizontal="15dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/categoryImage"
@@ -14,6 +16,7 @@
         android:layout_height="95dp"
         android:adjustViewBounds="true"
         android:background="@drawable/card_square_light_bg"
+        android:contentDescription="@string/category"
         android:padding="24dp"
         android:src="@drawable/ic_transport"
         app:tint="@color/icon_color" />

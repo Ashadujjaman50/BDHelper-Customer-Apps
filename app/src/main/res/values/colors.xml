@@ -17,6 +17,7 @@
     <color name="accentColor_dark">#FFAB40</color>          <!-- accent -->
     <color name="accentColor">#000000</color>
     <color name="warning">#f6821f</color>
+    <color name="star_color">#FFC107</color>
 
 
     <color name="gray">#808080</color>
@@ -28,6 +29,7 @@
 
     <!--background color-->
     <color name="bg_color">#FCFCFC</color>
+    <color name="bg_toolbar_color">#FCFCFC</color>
     <color name="primary_light">#D8F2E0</color>
     <color name="gray_light">#F5F5F5</color>
     <color name="gray_mid">#E0E0E0</color>

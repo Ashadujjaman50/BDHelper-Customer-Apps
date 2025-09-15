@@ -21,7 +21,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/bg_color"
+                android:background="@color/bg_toolbar_color"
                 android:elevation="2dp">
 
                 <ImageView
@@ -99,8 +99,8 @@
                         <!-- Illustration -->
                         <ImageView
                             android:id="@+id/emptyImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="220dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="240dp"
                             android:src="@drawable/ic_empty"
                             android:contentDescription="@string/app_name"
                             android:layout_marginBottom="10dp" />
@@ -184,7 +184,7 @@
                             android:id="@+id/showGetAddressTitleTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bahadurpur"
+                            android:hint="জায়গার নাম"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
@@ -193,7 +193,7 @@
                             android:id="@+id/showGetAddressTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="দুর্গাপুর, আষ্পগঞ্জ, ব্রাহ্মণবাড়িয়া"
+                            android:hint="জায়গার ঠিকানা"
                             android:textSize="14sp"
                             android:textColor="@color/text_secondary" />
 
@@ -230,7 +230,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="পণ্য গ্রহীতার মোবাইল নাম্বার (অপশনাল)"
+                        android:text="পণ্য গ্রহীতার মোবাইল নাম্বার"
                         android:layout_marginTop="16dp"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
@@ -266,7 +266,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="পণ্য গ্রহীতার নাম (অপশনাল)"
+                        android:text="পণ্য গ্রহীতার নাম"
                         android:layout_marginTop="16dp"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"

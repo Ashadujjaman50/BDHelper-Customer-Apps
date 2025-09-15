@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.userFragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
@@ -135,10 +136,12 @@ public class EditUserProfileFragment extends Fragment {
                     .update(updateMap )
                     .addOnSuccessListener(unused -> {
                         // Success
+                        progressDialog.dismiss();
                         requireActivity().finish();
                     })
                     .addOnFailureListener(e -> {
                         // Error
+                        progressDialog.dismiss();
                     });
 
         }
@@ -190,9 +193,13 @@ public class EditUserProfileFragment extends Fragment {
 
 
 
+    @SuppressLint("SetTextI18n")
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
-        View view = LayoutInflater.from(requireActivity()).inflate(R.layout.bottom_sheet_dialog_listview, null);
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_dialog_listview,
+                        bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
+                        false);
         bottomSheetDialog.setContentView(view);
 
         TextView titleTv = view.findViewById(R.id.titleTv);

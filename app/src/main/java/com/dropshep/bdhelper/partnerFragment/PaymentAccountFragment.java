@@ -49,13 +49,13 @@ public class PaymentAccountFragment extends Fragment {
 
     private FragmentPaymentAccountBinding binding;
 
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String userId;
 
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
-    private List<AccountModel> accountList = new ArrayList<>();
+    List<AccountModel> accountList = new ArrayList<>();
     private AccountAdapter adapter;
 
 
@@ -310,6 +310,7 @@ public class PaymentAccountFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.CENTER);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
 
 

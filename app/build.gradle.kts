@@ -21,6 +21,12 @@ android {
         dataBinding = true
     }
 
+    bundle {
+        language {
+            // Disable language splits, so all languages stay in the base APK
+            enableSplit = false
+        }
+    }
 
     buildTypes {
         release {

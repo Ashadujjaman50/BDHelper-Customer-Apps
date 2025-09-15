@@ -5,12 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -20,16 +18,20 @@ import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.PermissionUtil;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class PermissionActivity extends BaseActivity {
 
     private ActivityPermissionBinding binding;
-    private final String TAG = "Permission";
 
-    private final String[] requiredPermissions = {
+    private final String[] requiredPermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            ? new String[]{
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.CAMERA
+    }
+            : new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
     };
+
 
     private final String[] requiredLocationPermissions = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -118,6 +120,7 @@ public class PermissionActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private final ActivityResultLauncher<String> requestPermissionStorageImagesLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -141,6 +144,7 @@ public class PermissionActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private final ActivityResultLauncher<String> requestPermissionCameraAccessLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -164,6 +168,7 @@ public class PermissionActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private final ActivityResultLauncher<String[]> requestPermissionLocationAccessLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
                 boolean allGranted = true;

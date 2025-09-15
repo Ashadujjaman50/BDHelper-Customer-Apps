@@ -303,20 +303,29 @@ public class PartnerRegisterFragment extends Fragment {
 
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet_dialog_listview, null);
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_dialog_listview,
+                        bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
+                        false);
         bottomSheetDialog.setContentView(view);
 
         ListView listView = view.findViewById(R.id.listView);
 
-        // ভাষা অনুযায়ী ডেটা লোড
-        String[] districtList = LocaleHelper.getLanguage(requireContext()).equals("bn") ?
-                MyUtils.DISTRICT_BAN : MyUtils.DISTRICT_ENG;
+        // ভাষা অনুযায়ী display list, কিন্তু ইংরেজি লিস্ট সবসময় দরকার হবে Database-এর জন্য
+        String[] districtListEng = MyUtils.DISTRICT_ENG;
+        String[] districtListBan = MyUtils.DISTRICT_BAN;
+
+        // কোন ভাষা চালু আছে
+        boolean isBangla = LocaleHelper.getLanguage(requireActivity()).equals("bn");
+
+        // UI-তে যেটা দেখাবে
+        String[] displayList = isBangla ? districtListBan : districtListEng;
 
         listView.setAdapter(new ArrayAdapter<>(
                 requireContext(),
                 R.layout.single_listview_item,
                 R.id.listItem,
-                districtList
+                displayList
         ));
 
         // ✅ BottomSheet fixed height + prevent dismiss on swipe
@@ -332,8 +341,10 @@ public class PartnerRegisterFragment extends Fragment {
             bottomSheetDialog.show();
 
             listView.setOnItemClickListener((parent, view1, position, id) -> {
-                binding.districtET.setText(districtList[position]);
-                selectDistrict = MyUtils.DISTRICT_ENG[position];
+                binding.districtET.setText(displayList[position]);
+
+                selectDistrict = isBangla ? districtListEng[position] : displayList[position];
+
 
                 // 🔹 Error clear করে normal background apply
                 binding.districtET.setBackgroundResource(R.drawable.bg_edit_text);

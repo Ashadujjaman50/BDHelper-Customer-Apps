@@ -31,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 public class MoreFragment extends Fragment {
 
     private FragmentMoreBinding binding;
@@ -147,7 +149,7 @@ public class MoreFragment extends Fragment {
 
                         // Show only the matching one
                         if (verifyStatus != null) {
-                            switch (verifyStatus.toLowerCase()) {
+                            switch (verifyStatus.toLowerCase(Locale.getDefault())) {
                                 case "pending":
                                     binding.statusPendingTV.setVisibility(View.VISIBLE);
                                     break;

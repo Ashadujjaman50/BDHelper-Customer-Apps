@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.dropshep.bdhelper.model.SubArea;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleViewHolder> implements Filterable {
     private List<SubArea> subAreaList;
@@ -89,10 +91,10 @@ public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleV
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(subAreaListFull);
             } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
                 for (SubArea item : subAreaListFull) {
-                    if (item.getAreaId().toLowerCase().contains(filterPattern)) {
+                    if (item.getAreaId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -104,6 +106,7 @@ public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleV
             return results;
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             subAreaList.clear();

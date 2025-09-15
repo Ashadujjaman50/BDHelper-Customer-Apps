@@ -44,15 +44,12 @@ public class AdapterSubCategory extends RecyclerView.Adapter<AdapterSubCategory.
         final ModelSubCategory modelSubCategory = modelSubCategoryList.get(position);
         holder.subCategoryName.setText(modelSubCategory.getSubCategoryName());
 
-        if (modelSubCategory.getSubCategoryImage() != null ) {
-            Glide.with(context)
-                    .load(modelSubCategory.getSubCategoryImage())
-                    .into(holder.subCategoryImage);
-            //Picasso.get().load(modelSubCategory.getSubCategoryImage()).into(holder.subCategoryImage);
-        }
-        else {
+        if (modelSubCategory.getIconResId() != 0) {
+            holder.subCategoryImage.setImageResource(modelSubCategory.getIconResId());
+        } else {
             holder.subCategoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_transport));
         }
+
     }
 
     @Override

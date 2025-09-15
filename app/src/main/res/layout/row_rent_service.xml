@@ -147,7 +147,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/white"
-            android:drawableStart="@drawable/ic_reject_red"
             android:drawablePadding="5dp"
             android:gravity="center"
             android:paddingHorizontal="10dp"
@@ -156,7 +155,8 @@
             android:textColor="@color/warning"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_reject_red" />
 
     </LinearLayout>
 

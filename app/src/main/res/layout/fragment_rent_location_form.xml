@@ -203,14 +203,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/bg_edit_text"
-                        android:drawableEnd="@drawable/ic_arrow_drop_down"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:hint="Glassware"
                         android:padding="16dp"
                         android:textColor="@color/text_primary"
                         android:textColorHint="@color/text_secondary"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
                 </LinearLayout>
 

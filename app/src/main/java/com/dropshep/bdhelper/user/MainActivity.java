@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivityMainBinding;
 import com.dropshep.bdhelper.fragment.HelpFragment;
-import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.dropshep.bdhelper.myUtils.NotificationPermissionHelper;
 import com.dropshep.bdhelper.myUtils.SharedPrefHelper;
 import com.dropshep.bdhelper.userFragment.HomeFragment;
@@ -49,6 +48,7 @@ public class MainActivity extends BaseActivity {
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
 
+
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);
@@ -67,16 +67,21 @@ public class MainActivity extends BaseActivity {
             binding.customBottomBar.setSelectedItemId(selectedTabId);
         }
 
+
+
+
         binding.customBottomBar.inflateMenu(R.menu.nav_bottom_menu);
         binding.customBottomBar.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
                 replaceFragment(new HomeFragment());
                 backPress = true;
-            } else if (itemId == R.id.rentPost) {
+            }
+            else if (itemId == R.id.rentPost) {
                 replaceFragment(new PastPostFragment());
                 backPress = false;
-            } else if (itemId == R.id.help) {
+            }
+            else if (itemId == R.id.help) {
                 // HelpFragment এ data পাঠানোর জন্য bundle তৈরি করো
                 Bundle bundle = new Bundle();
                 bundle.putString("user_type", "customer");
@@ -86,15 +91,13 @@ public class MainActivity extends BaseActivity {
 
                 replaceFragment(helpFragment);
                 backPress = false;
-            } else if (itemId ==R.id.profile){
+            }
+            else if (itemId ==R.id.profile){
                 replaceFragment(new ProfileFragment());
                 backPress = false;
             }
             return true;
         });
-
-        //Token Update
-        FCMTokenManager.updateFCMToken();
 
     }
 
@@ -119,7 +122,6 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
-            return true; // ব্যাক হ্যান্ডেলড, বের হবে না
         }
         else {
             // অন্য tab থাকলে প্রথমে home-এ ফেরত যাও
@@ -127,9 +129,8 @@ public class MainActivity extends BaseActivity {
             replaceFragment(new HomeFragment());
             binding.customBottomBar.getMenu().findItem(R.id.home).setChecked(true);
 
-            return true;
         }
-
+        return true; // ব্যাক হ্যান্ডেলড, বের হবে না
     }
 
     // বাইরের ফ্র্যাগমেন্ট/এক্টিভিটি থেকে BottomBar রিফ্রেশ করতে চাইলে ব্যবহার করো
