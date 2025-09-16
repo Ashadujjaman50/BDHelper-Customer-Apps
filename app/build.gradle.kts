@@ -84,9 +84,8 @@ dependencies {
     //Lottie
     implementation(libs.lottie)
 
-    //wheel picker
-    /*implementation("cn.iwgang:wheelpicker:1.5.6")
-    implementation("io.github.darkokoa:datetime-wheel-picker-android:1.0.1")*/
+    //slider
+    implementation(libs.autoimageslider)
 
 
 

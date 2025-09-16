@@ -107,12 +107,31 @@
                     app:cardElevation="0dp">
 
                     <!--Demo Image view (Replace Image Slider)-->
-                    <ImageView
+                    <com.denzcoskun.imageslider.ImageSlider
+                        android:id="@+id/image_slider"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:src="@drawable/demo_slide"
-                        android:scaleType="fitXY" />
+                        android:layout_height="160dp"
+                        app:iss_auto_cycle="true"
+                        app:iss_delay="1000"
+                        app:iss_no_dots="true"
+                        app:iss_period="2000"
+                        app:iss_text_align="CENTER"
+                        app:iss_title_background="@color/grey_font"
+                        tools:ignore="MissingClass" />
 
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:visibility="gone"
+                    app:cardCornerRadius="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/imageSlider"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp" />
 
                 </androidx.cardview.widget.CardView>
 

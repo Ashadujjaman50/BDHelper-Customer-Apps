@@ -17,6 +17,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        //Solution in image slider
+        //maven { url = uri("https://maven.scijava.org/content/repositories/public/") }
+
         maven { url = uri("https://jitpack.io") } // 👈 এটা যোগ করো
     }
 }

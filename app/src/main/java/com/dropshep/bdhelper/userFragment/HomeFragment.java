@@ -13,12 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.dropshep.bdhelper.ChatActivity;
 import com.dropshep.bdhelper.NotificationActivity;
 import com.dropshep.bdhelper.PromoActivity;
 import com.dropshep.bdhelper.R;
+import com.dropshep.bdhelper.adapter.SliderAdapterAuto;
 import com.dropshep.bdhelper.databinding.FragmentHomeBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
+import com.dropshep.bdhelper.model.SlideImage;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.user.AddressActivity;
@@ -33,8 +38,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -42,6 +51,9 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     //notification
     private ArrayList<ModelNotice> noticeArrayList;
+    ArrayList<SlideImage> slideImageArrayList;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -152,6 +164,8 @@ public class HomeFragment extends Fragment {
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
+        fetchSlides(view);
+
     }
 
     private void setOnClickListenerWithCategory(View view, String categoryId, String categoryName) {
@@ -254,6 +268,60 @@ public class HomeFragment extends Fragment {
             noticeListener.remove(); // 🔹 Firestore Listener remove করতে হবে
         }
     }
+
+    private void fetchSlides(View view) {
+        ImageSlider imageSlider;
+        imageSlider = view.findViewById(R.id.image_slider);
+        slideImageArrayList = new ArrayList<>();
+        List<SlideModel> imageList = new ArrayList<>();
+
+        //SliderView
+        /*SliderView sliderView;
+        sliderView = view.findViewById(R.id.imageSlider);*/
+
+        db.collection("slides")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    slideImageArrayList.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        SlideImage slide = doc.toObject(SlideImage.class);
+                        if (slide != null && slide.getSlideType().equals("customerHome")) {
+                            slideImageArrayList.add(slide);
+                        }
+                    }
+
+                    //SliderView
+
+                    /*sliderView.setSliderAdapter(new SliderAdapterAuto(getContext(), slideImageArrayList));
+                    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                    sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                    sliderView.setIndicatorVisibility(false);
+                    sliderView.setScrollTimeInSec(3); //set scroll delay in seconds :
+                    sliderView.startAutoCycle();
+
+                    sliderView.setSliderAnimationDuration(1);
+                    sliderView.setAutoCycle(true);*/
+
+
+                    // slideList এখন Firestore এর সব slide রাখছে
+                    Log.d("Firestore", "Total slides: " + imageList.size());
+                    for (SlideImage s : slideImageArrayList) {
+                        imageList.add(new SlideModel(s.getSlideImage(), ScaleTypes.FIT));
+                        Log.d("Firestore", "Slide: " + s.getSlideDescription() + " | " + s.getSlideImage());
+                    }
+                    imageSlider.startSliding(2000);
+                    imageSlider.setImageList(imageList);
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error fetching slides", e);
+                });
+
+
+
+    }
+
 
 
 
