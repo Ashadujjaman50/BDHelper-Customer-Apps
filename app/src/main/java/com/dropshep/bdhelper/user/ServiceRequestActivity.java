@@ -1,7 +1,6 @@
 package com.dropshep.bdhelper.user;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -9,7 +8,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -24,6 +22,7 @@ import com.dropshep.bdhelper.adapter.AdapterServiceRequest;
 import com.dropshep.bdhelper.databinding.ActivityServiceRequestBinding;
 import com.dropshep.bdhelper.model.ModelServiceRequest;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
@@ -49,7 +48,7 @@ public class ServiceRequestActivity extends BaseActivity {
     private FirebaseUser firebaseUser;
     FirebaseFirestore db;
 
-    ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
 
     ArrayList<ModelServiceRequest> serviceRequestArrayList;
     AdapterServiceRequest adapterServiceRequest;
@@ -70,8 +69,9 @@ public class ServiceRequestActivity extends BaseActivity {
 
         binding.backBtn.setOnClickListener(v ->  finishOnBack());
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //load Location
         showBottomPopUpDistrictList();
@@ -98,8 +98,8 @@ public class ServiceRequestActivity extends BaseActivity {
         }
         else {
             //set Dialog
-            progressDialog.setMessage("আপনার সার্ভিস রিকুয়েস্ট আপডেট হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("আপনার সার্ভিস রিকুয়েস্ট আপডেট হচ্ছে...");
+            loadingDialog.show();
 
             //String to set Time stamp
             String timestamp = String.valueOf(System.currentTimeMillis());
@@ -123,13 +123,13 @@ public class ServiceRequestActivity extends BaseActivity {
                     .document(serviceId)
                     .set(serviceMap)
                     .addOnSuccessListener(unused -> {
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         MyToast.showShort(ServiceRequestActivity.this, "Your Request Submit Successful.");
                         binding.serviceNameEt.setText("");
                         binding.districtEt.setText("");
                     })
                     .addOnFailureListener(e -> {
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         Log.d("ServiceRequest", "submitServiceRequest: "+e.getMessage());
                     });
 

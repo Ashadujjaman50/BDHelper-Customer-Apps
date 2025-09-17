@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.partnerFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,18 +10,35 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dropshep.bdhelper.NotificationActivity;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.ViewPagerServiceAdapter;
 import com.dropshep.bdhelper.databinding.FragmentRentBinding;
+import com.dropshep.bdhelper.model.ModelNotice;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class RentFragment extends Fragment {
 
     private FragmentRentBinding binding;
+    //notification
+    private ArrayList<ModelNotice> noticeArrayList;
 
     public RentFragment() {
         // Required empty public constructor
@@ -37,6 +55,17 @@ public class RentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //init views
+
+        // load new Notification Count
+        loadNotificationCount();
+
+        //notification  Activity
+        binding.notificationBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), NotificationActivity.class);
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
 
         //View Fragment Courser
         FragmentManager fm = getChildFragmentManager();
@@ -87,6 +116,89 @@ public class RentFragment extends Fragment {
             }
         });
 
+    }
+
+    private ListenerRegistration noticeListener;
+    private long checkNotice = 0;
+
+    private void loadNotificationCount() {
+        noticeArrayList = new ArrayList<>();
+        String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+        DatabaseReference checkNoticeRef = FirebaseDatabase.getInstance()
+                .getReference("NoticeCheck")
+                .child(currentUserId);
+
+        // 🔹 প্রথমে Realtime DB থেকে checkNotice নেবে
+        checkNoticeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    checkNotice = Long.parseLong("" + dataSnapshot.child("checkNotice").getValue());
+
+                    // 🔹 Firestore Listener দিয়ে রিয়েলটাইম Notice শুনবে
+                    if (noticeListener != null) {
+                        noticeListener.remove();
+                    }
+
+                    noticeListener = FirebaseFirestore.getInstance()
+                            .collection("Notice")
+                            .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                                if (e != null) {
+                                    Log.e("FirestoreError", "Error fetching notices", e);
+                                    return;
+                                }
+
+                                if (queryDocumentSnapshots != null) {
+                                    noticeArrayList.clear();
+
+                                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                                        String receivedUserId = doc.getString("receivedUserId");
+                                        String senderType = doc.getString("senderType");
+                                        long noticeId = Long.parseLong(Objects.requireNonNull(doc.getString("noticeId")));
+
+                                        if (noticeId >= checkNotice) {
+                                            ModelNotice modelNotice = doc.toObject(ModelNotice.class);
+                                            assert receivedUserId != null;
+                                            if ((receivedUserId.equals(currentUserId) ||
+                                                    receivedUserId.equals("all") ||
+                                                    receivedUserId.equals("customer"))) {
+                                                assert senderType != null;
+                                                if (senderType.equals("admin") || senderType.equals("vendor")) {
+
+                                                    noticeArrayList.add(modelNotice);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // 🔹 UI আপডেট
+                                    if (!noticeArrayList.isEmpty()) {
+                                        binding.notificationCountTv.setText(String.valueOf(noticeArrayList.size()));
+                                        binding.notificationCountTv.setVisibility(View.VISIBLE);
+                                    } else {
+                                        binding.notificationCountTv.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+                } else {
+                    binding.notificationCountTv.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (noticeListener != null) {
+            noticeListener.remove(); // 🔹 Firestore Listener remove করতে হবে
+        }
     }
 
     private void setPagerFragment(int a) {

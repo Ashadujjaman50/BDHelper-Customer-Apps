@@ -62,6 +62,9 @@ dependencies {
     //image Slider
     implementation(libs.image.slider)
 
+    //slider
+    implementation(libs.autoimageslider)
+
     //Google maps activity
     implementation (libs.google.play.services.maps)
     implementation (libs.google.play.services.location)
@@ -84,8 +87,6 @@ dependencies {
     //Lottie
     implementation(libs.lottie)
 
-    //slider
-    implementation(libs.autoimageslider)
 
 
 

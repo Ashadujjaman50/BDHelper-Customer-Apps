@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.userFragment;
 
-import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -19,9 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.databinding.FragmentRentBinding;
 import com.dropshep.bdhelper.databinding.FragmentRentLocationFormBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +39,7 @@ public class RentLocationFormFragment extends Fragment {
     String userId, postDistrict, quantity, description, rentDate, rentTime;
     String specification, specificationCapacity, specificationDuration, specificationTypes;
 
-    ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
@@ -95,7 +94,9 @@ public class RentLocationFormFragment extends Fragment {
         typeface1 = ResourcesCompat.getFont(requireContext(), R.font.solaimanlipi);
         typeface2 = ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular);
 
-        progressDialog = new ProgressDialog(requireContext());
+        loadingDialog = new LoadingDialog(requireContext());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //current user info
         if (firebaseAuth.getCurrentUser() != null){

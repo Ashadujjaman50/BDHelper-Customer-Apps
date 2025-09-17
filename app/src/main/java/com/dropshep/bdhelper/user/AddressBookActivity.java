@@ -1,7 +1,6 @@
 package com.dropshep.bdhelper.user;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -33,6 +32,7 @@ import com.dropshep.bdhelper.adapter.AddressBookAdapter;
 import com.dropshep.bdhelper.databinding.ActivityAddressBookBinding;
 import com.dropshep.bdhelper.model.ModelAddressBook;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,7 +61,7 @@ public class AddressBookActivity extends BaseActivity {
 
     private AddressBookAdapter addressBookAdapter;
     private ArrayList<ModelAddressBook> addressBookArrayList;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     private ListenerRegistration addressBookListener;
 
     @Override
@@ -79,8 +79,9 @@ public class AddressBookActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
     }
 
     private void initViews() {
@@ -219,8 +220,8 @@ public class AddressBookActivity extends BaseActivity {
             return;
         }
 
-        progressDialog.setMessage("আপনার ঠিকানা অ্যাড্রেসবুকে সেভ হচ্ছে..");
-        progressDialog.show();
+        loadingDialog.setMessage("আপনার ঠিকানা অ্যাড্রেসবুকে সেভ হচ্ছে..");
+        loadingDialog.show();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String userId = firebaseUser.getUid();
@@ -237,12 +238,12 @@ public class AddressBookActivity extends BaseActivity {
         db.collection("users").document(userId).collection("addressBook").document(addressId)
                 .set(map)
                 .addOnSuccessListener(unused -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     clearForm();
                     binding.addressSaveLL.setVisibility(View.GONE);
                     binding.addressListRl.setVisibility(View.VISIBLE);
                 })
-                .addOnFailureListener(e -> progressDialog.dismiss());
+                .addOnFailureListener(e -> loadingDialog.dismiss());
     }
 
     private void showUpdateAddressBook(int position) {
@@ -272,8 +273,8 @@ public class AddressBookActivity extends BaseActivity {
 
         if (TextUtils.isEmpty(addressName) || TextUtils.isEmpty(recipientMobile)) return;
 
-        progressDialog.setMessage("আপনার অ্যাড্রেসবুক আপডেট হচ্ছে..");
-        progressDialog.show();
+        loadingDialog.setMessage("আপনার অ্যাড্রেসবুক আপডেট হচ্ছে..");
+        loadingDialog.show();
 
         Map<String, Object> map = new HashMap<>();
         map.put("address", locationData);
@@ -285,12 +286,12 @@ public class AddressBookActivity extends BaseActivity {
         db.collection("users").document(userId).collection("addressBook").document(addressId)
                 .update(map)
                 .addOnSuccessListener(unused -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     clearForm();
                     binding.addressSaveLL.setVisibility(View.GONE);
                     binding.addressListRl.setVisibility(View.VISIBLE);
                 })
-                .addOnFailureListener(e -> progressDialog.dismiss());
+                .addOnFailureListener(e -> loadingDialog.dismiss());
     }
 
     private void clearForm() {

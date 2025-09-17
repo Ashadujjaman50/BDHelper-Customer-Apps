@@ -1,7 +1,6 @@
 package com.dropshep.bdhelper.userFragment;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentEditUserProfileBinding;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.Replacement;
@@ -43,7 +43,7 @@ public class EditUserProfileFragment extends Fragment {
     private FirebaseFirestore db;
     String userId;
 
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     String selectedDistrict;
 
     public EditUserProfileFragment() {
@@ -69,8 +69,9 @@ public class EditUserProfileFragment extends Fragment {
 
         userId = firebaseAuth.getCurrentUser().getUid();
 
-        progressDialog = new ProgressDialog(requireActivity());
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(requireActivity());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //Show Bottom Popup Menu With District List
         showBottomPopUpDistrictList();
@@ -106,8 +107,8 @@ public class EditUserProfileFragment extends Fragment {
             Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
         }
         else {
-            progressDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
+            loadingDialog.show();
 
             //String to set Time stamp
             Map<String, Object> updateMap  = new HashMap<>();
@@ -136,12 +137,12 @@ public class EditUserProfileFragment extends Fragment {
                     .update(updateMap )
                     .addOnSuccessListener(unused -> {
                         // Success
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         requireActivity().finish();
                     })
                     .addOnFailureListener(e -> {
                         // Error
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                     });
 
         }

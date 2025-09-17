@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.userFragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentSkilledLaborFormBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -40,7 +40,7 @@ public class SkilledLaborFormFragment extends Fragment {
     String userId, postDistrict, quantity, description, rentDate, rentTime;
     String specification, specificationCapacity, specificationDuration, specificationTypes;
 
-    ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
@@ -85,7 +85,9 @@ public class SkilledLaborFormFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         userId = firebaseUser.getUid();
 
-        progressDialog = new ProgressDialog(requireContext());
+        loadingDialog = new LoadingDialog(requireContext());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //current user info
         if (firebaseAuth.getCurrentUser() != null){

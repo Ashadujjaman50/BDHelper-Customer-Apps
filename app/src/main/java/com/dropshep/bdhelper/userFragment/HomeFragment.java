@@ -20,7 +20,6 @@ import com.dropshep.bdhelper.ChatActivity;
 import com.dropshep.bdhelper.NotificationActivity;
 import com.dropshep.bdhelper.PromoActivity;
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.adapter.SliderAdapterAuto;
 import com.dropshep.bdhelper.databinding.FragmentHomeBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
 import com.dropshep.bdhelper.model.SlideImage;
@@ -39,11 +38,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -61,7 +59,7 @@ public class HomeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
@@ -194,7 +192,7 @@ public class HomeFragment extends Fragment {
 
     private void loadNotificationCount() {
         noticeArrayList = new ArrayList<>();
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         DatabaseReference checkNoticeRef = FirebaseDatabase.getInstance()
                 .getReference("NoticeCheck")
@@ -227,16 +225,19 @@ public class HomeFragment extends Fragment {
 
                                         String receivedUserId = doc.getString("receivedUserId");
                                         String senderType = doc.getString("senderType");
-                                        long noticeId = Long.parseLong("" + doc.getString("noticeId"));
+                                        long noticeId = Long.parseLong(Objects.requireNonNull(doc.getString("noticeId")));
 
                                         if (noticeId >= checkNotice) {
                                             ModelNotice modelNotice = doc.toObject(ModelNotice.class);
+                                            assert receivedUserId != null;
                                             if ((receivedUserId.equals(currentUserId) ||
                                                     receivedUserId.equals("all") ||
-                                                    receivedUserId.equals("customer"))
-                                                    && (senderType.equals("admin") || senderType.equals("vendor"))) {
+                                                    receivedUserId.equals("customer"))) {
+                                                assert senderType != null;
+                                                if (senderType.equals("admin") || senderType.equals("vendor")) {
 
-                                                noticeArrayList.add(modelNotice);
+                                                    noticeArrayList.add(modelNotice);
+                                                }
                                             }
                                         }
                                     }
@@ -275,9 +276,6 @@ public class HomeFragment extends Fragment {
         slideImageArrayList = new ArrayList<>();
         List<SlideModel> imageList = new ArrayList<>();
 
-        //SliderView
-        /*SliderView sliderView;
-        sliderView = view.findViewById(R.id.imageSlider);*/
 
         db.collection("slides")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -290,19 +288,6 @@ public class HomeFragment extends Fragment {
                             slideImageArrayList.add(slide);
                         }
                     }
-
-                    //SliderView
-
-                    /*sliderView.setSliderAdapter(new SliderAdapterAuto(getContext(), slideImageArrayList));
-                    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-                    sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
-                    sliderView.setIndicatorVisibility(false);
-                    sliderView.setScrollTimeInSec(3); //set scroll delay in seconds :
-                    sliderView.startAutoCycle();
-
-                    sliderView.setSliderAnimationDuration(1);
-                    sliderView.setAutoCycle(true);*/
-
 
                     // slideList এখন Firestore এর সব slide রাখছে
                     Log.d("Firestore", "Total slides: " + imageList.size());

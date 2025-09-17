@@ -1,7 +1,6 @@
 package com.dropshep.bdhelper.userFragment;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -11,23 +10,20 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentHomesShiftingFormBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -49,7 +45,7 @@ public class HomesShiftingFormFragment extends Fragment {
     private String userId, postDistrict, quantity, description, rentDate, rentTime;
     private String specification, specificationCapacity, specificationDuration, specificationTypes;
 
-    ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
@@ -106,7 +102,9 @@ public class HomesShiftingFormFragment extends Fragment {
         typeface1 = ResourcesCompat.getFont(requireContext(), R.font.solaimanlipi);
         typeface2 = ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular);
 
-        progressDialog = new ProgressDialog(requireContext());
+        loadingDialog = new LoadingDialog(requireContext());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //current user info
         if (firebaseAuth.getCurrentUser() != null){

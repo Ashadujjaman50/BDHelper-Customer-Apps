@@ -1,7 +1,6 @@
 package com.dropshep.bdhelper.partnerFragment;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.AccountAdapter;
 import com.dropshep.bdhelper.databinding.FragmentPaymentAccountBinding;
 import com.dropshep.bdhelper.model.AccountModel;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -53,7 +53,7 @@ public class PaymentAccountFragment extends Fragment {
     private FirebaseFirestore db;
     private String userId;
 
-    ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
 
     List<AccountModel> accountList = new ArrayList<>();
     private AccountAdapter adapter;
@@ -80,8 +80,9 @@ public class PaymentAccountFragment extends Fragment {
         userId = mAuth.getCurrentUser().getUid();
 
 
-        progressDialog = new ProgressDialog(requireContext());
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(requireContext());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
         db = FirebaseFirestore.getInstance();
 
 

@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.authentication;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,9 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.SplashScreenActivity;
 import com.dropshep.bdhelper.databinding.ActivityLoginBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.NotificationPermissionHelper;
 import com.dropshep.bdhelper.myUtils.SharedPrefHelper;
@@ -35,7 +34,7 @@ public class LoginActivity extends BaseActivity {
     private static final String KEY_FIRST_TIME_NOTIFICATION_REQUESTED = "notification_requested";
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
 
     private GoogleSignInHelper googleSignInHelper;
 
@@ -56,15 +55,16 @@ public class LoginActivity extends BaseActivity {
             sharedPrefHelper.putBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, true);
         }
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //Google Sign In Helper
         googleSignInHelper = new GoogleSignInHelper(this, new GoogleSignInHelper.OnGoogleSignInSuccessListener() {
             @Override
             public void onSignInSuccess(FirebaseUser user) {
-                progressDialog.setMessage("লগইন হচ্ছে...");
-                progressDialog.show();
+                loadingDialog.setMessage("লগইন হচ্ছে...");
+                loadingDialog.show();
                 // 🔁 Go to next activity or dashboard
                 gotoNextActivity(MyUtils.USER_TYPE_GOOGLE);
                 Log.d("GoogleLog", "Google: "+ user.getEmail());
@@ -119,8 +119,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginUserAccount(String email, String password) {
-        progressDialog.setMessage("লগইন হচ্ছে...");
-        progressDialog.show();
+        loadingDialog.setMessage("লগইন হচ্ছে...");
+        loadingDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
@@ -129,7 +129,7 @@ public class LoginActivity extends BaseActivity {
 
                 })
                 .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     // Login failed
                     Toast.makeText(this, "লগইন ব্যর্থ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
@@ -175,12 +175,12 @@ public class LoginActivity extends BaseActivity {
                             intent.putExtra(MyUtils.USER_SIGN_IN_WITH, userSignInWith);
                         }
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         startActivity(intent);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish(); // Close LoginActivity to prevent going back
                     } else {
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         Toast.makeText(this, "ইউজার তথ্য চেক করতে ব্যর্থ: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

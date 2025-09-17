@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.authentication;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,9 +13,9 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.databinding.ActivityRegistrationBinding;
 import com.dropshep.bdhelper.databinding.ActivitySignUpBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.NetworkUtils;
@@ -30,7 +29,7 @@ public class SignUpActivity extends BaseActivity {
     private ActivitySignUpBinding binding;
 
     FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +47,9 @@ public class SignUpActivity extends BaseActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         binding.signInTV.setOnClickListener(v -> finishOnBack());
 
@@ -79,12 +79,12 @@ public class SignUpActivity extends BaseActivity {
 
     private void createNewAccount(String email, String password) {
         //progress dialog show
-        progressDialog.setMessage("Create account...");
-        progressDialog.show(); // প্রথমেই progress শুরু
+        loadingDialog.setMessage("Create account...");
+        loadingDialog.show(); // প্রথমেই progress শুরু
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     if (task.isSuccessful()) {
                         // ✅ নতুন অ্যাকাউন্ট তৈরি হয়েছে
                         MyToast.showShort(this, "Account created successfully!");
@@ -101,7 +101,7 @@ public class SignUpActivity extends BaseActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     Log.d("Create", "Error: " + e.getMessage());
                 });
 

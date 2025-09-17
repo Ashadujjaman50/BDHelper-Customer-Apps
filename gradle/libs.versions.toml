@@ -76,4 +76,5 @@ play-services-auth = { group = "com.google.android.gms", name = "play-services-a
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 

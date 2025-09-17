@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.userFragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,6 +24,7 @@ import android.widget.Toast;
 
 import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
@@ -42,7 +42,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class CustomerRegisterFragment extends Fragment {
 
@@ -52,7 +51,7 @@ public class CustomerRegisterFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     FirebaseFirestore db;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     SharedPrefHelper prefHelper;
 
     String device_token;
@@ -89,8 +88,9 @@ public class CustomerRegisterFragment extends Fragment {
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
-        progressDialog = new ProgressDialog(requireActivity());
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(requireActivity());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         prefHelper = new SharedPrefHelper(requireActivity());
 
@@ -154,8 +154,8 @@ public class CustomerRegisterFragment extends Fragment {
         }
         else {
 
-            progressDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
+            loadingDialog.show();
 
             //String to set Time stamp
             String timestamp = String.valueOf(System.currentTimeMillis());
@@ -250,13 +250,13 @@ public class CustomerRegisterFragment extends Fragment {
                     }
 
                     prefHelper.remove("userSignWith");
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     notification("Welcome", newUserId,  userMap.get("district"));
                     gotoNextActivity();
 
                 })
                 .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     Toast.makeText(requireActivity(), "তথ্য আপডেট করতে সমস্যা হয়েছে", Toast.LENGTH_SHORT).show();
                 });
     }

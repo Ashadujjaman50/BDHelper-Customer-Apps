@@ -1,12 +1,9 @@
 package com.dropshep.bdhelper;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
@@ -14,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,8 +22,8 @@ import androidx.databinding.DataBindingUtil;
 import com.dropshep.bdhelper.databinding.ActivityNidphotoBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.FileUploadHelper;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
-import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -44,7 +40,6 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +55,7 @@ public class NIDPhotoActivity extends BaseActivity {
     private Uri imageUri, fontImageUrl, backImageUrl;
 
     private StorageReference storageReference;
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     String userId;
@@ -76,8 +71,9 @@ public class NIDPhotoActivity extends BaseActivity {
     }
 
     private void init() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -263,8 +259,8 @@ public class NIDPhotoActivity extends BaseActivity {
             return;
         }
 
-        progressDialog.setMessage("ছবি আপলোড হচ্ছে...");
-        progressDialog.show();
+        loadingDialog.setMessage("ছবি আপলোড হচ্ছে...");
+        loadingDialog.show();
 
         List<Task<Uri>> downloadTasks = new ArrayList<>();
 
@@ -282,7 +278,7 @@ public class NIDPhotoActivity extends BaseActivity {
 
         Tasks.whenAllSuccess(downloadTasks)
                 .addOnSuccessListener(results -> {
-                    //progressDialog.dismiss();
+                    //loadingDialog.dismiss();
                     List<String> links = new ArrayList<>();
                     StringBuilder msg = new StringBuilder("আপলোড সম্পন্ন:\n");
                     for (Object link : results) {
@@ -302,16 +298,16 @@ public class NIDPhotoActivity extends BaseActivity {
                             .document("info")
                             .set(docLinks, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(this, "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(this, "ছবি আপলোড হয়েছে, কিন্তু সংরক্ষণ ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             });
                 })
                 .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     MyToast.showShort(this,"ছবি আপলোড ব্যর্থ: " + e.getMessage());
                 });
     }

@@ -2,7 +2,6 @@ package com.dropshep.bdhelper;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 import com.dropshep.bdhelper.databinding.ActivityProfileBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.FileUploadHelper;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -59,7 +59,7 @@ public class ProfileActivity extends BaseActivity {
     // Variables for image
     private Uri imageUri = null, finalImageUrl = null;
 
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
@@ -72,8 +72,8 @@ public class ProfileActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
 
         //init views
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setCanceledOnTouchOutside(false);
 
         // Init permission arrays
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -336,8 +336,8 @@ public class ProfileActivity extends BaseActivity {
         if (finalImageUrl == null) {
             Toast.makeText(this, "প্রোফাইলের ছবি সিলেক্ট করুন !", Toast.LENGTH_SHORT).show();
         } else {
-            progressDialog.setMessage("ছবি আপলোড হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("ছবি আপলোড হচ্ছে...");
+            loadingDialog.show();
 
             if (binding.userProfilePicIV.getDrawable() != null && finalImageUrl != null) {
                 StorageReference profilePicPath = storageReference.child("Profile/").child("profile_" + userId + ".jpg");
@@ -359,16 +359,16 @@ public class ProfileActivity extends BaseActivity {
                             .document("info")
                             .set(docLinks, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(this, "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(this, "ছবি আপলোড হয়েছে, কিন্তু সংরক্ষণ ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             });
 
                 }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     Toast.makeText(this, "ছবি আপলোড ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
             }

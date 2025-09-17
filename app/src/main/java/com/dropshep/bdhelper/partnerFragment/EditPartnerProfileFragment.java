@@ -2,7 +2,6 @@ package com.dropshep.bdhelper.partnerFragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,7 +38,9 @@ import android.widget.Toast;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentEditPartnerProfileBinding;
 import com.dropshep.bdhelper.myUtils.FileUploadHelper;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
+import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.Replacement;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -80,7 +81,8 @@ public class EditPartnerProfileFragment extends Fragment {
     private FirebaseFirestore db;
     String userId;
 
-    private ProgressDialog progressDialog;
+    LoadingDialog loadingDialog;
+
     String selectedDistrict;
 
     public EditPartnerProfileFragment() {
@@ -113,8 +115,9 @@ public class EditPartnerProfileFragment extends Fragment {
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
-        progressDialog = new ProgressDialog(requireActivity());
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(requireActivity());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         //Show Bottom Popup Menu With District List
         showBottomPopUpDistrictList();
@@ -160,8 +163,8 @@ public class EditPartnerProfileFragment extends Fragment {
             Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
         }
         else {
-            progressDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
+            loadingDialog.show();
 
             //String to set Time stamp
             Map<String, Object> updateMap  = new HashMap<>();
@@ -190,12 +193,12 @@ public class EditPartnerProfileFragment extends Fragment {
                     .update(updateMap )
                     .addOnSuccessListener(unused -> {
                         // Success
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                         requireActivity().finish();
                     })
                     .addOnFailureListener(e -> {
                         // Error
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
                     });
 
         }
@@ -482,10 +485,10 @@ public class EditPartnerProfileFragment extends Fragment {
 
     private void uploadProfileImageToServer() {
         if (finalImageUrl == null) {
-            Toast.makeText(requireContext(), "প্রোফাইলের ছবি সিলেক্ট করুন !", Toast.LENGTH_SHORT).show();
+            MyToast.showShort(requireContext(), "প্রোফাইলের ছবি সিলেক্ট করুন !");
         } else {
-            progressDialog.setMessage("ছবি আপলোড হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("ছবি আপলোড হচ্ছে...");
+            loadingDialog.show();
 
             if (binding.userProfilePicIV.getDrawable() != null && finalImageUrl != null) {
                 StorageReference profilePicPath = storageReference.child("Profile/").child("profile_" + userId + ".jpg");
@@ -507,16 +510,16 @@ public class EditPartnerProfileFragment extends Fragment {
                             .document("info")
                             .set(docLinks, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(requireContext(), "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                progressDialog.dismiss();
+                                loadingDialog.dismiss();
                                 Toast.makeText(requireContext(), "ছবি আপলোড হয়েছে, কিন্তু সংরক্ষণ ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             });
 
                 }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     Toast.makeText(requireContext(), "ছবি আপলোড ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
             }

@@ -1,6 +1,5 @@
 package com.dropshep.bdhelper.partnerFragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -25,6 +24,7 @@ import android.widget.Toast;
 
 import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
@@ -36,15 +36,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class PartnerRegisterFragment extends Fragment {
 
@@ -55,7 +52,7 @@ public class PartnerRegisterFragment extends Fragment {
     private FirebaseUser firebaseUser;
     FirebaseFirestore db;
 
-    private ProgressDialog progressDialog;
+    private LoadingDialog loadingDialog;
     SharedPrefHelper prefHelper;
 
     String device_token;
@@ -92,8 +89,9 @@ public class PartnerRegisterFragment extends Fragment {
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
-        progressDialog = new ProgressDialog(requireActivity());
-        progressDialog.setCanceledOnTouchOutside(false);
+        loadingDialog = new LoadingDialog(requireActivity());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
 
         prefHelper = new SharedPrefHelper(requireActivity());
 
@@ -157,8 +155,8 @@ public class PartnerRegisterFragment extends Fragment {
             Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
         }
         else {
-            progressDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
-            progressDialog.show();
+            loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
+            loadingDialog.show();
 
             //String to set Time stamp
             String timestamp = String.valueOf(System.currentTimeMillis());
@@ -265,13 +263,13 @@ public class PartnerRegisterFragment extends Fragment {
                     }
 
                     prefHelper.remove("userSignWith");
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     notification("Welcome", newUserId,  userMap.get("district"));
                     gotoNextActivity();
 
                 })
                 .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
+                    loadingDialog.dismiss();
                     Toast.makeText(requireActivity(), "তথ্য আপডেট করতে সমস্যা হয়েছে", Toast.LENGTH_SHORT).show();
                 });
     }
