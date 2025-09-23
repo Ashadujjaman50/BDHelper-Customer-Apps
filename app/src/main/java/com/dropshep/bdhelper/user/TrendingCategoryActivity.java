@@ -2,7 +2,6 @@ package com.dropshep.bdhelper.user;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -96,10 +95,6 @@ public class TrendingCategoryActivity extends BaseActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
-    public Uri getURLForResource(int resourceId) {
-        return Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + resourceId);
-    }
-
 
     @SuppressLint("NotifyDataSetChanged")
     private void getSubCategoryList() {
@@ -111,7 +106,7 @@ public class TrendingCategoryActivity extends BaseActivity {
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_PICKUP_ID, getString(R.string.pickup), R.drawable.ic_pickup, false));
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_COVERED_VAN_ID, getString(R.string.coveredvan), R.drawable.ic_covered_van, false));
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_TRAILER_ID, getString(R.string.trailer), R.drawable.ic_trailer, false));
-        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.LOW_BED_ID, getString(R.string.lo_bet), R.drawable.ic_trailer, false));
+        allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_LOW_BED_ID, getString(R.string.lo_bet), R.drawable.ic_low_bed, false));
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_FREEZER_VAN_ID, getString(R.string.freezervan), R.drawable.ic_freezer_van, false));
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_CHARGER_VAN_ID, getString(R.string.charger_van), R.drawable.ic_charger_van, false));
         allList.add(new ModelSubCategory(MyUtils.ROAD_TRANSPORT_ID, MyUtils.SUB_DUMP_TRUCK_ID, getString(R.string.dump_truck), R.drawable.ic_dump_truck, false));

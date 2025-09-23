@@ -20,6 +20,7 @@ import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.ViewPagerServiceAdapter;
 import com.dropshep.bdhelper.databinding.FragmentRentBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
+import com.dropshep.bdhelper.partner.AddServiceActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,6 +64,13 @@ public class RentFragment extends Fragment {
         //notification  Activity
         binding.notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), NotificationActivity.class);
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        binding.addServiceBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AddServiceActivity.class);
+            intent.putExtra("loadDefault", "selectCategory");
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });

@@ -70,6 +70,8 @@
                     android:hint="@string/enter_your_name"
                     android:inputType="text"
                     android:paddingStart="12dp"
+                    android:paddingEnd="0dp"
+                    android:imeOptions="actionNext"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"/>
 
@@ -100,6 +102,8 @@
                     android:hint="@string/mobile_number"
                     android:inputType="phone"
                     android:paddingStart="12dp"
+                    android:paddingEnd="0dp"
+                    android:imeOptions="actionNext"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"/>
 
@@ -158,6 +162,8 @@
                     android:hint="@string/address"
                     android:inputType="text"
                     android:paddingStart="12dp"
+                    android:paddingEnd="0dp"
+                    android:imeOptions="actionDone"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"/>
 
@@ -216,6 +222,8 @@
                     android:maxLength="10"
                     android:inputType="text|textCapCharacters"
                     android:paddingStart="12dp"
+                    android:paddingEnd="0dp"
+                    android:imeOptions="actionDone"
                     android:textColor="@color/text_primary"
                     android:textColorHint="@color/text_secondary"/>
 

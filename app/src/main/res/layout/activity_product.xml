@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".partner.ProductActivity">
+
+        <RelativeLayout
+            android:background="@color/bg_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Toolbar-->
+            <RelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_toolbar_color"
+                android:elevation="2dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/subCategoryNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/backBtn"
+                    android:layout_centerVertical="true"
+                    android:text="@string/battery_exchange"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/callNowBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:background="@drawable/bg_card_clickable"
+                    android:padding="10dp"
+                    android:text="@string/lets_talk"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="@drawable/ic_call_outline"
+                    app:drawableTint="@color/icon_color" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="নতুন ব্যাটারি কিনুন বাজার মূল্যের চেয়ে কম দামে ।\nঅথবা আকর্ষনীয় মূল্যে পুরাতন ব্যাটারি বদল করে নিন নতুন ব্যাটারি"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/titleText"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorAnimationMode="elastic"
+                    app:tabTextColor="@color/tab_unselected_text"
+                    app:tabSelectedTextColor="@color/tab_selected_text"
+                    app:tabBackground="@drawable/tab_selector" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tabLayout"
+                    android:paddingTop="4dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

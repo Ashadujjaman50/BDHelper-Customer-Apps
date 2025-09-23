@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".partnerFragment.AddServiceFormFragment">
+
+        <ScrollView
+            android:layout_above="@+id/nextMenuBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--First Part Edit text-->
+            <LinearLayout
+                android:id="@+id/firstPartLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+
+                <!--Transport-->
+                <LinearLayout
+                    android:id="@+id/transportLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <!--Serial area and serial-->
+                    <LinearLayout
+                        android:id="@+id/serialLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/transportNameTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/transport"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/metroNameEt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="ঢাকা মেট্টো"
+                                android:padding="10dp"
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+                            <TextView
+                                android:id="@+id/serialCategoryEt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="সিরিয়াল"
+                                android:padding="10dp"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp"
+                                android:drawablePadding="10dp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+                            <EditText
+                                android:id="@+id/serialNumberEt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:autofillHints=""
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="105451"
+                                android:maxWidth="120dp"
+                                android:maxLength="6"
+                                android:letterSpacing="0.4"
+                                android:inputType="number"
+                                android:padding="10dp"
+                                android:imeOptions="actionDone"
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Truck And others-->
+                    <LinearLayout
+                        android:id="@+id/truckAndOthersLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:text="ট্রান্সপোর্ট মডেল ও ধরন"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="3dp">
+
+                            <EditText
+                                android:id="@+id/modelNumberEt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:autofillHints=""
+                                android:background="@drawable/bg_edit_text"
+                                android:fontFamily="@font/amaranth"
+                                android:hint="Ex: Tata Ex2"
+                                android:imeOptions="actionDone"
+                                android:padding="10dp"
+                                android:textSize="17sp" />
+
+                            <TextView
+                                android:id="@+id/categoryOrYearEt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="সিলেক্ট করুন"
+                                android:padding="10dp"
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp"
+                                android:drawablePadding="10dp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Only Car/ Micro bus-->
+                    <LinearLayout
+                        android:id="@+id/carAndMicroLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:text="গাড়ির মডেল ও সাল"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="3dp">
+
+                            <EditText
+                                android:id="@+id/carModelNumberEt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="Ex: Noha"
+                                android:inputType="textNoSuggestions"
+                                android:padding="10dp"
+                                android:maxLines="1"
+                                android:imeOptions="actionDone"
+                                android:textSize="17sp"
+                                tools:ignore="TextFields" />
+
+                            <EditText
+                                android:id="@+id/carYearEt"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="Year"
+                                android:inputType="number"
+                                android:padding="10dp"
+                                android:focusable="true"
+                                android:imeOptions="actionDone"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Only Ambulance / Charger van-->
+                    <LinearLayout
+                        android:id="@+id/ambulanceVanLL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/ambulanceVanTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:text="গাড়ির নাম ও টাইপ"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="3dp">
+
+                            <EditText
+                                android:id="@+id/chargerVanNameEt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="Ex: মায়ের দোয়া"
+                                android:padding="10dp"
+                                android:imeOptions="actionDone"
+                                android:textSize="17sp" />
+
+                            <!--Only Ambulance-->
+                            <TextView
+                                android:id="@+id/ambulanceCategoryEt"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:visibility="gone"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:drawablePadding="5dp"
+                                android:hint="সিলেক্ট করুন"
+                                android:padding="10dp"
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+
+                            <TextView
+                                android:id="@+id/ambulanceVanTypeEt"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_edit_text"
+                                android:hint="সিলেক্ট করুন"
+                                android:padding="10dp"
+                                android:textSize="17sp"
+                                android:drawablePadding="5dp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--Equipment-->
+                <LinearLayout
+                    android:id="@+id/equipmentLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="ধারণক্ষমতা ও ধরণ"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <TextView
+                            android:id="@+id/equipmentCapabilityEt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edit_text"
+                            android:hint="সিলেক্ট করুন"
+                            android:padding="10dp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="17sp"
+                            android:drawablePadding="5dp"
+                            app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+                        <TextView
+                            android:id="@+id/equipmentCategoryEt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edit_text"
+                            android:hint="সিলেক্ট করুন"
+                            android:padding="10dp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="17sp"
+                            android:drawablePadding="5dp"
+                            app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--Harvester-->
+                <LinearLayout
+                    android:id="@+id/harvesterLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/harvesterTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="হারভেস্টার নাম ও ক্যাটাগরি"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <EditText
+                            android:id="@+id/harvesterNameEt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:autofillHints=""
+                            android:background="@drawable/bg_edit_text"
+                            android:hint="Ex: এসিআই হারভেস্টার"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:imeOptions="actionDone"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/harvesterCategoryEt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edit_text"
+                            android:hint="সিলেক্ট করুন"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textSize="17sp"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/text_primary"
+                            app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--Home shifting-->
+                <LinearLayout
+                    android:id="@+id/homeOfficeShiftingLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="টিম লিডার"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/teamLeaderNameEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="লিডার এর নাম"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="টিম মেম্বার"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/teamMemberEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="যেমনঃ ১০ জন"
+                        android:padding="10dp"
+                        android:inputType="number"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="কাজের এরিয়া"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/workAreaEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="কোন এলাকায় কাজ করেন?"
+                        android:padding="10dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+                <!--Skill Labourer-->
+                <LinearLayout
+                    android:id="@+id/skilledLaborerLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/serviceSkillTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="কোন কোন সার্ভিসে দক্ষ?"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/serviceSkillEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="আপনার দক্ষতা লিখুন"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="কাজের অভিজ্ঞতা"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/serviceExperienceEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="যেমনঃ ৫ বছর"
+                        android:inputType="number"
+                        android:padding="10dp"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:padding="5dp"
+                        android:text="কাজের এরিয়া"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/serviceAreaEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edit_text"
+                        android:hint="কোন এলাকায় কাজ করতে পারবেন?"
+                        android:padding="10dp"
+                        android:imeOptions="actionDone"
+                        android:textColor="@color/text_primary"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/nextMenuBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/custom_button_gradient"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/continue_button"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+</layout>

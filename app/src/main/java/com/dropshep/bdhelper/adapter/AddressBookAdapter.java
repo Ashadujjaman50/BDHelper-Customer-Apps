@@ -54,7 +54,7 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
 
         holder.itemView.setOnClickListener(v -> {
             if (mListener != null){
-                mListener.onItemClick(v, holder.getAdapterPosition());
+                mListener.onItemClick(v, holder.getBindingAdapterPosition());
             }
         });
 
@@ -66,10 +66,10 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().equals("Edit")) {
-                    if (mListener != null) mListener.onShowItemClick(holder.getAdapterPosition());
+                    if (mListener != null) mListener.onShowItemClick(holder.getBindingAdapterPosition());
                     return true;
                 } else if (item.getTitle().equals("Delete")) {
-                    if (mListener != null) mListener.onDeleteItemClick(holder.getAdapterPosition());
+                    if (mListener != null) mListener.onDeleteItemClick(holder.getBindingAdapterPosition());
                     return true;
                 }
                 return false;
@@ -104,7 +104,7 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
         @Override
         public void onClick(View v) {
             if (mListener != null){
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION){
                     mListener.onItemClick(v, position);
                 }

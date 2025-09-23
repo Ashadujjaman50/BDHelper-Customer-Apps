@@ -395,7 +395,7 @@
                             android:layout_height="75dp"
                             android:background="@drawable/bg_gray_light"
                             android:padding="16dp"
-                            android:src="@drawable/ic_trailer"
+                            android:src="@drawable/ic_low_bed"
                             app:tint="@color/icon_color" />
 
                         <TextView

@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment {
         //loBed
         setAddressActivityClickListener(binding.loBetLl,
                 MyUtils.ROAD_TRANSPORT_ID,
-                MyUtils.LOW_BED_ID,
+                MyUtils.SUB_LOW_BED_ID,
                 getString(R.string.lo_bet));
 
         //Home shifting

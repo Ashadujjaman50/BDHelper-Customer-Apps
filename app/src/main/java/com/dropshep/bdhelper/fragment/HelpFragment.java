@@ -24,11 +24,13 @@ import com.dropshep.bdhelper.user.ServiceRequestActivity;
 import com.dropshep.bdhelper.databinding.FragmentHelpBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HelpFragment extends Fragment {
 
@@ -106,6 +108,7 @@ public class HelpFragment extends Fragment {
 
     }
 
+
     private void fetchSlides(View view, String slideType) {
 
         slideImageArrayList = new ArrayList<>();
@@ -113,34 +116,39 @@ public class HelpFragment extends Fragment {
         SliderView sliderView;
         sliderView = view.findViewById(R.id.imageSlider);
 
+        //SliderView
+        SliderAdapterAuto sliderAdapter = new SliderAdapterAuto(getContext(), slideImageArrayList);
+        sliderView.setSliderAdapter(sliderAdapter);
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        sliderView.setIndicatorVisibility(false);
+        sliderView.setScrollTimeInSec(3);
+        sliderView.setSliderAnimationDuration(1000);
+        sliderView.setIndicatorEnabled(false);
+        sliderView.startAutoCycle();
+        sliderView.setAutoCycle(true);
+
         db.collection("slides")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    slideImageArrayList.clear();
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        SlideImage slide = doc.toObject(SlideImage.class);
-                        if (slide != null && slide.getSlideType().equals(slideType)) {
-                            slideImageArrayList.add(slide);
-                        }
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.e("Firestore", "Error fetching slides", e);
+                        return;
                     }
 
-                    //SliderView
-                    sliderView.setSliderAdapter(new SliderAdapterAuto(getContext(), slideImageArrayList));
-                    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-                    sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-                    sliderView.setIndicatorVisibility(false);
-                    sliderView.setScrollTimeInSec(2); //set scroll delay in seconds :
-                    //sliderView.setSliderAnimationDuration(2);
-                    sliderView.setIndicatorEnabled(false);
-                    sliderView.startAutoCycle();
-                    sliderView.setAutoCycle(true);
+                    if (queryDocumentSnapshots != null) {
+                        List<SlideImage> newList = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            SlideImage slide = doc.toObject(SlideImage.class);
+                            if (slide != null && slide.getSlideType().equals(slideType)) {
+                                newList.add(slide);
+                            }
+                        }
 
-
-                })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching slides", e));
-
-
+                        // Adapter update করা হচ্ছে, নতুন instance না নেয়া
+                        sliderAdapter.updateList(newList);
+                    }
+                });
 
     }
 

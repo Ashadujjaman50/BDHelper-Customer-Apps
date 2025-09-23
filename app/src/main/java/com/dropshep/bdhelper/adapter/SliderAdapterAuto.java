@@ -17,6 +17,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.SliderAdapterVH> {
 
@@ -43,7 +44,7 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
         if (slideImage.getSlideImage() != null && !slideImage.getSlideImage().isEmpty()) {
             Picasso.get()
                     .load(slideImage.getSlideImage())
-                    .placeholder(R.drawable.ic_notice)
+                    .placeholder(R.drawable.demo_help_slide1)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(holder.imageViewBackground, new Callback() {
                         @Override
@@ -63,6 +64,12 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
     @Override
     public int getCount() {
         return slideImageArrayList.size();
+    }
+
+    public void updateList(List<SlideImage> newList) {
+        slideImageArrayList.clear();
+        slideImageArrayList.addAll(newList);
+        notifyDataSetChanged(); // smooth refresh
     }
 
     static class SliderAdapterVH extends SliderViewAdapter.ViewHolder{

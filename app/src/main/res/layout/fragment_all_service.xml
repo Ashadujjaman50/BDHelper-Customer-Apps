@@ -23,12 +23,14 @@
             android:textColor="@color/text_secondary" />
 
         <!--Demo-->
-        <include layout="@layout/row_rent_service" />
+        <!--<include layout="@layout/row_rent_service" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allRentServiceRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/row_rent_service" />
 

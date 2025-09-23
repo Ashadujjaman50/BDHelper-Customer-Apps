@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.InputFilter;
@@ -20,9 +22,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
+import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
@@ -40,6 +44,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -192,18 +197,6 @@ public class PartnerRegisterFragment extends Fragment {
             // Ensure unique referral code before saving
             ensureUniqueReferralCode(userId, userMap, inputReferralCode);
 
-            /*FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(userId)
-                    .set(userMap)
-                    .addOnSuccessListener(unused -> {
-                        prefHelper.remove("userSignWith");
-                        // Success
-                        gotoNextActivity();
-                    })
-                    .addOnFailureListener(e -> {
-                        // Error
-                    });*/
 
         }
 
@@ -300,14 +293,17 @@ public class PartnerRegisterFragment extends Fragment {
     }
 
     private void showBottomPopUpDistrictList() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
         View view = LayoutInflater.from(requireContext())
-                .inflate(R.layout.bottom_sheet_dialog_listview,
+                .inflate(R.layout.bottom_sheet_dialog_recycleview,
                         bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
                         false);
         bottomSheetDialog.setContentView(view);
 
-        ListView listView = view.findViewById(R.id.listView);
+        TextView titleTv = view.findViewById(R.id.titleTv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
+        titleTv.setText("Select District");
 
         // ভাষা অনুযায়ী display list, কিন্তু ইংরেজি লিস্ট সবসময় দরকার হবে Database-এর জন্য
         String[] districtListEng = MyUtils.DISTRICT_ENG;
@@ -319,36 +315,42 @@ public class PartnerRegisterFragment extends Fragment {
         // UI-তে যেটা দেখাবে
         String[] displayList = isBangla ? districtListBan : districtListEng;
 
-        listView.setAdapter(new ArrayAdapter<>(
-                requireContext(),
-                R.layout.single_listview_item,
-                R.id.listItem,
-                displayList
-        ));
 
-        // ✅ BottomSheet fixed height + prevent dismiss on swipe
-        FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        if (bottomSheet != null) {
-            BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(bottomSheet);
-            behavior.setPeekHeight((int) (400 * getResources().getDisplayMetrics().density)); // fixed height in dp
-            behavior.setDraggable(false); // disable swipe-to-dismiss
-        }
-
-        // ✅ কেবল select করলে dismiss হবে
-        binding.districtET.setOnClickListener(v -> {
-            bottomSheetDialog.show();
-
-            listView.setOnItemClickListener((parent, view1, position, id) -> {
-                binding.districtET.setText(displayList[position]);
-
-                selectDistrict = isBangla ? districtListEng[position] : displayList[position];
-
-
-                // 🔹 Error clear করে normal background apply
-                binding.districtET.setBackgroundResource(R.drawable.bg_edit_text);
-                bottomSheetDialog.dismiss();
-            });
+        // Adapter
+        DistrictAdapter adapter = new DistrictAdapter(Arrays.asList(displayList), (item, position) -> {
+            binding.districtET.setText(item); // UI text (localised)
+            selectDistrict = isBangla ? districtListEng[position] : item; // DB-র জন্য always ইংরেজি
+            bottomSheetDialog.dismiss();
         });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        // Important: modify bottom-sheet AFTER it is shown -> use onShowListener
+        bottomSheetDialog.setOnShowListener(dialog -> {
+            FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                int heightPx = dpToPx(400); // fixed 400dp height
+
+                // Force the bottomSheet container height to 400dp
+                bottomSheet.getLayoutParams().height = heightPx;
+                bottomSheet.requestLayout();
+
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setPeekHeight(heightPx);           // peek at 400dp
+                behavior.setDraggable(true);               // allow dragging / scrolling
+                behavior.setHideable(true);                // optional
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED); // show at peekHeight
+            }
+        });
+
+        binding.districtET.setOnClickListener(v -> bottomSheetDialog.show());
+    }
+
+    // helper
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
     private void notification(String type, String userId, Object msg) {

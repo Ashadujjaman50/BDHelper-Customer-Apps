@@ -254,6 +254,7 @@
                     android:weightSum="2">
 
                     <LinearLayout
+                        android:id="@+id/batteryLl"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -282,6 +283,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/jobCircularLl"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

@@ -22,7 +22,6 @@ public class MyUtils {
     public static final String ROAD_TRANSPORT_ID = "-OWJvq2HExIAqHIATCTc";
     public static final String EQUIPMENT_ID = "-OWVR_LBx03T4y98N8VR";
     public static final String HARVESTER_MACHINE_ID = "-OWJvtXbXXYNjGM1ttcU";
-    public static final String LOW_BED_ID = "-OWJvvxO6A1ezibkqAAx";
     public static final String RENT_A_CAR_ID = "-OWJvxnxxbs3Alch9VIn";
     public static final String HOME_SHIFTING_ID = "-OWJvrzJrq10W_aIoSnu";
     public static final String SKILLED_LABOR_ID = "-OWJvzPzpMSuEzbxfzLV";
@@ -38,6 +37,7 @@ public class MyUtils {
     public static final String SUB_CHARGER_VAN_ID = "-OWJwEnEWXMfVD3uK2GV";
     public static final String SUB_TRAILER_ID = "-OWJwGSAbWdjhbAf3i11";
     public static final String SUB_DUMP_TRUCK_ID = "-OWJwHrU2MUq77hwkPjS";
+    public static final String SUB_LOW_BED_ID = "-OWJvvxO6A1ezibkqAAx";
 
 
 
@@ -72,6 +72,46 @@ public class MyUtils {
             "Nagad",
             "Rocket",
             "uPay"
+     };
+
+     public static String[] SERIAL_BAN = {
+             "অ",
+             "ই",
+             "উ",
+             "ক",
+             "খ",
+             "গ",
+             "ঘ",
+             "ঙ",
+             "চ",
+             "ছ",
+             "ট",
+             "ঠ",
+             "ড",
+             "ঢ",
+             "ন",
+             "ম",
+             "শ"
+     };
+
+     public static String[] SERIAL_ENG = {
+             "AA",
+             "EE",
+             "UO",
+             "Ka",
+             "Kha",
+             "Ga",
+             "Gha",
+             "Uma",
+             "Ca",
+             "Cha",
+             "Ta",
+             "Tha",
+             "Da",
+             "Dha",
+             "Na",
+             "Ma",
+             "Sa"
      };
 
     public static String[] DISTRICT_BAN = {
@@ -149,6 +189,168 @@ public class MyUtils {
     };
 
     public static String[] DISTRICT_ENG = {
+            "Dhaka",
+            "Narayanganj",
+            "Gazipur",
+            "Faridpur",
+            "Kishorgonj",
+            "Rajbari",
+            "Tangail",
+            "Narsingdi",
+            "Shariatpur",
+            "Manikgonj",
+            "Munshigonj",
+            "Gopalgonj",
+            "Madaripur",
+
+            "Brahmanbaria",
+            "Chattogram",
+            "Bandarban",
+            "Rangamati",
+            "Cumilla",
+            "Noakhali",
+            "CoxsBazar",
+            "Chandpur",
+            "Feni",
+            "Khagrasori",
+            "Lokkhipur",
+
+            "Barisal",
+            "Barguna",
+            "Bhola",
+            "Patuakhali",
+            "Pirojpur",
+            "Jhalokati",
+
+            "Jashore",
+            "Chuadanga",
+            "Satkhira",
+            "Bagerhat",
+            "Kustia",
+            "Khulna",
+            "Meherpur",
+            "Jhenaidah",
+            "Norail",
+            "Magura",
+
+            "Lalmonirhat",
+            "Ponchogor",
+            "Rangpur",
+            "Thakurgaon",
+            "Kurigram",
+            "Dinajpur",
+            "Nilfamari",
+            "Gaibandha",
+
+            "Bagura",
+            "Joypurhat",
+            "Pabna",
+            "Nouga",
+            "Natore",
+            "Rajshahi",
+            "Sirajgonj",
+            "Chapainawabganj",
+
+            "Habiganj",
+            "Moulvibazar",
+            "Sylhet",
+            "Sunamgonj",
+
+            "Netrokona",
+            "Mymensingh",
+            "Jamalpur",
+            "Sherpur"
+    };
+
+    public static String[] METRO_LIST_BAN = {
+            "ঢাকা মেট্টো",
+            "চট্টগ্রাম মেট্টো",
+            "সিলেট মেট্টো",
+            "রাজশাহী মেট্টো",
+            "খুলনা মেট্টো",
+            "রংপুর মেট্টো",
+            "বরিশাল মেট্টো",
+            "ঢাকা",
+            "গাজীপুর",
+            "নারায়ণগঞ্জ",
+            "টাঙ্গাইল",
+            "মানিকগঞ্জ",
+            "মুন্সিগঞ্জ",
+            "ফরিদপুর",
+            "রাজবাড়ী",
+            "নরসিংদী",
+            "কিশোরগঞ্জ",
+            "শরীয়তপুর",
+            "গোপালগঞ্জ",
+            "মাদারীপুর",
+
+            "চট্টগ্রাম",
+            "কুমিল্লা",
+            "ফেনী",
+            "ব্রাহ্মণবাড়িয়া",
+            "নোয়াখালী",
+            "চাঁদপুর",
+            "লক্ষ্মীপুর",
+            "বান্দরবন",
+            "রাঙ্গামাটি",
+            "কক্সবাজার",
+            "খাগড়াছড়ি",
+
+            "বরিশাল",
+            "বরগুনা",
+            "ভোলা",
+            "পটুয়াখালী",
+            "পিরোজপুর",
+            "ঝালোকাঠি",
+
+            "খুলনা",
+            "কুষ্টিয়া",
+            "যশোর",
+            "চুয়াডাঙ্গা",
+            "সাতক্ষীরা",
+            "বাগেরহাট",
+            "মেহেরপুর",
+            "ঝিনাইদাহ",
+            "নড়াইল",
+            "মাগুরা",
+
+            "রংপুর",
+            "পঞ্চগড়",
+            "ঠাকুরগাও",
+            "কুড়িগ্রাম",
+            "দিনাজপুর",
+            "নীলফামারী",
+            "লালমনিরহাট",
+            "গাইবান্দা",
+
+            "রাজশাহী",
+            "পাবনা",
+            "বগুড়া",
+            "জয়পুরহাট",
+            "নওগাঁ",
+            "নাটোর",
+            "সিরাজগঞ্জ",
+            "চাপাইনবাবগঞ্জ",
+
+            "সিলেট",
+            "হবিগঞ্জ",
+            "মৌলভীবাজার",
+            "সুনামগঞ্জ",
+
+            "ময়মনসিংহ",
+            "নেত্রকোনা",
+            "জামালপুর",
+            "শেরপুর"
+    };
+
+    public static String[] METRO_LIST_ENG = {
+            "Dhaka Metro",
+            "Chattogram Metro",
+            "Sylhet Metro",
+            "Rajshahi Metro",
+            "Khulna Metro",
+            "Rangpur Metro",
+            "Barisal Metro",
             "Dhaka",
             "Narayanganj",
             "Gazipur",

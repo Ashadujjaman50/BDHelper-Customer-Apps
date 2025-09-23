@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rentLL"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/fontStyle"
+    app:cardBackgroundColor="@color/service_card_bg_color"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="5dp">
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,9 +25,10 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_gravity="center_vertical"
-                    android:layout_width="80dp"
+                    android:layout_width="85dp"
                     android:layout_height="75dp"
                     android:elevation="5dp"
+                    app:cardBackgroundColor="@color/card_bg_color"
                     app:cardCornerRadius="6dp">
 
                     <ImageView
@@ -54,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Sub Category"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:drawablePadding="5dp" />
@@ -71,7 +70,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Registration"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -80,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Model"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_secondary"
                         android:textSize="15sp" />
 
                     <TextView
@@ -88,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="category or year"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_secondary"
                         android:textSize="15sp" />
 
 
@@ -128,16 +127,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/white"
-            android:drawablePadding="5dp"
             android:gravity="center"
             android:paddingHorizontal="10dp"
             android:paddingVertical="3dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/rent_service_verification_pending"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/warning"
             android:textSize="13sp"
             android:textStyle="bold"
             android:visibility="gone"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_pending" />
 
         <!--Info pending message-->
@@ -146,16 +145,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/white"
-            android:drawablePadding="5dp"
             android:gravity="center"
             android:paddingHorizontal="10dp"
             android:paddingVertical="3dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/rent_service_verified_warning"
-            android:textColor="@color/warning"
+            android:textColor="@color/red"
             android:textSize="13sp"
             android:textStyle="bold"
             android:visibility="gone"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_reject_red" />
 
     </LinearLayout>

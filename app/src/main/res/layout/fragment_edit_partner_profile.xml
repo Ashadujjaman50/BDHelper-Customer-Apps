@@ -292,11 +292,11 @@
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@id/mapDistrictIcon"
                         android:background="@drawable/bg_edit_text"
-                        android:drawablePadding="10dp"
                         android:hint="@string/district"
                         android:textColor="@color/text_primary"
                         android:padding="10dp"
                         android:textSize="16sp"
+                        android:drawablePadding="10dp"
                         app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
                 </RelativeLayout>

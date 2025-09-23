@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropshep.bdhelper.R;
+import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.databinding.FragmentEditUserProfileBinding;
 import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
@@ -32,6 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +48,7 @@ public class EditUserProfileFragment extends Fragment {
     String userId;
 
     private LoadingDialog loadingDialog;
-    String selectedDistrict;
+    String selectDistrict;
 
     public EditUserProfileFragment() {
         // Required empty public constructor
@@ -88,7 +92,7 @@ public class EditUserProfileFragment extends Fragment {
         String name = binding.userNameEt.getText().toString().trim();
         String mobile = binding.userMobileEt.getText().toString().trim();
         String location = binding.userLocationEt.getText().toString().trim();
-        selectedDistrict = binding.userDistrictEt.getText().toString().trim();
+        selectDistrict = binding.userDistrictEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)) {
             setErrorWatcher(binding.userNameEt, true);
@@ -102,7 +106,7 @@ public class EditUserProfileFragment extends Fragment {
             setErrorWatcher(binding.userLocationEt, true);
             Toast.makeText(requireActivity(), "আপনার ঠিকানা লিখুন", Toast.LENGTH_SHORT).show();
         }
-        else if (TextUtils.isEmpty(selectedDistrict)) {
+        else if (TextUtils.isEmpty(selectDistrict)) {
             binding.userDistrictEt.setBackgroundResource(R.drawable.bg_edit_text_error);
             Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
         }
@@ -120,7 +124,7 @@ public class EditUserProfileFragment extends Fragment {
             //updateMap .put("nidNo", "");
             //updateMap .put("nidVerify", "false");
             //updateMap .put("userDob", "");
-            updateMap .put("district", selectedDistrict);
+            updateMap .put("district", selectDistrict);
             updateMap .put("location", location);
             //updateMap .put("businessName", businessName);  // only for partner
             //updateMap .put("verifyStatus", "pending");     // only for partner
@@ -173,7 +177,7 @@ public class EditUserProfileFragment extends Fragment {
                         String phone = documentSnapshot.getString("phone");
                         String email = documentSnapshot.getString("email");
                         String location = documentSnapshot.getString("location");
-                        selectedDistrict = documentSnapshot.getString("district"); // Always English
+                        selectDistrict = documentSnapshot.getString("district"); // Always English
 
                         binding.userNameEt.setText(name);
                         binding.userMobileEt.setText(phone);
@@ -183,7 +187,7 @@ public class EditUserProfileFragment extends Fragment {
                         binding.userEmailEt.setEnabled(false);
 
                         // 🔁 ভাষা চেক করে District নাম বাংলা দেখাও
-                        String shownDistrict = Replacement.getLocalizedDistrict(requireActivity(), selectedDistrict);
+                        String shownDistrict = Replacement.getLocalizedDistrict(requireActivity(), selectDistrict);
                         binding.userDistrictEt.setText(shownDistrict);
                     }
                 })
@@ -193,18 +197,17 @@ public class EditUserProfileFragment extends Fragment {
     }
 
 
-
     @SuppressLint("SetTextI18n")
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
         View view = LayoutInflater.from(requireContext())
-                .inflate(R.layout.bottom_sheet_dialog_listview,
+                .inflate(R.layout.bottom_sheet_dialog_recycleview,
                         bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
                         false);
         bottomSheetDialog.setContentView(view);
 
         TextView titleTv = view.findViewById(R.id.titleTv);
-        ListView listView = view.findViewById(R.id.listView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
         titleTv.setText("Select District");
 
@@ -218,38 +221,42 @@ public class EditUserProfileFragment extends Fragment {
         // UI-তে যেটা দেখাবে
         String[] displayList = isBangla ? districtListBan : districtListEng;
 
-        listView.setAdapter(new ArrayAdapter<>(
-                requireActivity(),
-                R.layout.single_listview_item,
-                R.id.listItem,
-                displayList
-        ));
 
-        // ✅ BottomSheet fixed height + prevent dismiss on swipe
-        bottomSheetDialog.setContentView(view);
+        // Adapter
+        DistrictAdapter adapter = new DistrictAdapter(Arrays.asList(displayList), (item, position) -> {
+            binding.userDistrictEt.setText(item); // UI text (localised)
+            selectDistrict = isBangla ? districtListEng[position] : item; // DB-র জন্য always ইংরেজি
+            bottomSheetDialog.dismiss();
+        });
 
-        bottomSheetDialog.setOnShowListener(dialogInterface -> {
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        // Important: modify bottom-sheet AFTER it is shown -> use onShowListener
+        bottomSheetDialog.setOnShowListener(dialog -> {
             FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             if (bottomSheet != null) {
-                BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(bottomSheet);
-                behavior.setPeekHeight((int) (400 * getResources().getDisplayMetrics().density));
-                behavior.setDraggable(false);
+                int heightPx = dpToPx(400); // fixed 400dp height
+
+                // Force the bottomSheet container height to 400dp
+                bottomSheet.getLayoutParams().height = heightPx;
+                bottomSheet.requestLayout();
+
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setPeekHeight(heightPx);           // peek at 400dp
+                behavior.setDraggable(true);               // allow dragging / scrolling
+                behavior.setHideable(true);                // optional
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED); // show at peekHeight
             }
         });
 
+        binding.userDistrictEt.setOnClickListener(v -> bottomSheetDialog.show());
+    }
 
-        // ✅ Select করলে Toast করবে ইংরেজি নাম দিয়ে
-        binding.userDistrictEt.setOnClickListener(v -> {
-            bottomSheetDialog.show();
-
-            listView.setOnItemClickListener((parent, view1, position, id) -> {
-                binding.userDistrictEt.setText(displayList[position]); // UI-তে যা দেখা যাচ্ছে সেটাই রাখো
-
-                selectedDistrict = isBangla ? districtListEng[position] : displayList[position];
-
-                bottomSheetDialog.dismiss();
-            });
-        });
+    // helper
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
 }

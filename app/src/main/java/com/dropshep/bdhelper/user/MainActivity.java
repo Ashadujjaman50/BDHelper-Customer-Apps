@@ -48,7 +48,6 @@ public class MainActivity extends BaseActivity {
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
 
-
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);

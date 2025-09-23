@@ -15,10 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.AdapterServiceRequest;
+import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.databinding.ActivityServiceRequestBinding;
 import com.dropshep.bdhelper.model.ModelServiceRequest;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
@@ -37,6 +39,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,45 +142,61 @@ public class ServiceRequestActivity extends BaseActivity {
     private void showBottomPopUpDistrictList() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ServiceRequestActivity.this);
         View view = LayoutInflater.from(this)
-                .inflate(R.layout.bottom_sheet_dialog_listview,
+                .inflate(R.layout.bottom_sheet_dialog_recycleview,
                         bottomSheetDialog.getDelegate().findViewById(com.google.android.material. R.id.design_bottom_sheet),
                         false);
         bottomSheetDialog.setContentView(view);
 
-        ListView listView = view.findViewById(R.id.listView);
+        TextView titleTv = view.findViewById(R.id.titleTv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
-        // ভাষা অনুযায়ী ডেটা লোড
-        String[] districtList = LocaleHelper.getLanguage(ServiceRequestActivity.this).equals("bn") ?
-                MyUtils.DISTRICT_BAN : MyUtils.DISTRICT_ENG;
+        titleTv.setText("Select District");
 
-        listView.setAdapter(new ArrayAdapter<>(
-                ServiceRequestActivity.this,
-                R.layout.single_listview_item,
-                R.id.listItem,
-                districtList
-        ));
+        // ভাষা অনুযায়ী display list, কিন্তু ইংরেজি লিস্ট সবসময় দরকার হবে Database-এর জন্য
+        String[] districtListEng = MyUtils.DISTRICT_ENG;
+        String[] districtListBan = MyUtils.DISTRICT_BAN;
 
-        // ✅ BottomSheet fixed height + prevent dismiss on swipe
-        FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        if (bottomSheet != null) {
-            BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(bottomSheet);
-            behavior.setPeekHeight((int) (400 * getResources().getDisplayMetrics().density)); // fixed height in dp
-            behavior.setDraggable(false); // disable swipe-to-dismiss
-        }
+        // কোন ভাষা চালু আছে
+        boolean isBangla = LocaleHelper.getLanguage(ServiceRequestActivity.this).equals("bn");
 
-        // ✅ কেবল select করলে dismiss হবে
-        binding.districtEt.setOnClickListener(v -> {
-            bottomSheetDialog.show();
+        // UI-তে যেটা দেখাবে
+        String[] displayList = isBangla ? districtListBan : districtListEng;
 
-            listView.setOnItemClickListener((parent, view1, position, id) -> {
-                binding.districtEt.setText(districtList[position]);
-                selectDistrict = MyUtils.DISTRICT_ENG[position];
-
-                // 🔹 Error clear করে normal background apply
-                binding.districtEt.setBackgroundResource(R.drawable.bg_edit_text);
-                bottomSheetDialog.dismiss();
-            });
+        // Adapter
+        DistrictAdapter adapter = new DistrictAdapter(Arrays.asList(displayList), (item, position) -> {
+            binding.districtEt.setText(item); // UI text (localised)
+            selectDistrict = isBangla ? districtListEng[position] : item; // DB-র জন্য always ইংরেজি
+            bottomSheetDialog.dismiss();
         });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(ServiceRequestActivity.this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        // Important: modify bottom-sheet AFTER it is shown -> use onShowListener
+        bottomSheetDialog.setOnShowListener(dialog -> {
+            FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                int heightPx = dpToPx(400); // fixed 400dp height
+
+                // Force the bottomSheet container height to 400dp
+                bottomSheet.getLayoutParams().height = heightPx;
+                bottomSheet.requestLayout();
+
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setPeekHeight(heightPx);           // peek at 400dp
+                behavior.setDraggable(true);               // allow dragging / scrolling
+                behavior.setHideable(true);                // optional
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED); // show at peekHeight
+            }
+        });
+
+        binding.districtEt.setOnClickListener(v -> bottomSheetDialog.show());
+    }
+
+    // helper
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
     private void setErrorWatcher(View view, boolean hasError) {

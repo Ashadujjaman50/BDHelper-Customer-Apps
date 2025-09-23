@@ -22,6 +22,8 @@ import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentMainBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
 import com.dropshep.bdhelper.model.SlideImage;
+import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -83,6 +85,18 @@ public class MainFragment extends Fragment {
             intent.putExtra("adminID", "MxAvxVfrmCOeIvZZ8sh8W8XTAU23");
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        //battery
+        binding.batteryLl.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ProductActivity.class);
+            intent.putExtra("productType", "battery");
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        binding.jobCircularLl.setOnClickListener(v -> {
+            MyToast.showShort(getContext(), "শীঘ্রই আসছে...");
         });
 
         fetchSlides(view);

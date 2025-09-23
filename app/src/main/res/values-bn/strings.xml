@@ -45,6 +45,9 @@
     <string name="set_map">সেট ম্যাপ</string>
     <string name="division">বিভাগ</string>
     <string name="address_book">অ্যাড্রেসবুক</string>
+    <string name="select_metro">সিলেক্ট মেট্টো</string>
+    <string name="select_serial">সিলেক্ট সিরিয়াল</string>
+    <string name="select">সিলেক্ট করুন</string>
 
     <!--Trending/Popular/Promo/Recommended-->
     <string name="trending">ট্রেন্ডিং</string>
@@ -401,7 +404,7 @@
     <string name="six_Line_machine">৬ সারির যন্ত্র</string>
 
     <!--Tractor-->
-    <string name="standard_tractor">আদর্শ ট্রাক্টর</string>
+    <string name="standard_tractor">স্ট্যান্ডার্ড ট্রাক্টর</string>
     <string name="mini_tractor">মিনি ট্রাক্টর</string>
 
     <string name="power_tiller">পাওয়ার টিলার</string>
@@ -478,8 +481,7 @@
     <string name="nid_back_picture">এনআইডি পেছনের ছবি</string>
     <string name="upload">আপলোড করুন</string>
     <string name="camera">ক্যামেরা</string>
-    <string name="gallery">ক্যামেরা</string>
-
+    <string name="gallery">গ্যালারি</string>
 
 
     <!--Partner Part-->
@@ -493,6 +495,12 @@
     <string name="job_recruitment">নিয়োগ / বিজ্ঞপ্তি</string>
     <string name="profile_update">প্রোফাইল আপডেট</string>
     <string name="category_change">ক্যাটাগরি চেঞ্জ</string>
+
+    <!--Battery Sale-->
+    <string name="acid_battery">এসিড ব্যাটারি</string>
+    <string name="dry_battery">ড্রাই ব্যাটারি</string>
+    <string name="twelve_volte">১২ ভোল্ট</string>
+    <string name="twenty_four_volte">২৪ ভোল্ট</string>
 
     <!--more Fragment-->
     <string name="company_commission">কোম্পানি পাবে</string>
@@ -522,7 +530,7 @@
     <string name="uPay">উপায়</string>
 
     <!--All Rent Service-->
-    <string name="rent_service_verification_pending">আপনার সার্ভিসটি যাচাই করে শিগগিরই ভেরিফিকেশন সম্পন্ন করা হবে।</string>
+    <string name="rent_service_verification_pending">সার্ভিসটি যাচাই প্রক্রিয়াধীন, শীঘ্রই ভেরিফিকেশন সম্পন্ন হবে।</string>
     <string name="warning_message">আপনি রেজিস্ট্রেশনের সময় যে ক্যাটাগরি গুলো সিলেক্ট করেছেন,
         শুধুমাত্র সেই ক্যাটাগরির সার্ভিস গুলো যুক্ত করুন। কারন আপনার সিলেক্ট করা ক্যাটাগরি অনুযায়ী আপনার কাছে বিড দেখা যাবে।
         ক্যাটাগরি চেঞ্জ করতে বিডি হেল্পার এর সাথে যোগাযোগ করুন</string>

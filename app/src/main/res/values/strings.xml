@@ -45,6 +45,9 @@
     <string name="set_map">Set map</string>
     <string name="division">Division</string>
     <string name="address_book">Address book</string>
+    <string name="select_metro">Select Metro</string>
+    <string name="select_serial">Select Serial</string>
+    <string name="select">Select</string>
 
     <!--Trending/Popular/Promo/Recommended-->
     <string name="trending">Trending</string>
@@ -492,6 +495,12 @@
     <string name="profile_update">Profile update</string>
     <string name="category_change">Category change</string>
 
+    <!--Battery Sale-->
+    <string name="acid_battery">Acid Battery</string>
+    <string name="dry_battery">Dry Battery</string>
+    <string name="twelve_volte">12v</string>
+    <string name="twenty_four_volte">24v</string>
+
 
     <!--more Fragment-->
     <string name="company_commission">Company will get</string>
@@ -521,7 +530,7 @@
     <string name="uPay">uPay</string>
 
     <!--All Rent Service-->
-    <string name="rent_service_verification_pending">Your service is being reviewed and will be verified soon.</string>
+    <string name="rent_service_verification_pending">Your service will be reviewed and verified soon.</string>
     <string name="warning_message">Add services only from selected registration categories.
         Bids are shown based on category.
         Contact BD Helper to change it</string>

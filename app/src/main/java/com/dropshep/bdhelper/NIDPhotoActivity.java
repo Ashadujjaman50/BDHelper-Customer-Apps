@@ -198,13 +198,12 @@ public class NIDPhotoActivity extends BaseActivity {
         options.setStatusBarColor(ContextCompat.getColor(this, R.color.gray_mid));
         options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.gray));
 
-        UCrop.of(sourceUri, destinationUri)
+        UCrop uCrop = UCrop.of(sourceUri, destinationUri)
                 .withAspectRatio(340, 210)
                 .withMaxResultSize(1080, 1080)
-                .withOptions(options)
-                .getIntent(this);
+                .withOptions(options);
 
-        cropImageLauncher.launch(UCrop.of(sourceUri, destinationUri).withOptions(options).getIntent(this));
+        cropImageLauncher.launch(uCrop.getIntent(this));
     }
 
     private final ActivityResultLauncher<Intent> cropImageLauncher = registerForActivityResult(

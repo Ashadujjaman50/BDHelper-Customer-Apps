@@ -181,6 +181,8 @@ public class PaymentAccountFragment extends Fragment {
         // Submit button -> Firestore Update
         submitBtn.setText(getString(R.string.update)); // Add নয়, Update দেখাও
         submitBtn.setOnClickListener(v -> {
+            loadingDialog.setMessage("একাউন্টের তথ্য আপডেট করা হচ্ছে...");
+
             String accountName = "";
             if (bkashRB.isChecked()) accountName = "bKash";
             else if (nagadRB.isChecked()) accountName = "Nagad";
@@ -206,6 +208,8 @@ public class PaymentAccountFragment extends Fragment {
                 accountTypeEt.requestFocus();
                 return;
             }
+
+            loadingDialog.show();
 
             // Prepare update map
             Map<String, Object> updateMap = new HashMap<>();
@@ -242,8 +246,10 @@ public class PaymentAccountFragment extends Fragment {
                             batch.commit().addOnSuccessListener(unused -> {
                                 MyToast.showShort(requireContext(), "Account updated");
                                 bottomSheetDialog.dismiss();
+                                loadingDialog.dismiss();
                                 loadData();
                             }).addOnFailureListener(e -> {
+                                loadingDialog.dismiss();
                                 MyToast.showShort(requireContext(), "Update failed: " + e.getMessage());
                             });
                         });
@@ -258,9 +264,11 @@ public class PaymentAccountFragment extends Fragment {
                         .addOnSuccessListener(unused -> {
                             MyToast.showShort(requireContext(), "Account updated");
                             bottomSheetDialog.dismiss();
+                            loadingDialog.dismiss();
                             loadData();
                         })
                         .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
                             MyToast.showShort(requireContext(), "Update failed: " + e.getMessage());
                         });
             }
@@ -385,6 +393,10 @@ public class PaymentAccountFragment extends Fragment {
         });
 
         submitBtn.setOnClickListener(v -> {
+            loadingDialog.setMessage("আপনার একাউন্ট যোগ করা হচ্ছে");
+
+
+
             // 1. Get selected payment method
             String accountName = "";
             if (bkashRB.isChecked()) accountName = "bKash";
@@ -417,40 +429,7 @@ public class PaymentAccountFragment extends Fragment {
                 return;
             }
 
-            /*// Firestore reference
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            // Create unique document ID
-            String docId = db.collection("paymentAccount")
-                    .document(userId)
-                    .collection("accounts")
-                    .document()
-                    .getId(); // Firestore auto-I
-
-            // Prepare account data
-            Map<String, Object> accountMap = new HashMap<>();
-            accountMap.put("accountId", docId);                  // Document ID
-            accountMap.put("accountName", accountName.trim());   // Ex: "বিকাশ"
-            accountMap.put("accountNumber", accountNumber.trim());
-            accountMap.put("contactName", accountType.trim());
-            accountMap.put("isPrimary", setPrimary);              //Ex: Default/No
-            accountMap.put("timestamp", FieldValue.serverTimestamp()); // Firestore server timestamp
-
-            // Save to Firestore
-            db.collection("paymentAccount")
-                    .document(userId)
-                    .collection("accounts")
-                    .document(docId)
-                    .set(accountMap, SetOptions.merge())
-                    .addOnSuccessListener(unused -> {
-                        loadData();
-                        bottomSheetDialog.dismiss();
-                        MyToast.showShort(requireContext(), "Account saved successfully");
-                    })
-                    .addOnFailureListener(e -> {
-                        bottomSheetDialog.dismiss();
-                        MyToast.showShort(requireContext(), "Failed to save: " + e.getMessage());
-                    });*/
+            loadingDialog.show();
 
 
             // Create unique document ID
@@ -495,10 +474,12 @@ public class PaymentAccountFragment extends Fragment {
                             batch.commit()
                                     .addOnSuccessListener(unused -> {
                                         loadData();
+                                        loadingDialog.dismiss();
                                         bottomSheetDialog.dismiss();
                                         MyToast.showShort(requireContext(), "Account saved successfully");
                                     })
                                     .addOnFailureListener(e -> {
+                                        loadingDialog.dismiss();
                                         bottomSheetDialog.dismiss();
                                         MyToast.showShort(requireContext(), "Failed: " + e.getMessage());
                                     });
@@ -516,10 +497,12 @@ public class PaymentAccountFragment extends Fragment {
                         .set(accountMap, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
                             loadData();
+                            loadingDialog.dismiss();
                             bottomSheetDialog.dismiss();
                             MyToast.showShort(requireContext(), "Account saved successfully");
                         })
                         .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
                             bottomSheetDialog.dismiss();
                             MyToast.showShort(requireContext(), "Failed to save: " + e.getMessage());
                         });
@@ -528,8 +511,6 @@ public class PaymentAccountFragment extends Fragment {
 
 
         });
-
-
 
         bottomSheetDialog.show();
     }

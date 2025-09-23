@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".partner.ServiceDocumentActivity">
+
+        <RelativeLayout
+            android:background="@color/bg_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Toolbar-->
+            <RelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_toolbar_color"
+                android:elevation="2dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/subCategoryNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/backBtn"
+                    android:layout_centerVertical="true"
+                    android:text="ক্যাটাগরি সিলেক্ট করুন"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <!--Second Part Image/Photo-->
+
+            <LinearLayout
+                android:id="@+id/secondPartLL"
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Single Card View -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/brtaCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/service_card_bg_color"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="90dp"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/brtaDocumentIv"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="12dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/brta_copy" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="(BRTA) প্রদত্ত গাড়ির কাগজের ছবি"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:ellipsize="end"
+                                android:singleLine="true" />
+
+                            <Button
+                                android:id="@+id/brtaDocumentBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:paddingHorizontal="16dp"
+                                android:text="@string/upload"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                app:drawableLeftCompat="@drawable/ic_upload_black"
+                                android:drawablePadding="5dp"
+                                android:drawableTint="@color/white"
+                                android:backgroundTint="@color/primaryMid" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--Transport Card View -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/transportCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    app:cardBackgroundColor="@color/service_card_bg_color"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="90dp"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/transportIv"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="12dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/truck_font_pic" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/subCategoryTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="গাড়ির সামনের ছবি (নাম্বার প্লেট সহ)"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:ellipsize="end"
+                                android:singleLine="true" />
+
+                            <Button
+                                android:id="@+id/transportBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:paddingHorizontal="16dp"
+                                android:text="@string/upload"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                app:drawableLeftCompat="@drawable/ic_upload_black"
+                                android:drawablePadding="5dp"
+                                android:drawableTint="@color/white"
+                                android:backgroundTint="@color/primaryMid" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Driving Licence -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/drivingLicenceCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/service_card_bg_color"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="1dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="90dp"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/drivingLicenceIv"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="12dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/driving_licence" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ড্রাইভিং লাইসেন্স এর ছবি"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:ellipsize="end"
+                                android:singleLine="true" />
+
+                            <Button
+                                android:id="@+id/drivingLicenceBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:paddingHorizontal="16dp"
+                                android:text="@string/upload"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                app:drawableLeftCompat="@drawable/ic_upload_black"
+                                android:drawablePadding="5dp"
+                                android:drawableTint="@color/white"
+                                android:backgroundTint="@color/primaryMid" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/submitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/custom_button_gradient"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

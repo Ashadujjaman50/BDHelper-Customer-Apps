@@ -48,12 +48,11 @@
 
             </RelativeLayout>
 
-
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:contentDescription="@string/app_name"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_bottom_design"/>
 
