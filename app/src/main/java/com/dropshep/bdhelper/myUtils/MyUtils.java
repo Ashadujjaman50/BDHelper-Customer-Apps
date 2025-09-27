@@ -19,32 +19,32 @@ public class MyUtils {
     public static String rentLocation= "rentLocation";
 
     //category Id
-    public static final String ROAD_TRANSPORT_ID = "-OWJvq2HExIAqHIATCTc";
-    public static final String EQUIPMENT_ID = "-OWVR_LBx03T4y98N8VR";
-    public static final String HARVESTER_MACHINE_ID = "-OWJvtXbXXYNjGM1ttcU";
-    public static final String RENT_A_CAR_ID = "-OWJvxnxxbs3Alch9VIn";
-    public static final String HOME_SHIFTING_ID = "-OWJvrzJrq10W_aIoSnu";
-    public static final String SKILLED_LABOR_ID = "-OWJvzPzpMSuEzbxfzLV";
-    public static final String SHOP_ID = "-OWJw0oqezdb-Bs2NTby";
+    public static final String ROAD_TRANSPORT_ID = "-OWJvq2HExIAqHIaTCKc";
+    public static final String EQUIPMENT_ID = "-OWVRgLBx03T4y98N8VR";
+    public static final String HARVESTER_MACHINE_ID = "-OWJvtXbXzYNjGM1ttcU";
+    public static final String RENT_A_CAR_ID = "-OWJvNnQxBs3AlCh9VIn";
+    public static final String HOME_SHIFTING_ID = "-OWJvRzJrq10WqaIoSnu";
+    public static final String SKILLED_LABOR_ID = "-OWJvzPzpMSuEzbZfzLV";
+    public static final String SHOP_ID = "-OWJw0oqEzDbUBs2NTby";
 
 
 
     //Road Transport Sub-Category Id
-    public static final String SUB_TRUCK_ID = "-OWJw97ET9UoSGkg--a6";
-    public static final String SUB_PICKUP_ID = "-OWJwAZX3cAQOSZqbpsy";
-    public static final String SUB_COVERED_VAN_ID = "-OWJwBv3WJXm-KgDRiWl";
-    public static final String SUB_FREEZER_VAN_ID = "-OWJwDFLRtbhVrO9GWIy";
+    public static final String SUB_TRUCK_ID = "-OWJw97ET9UoSGkgWja6";
+    public static final String SUB_PICKUP_ID = "-OWJwAZX3cAQoSZqbPsy";
+    public static final String SUB_COVERED_VAN_ID = "-OWJwBv3WJXmIKgDRiWl";
+    public static final String SUB_FREEZER_VAN_ID = "-OWJwDFLRtBhVrO9GWIy";
     public static final String SUB_CHARGER_VAN_ID = "-OWJwEnEWXMfVD3uK2GV";
-    public static final String SUB_TRAILER_ID = "-OWJwGSAbWdjhbAf3i11";
+    public static final String SUB_TRAILER_ID = "-OWJwGSAbWdjHbAf3i11";
     public static final String SUB_DUMP_TRUCK_ID = "-OWJwHrU2MUq77hwkPjS";
-    public static final String SUB_LOW_BED_ID = "-OWJvvxO6A1ezibkqAAx";
+    public static final String SUB_LOW_BED_ID = "-OWJvOxO6A1ezLbKqAAx";
 
 
 
     //Equipment Sub-Category Id
-    public static final String SUB_TRACTOR_ID = "-OWJwP7zngze2TTD50Hr";
-    public static final String SUB_RICE_TRANSPLANTER_ID = "-OWJwR-ee4nYtE7Q8OT0";
-    public static final String SUB_EXCAVATOR_ID = "-OWJwSPuU_ez-j4uI7dW";
+    public static final String SUB_TRACTOR_ID = "-OWJwP7zNgzE2TTD50Hr";
+    public static final String SUB_RICE_TRANSPLANTER_ID = "-OWJwRcE4nYtE7Q8OTm";
+    public static final String SUB_EXCAVATOR_ID = "-OWJwSPuUleZ2j4uI7dW";
 
 
 
@@ -52,13 +52,13 @@ public class MyUtils {
     public static final String SUB_DRIVER_ID = "-OWJwTc96KlHKS1unZif";
     public static final String SUB_MECHANIC_ID = "-OWJwV2vliP8jJneKLiW";
     public static final String SUB_ELECTRICIAN_ID = "-OWJwWNhqzEjQkkuqaFV";
-    public static final String SUB_STOVE_TECHNICIAN_ID = "-OWJwYPMscKgZKQMhX23"; // চুলার মিস্ত্রি
-    public static final String SUB_PLUMBER_ID = "-OWJw_2IILI6uBB6cl7r";           // পানির লাইনের মিস্ত্রি
+    public static final String SUB_STOVE_TECHNICIAN_ID = "-OWJwYPMscKgZKQMhX23";    // চুলার মিস্ত্রি
+    public static final String SUB_PLUMBER_ID = "-OWJwT2IvLI6uBB6cl7r";             // পানির লাইনের মিস্ত্রি
 
 
     //Rent A Car Sub category ID
-     public static final String SUB_CAR_ID = "-OWUoPFQkk1-sYqVqYcG";
-     public static final String SUB_MICROBUS_ID = "OWUoS502pNDEIWndNnP";
+     public static final String SUB_CAR_ID = "-OWUoPFQkk1YsYqVqYcG";
+     public static final String SUB_MICROBUS_ID = "OWUoS502pNDeIWndNnP";
      public static final String SUB_AMBULANCE_ID = "-OWUoW7RXUsNrMY9bdIR";
 
      public static String[] MFS_LIST_BAN = {

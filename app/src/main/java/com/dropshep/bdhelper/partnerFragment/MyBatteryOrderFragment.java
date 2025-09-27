@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.BatteryOrderAdapter;
 import com.dropshep.bdhelper.databinding.FragmentMyBatteryOrderBinding;
-import com.dropshep.bdhelper.model.OrderModel;
+import com.dropshep.bdhelper.model.BatteryOrderModel;
 import com.dropshep.bdhelper.partner.ProductActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +30,7 @@ public class MyBatteryOrderFragment extends Fragment {
     private FragmentMyBatteryOrderBinding binding;
 
     private BatteryOrderAdapter orderAdapter;
-    private List<OrderModel> orderList = new ArrayList<>();
+    private List<BatteryOrderModel> orderList = new ArrayList<>();
     private FirebaseFirestore db;
 
     public MyBatteryOrderFragment() {
@@ -85,7 +85,7 @@ public class MyBatteryOrderFragment extends Fragment {
                     orderList.clear();
                     if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
                         for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                            OrderModel order = doc.toObject(OrderModel.class);
+                            BatteryOrderModel order = doc.toObject(BatteryOrderModel.class);
                             if (order != null) {
                                 orderList.add(order);
                             }

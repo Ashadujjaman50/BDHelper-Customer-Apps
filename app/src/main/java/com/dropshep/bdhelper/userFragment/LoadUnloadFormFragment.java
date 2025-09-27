@@ -1,34 +1,53 @@
 package com.dropshep.bdhelper.userFragment;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentLoadUnloadFormBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
+import com.dropshep.bdhelper.myUtils.LocaleHelper;
+import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.myUtils.OrderHelper;
+import com.dropshep.bdhelper.myUtils.Replacement;
+import com.dropshep.bdhelper.partner.ServiceDocumentActivity;
+import com.dropshep.bdhelper.user.AddressActivity;
+import com.dropshep.bdhelper.user.SubCategoryActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class LoadUnloadFormFragment extends Fragment{
@@ -37,8 +56,8 @@ public class LoadUnloadFormFragment extends Fragment{
 
     String categoryId, subCategoryId, subCategoryName;
     String loadLocation = "", unloadLocation="";
-    String userId, postDistrict, quantity, description, rentDate, rentTime;
-    String specification, specificationCapacity, specificationDuration, specificationTypes;
+    String userId, userName, userPhone, postDistrict, quantity, description, rentDateAndTime;
+    String specificationCapacity, specificationDuration, specificationTypes;
 
     LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
@@ -144,7 +163,11 @@ public class LoadUnloadFormFragment extends Fragment{
 
         //Date and Time picker
         binding.dateTimeTV.setOnClickListener(v -> {
-            CommonClass.showDateTimePicker(requireContext(),3, binding.dateTimeTV);
+            CommonClass.showDateTimePicker(requireContext(), 3, (displayText, englishDate, millis) -> {
+                binding.dateTimeTV.setText(displayText); // লোকেল অনুযায়ী UI
+                rentDateAndTime = String.valueOf(millis);    // timestamp
+                Log.d("UserInfo", "rentDateAndTime: " + rentDateAndTime);
+            });
         });
 
 
@@ -384,8 +407,11 @@ public class LoadUnloadFormFragment extends Fragment{
             });
         });
 
-    }
+        binding.continuePostBtn.setOnClickListener(v -> {
+            continueToReview();
+        });
 
+    }
 
     private void getUserInfo() {
 
@@ -396,9 +422,13 @@ public class LoadUnloadFormFragment extends Fragment{
                     if (documentSnapshot.exists()) {
                         // 🔹 district field পড়া
                         postDistrict = documentSnapshot.getString("district");
+                        userName = documentSnapshot.getString("name");
+                        userPhone = documentSnapshot.getString("phone");
 
                         if (postDistrict != null) {
                             // UI তে দেখাও বা Log করো
+                            Log.d("UserInfo", "Username: " + userName);
+                            Log.d("UserInfo", "UserPhone: " + userPhone);
                             Log.d("UserInfo", "District: " + postDistrict);
                         } else {
                             Log.d("UserInfo", "District not found for user");
@@ -407,6 +437,183 @@ public class LoadUnloadFormFragment extends Fragment{
                 })
                 .addOnFailureListener(e -> {
                     Log.e("UserInfo", "Error fetching district", e);
+                });
+    }
+
+
+
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
+    private void continueToReview() {
+        // ✅ Validate fields
+        if (CommonClass.validateField(binding.dateTimeTV)) return;
+        if (CommonClass.validateField(binding.capacityTV)) return;
+        if (CommonClass.validateField(binding.durationTV)) return;
+        if (CommonClass.validateField(binding.countTV)) return;
+        if (CommonClass.validateField(binding.productTypeTV)) return;
+
+        // ✅ Collect values
+        specificationCapacity = binding.capacityTV.getText().toString().trim();
+        specificationDuration = binding.durationTV.getText().toString().trim();
+        specificationTypes = binding.productTypeTV.getText().toString().trim();
+        quantity = binding.countTV.getText().toString().trim();
+        description = binding.detailsET.getText().toString().trim();
+
+        // ✅ Setup BottomSheet
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        dialog.setContentView(R.layout.layout_submit_post);
+
+        ImageView iconView = dialog.findViewById(R.id.iconImageViewSub);
+        TextView size = dialog.findViewById(R.id.sizeCapacityTV);
+        TextView count = dialog.findViewById(R.id.totalCountTV);
+        TextView duration = dialog.findViewById(R.id.popupDurationTV);
+        TextView product = dialog.findViewById(R.id.productTV);
+        TextView sizeDef = dialog.findViewById(R.id.sizeCapacityDefTV);
+        TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
+        TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
+        TextView productDef = dialog.findViewById(R.id.productDefTV);
+        TextView time = dialog.findViewById(R.id.popupTimeTV);
+        TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
+
+        RelativeLayout loadLocationRl = dialog.findViewById(R.id.loadLocationRl);
+        RelativeLayout unloadLocationRl = dialog.findViewById(R.id.unloadLocationRl);
+        RelativeLayout areaLocationRl = dialog.findViewById(R.id.areaLocationRl);
+
+        TextView locationTv = dialog.findViewById(R.id.locationTv);
+        TextView unloadLocationTv = dialog.findViewById(R.id.unloadLocationTv);
+        TextView areaLocationTv = dialog.findViewById(R.id.areaLocationTv);
+
+        dialog.show();
+
+        // ✅ Toggle visibility
+        boolean isEquipment = categoryId.equals(MyUtils.EQUIPMENT_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID);
+        if (loadLocationRl != null && unloadLocationRl != null && areaLocationRl != null) {
+            loadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
+            unloadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
+            areaLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
+        }
+
+        // ✅ Set texts safely
+        if (countDef != null) countDef.setText(subCategoryName);
+        if (count != null) count.setText(quantity);
+
+        if (locationTv != null) locationTv.setText(loadLocation);
+        if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
+        if (areaLocationTv != null) areaLocationTv.setText("");
+
+        if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        if (size != null) size.setText(specificationCapacity);
+
+        if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
+        if (duration != null) duration.setText(specificationDuration);
+
+        if (subCategoryId.equals(MyUtils.SUB_MICROBUS_ID)){
+            if (productDef != null) productDef.setText(subCategoryName+" "+ getString(R.string.type_dot));
+        }else if (subCategoryId.equals(MyUtils.SUB_CAR_ID)){
+            if (productDef != null) productDef.setText(getString(R.string.program)+" "+ getString(R.string.type_dot));
+        }
+        else {
+            if (productDef != null) productDef.setText(getString(R.string.product_type));
+        }
+
+        if (product != null) product.setText(specificationTypes);
+
+        if (time != null) time.setText(binding.dateTimeTV.getText().toString());
+
+        // ✅ Set icon dynamically
+        if (iconView != null) {
+            int iconRes = getIconForSubCategory(subCategoryId);
+            if (iconRes != 0) {
+                iconView.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
+            }
+        }
+
+        // ✅ Submit
+        if (submitBtn != null) {
+            submitBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+                postForRent();
+            });
+        }
+    }
+
+    // Helper method to get correct drawable for subCategory
+    private int getIconForSubCategory(String subCatId) {
+        switch (subCatId) {
+            case MyUtils.SUB_TRUCK_ID: return R.drawable.ic_truck;
+            case MyUtils.SUB_PICKUP_ID: return R.drawable.ic_pickup;
+            case MyUtils.SUB_COVERED_VAN_ID: return R.drawable.ic_covered_van;
+            case MyUtils.SUB_TRAILER_ID: return R.drawable.ic_trailer;
+            case MyUtils.SUB_LOW_BED_ID: return R.drawable.ic_low_bed;
+            case MyUtils.SUB_FREEZER_VAN_ID: return R.drawable.ic_freezer_van;
+            case MyUtils.SUB_DUMP_TRUCK_ID: return R.drawable.ic_dump_truck;
+            case MyUtils.SUB_CHARGER_VAN_ID: return R.drawable.ic_charger_van;
+
+            case MyUtils.SUB_CAR_ID: return R.drawable.ic_car;
+            case MyUtils.SUB_MICROBUS_ID: return R.drawable.ic_microbus;
+            case MyUtils.SUB_AMBULANCE_ID: return R.drawable.ic_ambulance;
+            default: return 0;
+        }
+    }
+
+
+    private void postForRent() {
+        loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
+        loadingDialog.show();
+
+        String orderId = ""+System.currentTimeMillis();
+
+        Map<String, Object> order = OrderHelper.createOrder(
+                orderId,
+                userId,
+                userName,
+                userPhone,
+                categoryId,
+                subCategoryId,
+                loadLocation,
+                unloadLocation,
+                "",
+                rentDateAndTime,
+                specificationCapacity,
+                specificationDuration,
+                specificationTypes,
+                quantity,
+                description,
+                postDistrict
+        );
+
+        Log.d("UserInfo", "order: " + order);
+
+        db.collection("orders")
+                .document(orderId)
+                .set(order)
+                .addOnSuccessListener(aVoid -> {
+                    loadingDialog.dismiss();
+                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+
+                    binding.mainBodyLl.setVisibility(View.GONE);
+                    binding.donePostRent.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(()->{
+                        // ✅ Submit Success হলে
+                        Intent intent;
+                        if (subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)){
+                            intent = new Intent(requireContext(), AddressActivity.class);
+                        }
+                        else {
+                            intent = new Intent(requireContext(), SubCategoryActivity.class);
+                        }
+                        // চাইলে extra পাঠাতে পারো
+                        intent.putExtra(MyUtils.categoryId, categoryId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        // এই fragment/activity বন্ধ হয়ে যাবে
+                        requireActivity().finish();
+                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    },SPLASH_TIME_OUT);
+
+                })
+                .addOnFailureListener(e -> {
+                    loadingDialog.dismiss();
+                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
                 });
     }
 

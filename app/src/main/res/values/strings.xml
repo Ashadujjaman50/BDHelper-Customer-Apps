@@ -108,10 +108,9 @@
     <string name="details">Details</string>
     <string name="size">Size</string>
     <string name="size_and_capacity">Size and Capacity</string>
-    <string name="size_and_capacitys">Size and Capacity:</string>
     <string name="duration_for_rent">Duration for rent ?</string>
     <string name="how_many_are_needed">How many are needed</string>
-    <string name="duration">Duration: </string>
+    <string name="duration">Duration</string>
     <string name="more_than_1_week">Want to rent more than 1 week?</string>
     <string name="person">person</string>
     <string name="area_location">Location</string>
@@ -119,6 +118,12 @@
     <string name="feet">feet</string>
     <string name="which_types">Which types</string>
     <string name="types">Types</string>
+
+    <string name="size_dot"><i>Size: </i></string>
+    <string name="type_dot">Type: </string>
+    <string name="which_type_dot"><i>Type: </i></string>
+    <string name="product_type"><i>Product Type: </i></string>
+    <string name="duration_dot">Duration: </string>
 
     <string name="pay_now">Pay now</string>
     <string name="support_24_hours">Support team 24/7 hours</string>
@@ -300,6 +305,7 @@
     <string name="home_shifting_service">Home / Office Shifting Service</string>
     <string name="shiftingNull">You did not take any \n shifting service</string>
     <string name="will_you_shift">Do you want to shift?</string>
+    <string name="shift_type_dot">Shift type:</string>
     <string name="home_shift">Home</string>
     <string name="office_shift">Office shift</string>
     <string name="room_type">Rome type</string>
@@ -324,6 +330,7 @@
     <string name="how_many_floors_to_lift">How many floors to lift</string>
     <string name="what_date_will_shift">What date will shift?</string>
     <string name="can_a_truck_come_in_front_of_the_house">Can a truck come in front of the house?</string>
+    <string name="truck_access">Truck access:</string>
 
     <string name="floor_info">Floor information</string>
     <string name="ground_floor">1st/Ground Floor</string>
@@ -349,6 +356,7 @@
     <string name="experience">Experience</string>
     <string name="work_experience">Work experience</string>
     <string name="year">Year</string>
+    <string name="need">need</string>
 
     <!--Electrician-->
     <string name="ceiling_fan_install_uninstall">Ceiling fan install/Uninstall</string>

@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivitySignUpBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.NetworkUtils;

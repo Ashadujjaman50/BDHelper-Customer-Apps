@@ -21,10 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.databinding.ActivityProfileBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.FileUploadHelper;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

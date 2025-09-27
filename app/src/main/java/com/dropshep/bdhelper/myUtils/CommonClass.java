@@ -12,6 +12,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -22,7 +25,9 @@ import androidx.core.content.ContextCompat;
 import com.dropshep.bdhelper.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -50,7 +55,11 @@ public class CommonClass {
         return  versionText;
     }
 
-    public static void showDateTimePicker(Context context, int day, TextView targetTextView) {
+    public interface DateTimeCallback {
+        void onDateTimeSelected(String displayDateTime, String returnDateTime, long millis);
+    }
+
+    public static void showDateTimePicker(Context context, int day, DateTimeCallback callback) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.dialog_date_time_picker);
 
@@ -60,20 +69,15 @@ public class CommonClass {
         TextView btnOk = bottomSheetDialog.findViewById(R.id.btnOk);
 
         if (datePicker == null || hourPicker == null || btnOk == null) {
-            return; // যদি layout inflate না হয়
+            return;
         }
 
-        // 🔹 SharedPreferences থেকে language লোড করো
         String lang = LocaleHelper.getLanguage(context);
-
         Locale locale = lang.equals("bn") ? new Locale("bn", "BD") : Locale.ENGLISH;
 
         Date now = new Date();
         List<String> dates = new ArrayList<>();
-
-        // ✅ তারিখ লিস্ট বানানো (আজ + পরবর্তী ৩ দিন)
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM", locale);
-        dates.clear();
 
         for (int i = 0; i <= day; i++) {
             Date futureDate = new Date(now.getTime() + TimeUnit.DAYS.toMillis(i));
@@ -81,39 +85,58 @@ public class CommonClass {
         }
 
         String[] dateArray = dates.toArray(new String[0]);
-
         datePicker.setMinValue(0);
         datePicker.setMaxValue(dateArray.length - 1);
         datePicker.setDisplayedValues(dateArray);
         datePicker.setWrapSelectorWheel(false);
 
-        // প্রথমে বর্তমান দিনের জন্য টাইম জেনারেট করা
-        generateHoursForDate(hourPicker, 0, now, locale);
+        // 🔹 hourPicker ডাটার সাথে আসল hour index রাখব
+        int[] hourValues = generateHoursForDate(hourPicker, 0, now, locale);
 
-        // ✅ Date change করলে time slot update হবে
         datePicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            generateHoursForDate(hourPicker, newVal, now, locale);
+            int[] newHourValues = generateHoursForDate(hourPicker, newVal, now, locale);
+            hourPicker.setTag(newHourValues); // নতুন hour array save
         });
+
+        hourPicker.setTag(hourValues);
 
         cancelBtn.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
         btnOk.setOnClickListener(v -> {
             String selectedDate = dateArray[datePicker.getValue()];
-            String selectedHour = hourPicker.getDisplayedValues()[hourPicker.getValue()];
+            String selectedHourText = hourPicker.getDisplayedValues()[hourPicker.getValue()];
 
-            // Final date+time string
-            String finalDateTime = selectedDate + ", " + selectedHour;
+            int[] hourArray = (int[]) hourPicker.getTag();
+            int selectedHour24 = hourArray[hourPicker.getValue()];
 
-            targetTextView.setText(finalDateTime);
+            // 🔹 Final human-readable (UI লোকেল)
+            String displayDateTime = selectedDate + ", " + selectedHourText;
+
+            // 🔹 Calendar বানানো (সবসময় English return এর জন্য)
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.DAY_OF_YEAR, datePicker.getValue());
+            calendar.set(Calendar.HOUR_OF_DAY, selectedHour24);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            // 🔹 Return সবসময় English
+            String returnDateTime = new SimpleDateFormat("dd MMMM yyyy, hh:mm aa", Locale.ENGLISH)
+                    .format(calendar.getTime());
+
+            long millis = calendar.getTimeInMillis();
+
+            callback.onDateTimeSelected(displayDateTime, returnDateTime, millis);
             bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.show();
     }
 
-    // ✅ Helper method: তারিখ অনুযায়ী time list বানানো
-    private static void generateHoursForDate(NumberPicker hourPicker, int dateIndex, Date now, Locale locale) {
+    // ✅ Helper method: hour list বানানো + আসল hour index return করা
+    private static int[] generateHoursForDate(NumberPicker hourPicker, int dateIndex, Date now, Locale locale) {
         List<String> hours = new ArrayList<>();
+        List<Integer> hourValues = new ArrayList<>();
 
         int startHour = 0;
         if (dateIndex == 0) {
@@ -123,7 +146,7 @@ public class CommonClass {
         for (int i = startHour; i < 24; i++) {
             String formattedHour;
 
-            if (locale.getLanguage().equals("bn")) { // বাংলা লোকেল
+            if (locale.getLanguage().equals("bn")) {
                 if (i == 0) formattedHour = "রাত ১২ টা";
                 else if (i < 4) formattedHour = "রাত " + toBanglaNumber(i) + " টা";
                 else if (i < 7) formattedHour = "ভোর " + toBanglaNumber(i) + " টা";
@@ -134,7 +157,7 @@ public class CommonClass {
                 else if (i < 20) formattedHour = "সন্ধ্যা " + toBanglaNumber(i - 12) + " টা";
                 else formattedHour = "রাত " + toBanglaNumber(i - 12) + " টা";
 
-            } else { // ইংরেজি লোকেল
+            } else {
                 int hour12 = i % 12;
                 if (hour12 == 0) hour12 = 12;
                 String ampm = i < 12 ? "AM" : "PM";
@@ -142,20 +165,19 @@ public class CommonClass {
             }
 
             hours.add(formattedHour);
+            hourValues.add(i);
         }
 
         String[] hourArray = hours.toArray(new String[0]);
 
-        // পুরনো values remove
         hourPicker.setDisplayedValues(null);
-
-        // Min/Max set করা
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(hourArray.length - 1);
-
-        // নতুন values assign করা
         hourPicker.setDisplayedValues(hourArray);
         hourPicker.setWrapSelectorWheel(false);
+
+        // int array return (hour index list)
+        return hourValues.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public static String toBanglaNumber(int number) {
@@ -193,9 +215,34 @@ public class CommonClass {
         return code.toString(); // মোট length 8 হবে
     }
 
+    /**
+     * Field validate করে error দেখাবে।
+     * EditText আর TextView দুইটাই handle করবে।
+     */
+    public static boolean validateField(TextView field) {
+        String text = field.getText().toString().trim();
 
+        if (TextUtils.isEmpty(text)) {
+            field.setBackgroundResource(R.drawable.bg_edit_text_error);
 
+            field.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    field.setBackgroundResource(R.drawable.bg_edit_text);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+
+            return true; // invalid
+        }
+
+        return false; // valid
+    }
 
 
 }

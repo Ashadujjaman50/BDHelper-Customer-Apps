@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.model.OrderModel;
+import com.dropshep.bdhelper.model.BatteryOrderModel;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,14 +22,14 @@ import java.util.Locale;
 public class BatteryOrderAdapter extends RecyclerView.Adapter<BatteryOrderAdapter.OrderViewHolder> {
 
     private final Context context;
-    private final List<OrderModel> orderList;
+    private final List<BatteryOrderModel> orderList;
     private final OnOrderClickListener listener;
 
     public interface OnOrderClickListener {
-        void onOrderClick(OrderModel order);
+        void onOrderClick(BatteryOrderModel order);
     }
 
-    public BatteryOrderAdapter(Context context, List<OrderModel> orderList, OnOrderClickListener listener) {
+    public BatteryOrderAdapter(Context context, List<BatteryOrderModel> orderList, OnOrderClickListener listener) {
         this.context = context;
         this.orderList = orderList;
         this.listener = listener;
@@ -45,7 +45,7 @@ public class BatteryOrderAdapter extends RecyclerView.Adapter<BatteryOrderAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        OrderModel order = orderList.get(position);
+        BatteryOrderModel order = orderList.get(position);
 
         holder.orderIdTv.setText("Order: " + order.getOrderId());
         holder.batteryNameTv.setText("Battery: " + order.getBatteryDetails().getBatteryName());

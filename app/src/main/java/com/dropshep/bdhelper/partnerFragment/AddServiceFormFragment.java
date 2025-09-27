@@ -26,23 +26,19 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
-import com.dropshep.bdhelper.RatingReviewActivity;
 import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.databinding.FragmentAddServiceFormBinding;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.partner.ServiceDocumentActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;

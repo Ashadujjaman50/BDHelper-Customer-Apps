@@ -18,17 +18,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.myUtils.CommonClass;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;

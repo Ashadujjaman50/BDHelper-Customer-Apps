@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -111,291 +112,167 @@ public class AddressActivity extends BaseActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void showDefaultFields() {
 
-        if (categoryId.equals(MyUtils.SKILLED_LABOR_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || categoryId.equals(MyUtils.EQUIPMENT_ID)) {
-            selectCategory = true;
-            binding.loadingPointRl.setVisibility(View.GONE);
-            binding.unloadingPointRl.setVisibility(View.GONE);
-            binding.rentPointRl.setVisibility(View.VISIBLE);
-        }
-        else {
-            selectCategory = false;
-            binding.loadingPointRl.setVisibility(View.VISIBLE);
-            binding.unloadingPointRl.setVisibility(View.VISIBLE);
-            binding.rentPointRl.setVisibility(View.GONE);
-        }
+        // Category অনুযায়ী UI toggle
+        boolean isSpecialCategory = categoryId.equals(MyUtils.SKILLED_LABOR_ID) ||
+                categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) ||
+                categoryId.equals(MyUtils.EQUIPMENT_ID);
 
-        // Loading point focus
-        binding.loadLocationTV.setOnTouchListener((v, event) -> {
-            selectedPoint = false;
-            editOn = true;
-            focusView(binding.loadLocationTV);
-            return false;
-        });
+        selectCategory = isSpecialCategory;
+        binding.loadingPointRl.setVisibility(isSpecialCategory ? View.GONE : View.VISIBLE);
+        binding.unloadingPointRl.setVisibility(isSpecialCategory ? View.GONE : View.VISIBLE);
+        binding.rentPointRl.setVisibility(isSpecialCategory ? View.VISIBLE : View.GONE);
 
-        // Unloading point focus
-        binding.unloadLocationTV.setOnTouchListener((v, event) -> {
-            selectedPoint = true;
-            editOn = true;
-            focusView(binding.unloadLocationTV);
-            return false;
-        });
+        // ✅ Focus handler
+        setFocusHandler(binding.loadLocationTV, false);
+        setFocusHandler(binding.unloadLocationTV, true);
+        setFocusHandler(binding.rentLocationTv, false);
 
-        // Rent location focus
-        binding.rentLocationTv.setOnTouchListener((v, event) -> {
-            editOn = true;
-            focusView(binding.rentLocationTv);
-            return false;
-        });
+        // ✅ Clear button handler
+        setClearHandler(binding.loadingPointClear, binding.loadLocationTV, R.string.loading_point_address, false);
+        setClearHandler(binding.unloadingPointClear, binding.unloadLocationTV, R.string.unloading_point_address, true);
+        setClearHandler(binding.rentPointClear, binding.rentLocationTv, R.string.select_location, false);
 
-        // Clear Loading Point
-        binding.loadingPointClear.setOnClickListener(v -> {
-            selectedPoint = false;
-            editOn = true;
-            binding.loadLocationTV.setText("");
-            binding.loadLocationTV.setHint(R.string.loading_point_address);
-            binding.loadingPointClear.setVisibility(View.GONE);
-            focusView(binding.loadLocationTV);
-        });
-
-        // Clear Unloading Point
-        binding.unloadingPointClear.setOnClickListener(v -> {
-            selectedPoint = true;
-            editOn = true;
-            binding.unloadLocationTV.setText("");
-            binding.unloadLocationTV.setHint(R.string.unloading_point_address);
-            binding.unloadingPointClear.setVisibility(View.GONE);
-            focusView(binding.unloadLocationTV);
-        });
-
-        // Clear Rent Location
-        binding.rentPointClear.setOnClickListener(v -> {
-            editOn = true;
-            binding.rentLocationTv.setText("");
-            binding.rentLocationTv.setHint(R.string.select_location);
-            binding.rentPointClear.setVisibility(View.GONE);
-            focusView(binding.rentLocationTv);
-        });
-
-
-        //Click And Text Watcher to text to search address in AutoComplete Listener
+        // ✅ Address search adapter
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, placeNames);
         binding.searchListView.setAdapter(adapter);
 
+        // Item select
         binding.searchListView.setOnItemClickListener((parent, view, position, id) -> {
             String address = adapter.getItem(position);
-            if (address != null){
+            if (address != null) {
                 editOn = false;
                 adapter.clear();
-
                 String finalAddress = Replacement.removeDuplicateAddressParts(address);
 
-                if (selectCategory){
+                if (selectCategory) {
                     binding.rentLocationTv.setText(finalAddress);
                     binding.rentPointClear.setVisibility(View.VISIBLE);
-
-                    //goto next activity
-                    String rentLocation = binding.rentLocationTv.getText().toString();
-                    gotoNextActivity("", "", rentLocation);
-                }
-                else {
-                    if (selectedPoint){
+                    gotoNextActivity("", "", finalAddress);
+                } else {
+                    if (selectedPoint) {
                         binding.unloadLocationTV.setText(finalAddress);
                         binding.unloadingPointClear.setVisibility(View.VISIBLE);
 
-                        String getCheck = binding.loadLocationTV.getText().toString();
-                        if (TextUtils.isEmpty(getCheck)){
-                            binding.loadLocationTV.requestFocus();
+                        if (TextUtils.isEmpty(binding.loadLocationTV.getText())) {
+                            requestFocus(binding.loadLocationTV, binding.unloadLocationTV);
                             selectedPoint = false;
-                            binding.unloadLocationTV.setBackgroundResource(R.drawable.bg_edit_text);
-                            binding.loadLocationTV.setBackgroundResource(R.drawable.bg_edit_text_primary);
+                        } else {
+                            gotoNextActivity(binding.loadLocationTV.getText().toString(),
+                                    binding.unloadLocationTV.getText().toString(), "");
                         }
-                        else {
-                            String loadLocation = binding.loadLocationTV.getText().toString();
-                            String unloadLocation = binding.unloadLocationTV.getText().toString();
-                            gotoNextActivity(loadLocation, unloadLocation, "");
-                        }
-                    }
-                    else {
+                    } else {
                         binding.loadLocationTV.setText(finalAddress);
                         binding.loadingPointClear.setVisibility(View.VISIBLE);
 
-                        String getCheck = binding.unloadLocationTV.getText().toString();
-                        if (TextUtils.isEmpty(getCheck)){
-                            binding.unloadLocationTV.requestFocus();
+                        if (TextUtils.isEmpty(binding.unloadLocationTV.getText())) {
+                            requestFocus(binding.unloadLocationTV, binding.loadLocationTV);
                             selectedPoint = true;
-                            binding.loadLocationTV.setBackgroundResource(R.drawable.bg_edit_text);
-                            binding.unloadLocationTV.setBackgroundResource(R.drawable.bg_edit_text_primary);
-                        }
-                        else {
-                            String loadLocation = binding.loadLocationTV.getText().toString();
-                            String unloadLocation = binding.unloadLocationTV.getText().toString();
-                            gotoNextActivity(loadLocation, unloadLocation, "");
+                        } else {
+                            gotoNextActivity(binding.loadLocationTV.getText().toString(),
+                                    binding.unloadLocationTV.getText().toString(), "");
                         }
                     }
                 }
-
             }
         });
 
-        //loading point search address
-        binding.loadLocationTV.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        // ✅ Add text watcher to all fields
+        addSearchWatcher(binding.loadLocationTV);
+        addSearchWatcher(binding.unloadLocationTV);
+        addSearchWatcher(binding.rentLocationTv);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isFromDivision){
-                    isFromDivision = false;
-                    return;
-                }
-
-                if (editOn){
-                    String query = s.toString().trim();
-                    if (!TextUtils.isEmpty(query)){
-                        if (query.length()>2){
-                            binding.loadingBar.setVisibility(View.GONE);
-                            searchAutoComplete(query);
-                        }
-                        else {
-                            binding.loadingBar.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    else {
-                        adapter.clear();
-                        adapter.notifyDataSetChanged();
-                        binding.loadingBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        //unloading point search address
-        binding.unloadLocationTV.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (isFromDivision){
-                    isFromDivision = false;
-                    return;
-                }
-
-                if (editOn){
-                    String query = s.toString().trim();
-                    if (!TextUtils.isEmpty(query)){
-                        if (query.length()>2){
-                            binding.loadingBar.setVisibility(View.GONE);
-                            searchAutoComplete(query);
-                        }
-                        else {
-                            binding.loadingBar.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    else {
-                        adapter.clear();
-                        adapter.notifyDataSetChanged();
-                        binding.loadingBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        //rent point search address
-        binding.rentLocationTv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editOn){
-                    String query = s.toString().trim();
-                    if (!TextUtils.isEmpty(query)){
-                        if (query.length()>2){
-                            binding.loadingBar.setVisibility(View.GONE);
-                            searchAutoComplete(query);
-                        }
-                        else {
-                            binding.loadingBar.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    else {
-                        adapter.clear();
-                        adapter.notifyDataSetChanged();
-                        binding.loadingBar.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        //Button Click to Address Load Local Storage
+        // ✅ Division button
         binding.divisionBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(AddressActivity.this, AreaLocationActivity.class);
-            if (categoryId.equals(MyUtils.SKILLED_LABOR_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || categoryId.equals(MyUtils.EQUIPMENT_ID)){
-                rentLocationResultLauncher.launch(intent);
-            }
-            else {
-                if (selectedPoint){
-                    //unload
-                    unloadLocationResultLauncher.launch(intent);
-                }
-                else {
-                    //load
-                    loadLocationResultLauncher.launch(intent);
-                }
-            }
+            Intent intent = new Intent(this, AreaLocationActivity.class);
+            launchIntent(intent);
         });
 
-        //Button Click to map Activity Open And Address find Map
+        // ✅ Map button
         binding.mapBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(AddressActivity.this, MapLocationActivity.class);
+            Intent intent = new Intent(this, MapLocationActivity.class);
             intent.putExtra(MyUtils.subCategoryName, subCategoryName);
-
-            if (categoryId.equals(MyUtils.SKILLED_LABOR_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || categoryId.equals(MyUtils.EQUIPMENT_ID)){
-                rentLocationResultLauncher.launch(intent);
-            }
-            else {
-                if (selectedPoint){
-                    //unload
-                    unloadLocationResultLauncher.launch(intent);
-                }
-                else {
-                    //load
-                    loadLocationResultLauncher.launch(intent);
-                }
-            }
+            launchIntent(intent);
         });
 
-        //addressBook Btn
+        // ✅ Address book
         binding.addressBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(AddressActivity.this, AddressBookActivity.class);
+            Intent intent = new Intent(this, AddressBookActivity.class);
             intent.putExtra("controlType", "addressList");
             intent.putExtra("isPicker", true);
-            if (categoryId.equals(MyUtils.SKILLED_LABOR_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || categoryId.equals(MyUtils.EQUIPMENT_ID)){
-                rentLocationResultLauncher.launch(intent);
-            }
-            else {
-                if (selectedPoint){
-                    //unload
-                    unloadLocationResultLauncher.launch(intent);
+            launchIntent(intent);
+        });
+    }
+
+    /** ---------- Helper Methods ---------- */
+    // ফিল্ড ফোকাস ম্যানেজার
+    @SuppressLint("ClickableViewAccessibility")
+    private void setFocusHandler(EditText field, boolean isUnload) {
+        field.setOnTouchListener((v, event) -> {
+            selectedPoint = isUnload;
+            editOn = true;
+            focusView(field);
+            return false;
+        });
+    }
+
+    // Clear বাটন ম্যানেজার
+    private void setClearHandler(View clearBtn, EditText field, int hintRes, boolean isUnload) {
+        clearBtn.setOnClickListener(v -> {
+            selectedPoint = isUnload;
+            editOn = true;
+            field.setText("");
+            field.setHint(hintRes);
+            clearBtn.setVisibility(View.GONE);
+            focusView(field);
+        });
+    }
+
+    // TextWatcher অ্যাড করা
+    private void addSearchWatcher(EditText field) {
+        field.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isFromDivision) {
+                    isFromDivision = false;
+                    return;
                 }
-                else {
-                    //load
-                    loadLocationResultLauncher.launch(intent);
+                if (editOn) {
+                    String query = s.toString().trim();
+                    if (query.length() > 2) {
+                        binding.loadingBar.setVisibility(View.GONE);
+                        searchAutoComplete(query);
+                    } else if (!TextUtils.isEmpty(query)) {
+                        binding.loadingBar.setVisibility(View.VISIBLE);
+                    } else {
+                        adapter.clear();
+                        adapter.notifyDataSetChanged();
+                        binding.loadingBar.setVisibility(View.GONE);
+                    }
                 }
             }
         });
     }
+
+    // Intent launcher (rent/load/unload এক জায়গায়)
+    private void launchIntent(Intent intent) {
+        if (selectCategory) {
+            rentLocationResultLauncher.launch(intent);
+        } else {
+            if (selectedPoint) unloadLocationResultLauncher.launch(intent);
+            else loadLocationResultLauncher.launch(intent);
+        }
+    }
+
+    // Focus shifting helper
+    private void requestFocus(EditText toFocus, EditText toClearHighlight) {
+        toFocus.requestFocus();
+        toFocus.setBackgroundResource(R.drawable.bg_edit_text_primary);
+        toClearHighlight.setBackgroundResource(R.drawable.bg_edit_text);
+    }
+
 
     private void gotoNextActivity(String loadLocation, String unloadLocation, String rentLocation) {
         //Complete Address pickup Then go to next Activity

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iconImageViewSub"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:background="@drawable/bg_primary_light"
+            android:src="@drawable/ic_truck"
+            app:tint="@color/black" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iconImageViewSub"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp">
+
+            <!-- Row 1 -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/sizeCapacityDefTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/size_and_capacity"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary"
+                    android:padding="2dp" />
+                <TextView
+                    android:id="@+id/sizeCapacityTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="16 feet 5 ton"
+                    android:textSize="15sp"
+                    android:padding="2dp" />
+            </TableRow>
+
+            <!-- Row 2 -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/totalCountDefTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/truck"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary"
+                    android:padding="2dp" />
+                <TextView
+                    android:id="@+id/totalCountTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="03"
+                    android:textSize="15sp"
+                    android:padding="2dp" />
+            </TableRow>
+
+            <!-- Row 3 -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/popupDurationDefTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/duration"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary"
+                    android:padding="2dp" />
+                <TextView
+                    android:id="@+id/popupDurationTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Trip based"
+                    android:textSize="15sp"
+                    android:padding="2dp" />
+            </TableRow>
+
+            <!-- Row 4 -->
+            <TableRow>
+                <TextView
+                    android:id="@+id/productDefTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary"
+                    android:padding="2dp" />
+                <TextView
+                    android:id="@+id/productTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Glassware"
+                    android:textSize="15sp"
+                    android:padding="2dp" />
+            </TableRow>
+
+        </TableLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/divider_color" />
+
+    <TextView
+        android:id="@+id/popupTimeTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="Morning 10.45 am, 20 july 22"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/loadLocationRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/loadIconIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_load_location" />
+
+        <TextView
+            android:id="@+id/locationTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/loadIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/locationTv"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/loadIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/unloadLocationRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/unloadIconIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_unload_location" />
+
+        <TextView
+            android:id="@+id/unloadLocationTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/unloadIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/unloadLocationTv"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/unloadIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/areaLocationRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/areaLocationIconIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_unload_location" />
+
+        <TextView
+            android:id="@+id/areaLocationTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/areaLocationIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/areaLocationTv"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/areaLocationIconIV"
+            android:padding="2dp"
+            android:text="House 23, Road 8, Block E, Section 1"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/postSubmitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="2dp"
+        android:background="@drawable/custom_button_gradient"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
+</LinearLayout>

@@ -1,7 +1,5 @@
 package com.dropshep.bdhelper.partner;
 
-import static com.dropshep.bdhelper.myUtils.MyUtils.categoryId;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -19,11 +17,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivityServiceDocumentBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.FileUploadHelper;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
@@ -40,7 +38,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

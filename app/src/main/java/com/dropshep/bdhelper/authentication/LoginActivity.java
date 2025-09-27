@@ -13,10 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivityLoginBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.NotificationPermissionHelper;
 import com.dropshep.bdhelper.myUtils.SharedPrefHelper;

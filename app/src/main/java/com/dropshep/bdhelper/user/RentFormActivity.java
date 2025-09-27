@@ -31,8 +31,8 @@ public class RentFormActivity extends BaseActivity {
         //init views
         categoryId = getIntent().getStringExtra(MyUtils.categoryId);
         subCategoryId = getIntent().getStringExtra(MyUtils.subCategoryId);
-        loadLocation = getIntent().getStringExtra(MyUtils.categoryId);
-        unloadLocation = getIntent().getStringExtra(MyUtils.categoryId);
+        loadLocation = getIntent().getStringExtra(MyUtils.loadLocation);
+        unloadLocation = getIntent().getStringExtra(MyUtils.unloadLocation);
         rentLocation = getIntent().getStringExtra(MyUtils.rentLocation);
 
         //show subCategoryName TV

@@ -178,7 +178,7 @@
                         android:textColor="@color/text_primary" />
 
                     <EditText
-                        android:id="@+id/detailsEt"
+                        android:id="@+id/detailsET"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:layout_marginTop="8dp"

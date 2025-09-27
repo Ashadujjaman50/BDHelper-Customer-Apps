@@ -8,23 +8,21 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.AdapterServiceRequest;
 import com.dropshep.bdhelper.adapter.DistrictAdapter;
 import com.dropshep.bdhelper.databinding.ActivityServiceRequestBinding;
 import com.dropshep.bdhelper.model.ModelServiceRequest;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;

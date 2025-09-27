@@ -1,31 +1,40 @@
 package com.dropshep.bdhelper.userFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentHomesShiftingFormBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
-import com.dropshep.bdhelper.myUtils.LoadingDialog;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
+import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.myUtils.OrderHelper;
+import com.dropshep.bdhelper.user.AddressActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,27 +43,32 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HomesShiftingFormFragment extends Fragment {
 
     private FragmentHomesShiftingFormBinding binding;
 
-    private String categoryId, subCategoryId, subCategoryName;
+    private String categoryId, subCategoryId;
     private String loadLocation = "", unloadLocation="";
 
-    private String userId, postDistrict, quantity, description, rentDate, rentTime;
-    private String specification, specificationCapacity, specificationDuration, specificationTypes;
+    private String userId, userName, userPhone, postDistrict, quantity, description, rentDateAndTime;
+    private String specificationCapacity, specificationDuration, specificationTypes;
 
     LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
 
-    final int SHORT_ID_LENGTH = 4;
+    String selectedShifting;
+
     private static final long SPLASH_TIME_OUT = 5000;
 
     Typeface typeface1, typeface2;
     List<String> array_list = new ArrayList<>();
+
+    String truckAccess = "", truckAccessTime;
+    String loadFloor, unLoadFloor;
 
 
     public HomesShiftingFormFragment() {
@@ -67,7 +81,6 @@ public class HomesShiftingFormFragment extends Fragment {
         if (getArguments() != null){
             categoryId = getArguments().getString(MyUtils.categoryId);
             subCategoryId = getArguments().getString(MyUtils.subCategoryId);
-            subCategoryName = getArguments().getString(MyUtils.subCategoryName);
             loadLocation = getArguments().getString(MyUtils.loadLocation);
             unloadLocation = getArguments().getString(MyUtils.unloadLocation);
 
@@ -75,7 +88,7 @@ public class HomesShiftingFormFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_homes_shifting_form, container, false);
@@ -112,29 +125,37 @@ public class HomesShiftingFormFragment extends Fragment {
         }
 
 
-        //Radio Button
+        // Default selected radio button এর text পাওয়া
+        int defaultCheckedId = binding.radioGroup.getCheckedRadioButtonId();
+        if (defaultCheckedId != -1) { // কোনো button select আছে কিনা চেক
+            RadioButton defaultRadio = binding.radioGroup.findViewById(defaultCheckedId);
+            if (defaultRadio != null) {
+                String defaultText = defaultRadio.getText().toString();
+                selectedShifting = defaultText;
+                binding.roomTypeTitleTv.setText(defaultText);
+                binding.roomTypeTv.setHint(defaultText);
+            }
+        }
+
+        // RadioGroup listener
         binding.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.radioBachelor){
-                //Home Bachelor
-                binding.roomTypeTitleTv.setText(getString(R.string.room_type));
-                binding.roomTypeTv.setHint(getString(R.string.room_type));
-            }
-            else if (checkedId == R.id.radioHome){
-                //Home Family
-                binding.roomTypeTitleTv.setText(getString(R.string.room_type));
-                binding.roomTypeTv.setHint(getString(R.string.room_type));
-            }
-            else if (checkedId == R.id.radioOffice){
-                //Office
-                binding.roomTypeTitleTv.setText("অফিসের সাইজ");
-                binding.roomTypeTv.setHint("অফিসের সাইজ");
+            RadioButton selectedRadio = group.findViewById(checkedId);
+            if (selectedRadio != null) {
+                selectedShifting = selectedRadio.getText().toString();
+                binding.roomTypeTitleTv.setText(selectedShifting);
+                binding.roomTypeTv.setHint(selectedShifting);
             }
         });
 
+
         //shifting date and time
-        binding.shiftingDateEt.setOnClickListener(v -> {
-            CommonClass.showDateTimePicker(requireContext(), 30, binding.shiftingDateEt);
-        });
+        binding.shiftingDateEt.setOnClickListener(v -> CommonClass.showDateTimePicker(requireContext(), 3, (displayText, returnDate, millis) -> {
+            binding.shiftingDateEt.setText(displayText);  // লোকেল অনুযায়ী UI
+            rentDateAndTime = String.valueOf(millis);    // timestamp
+        }));
+
+
+
 
         //Bottom sheet Dialog
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
@@ -160,7 +181,8 @@ public class HomesShiftingFormFragment extends Fragment {
         ListView lv = bottomSheetDialog.findViewById(R.id.listView);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.titleTv);
         assert titleTv != null;
-        lv.setAdapter(new ArrayAdapter((requireContext()), R.layout.single_listview_item, R.id.listItem, array_list));
+        assert lv != null;
+        lv.setAdapter(new ArrayAdapter<>((requireContext()), R.layout.single_listview_item, R.id.listItem, array_list));
 
 
         binding.roomTypeTv.setOnClickListener(v -> {
@@ -210,6 +232,7 @@ public class HomesShiftingFormFragment extends Fragment {
         String lang = LocaleHelper.getLanguage(requireContext());
         int defaultProgress = 1; // 1 * 5 = 5 মিনিট
         binding.timeSeekBar.setProgress(defaultProgress);
+        truckAccessTime = (defaultProgress * 5)  + " minutes";
         if (lang.equals("bn")){
             binding.minuteText.setText(CommonClass.toBanglaNumber(defaultProgress * 5) + " মিনিট");
         }
@@ -238,8 +261,9 @@ public class HomesShiftingFormFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
-    }
+        binding.continuePostBtn.setOnClickListener(v -> continueToReview());
 
+    }
     private void getFloorList() {
         array_list.clear();
         array_list.add(getString(R.string.ground_floor));
@@ -280,17 +304,185 @@ public class HomesShiftingFormFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         // 🔹 district field পড়া
                         postDistrict = documentSnapshot.getString("district");
+                        userName = documentSnapshot.getString("name");
+                        userPhone = documentSnapshot.getString("phone");
 
                         if (postDistrict != null) {
                             // UI তে দেখাও বা Log করো
+                            Log.d("UserInfo", "Username: " + userName);
+                            Log.d("UserInfo", "UserPhone: " + userPhone);
                             Log.d("UserInfo", "District: " + postDistrict);
                         } else {
                             Log.d("UserInfo", "District not found for user");
                         }
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("UserInfo", "Error fetching district", e);
-                });
+                .addOnFailureListener(e -> Log.e("UserInfo", "Error fetching district", e));
     }
+
+    @SuppressLint("SetTextI18n")
+    private void continueToReview() {
+        // ✅ Validate fields
+        // Get selected radio button id
+        int selectedId = binding.truckAccessRG.getCheckedRadioButtonId();
+
+        if (CommonClass.validateField(binding.shiftingDateEt)) return;
+        if (CommonClass.validateField(binding.roomTypeTv)) return;
+        if (CommonClass.validateField(binding.loadingFloorEt)) return;
+        if (CommonClass.validateField(binding.unloadingFloorEt)) return;
+        if (selectedId == -1) {
+            // কিছুই সিলেক্ট করা হয়নি
+            MyToast.showShort(getContext(), "বাসার সামনে ট্রাক আসবে কি না সিলেক্ট করুন");
+            return; // validation failed
+        }
+
+        if (selectedId == R.id.yesRB) {
+            truckAccess = getString(R.string.yes);
+            quantity ="yes";
+        }
+        else if (selectedId == R.id.noRB) {
+            truckAccess = binding.minuteText.getText().toString().trim();
+            quantity = truckAccessTime;
+        }
+
+        // ✅ Collect values
+        specificationCapacity = binding.roomTypeTv.getText().toString().trim();
+        specificationDuration = "";
+        specificationTypes = selectedShifting;
+
+        description = binding.detailsET.getText().toString().trim();
+        loadFloor = binding.loadingFloorEt.getText().toString().trim();
+        unLoadFloor = binding.unloadingFloorEt.getText().toString().trim();
+
+
+
+        // সব valid হলে এখানে আসবে
+        // ✅ Setup BottomSheet
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        dialog.setContentView(R.layout.layout_submit_post);
+
+        ImageView iconView = dialog.findViewById(R.id.iconImageViewSub);
+        TextView size = dialog.findViewById(R.id.sizeCapacityTV);
+        TextView count = dialog.findViewById(R.id.totalCountTV);
+        TextView duration = dialog.findViewById(R.id.popupDurationTV);
+        TextView product = dialog.findViewById(R.id.productTV);
+        TextView sizeDef = dialog.findViewById(R.id.sizeCapacityDefTV);
+        TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
+        TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
+        TextView productDef = dialog.findViewById(R.id.productDefTV);
+        TextView time = dialog.findViewById(R.id.popupTimeTV);
+        TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
+
+        RelativeLayout loadLocationRl = dialog.findViewById(R.id.loadLocationRl);
+        RelativeLayout unloadLocationRl = dialog.findViewById(R.id.unloadLocationRl);
+        RelativeLayout areaLocationRl = dialog.findViewById(R.id.areaLocationRl);
+
+        TextView locationTv = dialog.findViewById(R.id.locationTv);
+        TextView unloadLocationTv = dialog.findViewById(R.id.unloadLocationTv);
+        TextView areaLocationTv = dialog.findViewById(R.id.areaLocationTv);
+
+
+        dialog.show();
+
+        // ✅ Toggle visibility
+        boolean isEquipment = categoryId.equals(MyUtils.HOME_SHIFTING_ID);
+        if (loadLocationRl != null && unloadLocationRl != null && areaLocationRl != null) {
+            loadLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
+            unloadLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
+            areaLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
+        }
+
+        // ✅ Set texts safely
+
+        if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        if (size != null) size.setText(specificationCapacity);
+
+        if (countDef != null) countDef.setText(getString(R.string.truck_access));
+        if (count != null) count.setText(truckAccess);
+
+        if (productDef != null) productDef.setText(getString(R.string.shift_type_dot));
+        if (product != null) product.setText(specificationTypes);
+
+        if (locationTv != null) locationTv.setText(loadLocation+"\n"+loadFloor);
+        if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation+"\n"+unLoadFloor);
+        if (areaLocationTv != null) areaLocationTv.setText("");
+
+        if (durationDef != null) durationDef.setVisibility(View.GONE);
+        if (duration != null) duration.setVisibility(View.GONE);
+
+        if (time != null) time.setText(binding.shiftingDateEt.getText().toString());
+
+        // ✅ Set icon dynamically
+        if (iconView != null) {
+            iconView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_home_shift));
+        }
+
+        // ✅ Submit
+        if (submitBtn != null) {
+            submitBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+                postForRent();
+            });
+        }
+
+    }
+
+    private void postForRent() {
+        loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
+        loadingDialog.show();
+
+
+
+        String orderId = ""+System.currentTimeMillis();
+
+        Map<String, Object> order = OrderHelper.createOrder(
+                orderId,
+                userId,
+                userName,
+                userPhone,
+                categoryId,
+                subCategoryId,
+                loadLocation+"\n"+loadFloor,
+                unloadLocation+"\n"+unLoadFloor,
+                "",
+                rentDateAndTime,
+                specificationCapacity,
+                specificationDuration,
+                specificationTypes,
+                quantity,
+                description,
+                postDistrict
+        );
+
+        Log.d("UserInfo", "order: " + order);
+
+        db.collection("orders")
+                .document(orderId)
+                .set(order)
+                .addOnSuccessListener(aVoid -> {
+                    loadingDialog.dismiss();
+                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+
+                    binding.mainBodyLl.setVisibility(View.GONE);
+                    binding.donePostRent.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(()->{
+                        // ✅ Submit Success হলে
+                        Intent intent = new Intent(requireContext(), AddressActivity.class);
+                        // চাইলে extra পাঠাতে পারো
+                        intent.putExtra(MyUtils.categoryId, categoryId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        // এই fragment/activity বন্ধ হয়ে যাবে
+                        requireActivity().finish();
+                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    },SPLASH_TIME_OUT);
+
+                })
+                .addOnFailureListener(e -> {
+                    loadingDialog.dismiss();
+                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                });
+
+    }
+
 }

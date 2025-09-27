@@ -108,10 +108,9 @@
     <string name="details">বিস্তারিত</string>
     <string name="size">সাইজ</string>
     <string name="size_and_capacity">সাইজ এবং ধারনক্ষমতা</string>
-    <string name="size_and_capacitys">সাইজ এবং ধারনক্ষমতাঃ</string>
     <string name="duration_for_rent">ভাড়ার সময়কাল</string>
     <string name="how_many_are_needed">কতগুলো প্রয়োজন?</string>
-    <string name="duration">কত সময়ের জন্যঃ </string>
+    <string name="duration">কত সময়ের জন্য</string>
     <string name="more_than_1_week">১ সপ্তাহের বেশি ভাড়া নিতে চান?</string>
     <string name="person">জন</string>
     <string name="area_location">ঠিকানা</string>
@@ -119,6 +118,12 @@
     <string name="feet">ফিট</string>
     <string name="which_types">কি ধরনের</string>
     <string name="types">ধরন</string>
+
+    <string name="size_dot"><i>সাইজঃ </i></string>
+    <string name="type_dot">ধরণঃ </string>
+    <string name="which_type_dot"><i>কোন ধরণেরঃ </i></string>
+    <string name="product_type"><i>পন্যের ধরণঃ </i></string>
+    <string name="duration_dot">কত সময়ের জন্যঃ </string>
 
     <string name="pay_now">Pay now</string>
     <string name="support_24_hours">সাপোর্ট টিম ২৪/৭ ঘন্টা</string>
@@ -300,6 +305,7 @@
     <string name="home_shifting_service">বাসা/অফিস শিফটিং সার্ভিস</string>
     <string name="shiftingNull">আপনি কোনো\n সার্ভিস নেন নি!</string>
     <string name="will_you_shift">আপনি কি শিফট করবেন ?</string>
+    <string name="shift_type_dot">শিফটের ধরণঃ</string>
     <string name="home_shift">বাসা</string>
     <string name="office_shift">অফিস শিফট</string>
     <string name="room_type">রুমের ধরণ</string>
@@ -324,6 +330,7 @@
     <string name="how_many_floors_to_lift">কত তলায় উঠাতে হবে</string>
     <string name="what_date_will_shift">কত তারিখ শিফট করবেন</string>
     <string name="can_a_truck_come_in_front_of_the_house">বাসার সামনে ট্রাক আসতে পারবে?</string>
+    <string name="truck_access">ট্রাক আসবেঃ</string>
 
     <string name="floor_info">ফ্লোরের তথ্য</string>
     <string name="ground_floor">১ম/নিচতলা</string>
@@ -349,6 +356,7 @@
     <string name="experience">অভিজ্ঞতা</string>
     <string name="work_experience">কাজের অভিজ্ঞতা</string>
     <string name="year">বছর</string>
+    <string name="need">প্রয়োজন</string>
 
     <!--Electrician-->
     <string name="ceiling_fan_install_uninstall">সিলিং ফ্যান খোলা/ফিটিং</string>

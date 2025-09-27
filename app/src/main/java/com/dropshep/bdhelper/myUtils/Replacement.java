@@ -120,6 +120,21 @@ public class Replacement {
         }
     }
 
+    public static String ReplacementQtyBnToEn(String replacement) {
+        if (replacement == null) return "";
+
+        String[] bn = {"০","১","২","৩","৪","৫","৬","৭","৮","৯"};
+        String[] en = {"0","1","2","3","4","5","6","7","8","9"};
+
+        for (int i = 0; i < 10; i++) {
+            replacement = replacement.replace(bn[i], en[i]);
+        }
+
+        replacement = replacement.replace("১০","10"); // বিশেষ ১০ এর জন্য
+        return replacement;
+    }
+
+
     public static String getLocalizedDistrict(Context context, String districtEng) {
         if (districtEng == null) return "";
 

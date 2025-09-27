@@ -2,213 +2,183 @@ package com.dropshep.bdhelper.model;
 
 public class OrderModel {
 
-    private String orderId;
-    private String userId;
-    private String userName;
-    private String userPhone;
-    private String userType;
-    private String orderType;
-    private String orderStatus;
-    private String exchangeType;
-    private String timestamp;
-
-    private BatteryDetails batteryDetails;
-    private ExchangeDetails exchangeDetails;
-    private DeliveryDetails deliveryDetails;
-    private PaymentDetails paymentDetails;
+    private OrderInfo orderInfo;
+    private RouteInfo routeInfo;
+    private SpecInfo specInfo;
+    private BidInfo bidInfo;
+    private PaymentInfo paymentInfo;
+    private UserInfo userInfo;
 
     public OrderModel() {
-        // Firestore এর জন্য empty constructor দরকার
+        // Firestore এর জন্য empty constructor
     }
 
-    public OrderModel(String orderId, String userId, String userName, String userPhone,
-                      String userType, String orderType, String orderStatus,
-                      String exchangeType, String timestamp,
-                      BatteryDetails batteryDetails, ExchangeDetails exchangeDetails,
-                      DeliveryDetails deliveryDetails, PaymentDetails paymentDetails) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.userName = userName;
-        this.userPhone = userPhone;
-        this.userType = userType;
-        this.orderType = orderType;
-        this.orderStatus = orderStatus;
-        this.exchangeType = exchangeType;
-        this.timestamp = timestamp;
-        this.batteryDetails = batteryDetails;
-        this.exchangeDetails = exchangeDetails;
-        this.deliveryDetails = deliveryDetails;
-        this.paymentDetails = paymentDetails;
+    public OrderModel(OrderInfo orderInfo, RouteInfo routeInfo, SpecInfo specInfo,
+                      BidInfo bidInfo, PaymentInfo paymentInfo, UserInfo userInfo) {
+        this.orderInfo = orderInfo;
+        this.routeInfo = routeInfo;
+        this.specInfo = specInfo;
+        this.bidInfo = bidInfo;
+        this.paymentInfo = paymentInfo;
+        this.userInfo = userInfo;
     }
 
-    // ✅ Getter & Setter
-    public String getOrderId() { return orderId; }
-    public void setOrderId(String orderId) { this.orderId = orderId; }
+    // 🔹 Getters & Setters
+    public OrderInfo getOrderInfo() { return orderInfo; }
+    public void setOrderInfo(OrderInfo orderInfo) { this.orderInfo = orderInfo; }
 
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public RouteInfo getRouteInfo() { return routeInfo; }
+    public void setRouteInfo(RouteInfo routeInfo) { this.routeInfo = routeInfo; }
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
+    public SpecInfo getSpecInfo() { return specInfo; }
+    public void setSpecInfo(SpecInfo specInfo) { this.specInfo = specInfo; }
 
-    public String getUserPhone() { return userPhone; }
-    public void setUserPhone(String userPhone) { this.userPhone = userPhone; }
+    public BidInfo getBidInfo() { return bidInfo; }
+    public void setBidInfo(BidInfo bidInfo) { this.bidInfo = bidInfo; }
 
-    public String getUserType() { return userType; }
-    public void setUserType(String userType) { this.userType = userType; }
+    public PaymentInfo getPaymentInfo() { return paymentInfo; }
+    public void setPaymentInfo(PaymentInfo paymentInfo) { this.paymentInfo = paymentInfo; }
 
-    public String getOrderType() { return orderType; }
-    public void setOrderType(String orderType) { this.orderType = orderType; }
+    public UserInfo getUserInfo() { return userInfo; }
+    public void setUserInfo(UserInfo userInfo) { this.userInfo = userInfo; }
 
-    public String getOrderStatus() { return orderStatus; }
-    public void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
+    // ===================== Nested Classes =====================
 
-    public String getExchangeType() { return exchangeType; }
-    public void setExchangeType(String exchangeType) { this.exchangeType = exchangeType; }
+    public static class OrderInfo {
+        private String orderId;
+        private String uid;
+        private String categoryId;
+        private String subCategoryId;
+        private String status;
+        private long timestamp;
 
-    public String getTimestamp() {
-        return timestamp;
-    }
+        public OrderInfo() {}
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public BatteryDetails getBatteryDetails() { return batteryDetails; }
-    public void setBatteryDetails(BatteryDetails batteryDetails) { this.batteryDetails = batteryDetails; }
-
-    public ExchangeDetails getExchangeDetails() { return exchangeDetails; }
-    public void setExchangeDetails(ExchangeDetails exchangeDetails) { this.exchangeDetails = exchangeDetails; }
-
-    public DeliveryDetails getDeliveryDetails() { return deliveryDetails; }
-    public void setDeliveryDetails(DeliveryDetails deliveryDetails) { this.deliveryDetails = deliveryDetails; }
-
-    public PaymentDetails getPaymentDetails() { return paymentDetails; }
-    public void setPaymentDetails(PaymentDetails paymentDetails) { this.paymentDetails = paymentDetails; }
-
-
-    // ================================
-    // ✅ Nested Models
-    // ================================
-
-    public static class BatteryDetails {
-        private String batteryId;
-        private String batteryName;
-        private String batteryType;
-        private String batteryVoltage;
-        private String batteryCapacity;
-        private String batteryPrice;
-
-        public BatteryDetails() {}
-
-        public BatteryDetails(String batteryId, String batteryName, String batteryType,
-                              String batteryVoltage, String batteryCapacity, String batteryPrice) {
-            this.batteryId = batteryId;
-            this.batteryName = batteryName;
-            this.batteryType = batteryType;
-            this.batteryVoltage = batteryVoltage;
-            this.batteryCapacity = batteryCapacity;
-            this.batteryPrice = batteryPrice;
+        public OrderInfo(String orderId, String uid, String categoryId, String subCategoryId,
+                         String status, long timestamp) {
+            this.orderId = orderId;
+            this.uid = uid;
+            this.categoryId = categoryId;
+            this.subCategoryId = subCategoryId;
+            this.status = status;
+            this.timestamp = timestamp;
         }
 
-        public String getBatteryId() { return batteryId; }
-        public void setBatteryId(String batteryId) { this.batteryId = batteryId; }
-
-        public String getBatteryName() { return batteryName; }
-        public void setBatteryName(String batteryName) { this.batteryName = batteryName; }
-
-        public String getBatteryType() { return batteryType; }
-        public void setBatteryType(String batteryType) { this.batteryType = batteryType; }
-
-        public String getBatteryVoltage() { return batteryVoltage; }
-        public void setBatteryVoltage(String batteryVoltage) { this.batteryVoltage = batteryVoltage; }
-
-        public String getBatteryCapacity() { return batteryCapacity; }
-        public void setBatteryCapacity(String batteryCapacity) { this.batteryCapacity = batteryCapacity; }
-
-        public String getBatteryPrice() { return batteryPrice; }
-        public void setBatteryPrice(String batteryPrice) { this.batteryPrice = batteryPrice; }
+        public String getOrderId() { return orderId; }
+        public String getUid() { return uid; }
+        public String getCategoryId() { return categoryId; }
+        public String getSubCategoryId() { return subCategoryId; }
+        public String getStatus() { return status; }
+        public long getTimestamp() { return timestamp; }
     }
 
-    public static class ExchangeDetails {
-        private String oldBatteryBrand;
-        private String oldBatteryType;
-        private String oldBatteryVoltage;
-        private String oldBatteryCapacity;
-        private String exchangeDiscount;
+    public static class RouteInfo {
+        private String load;
+        private String unload;
+        private String rentLocation;
+        private String rentTime;
 
-        public ExchangeDetails() {}
+        public RouteInfo() {}
 
-        public ExchangeDetails(String oldBatteryBrand, String oldBatteryType,
-                               String oldBatteryVoltage, String oldBatteryCapacity,
-                               String exchangeDiscount) {
-            this.oldBatteryBrand = oldBatteryBrand;
-            this.oldBatteryType = oldBatteryType;
-            this.oldBatteryVoltage = oldBatteryVoltage;
-            this.oldBatteryCapacity = oldBatteryCapacity;
-            this.exchangeDiscount = exchangeDiscount;
+        public RouteInfo(String load, String unload, String rentLocation, String rentTime) {
+            this.load = load;
+            this.unload = unload;
+            this.rentLocation = rentLocation;
+            this.rentTime = rentTime;
         }
 
-        public String getOldBatteryBrand() { return oldBatteryBrand; }
-        public void setOldBatteryBrand(String oldBatteryBrand) { this.oldBatteryBrand = oldBatteryBrand; }
-
-        public String getOldBatteryType() { return oldBatteryType; }
-        public void setOldBatteryType(String oldBatteryType) { this.oldBatteryType = oldBatteryType; }
-
-        public String getOldBatteryVoltage() { return oldBatteryVoltage; }
-        public void setOldBatteryVoltage(String oldBatteryVoltage) { this.oldBatteryVoltage = oldBatteryVoltage; }
-
-        public String getOldBatteryCapacity() { return oldBatteryCapacity; }
-        public void setOldBatteryCapacity(String oldBatteryCapacity) { this.oldBatteryCapacity = oldBatteryCapacity; }
-
-        public String getExchangeDiscount() { return exchangeDiscount; }
-        public void setExchangeDiscount(String exchangeDiscount) { this.exchangeDiscount = exchangeDiscount; }
+        public String getLoad() { return load; }
+        public String getUnload() { return unload; }
+        public String getRentLocation() { return rentLocation; }
+        public String getRentTime() { return rentTime; }
     }
 
-    public static class DeliveryDetails {
-        private String deliveryAddress;
-        private String deliveryCharge;
-        private String deliveryStatus;
+    public static class SpecInfo {
+        private String capacity;
+        private String duration;
+        private String types;
+        private String quantity;
+        private String desc;
+        private String postDistrict;
 
-        public DeliveryDetails() {}
+        public SpecInfo() {}
 
-        public DeliveryDetails(String deliveryAddress, String deliveryCharge, String deliveryStatus) {
-            this.deliveryAddress = deliveryAddress;
-            this.deliveryCharge = deliveryCharge;
-            this.deliveryStatus = deliveryStatus;
+        public SpecInfo(String capacity, String duration, String types, String quantity,
+                        String desc, String postDistrict) {
+            this.capacity = capacity;
+            this.duration = duration;
+            this.types = types;
+            this.quantity = quantity;
+            this.desc = desc;
+            this.postDistrict = postDistrict;
         }
 
-        public String getDeliveryAddress() { return deliveryAddress; }
-        public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
-
-        public String getDeliveryCharge() { return deliveryCharge; }
-        public void setDeliveryCharge(String deliveryCharge) { this.deliveryCharge = deliveryCharge; }
-
-        public String getDeliveryStatus() { return deliveryStatus; }
-        public void setDeliveryStatus(String deliveryStatus) { this.deliveryStatus = deliveryStatus; }
+        public String getCapacity() { return capacity; }
+        public String getDuration() { return duration; }
+        public String getTypes() { return types; }
+        public String getQuantity() { return quantity; }
+        public String getDesc() { return desc; }
+        public String getPostDistrict() { return postDistrict; }
     }
 
-    public static class PaymentDetails {
-        private String paymentMethod;
-        private String paymentStatus;
+    public static class BidInfo {
+        private String bidStatus;
+        private String bidId;
+        private String vendorId;
+        private int vendorPrice;
+
+        public BidInfo() {}
+
+        public BidInfo(String bidStatus, String bidId, String vendorId, int vendorPrice) {
+            this.bidStatus = bidStatus;
+            this.bidId = bidId;
+            this.vendorId = vendorId;
+            this.vendorPrice = vendorPrice;
+        }
+
+        public String getBidStatus() { return bidStatus; }
+        public String getBidId() { return bidId; }
+        public String getVendorId() { return vendorId; }
+        public int getVendorPrice() { return vendorPrice; }
+    }
+
+    public static class PaymentInfo {
+        private String payMethod;
+        private String payStatus;
         private String transactionId;
 
-        public PaymentDetails() {}
+        public PaymentInfo() {}
 
-        public PaymentDetails(String paymentMethod, String paymentStatus, String transactionId) {
-            this.paymentMethod = paymentMethod;
-            this.paymentStatus = paymentStatus;
+        public PaymentInfo(String payMethod, String payStatus, String transactionId) {
+            this.payMethod = payMethod;
+            this.payStatus = payStatus;
             this.transactionId = transactionId;
         }
 
-        public String getPaymentMethod() { return paymentMethod; }
-        public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
-
-        public String getPaymentStatus() { return paymentStatus; }
-        public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
-
+        public String getPayMethod() { return payMethod; }
+        public String getPayStatus() { return payStatus; }
         public String getTransactionId() { return transactionId; }
-        public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+    }
+
+    public static class UserInfo {
+        private String userId;
+        private String userName;
+        private String userPhone;
+        private String userType;
+
+        public UserInfo() {}
+
+        public UserInfo(String userId, String userName, String userPhone, String userType) {
+            this.userId = userId;
+            this.userName = userName;
+            this.userPhone = userPhone;
+            this.userType = userType;
+        }
+
+        public String getUserId() { return userId; }
+        public String getUserName() { return userName; }
+        public String getUserPhone() { return userPhone; }
+        public String getUserType() { return userType; }
     }
 }
 

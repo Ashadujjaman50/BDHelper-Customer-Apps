@@ -87,10 +87,11 @@ dependencies {
     //Lottie
     implementation(libs.lottie)
 
+    //Loading Dialog
+    implementation(libs.loading.dialog)
 
 
-
-testImplementation(libs.junit)
+    testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
