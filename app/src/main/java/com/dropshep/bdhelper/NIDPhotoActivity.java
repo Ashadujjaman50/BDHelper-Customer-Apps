@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -60,6 +61,8 @@ public class NIDPhotoActivity extends BaseActivity {
     private FirebaseFirestore db;
     String userId;
 
+    String TAG = "NID Service";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.applyTheme(this);
@@ -80,6 +83,8 @@ public class NIDPhotoActivity extends BaseActivity {
         db = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         userId = firebaseAuth.getCurrentUser().getUid();
+
+        loadCurrentUserDocument(); // 🔁 Force reload every time Activity resumes
     }
 
     private void setupListeners() {
@@ -99,31 +104,47 @@ public class NIDPhotoActivity extends BaseActivity {
     }
 
     private void loadCurrentUserDocument() {
-        // 🔹 Load main user document
-        // 🔹 Load profile image
         db.collection("users")
                 .document(userId)
                 .collection("Document")
                 .document("info")
-                .get(Source.SERVER)
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed.", e);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
                         String nidFont = documentSnapshot.getString("nidFont");
                         String nidBack = documentSnapshot.getString("nidBack");
 
-                        // Use these URLs as needed
-                        Picasso.get().load(nidFont).placeholder(R.drawable.nid_font).into(binding.nidFontImage);
-                        Picasso.get().load(nidBack).placeholder(R.drawable.nid_back).into(binding.nidBackImage);
+                        // 🔹 Front NID load
+                        if (nidFont != null && !nidFont.isEmpty()) {
+                            Picasso.get()
+                                    .load(nidFont)
+                                    .placeholder(R.drawable.nid_font)
+                                    .error(R.drawable.nid_font)
+                                    .into(binding.nidFontImage);
+                        } else {
+                            binding.nidFontImage.setImageResource(R.drawable.nid_font);
+                        }
+
+                        // 🔹 Back NID load
+                        if (nidBack != null && !nidBack.isEmpty()) {
+                            Picasso.get()
+                                    .load(nidBack)
+                                    .placeholder(R.drawable.nid_back)
+                                    .error(R.drawable.nid_back)
+                                    .into(binding.nidBackImage);
+                        } else {
+                            binding.nidBackImage.setImageResource(R.drawable.nid_back);
+                        }
                     }
                 });
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadCurrentUserDocument(); // 🔁 Force reload every time Activity resumes
-    }
+
+
 
     private void showBottomPopupImagePicker() {
         BottomSheetDialog dialog = new BottomSheetDialog(this);
@@ -226,9 +247,12 @@ public class NIDPhotoActivity extends BaseActivity {
                         : BitmapFactory.decodeStream(getContentResolver().openInputStream(resultUri));
 
                 Uri compressedUri = FileUploadHelper.compressImage(this, bitmap);
+                Log.d(TAG, "image: "+compressedUri);
                 if (isNidFront) {
                     fontImageUrl = compressedUri;
-                    binding.nidFontImage.setImageURI(fontImageUrl);
+                    Picasso.get().load(fontImageUrl)
+                            .placeholder(R.drawable.nid_font)
+                            .into(binding.nidFontImage);
                 } else {
                     backImageUrl = compressedUri;
                     binding.nidBackImage.setImageURI(backImageUrl);
@@ -284,7 +308,7 @@ public class NIDPhotoActivity extends BaseActivity {
                         links.add(link.toString());
                         msg.append(link.toString()).append("\n");
                     }
-                    MyToast.showShort(this,msg.toString());
+                    //MyToast.showShort(this,msg.toString());
                     // এখন links.get(0), links.get(1) ব্যবহার করা যাবে
                     // 🔥 Step 2: Save downloadUrl to Firestore
                     Map<String, Object> docLinks  = new HashMap<>();
@@ -298,6 +322,7 @@ public class NIDPhotoActivity extends BaseActivity {
                             .set(docLinks, SetOptions.merge())
                             .addOnSuccessListener(aVoid -> {
                                 loadingDialog.dismiss();
+                                loadCurrentUserDocument();
                                 Toast.makeText(this, "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {

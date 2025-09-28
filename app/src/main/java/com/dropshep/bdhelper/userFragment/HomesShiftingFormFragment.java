@@ -155,8 +155,6 @@ public class HomesShiftingFormFragment extends Fragment {
         }));
 
 
-
-
         //Bottom sheet Dialog
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
         View view = LayoutInflater.from(requireContext())
