@@ -45,5 +45,5 @@ BDHelper একটি Android অ্যাপ্লিকেশন যা **Heav
 
 1. Clone the repository  
    ```bash
-   git clone https://github.com/your-username/BDHelper.git
+   git clone https://github.com/your-username/BDHelper.git](https://github.com/Ashadujjaman50/BDHelper-Customer-Apps.git
    cd BDHelper
