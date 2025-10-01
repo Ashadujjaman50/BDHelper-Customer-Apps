@@ -430,56 +430,74 @@ public class HomesShiftingFormFragment extends Fragment {
         loadingDialog.show();
 
 
+        // 🔽 CommonClass থেকে OrderId জেনারেট করব
+        CommonClass.generateOrderId(
+                db,
+                "orders",
+                "orderInfo.orderId",
+                "BOL",
+                5,
+                new CommonClass.OrderIdCallback() {
+            @Override
+            public void onSuccess(String orderId) {
+                Map<String, Object> order = OrderHelper.createOrder(
+                        orderId,
+                        userId,
+                        userName,
+                        userPhone,
+                        categoryId,
+                        subCategoryId,
+                        loadLocation+"\n"+loadFloor,
+                        unloadLocation+"\n"+unLoadFloor,
+                        "",
+                        rentDateAndTime,
+                        specificationCapacity,
+                        specificationDuration,
+                        specificationTypes,
+                        quantity,
+                        description,
+                        postDistrict
+                );
 
-        String orderId = ""+System.currentTimeMillis();
 
-        Map<String, Object> order = OrderHelper.createOrder(
-                orderId,
-                userId,
-                userName,
-                userPhone,
-                categoryId,
-                subCategoryId,
-                loadLocation+"\n"+loadFloor,
-                unloadLocation+"\n"+unLoadFloor,
-                "",
-                rentDateAndTime,
-                specificationCapacity,
-                specificationDuration,
-                specificationTypes,
-                quantity,
-                description,
-                postDistrict
-        );
+                db.collection("orders")
+                        .document(orderId)
+                        .set(order)
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            //MyToast.showShort(getContext(), "✅ Order Submitted");
 
-        Log.d("UserInfo", "order: " + order);
+                            binding.mainBodyLl.setVisibility(View.GONE);
+                            binding.donePostRent.setVisibility(View.VISIBLE);
+                            new Handler().postDelayed(()->{
+                                // ✅ Submit Success হলে
+                                Intent intent = new Intent(requireContext(), AddressActivity.class);
+                                // চাইলে extra পাঠাতে পারো
+                                intent.putExtra(MyUtils.categoryId, categoryId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                                // এই fragment/activity বন্ধ হয়ে যাবে
+                                requireActivity().finish();
+                                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            },SPLASH_TIME_OUT);
 
-        db.collection("orders")
-                .document(orderId)
-                .set(order)
-                .addOnSuccessListener(aVoid -> {
-                    loadingDialog.dismiss();
-                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Log.d("Last Order", "Order: " + e.getMessage());
+                            MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                        });
+            }
 
-                    binding.mainBodyLl.setVisibility(View.GONE);
-                    binding.donePostRent.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(()->{
-                        // ✅ Submit Success হলে
-                        Intent intent = new Intent(requireContext(), AddressActivity.class);
-                        // চাইলে extra পাঠাতে পারো
-                        intent.putExtra(MyUtils.categoryId, categoryId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-                        // এই fragment/activity বন্ধ হয়ে যাবে
-                        requireActivity().finish();
-                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    },SPLASH_TIME_OUT);
+            @Override
+            public void onFailure(Exception e) {
+                loadingDialog.dismiss();
+                Log.d("Last Order", "OrderID: " + e.getMessage());
+                //MyToast.showShort(getContext(), "❌ Failed to generate orderId: " + e.getMessage());
+            }
+        });
 
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
-                });
+
 
     }
 

@@ -120,7 +120,8 @@ public class Replacement {
         }
     }
 
-    public static String ReplacementQtyBnToEn(String replacement) {
+    // 🔹 Bangla → English
+    public static String ReplacementNumberBnToEn(String replacement) {
         if (replacement == null) return "";
 
         String[] bn = {"০","১","২","৩","৪","৫","৬","৭","৮","৯"};
@@ -131,8 +132,111 @@ public class Replacement {
         }
 
         replacement = replacement.replace("১০","10"); // বিশেষ ১০ এর জন্য
+        replacement = replacement.replace("জন","person"); // বিশেষ ১০ এর জন্য
         return replacement;
     }
+    // 🔹 English → Bangla
+    public static String ReplacementNumberEnToBn(String replacement) {
+        if (replacement == null) return "";
+
+        String[] en = {"0","1","2","3","4","5","6","7","8","9"};
+        String[] bn = {"০","১","২","৩","৪","৫","৬","৭","৮","৯"};
+
+        for (int i = 0; i < 10; i++) {
+            replacement = replacement.replace(en[i], bn[i]);
+        }
+
+        replacement = replacement.replace("10","১০"); // বিশেষ ১০ এর জন্য
+        replacement = replacement.replace("person","জন"); // বিশেষ ১০ এর জন্য
+        return replacement;
+    }
+
+    public static String ReplacementNumberInLocal(Context context, String number){
+        String lang = LocaleHelper.getLanguage(context); // en or bn
+
+        if ("bn".equals(lang)){
+            return ReplacementNumberEnToBn(number);
+        }
+        else {
+            return ReplacementNumberBnToEn(number);
+        }
+    }
+
+    // 🔹 English → Bangla
+    public static String ReplacementQtyEnToBn(String replacement) {
+        replacement = replacement.replace("10", "১০ টি");
+        replacement = replacement.replace("0", "০ টি");
+        replacement = replacement.replace("1", "১ টি");
+        replacement = replacement.replace("2", "২ টি");
+        replacement = replacement.replace("3", "৩ টি");
+        replacement = replacement.replace("4", "৪ টি");
+        replacement = replacement.replace("5", "৫ টি");
+        replacement = replacement.replace("6", "৬ টি");
+        replacement = replacement.replace("7", "৭ টি");
+        replacement = replacement.replace("8", "৮ টি");
+        replacement = replacement.replace("9", "৯ টি");
+        return replacement;
+    }
+
+    // 🔹 Bangla → English
+    public static String ReplacementQtyBnToEn(String replacement) {
+        replacement = replacement.replace("১০ টি","10");
+        replacement = replacement.replace("০ টি","0");
+        replacement = replacement.replace("১ টি","1");
+        replacement = replacement.replace("২ টি","2");
+        replacement = replacement.replace("৩ টি","3");
+        replacement = replacement.replace("৪ টি","4");
+        replacement = replacement.replace("৫ টি","5");
+        replacement = replacement.replace("৬ টি","6");
+        replacement = replacement.replace("৭ টি","7");
+        replacement = replacement.replace("৮ টি","8");
+        replacement = replacement.replace("৯ টি","9");
+        return replacement;
+    }
+
+    // 🔹 Auto Local Method
+    public static String ReplacementQtyToLocal(Context context, String quantity) {
+        String lang = LocaleHelper.getLanguage(context); // en or bn
+
+        if ("bn".equals(lang)) {
+            return ReplacementQtyEnToBn(quantity);
+        } else {
+            return ReplacementQtyBnToEn(quantity);
+        }
+    }
+
+    // 🔹 English → Bangla digits
+    private static String enToBnDigits(String number) {
+        return number.replace("0", "০")
+                .replace("1", "১")
+                .replace("2", "২")
+                .replace("3", "৩")
+                .replace("4", "৪")
+                .replace("5", "৫")
+                .replace("6", "৬")
+                .replace("7", "৭")
+                .replace("8", "৮")
+                .replace("9", "৯");
+    }
+
+    // 🔹 Dynamic minutes in local
+    public static String getLocalMinutes(Context context, String quantity) {
+        String lang = LocaleHelper.getLanguage(context);
+
+        // শুধু digit বের করো (যেমন "5 minutes" → "5")
+        String digits = quantity.replaceAll("\\D+", ""); // non-digit remove
+
+        if (digits.isEmpty()) {
+            digits = "0";
+        }
+
+        if ("bn".equals(lang)) {
+            return enToBnDigits(digits) + " মিনিট";
+        } else {
+            return digits + " minutes";
+        }
+    }
+
 
 
     public static String getLocalizedDistrict(Context context, String districtEng) {

@@ -429,7 +429,7 @@ public class SkilledLaborFormFragment extends Fragment {
         if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
         if (areaLocationTv != null) areaLocationTv.setText(rentLocation);
 
-        if (sizeDef != null) sizeDef.setText(getString(R.string.work_experience));
+        if (sizeDef != null) sizeDef.setText(getString(R.string.work_experience_dot));
         if (size != null) size.setText(specificationCapacity);
 
         if (!subCategoryId.equals(MyUtils.SUB_DRIVER_ID)) {
@@ -440,7 +440,7 @@ public class SkilledLaborFormFragment extends Fragment {
         if (durationDef != null) durationDef.setVisibility(View.GONE);
         if (duration != null) duration.setVisibility(View.GONE);
 
-        if (productDef != null) productDef.setText(getString(R.string.which_type_laborer));
+        if (productDef != null) productDef.setText(getString(R.string.which_type_laborer_dot));
         if (product != null) product.setText(specificationTypes);
 
         if (time != null) time.setText(binding.dateTimeTV.getText().toString());
@@ -479,55 +479,73 @@ public class SkilledLaborFormFragment extends Fragment {
         loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
         loadingDialog.show();
 
-        String orderId = ""+System.currentTimeMillis();
+        // 🔽 CommonClass থেকে OrderId জেনারেট করব
+        CommonClass.generateOrderId(
+                db,
+                "orders",
+                "orderInfo.orderId",
+                "BOL",
+                5,
+                new CommonClass.OrderIdCallback() {
+            @Override
+            public void onSuccess(String orderId) {
+                Map<String, Object> order = OrderHelper.createOrder(
+                        orderId,
+                        userId,
+                        userName,
+                        userPhone,
+                        categoryId,
+                        subCategoryId,
+                        "",
+                        "",
+                        rentLocation,
+                        rentDateAndTime,
+                        specificationCapacity,
+                        specificationDuration,
+                        specificationTypes,
+                        quantity,
+                        description,
+                        postDistrict
+                );
 
-        Map<String, Object> order = OrderHelper.createOrder(
-                orderId,
-                userId,
-                userName,
-                userPhone,
-                categoryId,
-                subCategoryId,
-                "",
-                "",
-                rentLocation,
-                rentDateAndTime,
-                specificationCapacity,
-                specificationDuration,
-                specificationTypes,
-                quantity,
-                description,
-                postDistrict
-        );
 
-        Log.d("UserInfo", "order: " + order);
+                db.collection("orders")
+                        .document(orderId)
+                        .set(order)
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            //MyToast.showShort(getContext(), "✅ Order Submitted");
 
-        db.collection("orders")
-                .document(orderId)
-                .set(order)
-                .addOnSuccessListener(aVoid -> {
-                    loadingDialog.dismiss();
-                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+                            binding.mainBodyLl.setVisibility(View.GONE);
+                            binding.donePostRent.setVisibility(View.VISIBLE);
+                            new Handler().postDelayed(()->{
+                                // ✅ Submit Success হলে
+                                Intent intent = new Intent(requireContext(), SubCategoryActivity.class);
+                                // চাইলে extra পাঠাতে পারো
+                                intent.putExtra(MyUtils.categoryId, categoryId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                                // এই fragment/activity বন্ধ হয়ে যাবে
+                                requireActivity().finish();
+                                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            },SPLASH_TIME_OUT);
 
-                    binding.mainBodyLl.setVisibility(View.GONE);
-                    binding.donePostRent.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(()->{
-                        // ✅ Submit Success হলে
-                        Intent intent = new Intent(requireContext(), SubCategoryActivity.class);
-                        // চাইলে extra পাঠাতে পারো
-                        intent.putExtra(MyUtils.categoryId, categoryId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-                        // এই fragment/activity বন্ধ হয়ে যাবে
-                        requireActivity().finish();
-                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    },SPLASH_TIME_OUT);
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Log.d("Last Order", "Order: " + e.getMessage());
+                            MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                        });
+            }
+            @Override
+            public void onFailure(Exception e) {
+                loadingDialog.dismiss();
+                Log.d("Last Order", "OrderID: " + e.getMessage());
+                //MyToast.showShort(getContext(), "❌ Failed to generate orderId: " + e.getMessage());
+            }
+        });
 
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
-                });
+
 
     }
 

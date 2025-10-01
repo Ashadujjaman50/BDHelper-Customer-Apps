@@ -56,6 +56,7 @@
     <string name="recommended">Recommend</string>
 
     <string name="category">Category</string>
+    <string name="category_dot">Category: </string>
 
     <!--Category-->
     <string name="road_transport">Road Transport</string>
@@ -108,6 +109,9 @@
     <string name="details">Details</string>
     <string name="size">Size</string>
     <string name="size_and_capacity">Size and Capacity</string>
+    <string name="size_and_trip">Size &amp; Trip:</string>
+    <string name="category_and_trip">Category &amp; Trip:</string>
+    <string name="type_and_trip">Type &amp; Trip:</string>
     <string name="duration_for_rent">Duration for rent ?</string>
     <string name="how_many_are_needed">How many are needed</string>
     <string name="duration">Duration</string>
@@ -122,8 +126,12 @@
     <string name="size_dot"><i>Size: </i></string>
     <string name="type_dot">Type: </string>
     <string name="which_type_dot"><i>Type: </i></string>
-    <string name="product_type"><i>Product Type: </i></string>
+    <string name="product_type"><i>Product type: </i></string>
     <string name="duration_dot">Duration: </string>
+    <string name="which_type_laborer_dot">For what work: </string>
+    <string name="work_experience_dot">Work experience:</string>
+    <string name="need_dot">Need:</string>
+    <string name="working_type_and_experience">Experience &amp; Work</string>
 
     <string name="pay_now">Pay now</string>
     <string name="support_24_hours">Support team 24/7 hours</string>
@@ -176,7 +184,7 @@
 
     <!--Row Post/modelBid/review-->
     <string name="see_bid_rental">See Bid price</string>
-    <string name="review">Write a review</string>
+    <string name="review">Review</string>
     <string name="post">Post:</string>
     <string name="or">Or</string>
     <string name="call_to_confirm">Call to need</string>
@@ -225,6 +233,7 @@
     <string name="eight_hundred">800 cft</string>
     <string name="eight_hundred_and_fifty">850 cft</string>
 
+    <string name="trip">Trip</string>
     <string name="trip_based">Trip based</string>
     <string name="single_trip">Single Trip</string>
     <string name="round_trip">Round Trip</string>
@@ -330,6 +339,8 @@
     <string name="how_many_floors_to_lift">How many floors to lift</string>
     <string name="what_date_will_shift">What date will shift?</string>
     <string name="can_a_truck_come_in_front_of_the_house">Can a truck come in front of the house?</string>
+    <string name="will_come_in_front_of_the_house">Will come in front of the house</string>
+    <string name="from_main_road">From Main Road</string>
     <string name="truck_access">Truck access:</string>
 
     <string name="floor_info">Floor information</string>

@@ -95,7 +95,7 @@
                             android:layout_height="20dp"
                             android:layout_marginStart="3dp"
                             android:paddingBottom="4dp"
-                            android:src="@drawable/ic_pending"
+                            android:src="@drawable/ic_pending_profile"
                             android:visibility="gone" />
 
                         <ImageView

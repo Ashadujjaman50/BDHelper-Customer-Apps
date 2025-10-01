@@ -54,6 +54,7 @@
                 android:text="1"
                 android:textColor="@color/text_primary" />
 
+
             <TextView
                 android:id="@+id/postStatusTv"
                 android:layout_width="wrap_content"
@@ -64,7 +65,7 @@
                 android:hint="Bidding"
                 android:textStyle="bold"
                 android:drawablePadding="10dp"
-                app:drawableStartCompat="@drawable/ic_pending" />
+                app:drawableStartCompat="@drawable/ic_checked" />
 
         </RelativeLayout>
 
@@ -96,23 +97,102 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textStyle="bold"
+                    android:text="@string/date_dote"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/rentTimeTv"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="26 july 25, 10.45 am"
+                    android:textColor="@color/text_primary" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:textStyle="bold"
-                android:text="@string/date_dote"
-                android:textColor="@color/text_secondary" />
+                android:src="@drawable/ic_unload_location" />
 
             <TextView
-                android:id="@+id/rentTimeTv"
-                android:layout_marginStart="5dp"
+                android:id="@+id/locationNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/location_name"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+        <!--Hide Loading Point-->
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="26 july 25, 10.45 am"
-                android:textColor="@color/text_primary" />
+                android:src="@drawable/ic_load_location" />
+
+            <TextView
+                android:id="@+id/postLoadLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1" />
+
+        </LinearLayout>
+
+        <!--Hide unloading point-->
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_unload_location" />
+
+            <TextView
+                android:id="@+id/postUnLoadLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1" />
 
         </LinearLayout>
 
@@ -120,34 +200,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="10dp"
-            android:background="@color/divider_color" />
-
-        <TextView
-            android:id="@+id/postLoadLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_load_location"
-            android:textColor="@color/text_primary" />
-
-        <TextView
-            android:id="@+id/postUnLoadLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="House 23, Road 8, Block E, Section 1\nEidgamhat, Mirpur 1"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_unload_location"
-            android:textColor="@color/text_primary" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="10dp"
-            android:background="@color/divider_color" />
+            android:background="@color/gray" />
 
         <LinearLayout
             android:id="@+id/productTypeLL"
@@ -160,6 +213,7 @@
                 android:id="@+id/serviceNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:textStyle="bold"
                 android:text="Product"
                 android:textColor="@color/text_secondary" />
@@ -167,11 +221,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:layout_marginEnd="6dp"
                 android:textStyle="bold"
                 android:text="@string/type_dot"
                 android:textColor="@color/text_secondary" />
+
 
             <TextView
                 android:id="@+id/typesTv"
@@ -194,38 +248,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:textStyle="bold"
-                android:text="Size &amp; Capacity"
+                android:text="Size &amp; capacity: "
                 android:textColor="@color/text_secondary" />
+
 
             <TextView
                 android:id="@+id/capacityTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="16 feet 7.5 ton"
+                android:text=" 7.5 ton"
                 android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/durationTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="6dp"
                 android:text="1 day"
                 android:textColor="@color/text_primary" />
 
         </LinearLayout>
-
-        <!--Hide Location/ Place-->
-        <TextView
-            android:id="@+id/locationNameTV"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/location_name"
-            android:textSize="14sp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_location_solid" />
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -258,7 +300,6 @@
 
 
             <TextView
-                android:id="@+id/messageTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -288,7 +329,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:textColor="@color/accentColor_dark"
+                android:textColor="@color/colorAccent"
                 android:textSize="12sp" />
 
             <TextView
@@ -297,7 +338,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:textColor="@color/accentColor_dark"
+                android:textColor="@color/colorAccent"
                 android:textSize="12sp" />
 
             <TextView
@@ -306,7 +347,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
                 android:padding="10dp"
-                android:textColor="@color/accentColor_dark"
+                android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_taka_symbol"
@@ -337,7 +378,7 @@
                     android:id="@+id/postedDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="26-july-25 10.45 am"
+                    android:text="10.45 am, 10 july 22"
                     android:textColor="@color/text_secondary" />
 
             </LinearLayout>

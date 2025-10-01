@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.userFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -339,6 +340,7 @@ public class RentLocationFormFragment extends Fragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void continueToReview() {
         // ✅ Validate fields
         if (CommonClass.validateField(binding.dateTimeTV)) return;
@@ -403,7 +405,7 @@ public class RentLocationFormFragment extends Fragment {
         if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
         if (duration != null) duration.setText(specificationDuration);
 
-        if (productDef != null) productDef.setText(getString(R.string.product_type));
+        if (productDef != null) productDef.setText(subCategoryName+" "+getString(R.string.type_dot));
         if (product != null) product.setText(specificationTypes);
 
         if (time != null) time.setText(binding.dateTimeTV.getText().toString());
@@ -442,62 +444,78 @@ public class RentLocationFormFragment extends Fragment {
         loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
         loadingDialog.show();
 
-        String orderId = ""+System.currentTimeMillis();
+        // 🔽 CommonClass থেকে OrderId জেনারেট করব
+        CommonClass.generateOrderId(
+                db,
+                "orders",
+                "orderInfo.orderId",
+                "BOL",
+                5,
+                new CommonClass.OrderIdCallback() {
+            @Override
+            public void onSuccess(String orderId) {
+                Map<String, Object> order = OrderHelper.createOrder(
+                        orderId,
+                        userId,
+                        userName,
+                        userPhone,
+                        categoryId,
+                        subCategoryId,
+                        "",
+                        "",
+                        rentLocation,
+                        rentDateAndTime,
+                        specificationCapacity,
+                        specificationDuration,
+                        specificationTypes,
+                        quantity,
+                        description,
+                        postDistrict
+                );
 
-        Map<String, Object> order = OrderHelper.createOrder(
-                orderId,
-                userId,
-                userName,
-                userPhone,
-                categoryId,
-                subCategoryId,
-                "",
-                "",
-                rentLocation,
-                rentDateAndTime,
-                specificationCapacity,
-                specificationDuration,
-                specificationTypes,
-                quantity,
-                description,
-                postDistrict
-        );
+                db.collection("orders")
+                        .document(orderId)
+                        .set(order)
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            //MyToast.showShort(getContext(), "✅ Order Submitted");
 
-        Log.d("UserInfo", "order: " + order);
+                            binding.mainBodyLl.setVisibility(View.GONE);
+                            binding.donePostRent.setVisibility(View.VISIBLE);
+                            new Handler().postDelayed(()->{
+                                // ✅ Submit Success হলে
+                                Intent intent;
+                                if (categoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
+                                    intent = new Intent(requireContext(), AddressActivity.class);
+                                }
+                                else {
+                                    intent = new Intent(requireContext(), SubCategoryActivity.class);
+                                }
 
-        db.collection("orders")
-                .document(orderId)
-                .set(order)
-                .addOnSuccessListener(aVoid -> {
-                    loadingDialog.dismiss();
-                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+                                // চাইলে extra পাঠাতে পারো
+                                intent.putExtra(MyUtils.categoryId, categoryId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                                // এই fragment/activity বন্ধ হয়ে যাবে
+                                requireActivity().finish();
+                                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            },SPLASH_TIME_OUT);
 
-                    binding.mainBodyLl.setVisibility(View.GONE);
-                    binding.donePostRent.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(()->{
-                        // ✅ Submit Success হলে
-                        Intent intent;
-                        if (categoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
-                            intent = new Intent(requireContext(), AddressActivity.class);
-                        }
-                        else {
-                            intent = new Intent(requireContext(), SubCategoryActivity.class);
-                        }
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Log.d("Last Order", "Order: " + e.getMessage());
+                            MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                        });
+            }
+            @Override
+            public void onFailure(Exception e) {
+                loadingDialog.dismiss();
+                Log.d("Last Order", "OrderID: " + e.getMessage());
+                //MyToast.showShort(getContext(), "❌ Failed to generate orderId: " + e.getMessage());
+            }
+        });
 
-                        // চাইলে extra পাঠাতে পারো
-                        intent.putExtra(MyUtils.categoryId, categoryId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-                        // এই fragment/activity বন্ধ হয়ে যাবে
-                        requireActivity().finish();
-                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    },SPLASH_TIME_OUT);
-
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
-                });
 
     }
 

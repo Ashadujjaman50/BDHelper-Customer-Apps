@@ -42,11 +42,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -500,21 +504,26 @@ public class LoadUnloadFormFragment extends Fragment{
         if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
         if (areaLocationTv != null) areaLocationTv.setText("");
 
-        if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        if (categoryId.equals(MyUtils.RENT_A_CAR_ID)){
+            if (sizeDef != null) sizeDef.setText(getString(R.string.category_dot));
+        }
+        else {
+            if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        }
         if (size != null) size.setText(specificationCapacity);
 
         if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
         if (duration != null) duration.setText(specificationDuration);
 
-        if (subCategoryId.equals(MyUtils.SUB_MICROBUS_ID)){
+        if (subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) ||subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             if (productDef != null) productDef.setText(subCategoryName+" "+ getString(R.string.type_dot));
-        }else if (subCategoryId.equals(MyUtils.SUB_CAR_ID)){
+        }
+        else if (subCategoryId.equals(MyUtils.SUB_CAR_ID)){
             if (productDef != null) productDef.setText(getString(R.string.program)+" "+ getString(R.string.type_dot));
         }
         else {
             if (productDef != null) productDef.setText(getString(R.string.product_type));
         }
-
         if (product != null) product.setText(specificationTypes);
 
         if (time != null) time.setText(binding.dateTimeTV.getText().toString());
@@ -560,62 +569,78 @@ public class LoadUnloadFormFragment extends Fragment{
         loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
         loadingDialog.show();
 
-        String orderId = ""+System.currentTimeMillis();
+        // 🔽 CommonClass থেকে OrderId জেনারেট করব
+        CommonClass.generateOrderId(
+                db,
+                "orders",
+                "orderInfo.orderId",
+                "BOL",
+                5,
+                new CommonClass.OrderIdCallback() {
+            @Override
+            public void onSuccess(String orderId) {
+                // 🔽 Order Map তৈরি
+                Map<String, Object> order = OrderHelper.createOrder(
+                        orderId,
+                        userId,
+                        userName,
+                        userPhone,
+                        categoryId,
+                        subCategoryId,
+                        loadLocation,
+                        unloadLocation,
+                        "",
+                        rentDateAndTime,
+                        specificationCapacity,
+                        specificationDuration,
+                        specificationTypes,
+                        quantity,
+                        description,
+                        postDistrict
+                );
 
-        Map<String, Object> order = OrderHelper.createOrder(
-                orderId,
-                userId,
-                userName,
-                userPhone,
-                categoryId,
-                subCategoryId,
-                loadLocation,
-                unloadLocation,
-                "",
-                rentDateAndTime,
-                specificationCapacity,
-                specificationDuration,
-                specificationTypes,
-                quantity,
-                description,
-                postDistrict
-        );
+                // 🔽 এবার Firestore এ সেভ করব
+                db.collection("orders")
+                        .document(orderId)
+                        .set(order)
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            binding.mainBodyLl.setVisibility(View.GONE);
+                            binding.donePostRent.setVisibility(View.VISIBLE);
 
-        Log.d("UserInfo", "order: " + order);
+                            new Handler().postDelayed(() -> {
+                                Intent intent;
+                                if (subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)) {
+                                    intent = new Intent(requireContext(), AddressActivity.class);
+                                } else {
+                                    intent = new Intent(requireContext(), SubCategoryActivity.class);
+                                }
+                                intent.putExtra(MyUtils.categoryId, categoryId);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                                requireActivity().finish();
+                                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            }, SPLASH_TIME_OUT);
 
-        db.collection("orders")
-                .document(orderId)
-                .set(order)
-                .addOnSuccessListener(aVoid -> {
-                    loadingDialog.dismiss();
-                    //MyToast.showShort(getContext(), "✅ Order Submitted");
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Log.d("Last Order", "Order: " + e.getMessage());
+                            MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                        });
+            }
 
-                    binding.mainBodyLl.setVisibility(View.GONE);
-                    binding.donePostRent.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(()->{
-                        // ✅ Submit Success হলে
-                        Intent intent;
-                        if (subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)){
-                            intent = new Intent(requireContext(), AddressActivity.class);
-                        }
-                        else {
-                            intent = new Intent(requireContext(), SubCategoryActivity.class);
-                        }
-                        // চাইলে extra পাঠাতে পারো
-                        intent.putExtra(MyUtils.categoryId, categoryId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-                        // এই fragment/activity বন্ধ হয়ে যাবে
-                        requireActivity().finish();
-                        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    },SPLASH_TIME_OUT);
-
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
-                });
+            @Override
+            public void onFailure(Exception e) {
+                loadingDialog.dismiss();
+                Log.d("Last Order", "OrderID: " + e.getMessage());
+                //MyToast.showShort(getContext(), "❌ Failed to generate orderId: " + e.getMessage());
+            }
+        });
     }
+
+
+
 
 
 }

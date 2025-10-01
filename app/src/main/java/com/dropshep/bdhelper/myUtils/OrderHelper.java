@@ -47,7 +47,7 @@ public class OrderHelper {
         specInfo.put("capacity", specificationCapacity);
         specInfo.put("duration", specificationDuration);
         specInfo.put("types", specificationTypes);
-        specInfo.put("quantity", Replacement.ReplacementQtyBnToEn(quantity));
+        specInfo.put("quantity", Replacement.ReplacementNumberBnToEn(quantity));
         specInfo.put("desc", description);
         specInfo.put("postDistrict", postDistrict);
 

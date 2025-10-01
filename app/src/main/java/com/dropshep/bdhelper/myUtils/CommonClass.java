@@ -15,6 +15,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -24,6 +25,9 @@ import androidx.core.content.ContextCompat;
 
 import com.dropshep.bdhelper.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -243,6 +247,172 @@ public class CommonClass {
 
         return false; // valid
     }
+
+    public static int getSubCategoryName(String subCategoryId) {
+        switch (subCategoryId) {
+            case MyUtils.SUB_TRUCK_ID: return R.string.truck;
+            case MyUtils.SUB_PICKUP_ID: return R.string.pickup;
+            case MyUtils.SUB_COVERED_VAN_ID: return R.string.coveredvan;
+            case MyUtils.SUB_TRAILER_ID: return R.string.trailer;
+            case MyUtils.SUB_LOW_BED_ID: return R.string.low_bed;
+            case MyUtils.SUB_FREEZER_VAN_ID: return R.string.freezervan;
+            case MyUtils.SUB_DUMP_TRUCK_ID: return R.string.dump_truck;
+            case MyUtils.SUB_CHARGER_VAN_ID: return R.string.charger_van;
+
+            case MyUtils.SUB_CAR_ID: return R.string.car;
+            case MyUtils.SUB_MICROBUS_ID: return R.string.microbus;
+            case MyUtils.SUB_AMBULANCE_ID: return R.string.ambulance;
+
+            case MyUtils.HOME_SHIFTING_ID: return R.string.home_office_shifting;
+
+            case MyUtils.SUB_EXCAVATOR_ID: return R.string.excavator;
+            case MyUtils.SUB_RICE_TRANSPLANTER_ID: return R.string.rice_transplanter;
+            case MyUtils.SUB_TRACTOR_ID: return R.string.tractor;
+            case MyUtils.HARVESTER_MACHINE_ID: return R.string.harvester;
+
+            case MyUtils.SUB_DRIVER_ID: return R.string.driver;
+            case MyUtils.SUB_MECHANIC_ID: return R.string.mechanic;
+            case MyUtils.SUB_ELECTRICIAN_ID: return R.string.electrician;
+            case MyUtils.SUB_STOVE_TECHNICIAN_ID: return R.string.stove_mechanic;
+            case MyUtils.SUB_PLUMBER_ID: return R.string.plumber;
+
+            default: return R.string.app_name;
+        }
+    }
+
+    // Helper method to get correct drawable for subCategory
+    public static int getIconForSubCategory(String subCatId) {
+        switch (subCatId) {
+            case MyUtils.SUB_TRUCK_ID: return R.drawable.ic_truck;
+            case MyUtils.SUB_PICKUP_ID: return R.drawable.ic_pickup;
+            case MyUtils.SUB_COVERED_VAN_ID: return R.drawable.ic_covered_van;
+            case MyUtils.SUB_TRAILER_ID: return R.drawable.ic_trailer;
+            case MyUtils.SUB_LOW_BED_ID: return R.drawable.ic_low_bed;
+            case MyUtils.SUB_FREEZER_VAN_ID: return R.drawable.ic_freezer_van;
+            case MyUtils.SUB_DUMP_TRUCK_ID: return R.drawable.ic_dump_truck;
+            case MyUtils.SUB_CHARGER_VAN_ID: return R.drawable.ic_charger_van;
+
+            case MyUtils.SUB_CAR_ID: return R.drawable.ic_car;
+            case MyUtils.SUB_MICROBUS_ID: return R.drawable.ic_microbus;
+            case MyUtils.SUB_AMBULANCE_ID: return R.drawable.ic_ambulance;
+
+            case MyUtils.HOME_SHIFTING_ID: return R.drawable.ic_home_shift;
+
+            case MyUtils.SUB_EXCAVATOR_ID: return R.drawable.ic_excavator;
+            case MyUtils.SUB_RICE_TRANSPLANTER_ID: return R.drawable.ic_rice_transplanter;
+            case MyUtils.SUB_TRACTOR_ID: return R.drawable.ic_tractor;
+            case MyUtils.HARVESTER_MACHINE_ID: return R.drawable.ic_harvester;
+
+            case MyUtils.SUB_DRIVER_ID: return R.drawable.ic_driver;
+            case MyUtils.SUB_MECHANIC_ID: return R.drawable.ic_mechanic;
+            case MyUtils.SUB_ELECTRICIAN_ID: return R.drawable.ic_electrician;
+            case MyUtils.SUB_STOVE_TECHNICIAN_ID: return R.drawable.ic_stove_technician;
+            case MyUtils.SUB_PLUMBER_ID: return R.drawable.ic_plumbing;
+
+            default: return R.drawable.ic_trending; // একটা ডিফল্ট আইকন রাখো
+        }
+    }
+
+
+    public static long parseDateStringToMillis(String dateStr) {
+        if (dateStr == null) return 0L;
+        String s = dateStr.trim();
+        if (s.isEmpty()) return 0L;
+
+        // যদি পুরোটা সংখ্যা হয় (epoch)
+        if (s.matches("^\\d+$")) {
+            try {
+                long v = Long.parseLong(s);
+                // seconds (10 digits) or small number -> convert to ms
+                // threshold 100_000_000_000L (1e11) chosen to distinguish seconds vs ms safely
+                if (v < 100_000_000_000L) {
+                    return v * 1000L;
+                } else {
+                    return v;
+                }
+            } catch (NumberFormatException ignored) { /* fallback to pattern parsing */ }
+        }
+
+        // চেষ্টা করব কিছু সাধারণ date patterns দিয়ে
+        String[] patterns = new String[] {
+                "dd/MM/yyyy",
+                "dd-MM-yyyy",
+                "dd/MM/yyyy HH:mm",
+                "dd-MM-yyyy HH:mm",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd HH:mm:ss",
+                "yyyy-MM-dd"
+        };
+
+        for (String p : patterns) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(p, Locale.getDefault());
+                sdf.setLenient(false);
+                Date d = sdf.parse(s);
+                if (d != null) return d.getTime();
+            } catch (ParseException ignored) { }
+        }
+
+        // parse না হলে 0 ফেরত দিন (বা আপনি চাইলে -1)
+        //Log.d("Status", "parseDateStringToMillis: unable to parse '" + dateStr + "'");
+        return 0L;
+    }
+
+    // আজকের দিনের শুরু (midnight 00:00:00) এর time in millis রিটার্ন করবে
+    public static long getStartOfTodayMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    // 🔑 OrderID জেনারেটর
+    public interface OrderIdCallback {
+        void onSuccess(String orderId);
+        void onFailure(Exception e);
+    }
+
+    public static void generateOrderId(FirebaseFirestore db,
+                                       String collectionPath,
+                                       String fieldPath,
+                                       String prefix,
+                                       int initialDigitLength,
+                                       OrderIdCallback callback) {
+
+        db.collection(collectionPath)
+                .orderBy(fieldPath, Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int maxNum = 0;
+                    int digitLength = initialDigitLength;
+
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        String lastId = doc.getString(fieldPath);
+                        if (lastId != null && lastId.startsWith(prefix)) {
+                            try {
+                                String numPart = lastId.substring(prefix.length());
+                                int num = Integer.parseInt(numPart);
+                                if (num > maxNum) maxNum = num;
+
+                                // Update digitLength dynamically
+                                digitLength = Math.max(numPart.length(), String.valueOf(maxNum + 1).length());
+
+                            } catch (Exception ignored) {}
+                        }
+                    }
+
+                    // Build new OrderID
+                    String pattern = prefix + "%0" + digitLength + "d";
+                    String newOrderId = String.format(Locale.ENGLISH, pattern, maxNum + 1);
+                    callback.onSuccess(newOrderId);
+
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
 
 
 }

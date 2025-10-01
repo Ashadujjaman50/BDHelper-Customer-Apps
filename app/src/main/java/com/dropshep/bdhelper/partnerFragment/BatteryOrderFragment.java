@@ -22,11 +22,13 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.FragmentBatteryOrderBinding;
+import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -216,82 +218,81 @@ public class BatteryOrderFragment extends Fragment {
         paymentDetails.put("paymentStatus", "Unpaid");
         paymentDetails.put("transactionId", "");
 
+        CommonClass.generateOrderId(
+                db,
+                "batteryOrder",             // collection path
+                "orderId",                              // Document ID হিসেবে চাইলে documentId ব্যবহার করতে পারো
+                "ord",                                  // prefix
+                4,                                      // initial digit length, যেমন ord0001
+                new CommonClass.OrderIdCallback() {
+                    @Override
+                    public void onSuccess(String orderId) {
+                        Log.d("OrderID", "Generated: " + orderId);
 
-        db.collection("batteryOrder")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    int maxId = 0;
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        String lastId = doc.getId();
-                        if (lastId != null && lastId.startsWith("ord")) {
-                            try {
-                                int num = Integer.parseInt(lastId.substring(3));
-                                if (num > maxId) maxId = num;
-                            } catch (Exception ignored) {}
-                        }
+                        // 🔽 এবার batteryOrder এ save করা
+                        // Order Map
+                        Map<String, Object> order = new HashMap<>();
+                        order.put("orderId", orderId);
+                        order.put("userId", firebaseUser.getUid());
+                        order.put("userName", userName);
+                        order.put("userPhone", userPhone);
+                        order.put("userType", "partner");
+                        order.put("orderType", "battery");
+                        order.put("orderStatus", "pending");
+                        order.put("exchangeType", !binding.oldBatteryBrandEt.getText().toString().isEmpty() ? "exchange" : "new");
+                        order.put("timestamp", timestamp);
+                        order.put("batteryDetails", batteryDetails);
+                        order.put("exchangeDetails", exchangeDetails);
+                        order.put("deliveryDetails", deliveryDetails);
+                        order.put("paymentDetails", paymentDetails);
+
+                        db.collection("batteryOrder")
+                                .document(orderId)
+                                .set(order)
+                                .addOnSuccessListener(aVoid -> {
+                                    loadingDialog.dismiss();
+                                    Log.d("OrderID", "Document created with ID: " + orderId);
+                                    MyToast.showShort(getContext(), "অর্ডার সফলভাবে সাবমিট হয়েছে");
+                                    clearBatteryForm();
+
+                                    ProductActivity parent = (ProductActivity) getActivity();
+                                    assert parent != null;
+                                    parent.setPagerFragment(0);
+                                })
+                                .addOnFailureListener(e -> {
+                                    loadingDialog.dismiss();
+                                    Log.e("OrderID", "Error: ", e);
+                                    MyToast.showShort(getContext(), "অর্ডার সাবমিট ব্যর্থ হয়েছে");
+                                });
                     }
 
-                    // নতুন productId জেনারেট করা
-                    String orderId = String.format(Locale.ENGLISH,"ord%04d", maxId + 1);
+                    @Override
+                    public void onFailure(Exception e) {
+                        loadingDialog.dismiss();
+                        Log.d("OrderID", "Failed: " + e.getMessage());
+                    }
+                }
+        );
 
-                    Log.d("Battery Order", "New Order ID: " + orderId);
-                    loadingDialog.dismiss();
+    }
 
-                    // চাইলে এখনই নতুন ডকুমেন্ট তৈরি করতে পারেন
-                    // Order Map
-                    Map<String, Object> order = new HashMap<>();
-                    order.put("orderId", orderId);
-                    order.put("userId", firebaseUser.getUid());
-                    order.put("userName", userName);
-                    order.put("userPhone", userPhone);
-                    order.put("userType", "partner");
-                    order.put("orderType", "battery");
-                    order.put("orderStatus", "pending");
-                    order.put("exchangeType", !binding.oldBatteryBrandEt.getText().toString().isEmpty() ? "exchange" : "new");
-                    order.put("timestamp", timestamp);
-                    order.put("batteryDetails", batteryDetails);
-                    order.put("exchangeDetails", exchangeDetails);
-                    order.put("deliveryDetails", deliveryDetails);
-                    order.put("paymentDetails", paymentDetails);
+    private void clearBatteryForm() {
+        // ✅ Battery info clear
+        binding.batteryNameEt.setText("");
+        binding.batteryTypeEt.setText("");
+        binding.batteryVoltageEt.setText("");
+        binding.batteryCapacityEt.setText("");
 
+        // ✅ Exchange battery clear
+        binding.oldBatteryBrandEt.setText("");
+        binding.oldBatteryTypeEt.setText("");
+        binding.oldBatteryVoltageEt.setText("");
+        binding.oldBatteryCapacityEt.setText("");
 
-                    db.collection("batteryOrder")
-                            .document(orderId)
-                            .set(order)
-                            .addOnSuccessListener(aVoid -> {
-                                loadingDialog.dismiss();
-                                Log.d("Firestore", "Document created with ID: " + orderId);
-                                MyToast.showShort(getContext(), "অর্ডার সফলভাবে সাবমিট হয়েছে");
-                                // ✅ Battery info clear
-                                binding.batteryNameEt.setText("");
-                                binding.batteryTypeEt.setText("");
-                                binding.batteryVoltageEt.setText("");
-                                binding.batteryCapacityEt.setText("");
-
-                                // ✅ Exchange battery clear
-                                binding.oldBatteryBrandEt.setText("");
-                                binding.oldBatteryTypeEt.setText("");
-                                binding.oldBatteryVoltageEt.setText("");
-                                binding.oldBatteryCapacityEt.setText("");
-
-                                // ✅ Delivery info clear
-                                binding.userNameEt.setText("");
-                                binding.userPhoneEt.setText("");
-                                binding.deliveryAddressEt.setText("");
-
-                                ProductActivity parent = (ProductActivity) getActivity();
-                                parent.setPagerFragment(0);
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                Log.e("Firestore", "Error: ", e);
-                                MyToast.showShort(getContext(), "অর্ডার সাবমিট ব্যর্থ হয়েছে");
-                            });
-
-
-                })
-                .addOnFailureListener(e -> Log.e("Battery Order", "Query failed", e));
-
+        // ✅ Delivery info clear
+        binding.userNameEt.setText("");
+        binding.userPhoneEt.setText("");
+        binding.deliveryAddressEt.setText("");
     }
 
     private boolean isEmpty(TextView textView, String errorMsg) {
