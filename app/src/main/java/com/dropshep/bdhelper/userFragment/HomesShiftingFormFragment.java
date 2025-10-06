@@ -34,6 +34,7 @@ import com.dropshep.bdhelper.myUtils.LocaleHelper;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.OrderHelper;
+import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.user.AddressActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -232,7 +233,7 @@ public class HomesShiftingFormFragment extends Fragment {
         binding.timeSeekBar.setProgress(defaultProgress);
         truckAccessTime = (defaultProgress * 5)  + " minutes";
         if (lang.equals("bn")){
-            binding.minuteText.setText(CommonClass.toBanglaNumber(defaultProgress * 5) + " মিনিট");
+            binding.minuteText.setText(Replacement.ReplacementNumberEnToBnInInteger(defaultProgress * 5) + " মিনিট");
         }
         else {
             binding.minuteText.setText((defaultProgress * 5)  + " minutes");
@@ -244,11 +245,12 @@ public class HomesShiftingFormFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int minutes = progress * 5; // প্রতি স্টেপে ৫ মিনিট
                 if (lang.equals("bn")){
-                    binding.minuteText.setText(CommonClass.toBanglaNumber(minutes) + " মিনিট");
+                    binding.minuteText.setText(Replacement.ReplacementNumberEnToBnInInteger(minutes) + " মিনিট");
                 }
                 else {
                     binding.minuteText.setText(minutes + " minutes");
                 }
+                truckAccessTime = minutes+ " minutes";
 
             }
 

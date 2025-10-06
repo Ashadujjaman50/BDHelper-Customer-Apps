@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/order_card_bg_color"
+    android:layout_margin="5dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--Info message-->
+        <TextView
+            android:id="@+id/infoMessageTv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:text="@string/you_just_can_see_your_own_bid"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--Vendor Name-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"
+                        android:text="নামঃ "/>
+
+                    <TextView
+                        android:id="@+id/vendorNameTV"
+                        android:layout_width="332dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Username"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--Hide mobile number-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="@string/mobile"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text=":"/>
+
+                    <TextView
+                        android:id="@+id/mobileNumberTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:text="+8801723332197"/>
+
+                    <ImageView
+                        android:id="@+id/call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:srcCompat="@drawable/ic_call_outline"
+                        android:contentDescription="@string/app_name" />
+
+                </LinearLayout>
+
+                <!--Registration number-->
+                <LinearLayout
+                    android:id="@+id/vehicleRegisterLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="গাড়ি নাম্বারঃ "
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:id="@+id/vehicleRegNoTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:hint="ঢাকা মেট্টো-ল "
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"/>
+
+                </LinearLayout>
+
+                <!--Model and year-->
+                <LinearLayout
+                    android:id="@+id/modelYearLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="মডেল ও ধরণঃ "
+                        android:layout_marginEnd="5dp"
+                        android:textColor="@color/text_secondary"/>
+
+                    <TextView
+                        android:id="@+id/vehicleModel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:hint="Model"
+                        android:textColor="@color/text_primary"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:id="@+id/vehicleCatAndYearTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:hint="Model"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"/>
+
+                </LinearLayout>
+
+                <!--Bid budget-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="@string/budget"
+                        android:textColor="@color/text_secondary"/>
+
+                    <TextView
+                        android:id="@+id/bidAmountTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_marginHorizontal="5dp"
+                        android:textColor="@color/primaryMid"
+                        android:textStyle="bold"
+                        android:text="1000"
+                        app:drawableStartCompat="@drawable/ic_taka_symbol"
+                        app:drawableTint="@color/icon_color"
+                        android:drawablePadding="3dp"/>
+
+
+                </LinearLayout>
+
+                <!--bid Date-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="5dp"
+                        android:text="বিডের তারিখঃ "
+                        android:textColor="@color/text_secondary"/>
+
+                    <TextView
+                        android:id="@+id/bidDateTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="10/10/2021"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary"/>
+
+                </LinearLayout>
+
+                <!--Rent date-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:textSize="16sp"
+                        android:text="ভাড়ার তারিখঃ"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:id="@+id/rentTimeTv"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:text="সময়"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/moreBtn"
+                android:gravity="right"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/postNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Post Name"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/checkedConfirmTv"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:text="Confirmed"
+                    android:textColor="#F001CC45"
+                    app:drawableStartCompat="@drawable/ic_checked" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/moreBtn"
+                android:layout_margin="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_more_vert_24"
+                android:contentDescription="@string/app_name"
+                app:tint="@color/icon_color" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

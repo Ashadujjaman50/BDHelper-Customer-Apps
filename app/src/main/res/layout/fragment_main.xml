@@ -142,6 +142,7 @@
 
                     <!-- All Bid -->
                     <LinearLayout
+                        android:id="@+id/allOrderBidLl"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -155,9 +156,9 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_category"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/ic_hammer"
                             android:scaleType="fitXY"
                             app:tint="@color/icon_color" />
 

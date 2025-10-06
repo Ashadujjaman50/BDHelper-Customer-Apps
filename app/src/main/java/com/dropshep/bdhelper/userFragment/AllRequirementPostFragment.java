@@ -63,7 +63,6 @@ public class AllRequirementPostFragment extends Fragment {
         orderAdapter = new OrderAdapter(getContext(), orderModelArrayList);
         binding.allRentRecyclerView.setAdapter(orderAdapter);
 
-
         String currentUserId = firebaseUser.getUid(); // 🔑 current user id
 
         db.collection("orders")
@@ -84,6 +83,15 @@ public class AllRequirementPostFragment extends Fragment {
                             }
                         }
                         orderAdapter.notifyDataSetChanged();
+
+                        // ✅ data আছে কিনা চেক
+                        if (orderModelArrayList.isEmpty()) {
+                            binding.noOneBidYet.setVisibility(View.VISIBLE);
+                            binding.allRentRecyclerView.setVisibility(View.GONE);
+                        } else {
+                            binding.noOneBidYet.setVisibility(View.GONE);
+                            binding.allRentRecyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
 

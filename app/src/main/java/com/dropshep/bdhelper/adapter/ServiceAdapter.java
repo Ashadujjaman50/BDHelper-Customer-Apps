@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.dropshep.bdhelper.Interface.OnItemClickListener;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.model.ServiceModel;
+import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.myUtils.Replacement;
 
 import java.util.List;
 
@@ -51,8 +53,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         if (regNumber == null || regNumber.trim().isEmpty()) {
             holder.serviceRegistrationNumberTV.setVisibility(View.GONE);
         } else {
-            holder.serviceRegistrationNumberTV.setText(regNumber);
             holder.serviceRegistrationNumberTV.setVisibility(View.VISIBLE);
+            if (service.getCategoryId().equals(MyUtils.ROAD_TRANSPORT_ID) || service.getCategoryId().equals(MyUtils.RENT_A_CAR_ID)){
+                holder.serviceRegistrationNumberTV.setText(Replacement.convertVehicleRegByLocale(context, regNumber));
+            }
+            else {
+                holder.serviceRegistrationNumberTV.setText(regNumber);
+            }
+
         }
 
         // Verified status

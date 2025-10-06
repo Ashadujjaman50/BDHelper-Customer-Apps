@@ -75,6 +75,7 @@ public class CurrentRequirementPostFragment extends Fragment {
         String currentUserId = firebaseUser.getUid(); // 🔑 current user id
 
 
+        binding.noOneBidYet.setVisibility(View.VISIBLE);
 
         db.collection("orders")
                 .whereEqualTo("orderInfo.uid", currentUserId)
@@ -109,6 +110,15 @@ public class CurrentRequirementPostFragment extends Fragment {
                             }
                         }
                         orderAdapter.notifyDataSetChanged();
+
+                        // ✅ data আছে কিনা চেক
+                        if (orderModelArrayList.isEmpty()) {
+                            binding.noOneBidYet.setVisibility(View.VISIBLE);
+                            binding.myRentRecyclerView.setVisibility(View.GONE);
+                        } else {
+                            binding.noOneBidYet.setVisibility(View.GONE);
+                            binding.myRentRecyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
 

@@ -2,9 +2,7 @@ package com.dropshep.bdhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +20,8 @@ import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.Replacement;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOrder> {
@@ -93,11 +89,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         holder.postedDate.setText(formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
 
         // ============ Common Info ============
+        holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
         holder.orderIdTv.setText(orderId);
         holder.loadLocation.setText(loadLocation);
         holder.unLoadLocation.setText(unLoadLocation);
         holder.locationArea.setText(rentArea);
-        holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
         holder.capacityTv.setText(capacity + ", ");
         holder.durationTv.setText(duration);
         holder.postDescription.setText(postDescription);
@@ -162,7 +158,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.truck_access));
                 if ("yes".equals(quantity)) {
                     holder.quantityTv.setText(context.getString(R.string.will_come_in_front_of_the_house));
-                } else {
+                }
+                else {
                     holder.quantityTv.setText(
                             context.getString(R.string.from_main_road) + " " +
                                     Replacement.getLocalMinutes(context, quantity)
@@ -173,7 +170,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 holder.serviceNameTV.setText(context.getString(R.string.working_type_and_experience));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.need_dot));
                 holder.typesTv.setText(types);
-                holder.quantityTv.setText(Replacement.ReplacementNumberInLocal(context, quantity));
+                holder.quantityTv.setText(Replacement.ReplacementPersonInLocal(context, quantity));
 
                 break;
             case MyUtils.SUB_PLUMBER_ID:
@@ -183,7 +180,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 holder.serviceNameTV.setText(context.getString(R.string.working));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.need_dot));
                 holder.typesTv.setText(types);
-                holder.quantityTv.setText(Replacement.ReplacementNumberInLocal(context, quantity));
+                holder.quantityTv.setText(Replacement.ReplacementPersonInLocal(context, quantity));
                 holder.capacityTv.setText(capacity);
                 break;
             default:
@@ -216,7 +213,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                     // Expired
                     setStatus(holder, "Expired", R.color.text_secondary, R.drawable.ic_expire);
                     setBidAction(holder, R.string.cancel, R.drawable.ic_hammer, R.drawable.ic_clear);
-                } else {
+                }
+                else {
                     if (postStatus.equals("pending")) {
                         setStatus(holder, "Pending", R.color.warning, R.drawable.ic_pending);
                     } else {

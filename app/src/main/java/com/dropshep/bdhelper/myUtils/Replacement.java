@@ -132,9 +132,9 @@ public class Replacement {
         }
 
         replacement = replacement.replace("১০","10"); // বিশেষ ১০ এর জন্য
-        replacement = replacement.replace("জন","person"); // বিশেষ ১০ এর জন্য
         return replacement;
     }
+
     // 🔹 English → Bangla
     public static String ReplacementNumberEnToBn(String replacement) {
         if (replacement == null) return "";
@@ -147,10 +147,10 @@ public class Replacement {
         }
 
         replacement = replacement.replace("10","১০"); // বিশেষ ১০ এর জন্য
-        replacement = replacement.replace("person","জন"); // বিশেষ ১০ এর জন্য
         return replacement;
     }
 
+    // 🔹 Auto Local Method In Number With String
     public static String ReplacementNumberInLocal(Context context, String number){
         String lang = LocaleHelper.getLanguage(context); // en or bn
 
@@ -162,6 +162,45 @@ public class Replacement {
         }
     }
 
+    // 🔹 Replacement Number En To Bn With Int
+    public static String ReplacementNumberEnToBnInInteger(int number){
+        String num = String.valueOf(number);
+
+        return ReplacementNumberEnToBn(num);
+    }
+
+    // 🔹 Auto Local Method In Person
+    public static String ReplacementPersonInLocal(Context context, String number){
+        String lang = LocaleHelper.getLanguage(context); // en or bn
+
+        if ("bn".equals(lang)){
+            String replace = ReplacementNumberEnToBn(number);
+            replace = replace.replace("person","জন");
+            return replace;
+        }
+        else {
+            String replace = ReplacementNumberBnToEn(number);
+            replace = replace.replace("জন","person");
+            return replace;
+        }
+    }
+
+    public static String ReplacementExperienceInLocal(Context context, String number){
+        String lang = LocaleHelper.getLanguage(context); // en or bn
+
+        if ("bn".equals(lang)){
+            String replace = ReplacementNumberEnToBn(number);
+            replace = replace.replace("Year", "বছর");
+            return replace;
+        }
+        else {
+            String replace = ReplacementNumberBnToEn(number);
+            replace = replace.replace( "বছর", "Year");
+            return replace;
+        }
+    }
+
+    //------(QTY start)-------//
     // 🔹 English → Bangla
     public static String ReplacementQtyEnToBn(String replacement) {
         replacement = replacement.replace("10", "১০ টি");
@@ -204,6 +243,7 @@ public class Replacement {
             return ReplacementQtyBnToEn(quantity);
         }
     }
+    //------(QTY End)-------//
 
     // 🔹 English → Bangla digits
     private static String enToBnDigits(String number) {
@@ -274,5 +314,57 @@ public class Replacement {
 
         return mfs; // fallback
     }
+
+    public static String convertVehicleRegByLocale(Context context, String vehicleRegNo) {
+        if (vehicleRegNo == null || vehicleRegNo.isEmpty()) return "";
+
+        // 🔹 Locale detect করা
+        String lang = LocaleHelper.getLanguage(context);
+
+        // 🔹 English হলে return করবে
+        if ("en".equals(lang)) {
+            return vehicleRegNo;
+        }
+
+        // 🔹 বাংলা হলে নিচের মতো convert করবে
+        String result = vehicleRegNo;
+
+        // 🔹 Step 1: Metro অংশ বাংলা করা
+        for (int i = 0; i < MyUtils.METRO_LIST_ENG.length; i++) {
+            String eng =  MyUtils.METRO_LIST_ENG[i];
+            String ban =  MyUtils.METRO_LIST_BAN[i];
+            if (result.toLowerCase().contains(eng.toLowerCase())) {
+                result = result.replaceAll("(?i)" + eng, ban);
+                break;
+            }
+        }
+
+        // 🔹 Step 2: Serial অংশ বাংলা করা
+        for (int i = 0; i <  MyUtils.SERIAL_ENG.length; i++) {
+            String eng =  MyUtils.SERIAL_ENG[i];
+            String ban =  MyUtils.SERIAL_BAN[i];
+            if (result.toLowerCase().contains(eng.toLowerCase())) {
+                result = result.replaceAll("(?i)" + eng, ban);
+                break;
+            }
+        }
+
+        // 🔹 Step 3: সংখ্যা বাংলা করা
+        result = result
+                .replace("0", "০")
+                .replace("1", "১")
+                .replace("2", "২")
+                .replace("3", "৩")
+                .replace("4", "৪")
+                .replace("5", "৫")
+                .replace("6", "৬")
+                .replace("7", "৭")
+                .replace("8", "৮")
+                .replace("9", "৯");
+
+        return result;
+    }
+
+
 
 }

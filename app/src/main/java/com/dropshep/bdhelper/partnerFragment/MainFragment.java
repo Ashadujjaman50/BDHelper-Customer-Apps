@@ -23,6 +23,7 @@ import com.dropshep.bdhelper.databinding.FragmentMainBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
 import com.dropshep.bdhelper.model.SlideImage;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.partner.OrderRentActivity;
 import com.dropshep.bdhelper.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -70,6 +71,12 @@ public class MainFragment extends Fragment {
         //init views
         // load new Notification Count
         loadNotificationCount();
+
+        binding.allOrderBidLl.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), OrderRentActivity.class);
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
 
         //notification  Activity
         binding.notificationBtn.setOnClickListener(v -> {

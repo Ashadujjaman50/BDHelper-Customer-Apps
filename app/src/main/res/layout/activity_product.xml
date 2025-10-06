@@ -78,7 +78,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:background="@color/white"
                     android:gravity="center"
                     android:padding="6dp"
                     android:text="নতুন ব্যাটারি কিনুন বাজার মূল্যের চেয়ে কম দামে ।\nঅথবা আকর্ষনীয় মূল্যে পুরাতন ব্যাটারি বদল করে নিন নতুন ব্যাটারি"
@@ -89,15 +88,17 @@
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/titleText"
+                    android:layout_below="@+id/titleText"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:background="@drawable/custom_tab_layout_bg"
+                    android:padding="0.5dp"
                     app:tabGravity="fill"
                     app:tabMode="fixed"
                     app:tabIndicatorColor="@android:color/transparent"
                     app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorAnimationMode="elastic"
                     app:tabTextColor="@color/tab_unselected_text"
-                    app:tabSelectedTextColor="@color/tab_selected_text"
-                    app:tabBackground="@drawable/tab_selector" />
+                    app:tabSelectedTextColor="@color/tab_selected_text"/>
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"

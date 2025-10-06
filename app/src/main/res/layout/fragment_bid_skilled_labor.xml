@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:background="@color/bg_color"
+        tools:context=".partnerFragment.BidSkilledLaborFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_above="@+id/bottomPart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/topCv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="3dp"
+                    app:contentPaddingBottom="15dp"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="1dp"
+                    app:cardBackgroundColor="@color/order_card_bg_color">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Top Bar -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <!-- Date/Time -->
+                            <TextView
+                                android:id="@+id/rentTimeTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/black"
+                                android:paddingHorizontal="8dp"
+                                android:paddingVertical="4dp"
+                                android:text="আজকে, সকাল ৯ টা"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <!--Order ID-->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:gravity="end"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:text="অর্ডার নং:"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_primary"/>
+
+                                <TextView
+                                    android:id="@+id/orderIdTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:hint="BOLXXXX"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_primary"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- Capacity / Need / Size -->
+                        <LinearLayout
+                            android:layout_marginTop="12dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingVertical="3dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/postImage"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    app:srcCompat="@drawable/ic_equipment"
+                                    app:tint="@color/icon_color" />
+
+                                <TextView
+                                    android:id="@+id/postNameTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:hint="@string/excavator"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/quantityTv"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end"
+                                    android:hint="@string/zero"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <!-- Divider -->
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginVertical="8dp"
+                                android:background="@color/divider_color" />
+
+                            <TextView
+                                android:id="@+id/capacityTv"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/two"
+                                android:paddingVertical="3dp"
+                                android:layout_marginStart="3dp"
+                                android:gravity="center_vertical|end"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                app:drawableStartCompat="@drawable/ic_duration"
+                                app:drawableTint="@color/icon_color"
+                                android:drawablePadding="15dp" />
+
+
+                        </LinearLayout>
+
+                        <!-- Divider -->
+                        <View
+                            android:id="@+id/dividerOne"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="8dp"
+                            android:background="@color/divider_color" />
+
+                        <!-- Middle Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:orientation="horizontal">
+
+                            <!-- Location Section -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <View
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@drawable/ic_load_location" />
+
+                                <LinearLayout
+                                    android:layout_marginStart="8dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/locationNameTv"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:hint="আগারগাঁও"
+                                        android:textColor="@color/text_primary"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/locationArea"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:hint="মিরপুর, ঢাকা সিটি"
+                                        android:textColor="@color/text_secondary"
+                                        android:textSize="14sp"/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <!-- Goods Icons -->
+                            <TextView
+                                android:id="@+id/typesTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:hint="@string/short_boom"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:maxWidth="130dp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="0dp"
+                                app:drawableTopCompat="@drawable/ic_tags"
+                                app:drawableTint="@color/icon_color"
+                                android:drawablePadding="12dp" />
+
+                        </LinearLayout>
+
+                        <!-- Divider -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/divider_color" />
+
+                        <TextView
+                            android:id="@+id/postDescriptionTv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="4dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:maxLines="4"
+                            android:hint="@string/description_product"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            app:drawableStartCompat="@drawable/ic_note"
+                            app:drawableTint="@color/icon_color"
+                            android:drawablePadding="10dp" />
+
+                        <!-- Divider -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="10dp"
+                            android:background="@color/divider_color" />
+
+                        <!-- Bottom Section -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="3dp"
+                                android:textStyle="bold"
+                                android:text="@string/date_issue"
+                                android:textColor="@color/text_secondary" />
+
+                            <TextView
+                                android:id="@+id/postedDateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:hint="26-july-25 10.45 am"
+                                android:textColor="@color/text_secondary" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:paddingVertical="3dp"
+                                android:hint="বাজার দরে বিড করুন"
+                                android:textColorHint="@color/text_secondary"
+                                android:textAlignment="center"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/bidingTimeTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_for_biding_time"
+                                android:paddingHorizontal="25dp"
+                                android:paddingVertical="10dp"
+                                android:text="45:00"
+                                android:textColor="@color/white"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_hammer"
+                                app:drawableTint="@color/white"
+                                android:drawablePadding="15dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--Total Bid For RecycleView-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/bidRV"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/row_bid_order_item" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/bottomPart"
+            android:elevation="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_color"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <!--Select Vehicle-->
+            <LinearLayout
+                android:id="@+id/vehicleSelectLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/subCategoryNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="সার্ভিসঃ "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/selectVehicleNameTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:hint=" সিলেক্ট করুন "
+                    android:padding="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
+
+            </LinearLayout>
+
+            <!--Budget Edit Box-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="বিড প্রাইসঃ"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/amountEt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_edit_text"
+                    android:hint="আপনার প্রাইস লিখুন"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:padding="12dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+            <!---Body Detail End-->
+
+            <!--Bid Button-->
+            <TextView
+                android:id="@+id/bidSubmitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginVertical="15dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/custom_button_gradient"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="15dp"
+                android:gravity="center"
+                android:text="@string/bidding"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:drawablePadding="10dp"
+                app:drawableStartCompat="@drawable/ic_hammer"
+                app:drawableTint="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

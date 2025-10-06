@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivityAddServiceBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
+import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.dropshep.bdhelper.partnerFragment.AddServiceFormFragment;
 import com.dropshep.bdhelper.partnerFragment.SelectServiceCategoryFragment;
@@ -20,7 +21,6 @@ public class AddServiceActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // থিম আগে সেট কর
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_service);
@@ -28,13 +28,29 @@ public class AddServiceActivity extends BaseActivity {
         String loadDefault = getIntent().getStringExtra("loadDefault");
 
         if ("selectCategory".equals(loadDefault) || Objects.equals(loadDefault, "")) {
+            // ✅ শুধুমাত্র ক্যাটাগরি সিলেক্ট করতে যাবে
             loadFragment(new SelectServiceCategoryFragment(), false);
+
         }
         else if ("selectAddService".equals(loadDefault)) {
-            // প্রথমে Category fragment load করো
+            // ✅ প্রথমে category fragment লোড (optional)
             loadFragment(new SelectServiceCategoryFragment(), false);
-            // তারপর AddService fragment load করো (backstack এ যাবে)
-            loadFragment(new AddServiceFormFragment(), true);
+
+            // ✅ intent থেকে ডাটা নিয়ে bundle এ পাঠানো
+            String categoryId = getIntent().getStringExtra(MyUtils.categoryId);
+            String subCategoryId = getIntent().getStringExtra(MyUtils.subCategoryId);
+            String subCategoryName = getIntent().getStringExtra(MyUtils.subCategoryName);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(MyUtils.categoryId, categoryId);
+            bundle.putString(MyUtils.subCategoryId, subCategoryId);
+            bundle.putString(MyUtils.subCategoryName, subCategoryName);
+
+            AddServiceFormFragment fragment = new AddServiceFormFragment();
+            fragment.setArguments(bundle);
+
+            // ✅ এখন সরাসরি AddServiceFormFragment এ যাবে
+            loadFragment(fragment, false);
         }
 
         binding.backBtn.setOnClickListener(v -> checkBack());
@@ -45,20 +61,14 @@ public class AddServiceActivity extends BaseActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment);
 
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
-        }
-
+        if (addToBackStack) transaction.addToBackStack(null);
         transaction.commit();
     }
 
-
     public void checkBack() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            // যদি backstack এ কিছু থাকে, তাহলে popBackStack করো
             getSupportFragmentManager().popBackStack();
         } else {
-            // না থাকলে Activity শেষ করো
             finishOnBack();
         }
     }

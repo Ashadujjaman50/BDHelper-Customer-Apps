@@ -388,6 +388,7 @@
     <string name="cabinet_stove_burner_repair">ক্যাবিনেট স্টোভ বার্নার মেরামত</string>
 
     <!--PLumber-->
+    <string name="geyser_setup">গিজার সেট আপ</string>
     <string name="plumbing_check_up">প্লাম্বিং চেক আপ</string>
     <string name="water_tap_servicing">জলের কল সার্ভিসিং</string>
     <string name="shower_servicing">ঝরনা সার্ভিসিং</string>
@@ -555,6 +556,16 @@
         শুধুমাত্র সেই ক্যাটাগরির সার্ভিস গুলো যুক্ত করুন। কারন আপনার সিলেক্ট করা ক্যাটাগরি অনুযায়ী আপনার কাছে বিড দেখা যাবে।
         ক্যাটাগরি চেঞ্জ করতে বিডি হেল্পার এর সাথে যোগাযোগ করুন</string>
     <string name="rent_service_verified_warning">সার্ভিসটি ভেরিফাই করার জন্য প্রয়োজনীয় ডকুমেন্টের ছবি জমা দিন</string>
+
+
+    <!--Bid-->
+    <string name="bid">বিড করুন</string>
+    <string name="you_just_can_see_your_own_bid">আপনি শুধু আপনার নিজের বিড দেখতে পারবেন</string>
+    <string name="order_list">অর্ডার লিস্ট</string>
+    <string name="all_order_rent">সকল অর্ডার</string>
+    <string name="your_order_rent">আপনার জন্য অর্ডার</string>
+    <string name="no_one_order_for_rent">কেউই ভাড়ার জন্য পোষ্ট করে নাই !</string>
+    <string name="bidding_your_best_price">আপনার সেরা দর বিড করুন</string>
 
 
     <!--Permission -->

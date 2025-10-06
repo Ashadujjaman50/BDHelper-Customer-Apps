@@ -387,6 +387,7 @@
     <string name="cabinet_stove_burner_repair">Cabinet stove burner repair</string>
 
     <!--PLumber-->
+    <string name="geyser_setup">Geyser setup</string>
     <string name="plumbing_check_up">Plumbing check up</string>
     <string name="water_tap_servicing">Water tap servicing</string>
     <string name="shower_servicing">Shower servicing</string>
@@ -502,6 +503,7 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
 
+
     <!--Partner Part-->
     <string name="rent_service">Rent Service</string>
     <string name="notification">Notification</string>
@@ -555,6 +557,15 @@
         Contact BD Helper to change it</string>
     <string name="rent_service_verified_warning">Submit required documents for verification.</string>
 
+
+    <!--Bid-->
+    <string name="bid">Bid Now</string>
+    <string name="you_just_can_see_your_own_bid">You can only view your own bids.</string>
+    <string name="order_list">Order list</string>
+    <string name="all_order_rent">All order</string>
+    <string name="your_order_rent">Order for you</string>
+    <string name="no_one_order_for_rent">No one has placed an order for rent yet!</string>
+    <string name="bidding_your_best_price">Bidding your Best Price</string>
 
     <!--Permission -->
     <string name="camera_permission_detail">

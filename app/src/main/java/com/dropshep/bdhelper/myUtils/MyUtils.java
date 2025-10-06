@@ -18,6 +18,12 @@ public class MyUtils {
     public static String unloadLocation= "unloadLocation";
     public static String rentLocation= "rentLocation";
 
+    //Common String
+    public static String vendorId = "vendorId";
+    public static String orderId = "orderId";
+    public static String bidId = "bidId";
+    public static String bidAction = "bidAction";
+
     //category Id
     public static final String ROAD_TRANSPORT_ID = "-OWJvq2HExIAqHIaTCKc";
     public static final String EQUIPMENT_ID = "-OWVRgLBx03T4y98N8VR";

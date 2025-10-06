@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tab_selected_bg" />
+            <corners android:bottomLeftRadius="10dp"/>
+        </shape>
+    </item>
+    <!-- Unselected -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tab_unselected_bg" />
+            <corners android:bottomLeftRadius="10dp"/>
+        </shape>
+    </item>
+</selector>

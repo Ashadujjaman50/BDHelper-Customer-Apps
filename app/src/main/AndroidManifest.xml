@@ -39,6 +39,12 @@
         android:windowSoftInputMode="adjustPan|adjustResize"
         tools:targetApi="33">
         <activity
+            android:name=".partner.BidActivity"
+            android:exported="false" />
+        <activity
+            android:name=".partner.OrderRentActivity"
+            android:exported="false" />
+        <activity
             android:name=".partner.ProductActivity"
             android:exported="false" />
         <activity

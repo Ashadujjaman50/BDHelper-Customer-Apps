@@ -193,7 +193,6 @@ public class SkilledLaborFormFragment extends Fragment {
             }));
         });
 
-
         //Load Work Type
         binding.workTypeEt.setOnClickListener(v -> {
             array_list.clear();
@@ -209,6 +208,7 @@ public class SkilledLaborFormFragment extends Fragment {
                     array_list.add(getString(R.string.switch_board_servicing_setup));
                     array_list.add(getString(R.string.main_circuit_breaker_servicing));
                     array_list.add(getString(R.string.main_distribution_board_servicing));
+                    array_list.add(getString(R.string.others));
                     break;
                 case "চুলার মিস্ত্রি":
                 case "Stove mechanic":
@@ -218,13 +218,16 @@ public class SkilledLaborFormFragment extends Fragment {
                     array_list.add(getString(R.string.gas_stove_component_change));
                     array_list.add(getString(R.string.gas_cabinet_stove_cleaning));
                     array_list.add(getString(R.string.cabinet_stove_burner_repair));
+                    array_list.add(getString(R.string.others));
                     break;
                 case "পানির লাইনের মিস্ত্রি":
                 case "Plumber":
+                    array_list.add(getString(R.string.geyser_setup));
                     array_list.add(getString(R.string.plumbing_check_up));
                     array_list.add(getString(R.string.water_tap_servicing));
                     array_list.add(getString(R.string.shower_servicing));
                     array_list.add(getString(R.string.sink_issue));
+                    array_list.add(getString(R.string.others));
                     break;
                 case "মেকানিক":
                 case "Mechanic":

@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -152,14 +153,14 @@ public class CommonClass {
 
             if (locale.getLanguage().equals("bn")) {
                 if (i == 0) formattedHour = "রাত ১২ টা";
-                else if (i < 4) formattedHour = "রাত " + toBanglaNumber(i) + " টা";
-                else if (i < 7) formattedHour = "ভোর " + toBanglaNumber(i) + " টা";
-                else if (i < 12) formattedHour = "সকাল " + toBanglaNumber(i) + " টা";
+                else if (i < 4) formattedHour = "রাত " + Replacement.ReplacementNumberEnToBnInInteger(i) + " টা";
+                else if (i < 7) formattedHour = "ভোর " + Replacement.ReplacementNumberEnToBnInInteger(i) + " টা";
+                else if (i < 12) formattedHour = "সকাল " + Replacement.ReplacementNumberEnToBnInInteger(i) + " টা";
                 else if (i == 12) formattedHour = "দুপুর ১২ টা";
-                else if (i < 16) formattedHour = "দুপুর " + toBanglaNumber(i - 12) + " টা";
-                else if (i < 18) formattedHour = "বিকাল " + toBanglaNumber(i - 12) + " টা";
-                else if (i < 20) formattedHour = "সন্ধ্যা " + toBanglaNumber(i - 12) + " টা";
-                else formattedHour = "রাত " + toBanglaNumber(i - 12) + " টা";
+                else if (i < 16) formattedHour = "দুপুর " + Replacement.ReplacementNumberEnToBnInInteger(i - 12) + " টা";
+                else if (i < 18) formattedHour = "বিকাল " + Replacement.ReplacementNumberEnToBnInInteger(i - 12) + " টা";
+                else if (i < 20) formattedHour = "সন্ধ্যা " + Replacement.ReplacementNumberEnToBnInInteger(i - 12) + " টা";
+                else formattedHour = "রাত " + Replacement.ReplacementNumberEnToBnInInteger(i - 12) + " টা";
 
             } else {
                 int hour12 = i % 12;
@@ -183,21 +184,6 @@ public class CommonClass {
         // int array return (hour index list)
         return hourValues.stream().mapToInt(Integer::intValue).toArray();
     }
-
-    public static String toBanglaNumber(int number) {
-        char[] banglaDigits = {'০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'};
-        String numStr = String.valueOf(number);
-        StringBuilder banglaNum = new StringBuilder();
-        for (char c : numStr.toCharArray()) {
-            if (Character.isDigit(c)) {
-                banglaNum.append(banglaDigits[c - '0']);
-            } else {
-                banglaNum.append(c);
-            }
-        }
-        return banglaNum.toString();
-    }
-
 
     public static String generateReferralCode() {
         String lettersAndDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -412,6 +398,94 @@ public class CommonClass {
                 })
                 .addOnFailureListener(callback::onFailure);
     }
+
+
+
+    //Partner App Helper
+    public static String millisToTimeWithLocal(Context context, String millis) {
+        long timestamp = Long.parseLong(millis);
+
+        // Context থেকে language বের করি
+        String lang = LocaleHelper.getLanguage(context); // "bn" বা "en"
+        Locale locale = lang.equals("bn") ? new Locale("bn", "BD") : Locale.ENGLISH;
+
+        Date date = new Date(timestamp);
+        Calendar cal = Calendar.getInstance(locale);
+        cal.setTime(date);
+
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH); // 0-based
+        int year = cal.get(Calendar.YEAR);
+        int hour24 = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        // Month নাম গুলো
+        String[] monthsBn = {"জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+                "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"};
+        String[] monthsEn = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
+
+        if (lang.equals("bn")) {
+            // ===== বাংলা =====
+            String dayBn = Replacement.ReplacementNumberEnToBnInInteger(day);
+            String monthBn = monthsBn[month];
+
+            String formattedHour;
+            if (hour24 == 0) formattedHour = "রাত ১২ টা";
+            else if (hour24 < 4) formattedHour = "রাত " + Replacement.ReplacementNumberEnToBnInInteger(hour24) + " টা";
+            else if (hour24 < 7) formattedHour = "ভোর " + Replacement.ReplacementNumberEnToBnInInteger(hour24) + " টা";
+            else if (hour24 < 12) formattedHour = "সকাল " + Replacement.ReplacementNumberEnToBnInInteger(hour24) + " টা";
+            else if (hour24 == 12) formattedHour = "দুপুর ১২ টা";
+            else if (hour24 < 16) formattedHour = "দুপুর " + Replacement.ReplacementNumberEnToBnInInteger(hour24 - 12) + " টা";
+            else if (hour24 < 18) formattedHour = "বিকাল " + Replacement.ReplacementNumberEnToBnInInteger(hour24 - 12) + " টা";
+            else if (hour24 < 20) formattedHour = "সন্ধ্যা " + Replacement.ReplacementNumberEnToBnInInteger(hour24 - 12) + " টা";
+            else formattedHour = "রাত " + Replacement.ReplacementNumberEnToBnInInteger(hour24 - 12) + " টা";
+
+            return dayBn + " " + monthBn + ",  " + formattedHour;
+
+        }
+        else {
+            // ===== ইংরেজি =====
+            String monthEn = monthsEn[month];
+            int hour12 = hour24 % 12;
+            if (hour12 == 0) hour12 = 12;
+            String ampm = (hour24 < 12) ? "am" : "pm";
+
+            return String.format(Locale.ENGLISH, "%02d %s, %02d:%02d %s",
+                    day, monthEn, hour12, minute, ampm);
+        }
+    }
+
+
+    public static Pair<String, String> formatAddress(String text) {
+        if (text == null || text.isEmpty()) return new Pair<>("", "");
+
+        String[] parts = text.split(",");
+
+        if (parts.length == 1) {
+            // কোন কমা নেই, সবটুকু প্রথম লাইনে
+            return new Pair<>(text.trim(), "");
+        }
+
+        StringBuilder firstLine = new StringBuilder();
+        StringBuilder secondLine = new StringBuilder();
+
+        // মোট কমা count দেখে ভাগ করব
+        int mid = parts.length / 2; // প্রায় দুই ভাগে ভাগ
+
+        for (int i = 0; i < parts.length; i++) {
+            if (i < mid) {
+                if (firstLine.length() > 0) firstLine.append(", ");
+                firstLine.append(parts[i].trim());
+            } else {
+                if (secondLine.length() > 0) secondLine.append(", ");
+                secondLine.append(parts[i].trim());
+            }
+        }
+
+        return new Pair<>(firstLine.toString(), secondLine.toString());
+    }
+
 
 
 
