@@ -8,9 +8,9 @@
         android:layout_height="match_parent"
         android:padding="5dp"
         android:background="@color/bg_color"
-        tools:context=".partnerFragment.BidSkilledLaborFragment">
+        tools:context=".fragment.BidSkilledLaborFragment">
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:id="@+id/scrollView"
             android:layout_above="@+id/bottomPart"
             android:layout_width="match_parent"
@@ -25,8 +25,8 @@
                     android:id="@+id/topCv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="3dp"
-                    app:contentPaddingBottom="15dp"
+                    android:layout_margin="3dp"
+                    app:contentPaddingBottom="10dp"
                     app:cardCornerRadius="6dp"
                     app:cardElevation="1dp"
                     app:cardBackgroundColor="@color/order_card_bg_color">
@@ -290,12 +290,14 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/bidRunTimeLl"
                             android:layout_marginTop="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/bidRunMsgTv"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
@@ -312,7 +314,7 @@
                                 android:background="@drawable/bg_for_biding_time"
                                 android:paddingHorizontal="25dp"
                                 android:paddingVertical="10dp"
-                                android:text="45:00"
+                                android:hint="00:00"
                                 android:textColor="@color/white"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
@@ -326,6 +328,35 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/noOneBidYet"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/no_one_bid_yet"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/bidMsgTv"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:text="পার্টনারদের করা বিড সমূহ"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    app:drawableEndCompat="@drawable/ic_arrow_drop_down"
+                    app:drawableTint="@color/icon_color"
+                    android:drawablePadding="10dp"/>
+
                 <!--Total Bid For RecycleView-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bidRV"
@@ -337,10 +368,11 @@
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/bottomPart"
+            android:visibility="gone"
             android:elevation="5dp"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"

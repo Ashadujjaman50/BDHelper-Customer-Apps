@@ -70,9 +70,6 @@ public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHol
             case "uPay":
                 holder.mfsImageIv.setImageResource(R.drawable.ic_mfs_upay);
                 break;
-            default:
-                holder.mfsImageIv.setImageResource(R.drawable.ic_mfs_bkash);
-                break;
         }
 
         holder.moreBtn.setOnClickListener(v -> {
@@ -82,10 +79,10 @@ public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHol
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (Objects.equals(item.getTitle(), "Edit")) {
-                    if (mListener != null) mListener.onShowItemClick(holder.getAdapterPosition());
+                    if (mListener != null) mListener.onShowItemClick(holder.getBindingAdapterPosition());
                     return true;
                 } else if (Objects.equals(item.getTitle(), "Delete")) {
-                    if (mListener != null) mListener.onDeleteItemClick(holder.getAdapterPosition());
+                    if (mListener != null) mListener.onDeleteItemClick(holder.getBindingAdapterPosition());
                     return true;
                 }
                 return false;
@@ -121,7 +118,7 @@ public class AccountAdapter extends RecyclerView.Adapter <AccountAdapter.ViewHol
         @Override
         public void onClick(View v) {
             if (mListener != null){
-                int position = getAdapterPosition();
+                int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION){
                     mListener.onItemClick(v, position);
                 }

@@ -20,6 +20,7 @@ import com.dropshep.bdhelper.ReferenceActivity;
 import com.dropshep.bdhelper.databinding.FragmentMoreBinding;
 import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
+import com.dropshep.bdhelper.myUtils.PreloadingDialog;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.dropshep.bdhelper.partner.DashboardActivity;
 import com.dropshep.bdhelper.partner.PaymentActivity;
@@ -63,6 +64,20 @@ public class MoreFragment extends Fragment {
         // init
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        PreloadingDialog preloadingDialog = new PreloadingDialog(getContext());
+        preloadingDialog.show();
+
+        CommonClass.loadPartnerEarnings(
+                getContext(),
+                firebaseAuth.getUid(),
+                binding.totalAmount,
+                binding.companyEarnTv,
+                binding.partnerEarnTv
+        );
+
+        preloadingDialog.dismiss();
+
         userId = firebaseAuth.getCurrentUser().getUid();
 
         //Load Current Partner info

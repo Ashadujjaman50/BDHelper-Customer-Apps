@@ -11,7 +11,7 @@
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:id="@+id/loading"
+            android:id="@+id/lottieLoading"
             style="?android:attr/progressBarStyleHorizontal"
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"

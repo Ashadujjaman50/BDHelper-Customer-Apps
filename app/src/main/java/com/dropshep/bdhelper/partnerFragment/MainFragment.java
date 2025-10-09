@@ -23,6 +23,8 @@ import com.dropshep.bdhelper.databinding.FragmentMainBinding;
 import com.dropshep.bdhelper.model.ModelNotice;
 import com.dropshep.bdhelper.model.SlideImage;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.partner.BidActivity;
 import com.dropshep.bdhelper.partner.OrderRentActivity;
 import com.dropshep.bdhelper.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,6 +84,24 @@ public class MainFragment extends Fragment {
         binding.notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), NotificationActivity.class);
             startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        //success All Bid
+        binding.successBidLL.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), BidActivity.class);
+            intent.putExtra(MyUtils.bidAction,"confirmed");
+            intent.putExtra("user_type", "partner");
+            requireActivity().startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+        //pending All Bid
+        binding.pendingBidLL.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), BidActivity.class);
+            intent.putExtra(MyUtils.bidAction,"pending");
+            intent.putExtra("user_type", "partner");
+            requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 

@@ -99,26 +99,21 @@ public class BidAllOrderFragment extends Fragment {
                 Log.d("OrderClick", "Clicked SubCategory ID: " + clickedSubCategoryId);
 
                 // চেক করো subCategoryIds লিস্টে আছে কিনা
-                /*if (subCategoryIds == null || !subCategoryIds.contains(clickedSubCategoryId)) {
+                if (subCategoryIds == null || !subCategoryIds.contains(clickedSubCategoryId)) {
                     // না থাকলে alert দেখাও
                     showAlertDialog(position);
                 }
                 else {
                     Intent intent = new Intent(getContext(), BidActivity.class);
                     intent.putExtra(MyUtils.bidAction,"new");
+                    intent.putExtra("user_type", "partner");
                     intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
                     intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
                     intent.putExtra(MyUtils.subCategoryId, clickedSubCategoryId);
                     requireActivity().startActivity(intent);
                     requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }*/
-                Intent intent = new Intent(getContext(), BidActivity.class);
-                intent.putExtra(MyUtils.bidAction,"new");
-                intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
-                intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
-                intent.putExtra(MyUtils.subCategoryId, clickedSubCategoryId);
-                requireActivity().startActivity(intent);
-                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+
             }
 
             @Override

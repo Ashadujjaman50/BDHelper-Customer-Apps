@@ -143,6 +143,7 @@
 
     <string name="you_have_no_ongoing_post">You have no ongoing posts!</string>
     <string name="you_didnot_any_post">You didn\'t any post!</string>
+    <string name="no_one_bid_yet">No one bid yet</string>
 
     <!--Help Fragment-->
     <string name="enter_your_message">Enter your message</string>
@@ -187,7 +188,7 @@
     <string name="review">Review</string>
     <string name="post">Post:</string>
     <string name="or">Or</string>
-    <string name="call_to_confirm">Call to need</string>
+    <string name="call_to_confirm">Call if needed</string>
     <string name="model_and_type">Model &amp; type:</string>
     <string name="rent_date">Date of rent:</string>
     <string name="this_post_has_been_canceled">This post has been canceled</string>
@@ -540,6 +541,10 @@
     <string name="payment_account_found">Your payment accounts</string>
     <string name="add_payment_account">Add payment account</string>
     <string name="no_payment_history">No payment history</string>
+
+    <string name="are_you_sure_alert_title">Service is complete?</string>
+    <string name="are_you_sure_alert_msg">Are you sure?\nYou can’t cancel after confirming the</string>
+    <string name="are_you_sure_order_confirm_alert_msg">Are you sure?\nYou can’t cancel after confirming the</string>
 
     <string name="select_payment_method">Select payment method</string>
     <string name="account_no">Account number</string>
@@ -1908,4 +1913,5 @@
     <string name="lakhai">লাখাই</string>
     <string name="shaistaganj">শায়েস্তাগঞ্জ</string>
     <string name="habiganj_sadar">হবিগঞ্জ সদর</string>
+    <string name="alert_icon">Alert Icon</string>
 </resources>

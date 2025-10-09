@@ -1,6 +1,7 @@
 package com.dropshep.bdhelper.userFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dropshep.bdhelper.Interface.OnItemClickListener;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.OrderAdapter;
 import com.dropshep.bdhelper.databinding.FragmentAllRequirementPostBinding;
 import com.dropshep.bdhelper.model.OrderModel;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,6 +59,36 @@ public class AllRequirementPostFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         loadAllData();
+
+        orderAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String subCategoryId = orderModelArrayList.get(position)
+                        .getOrderInfo().getSubCategoryId();
+
+                Log.d("OrderClick", "Clicked SubCategory ID: " + subCategoryId);
+
+                Intent intent = new Intent(getContext(), BidActivity.class);
+                intent.putExtra(MyUtils.bidAction,"new");
+                intent.putExtra("user_type", "customer");
+                intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
+                intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
+                intent.putExtra(MyUtils.subCategoryId, subCategoryId);
+                requireActivity().startActivity(intent);
+                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            }
+
+            @Override
+            public void onShowItemClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteItemClick(int position) {
+
+            }
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -65,9 +99,17 @@ public class AllRequirementPostFragment extends Fragment {
 
         String currentUserId = firebaseUser.getUid(); // 🔑 current user id
 
+        // 🔹 Loading শুরু
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.noOneBidYet.setVisibility(View.GONE);
+        binding.allRentRecyclerView.setVisibility(View.GONE);
+
         db.collection("orders")
                 .whereEqualTo("orderInfo.uid", currentUserId) // ✅ শুধু current user এর order
                 .addSnapshotListener((querySnapshot, error) -> {
+                    // 🔹 Loading শেষ
+                    binding.loading.setVisibility(View.GONE);
+
                     if (error != null) {
                         MyToast.showShort(getContext(), "❌ Error: " + error.getMessage());
                         Log.d("Firestore", "loadAllData: "+error.getMessage());

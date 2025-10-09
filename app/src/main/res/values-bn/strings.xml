@@ -144,6 +144,7 @@
 
     <string name="you_have_no_ongoing_post">আপনার চলমান কোনো পোস্ট নেই!</string>
     <string name="you_didnot_any_post">আপনি কোনো পোস্ট করেন নি!</string>
+    <string name="no_one_bid_yet">এখনো কেউ বিড করেনি</string>
 
     <!--Help Fragment-->
     <string name="enter_your_message">টাইপ করুন</string>
@@ -549,6 +550,10 @@
     <string name="nagad">নগদ</string>
     <string name="rocket">রকেট</string>
     <string name="uPay">উপায়</string>
+
+    <string name="are_you_sure_alert_title">সার্ভিসটি সম্পূর্ণ হয়েছে?</string>
+    <string name="are_you_sure_alert_msg">আপনি কি নিশ্চিত?\nঅর্ডার নিশ্চিত করার পর আর বাতিল করা যাবে না!</string>
+    <string name="are_you_sure_order_confirm_alert_msg">আপনি কি নিশ্চিত?\nঅর্ডার নিশ্চিত করার পর আর বাতিল করা যাবে না!</string>
 
     <!--All Rent Service-->
     <string name="rent_service_verification_pending">সার্ভিসটি যাচাই প্রক্রিয়াধীন, শীঘ্রই ভেরিফিকেশন সম্পন্ন হবে।</string>

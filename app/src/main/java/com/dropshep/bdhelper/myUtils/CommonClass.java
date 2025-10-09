@@ -12,19 +12,27 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import com.dropshep.bdhelper.R;
+import com.dropshep.bdhelper.model.OrderModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -234,6 +242,7 @@ public class CommonClass {
         return false; // valid
     }
 
+    //Helper subCategory Id to String subCategory Name
     public static int getSubCategoryName(String subCategoryId) {
         switch (subCategoryId) {
             case MyUtils.SUB_TRUCK_ID: return R.string.truck;
@@ -267,8 +276,8 @@ public class CommonClass {
     }
 
     // Helper method to get correct drawable for subCategory
-    public static int getIconForSubCategory(String subCatId) {
-        switch (subCatId) {
+    public static int getIconForSubCategory(String subCategoryId) {
+        switch (subCategoryId) {
             case MyUtils.SUB_TRUCK_ID: return R.drawable.ic_truck;
             case MyUtils.SUB_PICKUP_ID: return R.drawable.ic_pickup;
             case MyUtils.SUB_COVERED_VAN_ID: return R.drawable.ic_covered_van;
@@ -354,53 +363,6 @@ public class CommonClass {
         return calendar.getTimeInMillis();
     }
 
-    // 🔑 OrderID জেনারেটর
-    public interface OrderIdCallback {
-        void onSuccess(String orderId);
-        void onFailure(Exception e);
-    }
-
-    public static void generateOrderId(FirebaseFirestore db,
-                                       String collectionPath,
-                                       String fieldPath,
-                                       String prefix,
-                                       int initialDigitLength,
-                                       OrderIdCallback callback) {
-
-        db.collection(collectionPath)
-                .orderBy(fieldPath, Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    int maxNum = 0;
-                    int digitLength = initialDigitLength;
-
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        String lastId = doc.getString(fieldPath);
-                        if (lastId != null && lastId.startsWith(prefix)) {
-                            try {
-                                String numPart = lastId.substring(prefix.length());
-                                int num = Integer.parseInt(numPart);
-                                if (num > maxNum) maxNum = num;
-
-                                // Update digitLength dynamically
-                                digitLength = Math.max(numPart.length(), String.valueOf(maxNum + 1).length());
-
-                            } catch (Exception ignored) {}
-                        }
-                    }
-
-                    // Build new OrderID
-                    String pattern = prefix + "%0" + digitLength + "d";
-                    String newOrderId = String.format(Locale.ENGLISH, pattern, maxNum + 1);
-                    callback.onSuccess(newOrderId);
-
-                })
-                .addOnFailureListener(callback::onFailure);
-    }
-
-
-
     //Partner App Helper
     public static String millisToTimeWithLocal(Context context, String millis) {
         long timestamp = Long.parseLong(millis);
@@ -484,6 +446,261 @@ public class CommonClass {
         }
 
         return new Pair<>(firstLine.toString(), secondLine.toString());
+    }
+
+    /**
+     * Convert a millisecond String to long
+     */
+    public static long parseMillis(String millisString) {
+        if (millisString == null || millisString.isEmpty()) return 0;
+        try {
+            return Long.parseLong(millisString);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * Get today's start time in milliseconds (00:00:00)
+     */
+    public static long getTodayStartMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    // 🔹 Format timestamp to Date Formate dd/MM/YYYY HH:mm:ss aa
+    public static String formatTime(String timeMillis, String pattern) {
+        try {
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTimeInMillis(Long.parseLong(timeMillis));
+            String formatted = DateFormat.format(pattern, calendar).toString();
+            return formatted.replace("AM", "am").replace("PM", "pm");
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+
+    //10% Commission added to replacement
+    //When commission 10%
+    public static String getRoundedTenPercentValue(String amountStr, double percent) {
+        try {
+            double amount = Double.parseDouble(amountStr);
+
+            // 🔹 নির্দিষ্ট percent অনুযায়ী বাড়ানো
+            double increased = amount + (amount * (percent / 100.0));
+
+            // 🔹 শেষ দুই ডিজিট বের করো
+            long roundedValue = (long) increased;
+            long lastTwoDigits = roundedValue % 100;
+
+            // 🔹 nearest 100 বা 50 অনুযায়ী রাউন্ড করো
+            if (lastTwoDigits < 50) {
+                roundedValue = roundedValue - lastTwoDigits; // নিচে round
+            } else {
+                roundedValue = roundedValue + (100 - lastTwoDigits); // উপরে round
+            }
+
+            // 🔹 Local number format এ রিটার্ন করো
+            return String.valueOf(roundedValue);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return amountStr;
+        }
+    }
+
+
+
+
+
+    /** ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅
+     * Data base Related Function and Logic Start
+     * All Logical operation
+     */
+
+    // 🔑 OrderID জেনারেটর
+    public interface OrderIdCallback {
+        void onSuccess(String orderId);
+        void onFailure(Exception e);
+    }
+
+    public static void generateOrderId(FirebaseFirestore db, String collectionPath,
+                                       String fieldPath, String prefix,
+                                       int initialDigitLength, OrderIdCallback callback) {
+
+        db.collection(collectionPath)
+                .orderBy(fieldPath, Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int maxNum = 0;
+                    int digitLength = initialDigitLength;
+
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        String lastId = doc.getString(fieldPath);
+                        if (lastId != null && lastId.startsWith(prefix)) {
+                            try {
+                                String numPart = lastId.substring(prefix.length());
+                                int num = Integer.parseInt(numPart);
+                                if (num > maxNum) maxNum = num;
+
+                                // Update digitLength dynamically
+                                digitLength = Math.max(numPart.length(), String.valueOf(maxNum + 1).length());
+
+                            } catch (Exception ignored) {}
+                        }
+                    }
+
+                    // Build new OrderID
+                    String pattern = prefix + "%0" + digitLength + "d";
+                    String newOrderId = String.format(Locale.ENGLISH, pattern, maxNum + 1);
+                    callback.onSuccess(newOrderId);
+
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
+
+
+    /**
+     * Starts a countdown from a given timestamp + additional hours and updates the given TextView.
+     *
+     * @param timestamp      The original timestamp in milliseconds
+     * @param hoursToAdd     Hours to add to the timestamp
+     * @param countdownTv    TextView to update with countdown
+     */
+    private static CountDownTimer countDownTimer;
+    @SuppressLint("SetTextI18n")
+    public static void startConditionalCountdown(long timestamp, int hoursToAdd, String orderStatus,
+                                                 TextView countdownTv, View countdownLayout) {
+
+        // Cancel previous timer if running
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        if ("pending".equalsIgnoreCase(orderStatus) || "process".equalsIgnoreCase(orderStatus)) {
+            long countdownEndMillis = timestamp + (long) hoursToAdd * 60 * 60 * 1000;
+            long currentTimeMillis = System.currentTimeMillis();
+            long millisUntilFinished = countdownEndMillis - currentTimeMillis;
+
+            if (millisUntilFinished > 0) {
+                countdownLayout.setVisibility(View.VISIBLE);
+
+                countDownTimer = new CountDownTimer(millisUntilFinished, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        long seconds = millisUntilFinished / 1000 % 60;
+                        long minutes = millisUntilFinished / (1000 * 60) % 60;
+                        long hours = millisUntilFinished / (1000 * 60 * 60);
+
+                        @SuppressLint("DefaultLocale")
+                        String timeLeft = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+                        countdownTv.setText(timeLeft);
+                    }
+
+
+                    @Override
+                    public void onFinish() {
+                        countdownTv.setText("00:00:00");
+                        // 5 সেকেন্ড delay দিয়ে hide
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            countdownLayout.setVisibility(View.GONE);
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    }
+                }.start();
+            } else {
+                // Time already expired
+                countdownTv.setText("00:00:00");
+                countdownLayout.setVisibility(View.GONE); // hide layout when countdown ends
+            }
+
+        } else {
+            // Stop countdown and hide layout
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
+            countdownLayout.setVisibility(View.GONE);
+        }
+    }
+
+
+
+    public static void getOrderInfoById(String orderId, FirestoreOrderCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<OrderModel> orderList = new ArrayList<>();
+
+        db.collection("orders")
+                .whereEqualTo("orderInfo.orderId", orderId) // nested field match
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            OrderModel orderModel = doc.toObject(OrderModel.class);
+                            if (orderModel != null) {
+                                orderList.add(orderModel);
+                            }
+                        }
+                        callback.onSuccess(orderList);
+                    } else {
+                        callback.onFailure(new Exception("No order found for ID: " + orderId));
+                    }
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
+
+    // Callback interface
+    public interface FirestoreOrderCallback {
+        void onSuccess(ArrayList<OrderModel> orderList);
+        void onFailure(Exception e);
+    }
+
+    public static void loadPartnerEarnings(Context context, String vendorId,
+                                           TextView totalEarnTv, TextView companyEarnTv, TextView partnerEarnTv) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("financialLedger")
+                .whereEqualTo("vendorId", vendorId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    double totalEarn = 0;
+                    double totalCompany = 0;
+                    double totalPartner = 0;
+
+                    for (var doc : querySnapshot.getDocuments()) {
+                        Double totalAmount = doc.getDouble("totalAmount");
+                        Double companyEarn = doc.getDouble("companyEarn");
+                        Double partnerEarn = doc.getDouble("partnerEarn");
+
+                        if (totalAmount != null) totalEarn += totalAmount;
+                        if (companyEarn != null) totalCompany += companyEarn;
+                        if (partnerEarn != null) totalPartner += partnerEarn;
+                    }
+
+                    // Format nicely
+                    String totalTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalEarn));
+                    String companyTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalCompany));
+                    String partnerTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalPartner));
+
+                    totalEarnTv.setText(totalTxt + " ৳");
+                    companyEarnTv.setText(companyTxt + " ৳");
+                    partnerEarnTv.setText(partnerTxt + " ৳");
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("EarningLoad", "❌ Failed to load earnings: " + e.getMessage());
+                    totalEarnTv.setText("0 ৳");
+                    companyEarnTv.setText("0 ৳");
+                    partnerEarnTv.setText("0 ৳");
+                });
     }
 
 

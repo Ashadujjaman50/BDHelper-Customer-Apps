@@ -1,6 +1,7 @@
 package com.dropshep.bdhelper.userFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
@@ -14,12 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dropshep.bdhelper.Interface.OnItemClickListener;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.OrderAdapter;
 import com.dropshep.bdhelper.databinding.FragmentCurrentRequirementPostBinding;
 import com.dropshep.bdhelper.model.OrderModel;
 import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.myUtils.MyUtils;
+import com.dropshep.bdhelper.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -64,6 +68,36 @@ public class CurrentRequirementPostFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         loadAllData();
+
+        orderAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String subCategoryId = orderModelArrayList.get(position)
+                        .getOrderInfo().getSubCategoryId();
+
+                Log.d("OrderClick", "Clicked SubCategory ID: " + subCategoryId);
+
+                Intent intent = new Intent(getContext(), BidActivity.class);
+                intent.putExtra(MyUtils.bidAction,"new");
+                intent.putExtra("user_type", "customer");
+                intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
+                intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
+                intent.putExtra(MyUtils.subCategoryId, subCategoryId);
+                requireActivity().startActivity(intent);
+                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            }
+
+            @Override
+            public void onShowItemClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteItemClick(int position) {
+
+            }
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -74,12 +108,17 @@ public class CurrentRequirementPostFragment extends Fragment {
 
         String currentUserId = firebaseUser.getUid(); // 🔑 current user id
 
-
-        binding.noOneBidYet.setVisibility(View.VISIBLE);
+        // 🔹 Loading শুরু
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.noOneBidYet.setVisibility(View.GONE);
+        binding.myRentRecyclerView.setVisibility(View.GONE);
 
         db.collection("orders")
                 .whereEqualTo("orderInfo.uid", currentUserId)
                 .addSnapshotListener((querySnapshot, error) -> {
+                    // 🔹 Loading শেষ
+                    binding.loading.setVisibility(View.GONE);
+
                     if (error != null) {
                         Log.d("Firestore", "loadAllData: " + error.getMessage());
                         return;
@@ -95,10 +134,8 @@ public class CurrentRequirementPostFragment extends Fragment {
                             if (order == null) continue;
 
                             try {
-                                // rentTime কে Long এ কনভার্ট করা
                                 Long rentTime = Long.valueOf(order.getRouteInfo().getRentTime());
 
-                                // ✅ শর্ত: আজকের তারিখ বা পরবর্তী, এবং status "Complete" না
                                 if (rentTime != null
                                         && rentTime >= startOfToday
                                         && !"Complete".equalsIgnoreCase(order.getOrderInfo().getStatus())) {
@@ -111,7 +148,7 @@ public class CurrentRequirementPostFragment extends Fragment {
                         }
                         orderAdapter.notifyDataSetChanged();
 
-                        // ✅ data আছে কিনা চেক
+                        // ✅ Data check
                         if (orderModelArrayList.isEmpty()) {
                             binding.noOneBidYet.setVisibility(View.VISIBLE);
                             binding.myRentRecyclerView.setVisibility(View.GONE);
@@ -119,11 +156,14 @@ public class CurrentRequirementPostFragment extends Fragment {
                             binding.noOneBidYet.setVisibility(View.GONE);
                             binding.myRentRecyclerView.setVisibility(View.VISIBLE);
                         }
+                    } else {
+                        // যদি snapshot null হয়
+                        binding.noOneBidYet.setVisibility(View.VISIBLE);
+                        binding.myRentRecyclerView.setVisibility(View.GONE);
                     }
                 });
-
-
     }
+
 
 
 }

@@ -30,7 +30,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
     Context context;
     ArrayList<OrderModel> orderModelArrayList;
 
-    private OnItemClickListener mListener; // static নয়, instance variable
+    private OnItemClickListener mListener;
 
     public OrderPartnerAdapter(Context context, ArrayList<OrderModel> orderModelArrayList) {
         this.context = context;

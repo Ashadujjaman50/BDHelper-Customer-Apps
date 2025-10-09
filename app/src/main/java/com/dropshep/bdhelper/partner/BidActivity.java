@@ -10,16 +10,17 @@ import com.dropshep.bdhelper.databinding.ActivityBidBinding;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
-import com.dropshep.bdhelper.partnerFragment.BidEquipmentFragment;
-import com.dropshep.bdhelper.partnerFragment.BidHomeShiftingFragment;
-import com.dropshep.bdhelper.partnerFragment.BidSkilledLaborFragment;
-import com.dropshep.bdhelper.partnerFragment.BidTransportFragment;
+import com.dropshep.bdhelper.fragment.BidEquipmentFragment;
+import com.dropshep.bdhelper.fragment.BidHomeShiftingFragment;
+import com.dropshep.bdhelper.fragment.BidSkilledLaborFragment;
+import com.dropshep.bdhelper.fragment.BidTransportFragment;
+import com.dropshep.bdhelper.partnerFragment.BidFragment;
 
 public class BidActivity extends BaseActivity {
 
     private ActivityBidBinding binding;
 
-    String bidAction, orderId, categoryId, subCategoryId;
+    String bidAction, user_type, orderId, categoryId, subCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +31,37 @@ public class BidActivity extends BaseActivity {
 
         // init views
         bidAction = getIntent().getStringExtra(MyUtils.bidAction);
-        orderId = getIntent().getStringExtra(MyUtils.orderId);
-        categoryId = getIntent().getStringExtra(MyUtils.categoryId);
-        subCategoryId = getIntent().getStringExtra(MyUtils.subCategoryId);
+        user_type = getIntent().getStringExtra("user_type");
+
+        //header title
+        String title = "";
+
+        if ("partner".equals(user_type)) {
+            switch (bidAction) {
+                case "new":
+                    title = getString(R.string.bid);
+                    break;
+                case "confirmed":
+                    title = getString(R.string.accepted_bid);
+                    break;
+                case "pending":
+                    title = getString(R.string.pending_bid);
+                    break;
+            }
+        }
+        else {
+            title = getString(R.string.bidding);
+        }
+
+        binding.titleTv.setText(title);
+
 
         if (bidAction != null && bidAction.equals("new")) {
+            // Get data from intent
+            orderId = getIntent().getStringExtra(MyUtils.orderId);
+            categoryId = getIntent().getStringExtra(MyUtils.categoryId);
+            subCategoryId = getIntent().getStringExtra(MyUtils.subCategoryId);
+
             Fragment fragment = null;
 
             switch (categoryId) {
@@ -57,6 +84,7 @@ public class BidActivity extends BaseActivity {
             if (fragment != null) {
                 // Pass data using Bundle
                 Bundle bundle = new Bundle();
+                bundle.putString("user_type", user_type);
                 bundle.putString(MyUtils.orderId, orderId);
                 bundle.putString(MyUtils.subCategoryId, subCategoryId);
                 fragment.setArguments(bundle);
@@ -64,6 +92,14 @@ public class BidActivity extends BaseActivity {
                 // Load fragment
                 loadFragment(fragment);
             }
+        }
+        else {
+            Fragment fragment = new BidFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(MyUtils.bidAction, bidAction);
+            bundle.putString("user_type", user_type);
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
         }
 
 

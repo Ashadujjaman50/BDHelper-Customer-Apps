@@ -103,6 +103,7 @@ public class BidByCategoryOrderFragment extends Fragment {
                 else {
                     Intent intent = new Intent(getContext(), BidActivity.class);
                     intent.putExtra(MyUtils.bidAction,"new");
+                    intent.putExtra("user_type", "partner");
                     intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
                     intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
                     intent.putExtra(MyUtils.subCategoryId, clickedSubCategoryId);

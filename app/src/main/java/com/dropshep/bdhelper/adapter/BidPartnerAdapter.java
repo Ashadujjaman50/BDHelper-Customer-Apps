@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.model.BidModel;
+import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.Replacement;
 
@@ -62,17 +63,18 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         String vehicleCatAndYear = bidModel.getServiceInfo().getVehicleCatAndYear();
 
         // ============ Time Formatting ============
-        holder.rentTimeTv.setText(formatTime(rentTime, "dd-MMM-yy  hh:mm aa"));
-        holder.bidDateTv.setText(formatTime(bidTime, "dd-MMM-yy  hh:mm aa"));
+        holder.rentTimeTv.setText(CommonClass.formatTime(rentTime, "dd-MMM-yy  hh:mm aa"));
+        holder.bidDateTv.setText(CommonClass.formatTime(bidTime, "dd-MMM-yy  hh:mm aa"));
 
         //set data
         holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, bidAmount));
         holder.vehicleModel.setText(vehicleModel);
         holder.vehicleCatAndYearTv.setText(vehicleCatAndYear);
         if (subCategoryId.equals(MyUtils.SUB_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_PICKUP_ID) ||
-                subCategoryId.equals(MyUtils.SUB_COVERED_VAN_ID)||subCategoryId.equals(MyUtils.SUB_CHARGER_VAN_ID)||
+                subCategoryId.equals(MyUtils.SUB_COVERED_VAN_ID)|| subCategoryId.equals(MyUtils.SUB_FREEZER_VAN_ID)||
                 subCategoryId.equals(MyUtils.SUB_DUMP_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_TRAILER_ID)||
-                subCategoryId.equals(MyUtils.SUB_FREEZER_VAN_ID)||subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)){
+                subCategoryId.equals(MyUtils.SUB_LOW_BED_ID) || subCategoryId.equals(MyUtils.SUB_CAR_ID) ||
+                subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) || subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
         }
         else {
@@ -93,18 +95,6 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             holder.infoMessageTv.setVisibility(View.GONE);
         }
 
-    }
-
-    // 🔹 Format timestamp
-    private String formatTime(String timeMillis, String pattern) {
-        try {
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.setTimeInMillis(Long.parseLong(timeMillis));
-            String formatted = DateFormat.format(pattern, calendar).toString();
-            return formatted.replace("AM", "am").replace("PM", "pm");
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     @Override

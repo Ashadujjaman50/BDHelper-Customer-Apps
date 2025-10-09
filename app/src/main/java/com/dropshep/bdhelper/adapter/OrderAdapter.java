@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dropshep.bdhelper.Interface.OnItemClickListener;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.model.OrderModel;
 import com.dropshep.bdhelper.myUtils.CommonClass;
@@ -34,6 +35,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
     private final Context context;
     private final ArrayList<OrderModel> orderModelArrayList;
 
+    private OnItemClickListener mListener;
+
     public OrderAdapter(Context context, ArrayList<OrderModel> orderModelArrayList) {
         this.context = context;
         this.orderModelArrayList = orderModelArrayList;
@@ -42,22 +45,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
     @NonNull
     @Override
     public HolderViewOrder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = null;
         if (viewType == TRANSPORT){
-            View view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_transport_layout, parent, false);
-            return new HolderViewOrder(view);
+            view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_transport_layout, parent, false);
         }
         else if (viewType == EQUIPMENT) {
-            View view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_equipment_layout, parent, false);
-            return new HolderViewOrder(view);
+            view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_equipment_layout, parent, false);
         }
         else if (viewType == HOME_SHIFTING){
-            View view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_homeshifting_layout, parent, false);
-            return new HolderViewOrder(view);
+            view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_homeshifting_layout, parent, false);
         }
         else {
-            View view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_skilled_labor_layout, parent, false);
-            return new HolderViewOrder(view);
+            view = LayoutInflater.from(context).inflate(R.layout.row_single_requirement_skilled_labor_layout, parent, false);
         }
+        assert view != null;
+        return new HolderViewOrder(view, mListener);
     }
 
     @SuppressLint("SetTextI18n")
@@ -85,8 +87,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         String postDescription = post.getSpecInfo().getDesc();
 
         // ============ Time Formatting ============
-        holder.rentTimeTv.setText(formatTime(rentDateAndTime, "dd MMMM, hh:mm aa"));
-        holder.postedDate.setText(formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
+        holder.rentTimeTv.setText(CommonClass.formatTime(rentDateAndTime, "dd MMMM, hh:mm aa"));
+        holder.postedDate.setText(CommonClass.formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
 
         // ============ Common Info ============
         holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
@@ -107,18 +109,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
 
         // ============ Status ============
         setOrderStatus(holder, post , orderStatus);
-    }
-
-    // 🔹 Format timestamp
-    private String formatTime(String timeMillis, String pattern) {
-        try {
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.setTimeInMillis(Long.parseLong(timeMillis));
-            String formatted = DateFormat.format(pattern, calendar).toString();
-            return formatted.replace("AM", "am").replace("PM", "pm");
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     // 🔹 Service Info based on subCategory
@@ -224,7 +214,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 break;
             }
 
-            case "confirm":
+            case "confirmed":
                 setStatus(holder, "Confirm", R.color.green, R.drawable.ic_confirm);
                 setBidAction(holder, R.string.bidding, R.drawable.ic_hammer, R.drawable.ic_arrow_drop_down);
                 break;
@@ -293,7 +283,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         private final LinearLayout confirmationLayout, productTypeLL;
         private final ImageView postImage;
 
-        public HolderViewOrder(@NonNull View itemView) {
+        public HolderViewOrder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
 
             orderIdTv = itemView.findViewById(R.id.orderIdTv);
@@ -319,6 +309,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
             bidOrReviewTv = itemView.findViewById(R.id.bidOrReviewTv);
             productTypeLL = itemView.findViewById(R.id.productTypeLL);
             serviceNameTV = itemView.findViewById(R.id.serviceNameTV);
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null){
+                    int position = getBindingAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(v, position);
+                    }
+                }
+            });
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+        notifyDataSetChanged();
     }
 }

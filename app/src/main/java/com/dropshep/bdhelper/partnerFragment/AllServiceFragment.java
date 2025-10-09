@@ -124,6 +124,15 @@ public class AllServiceFragment extends Fragment {
                             }
                         }
                         adapter.notifyDataSetChanged();
+
+                        if (serviceModelArrayList.isEmpty()) {
+                            binding.notBidYetTv.setVisibility(View.VISIBLE);
+                            binding.allRentServiceRv.setVisibility(View.GONE);
+                        } else {
+                            binding.notBidYetTv.setVisibility(View.GONE);
+                            binding.allRentServiceRv.setVisibility(View.VISIBLE);
+                        }
+
                     }
                 });
 
