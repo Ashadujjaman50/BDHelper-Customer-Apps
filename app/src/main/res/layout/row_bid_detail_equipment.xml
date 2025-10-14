@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/cardView"
     app:cardBackgroundColor="@color/order_card_bg_color"
     app:cardCornerRadius="10dp"
     app:cardElevation="4dp"
@@ -27,7 +28,7 @@
                 android:id="@+id/orderIdTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="অর্ডার নংঃ BOL0001"
+                android:text="@string/order_no_dot"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -46,7 +47,7 @@
                 android:drawablePadding="10dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
-                android:text="Confirmed"
+                android:text="@string/confirm"
                 android:textStyle="bold"
                 android:textColor="@color/primaryMid"
                 app:drawableStartCompat="@drawable/ic_checked" />
@@ -55,6 +56,7 @@
                 android:id="@+id/moreBtn"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:contentDescription="@string/more_btn"
                 android:padding="3dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_more_vert_24"
@@ -77,7 +79,7 @@
                 android:background="@drawable/bg_date_chip"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="3dp"
-                android:text="11/07/2025 8:30 am"
+                android:text="@string/demo_date_time"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -116,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
                     android:padding="2dp"
-                    android:text="০ টি"
+                    android:text="@string/one"
                     android:textSize="14sp"
                     android:textColor="@color/text_primary"/>
 
@@ -164,7 +166,7 @@
                             android:id="@+id/locationNameTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="আগারগাঁও"
+                            android:hint="@string/demo_address_one_title"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -173,7 +175,7 @@
                             android:id="@+id/locationArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="মিরপুর, ঢাকা সিটি"
+                            android:hint="@string/demo_address_one_sub"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -187,7 +189,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="4dp"
-                    android:text="২ বছর"
+                    android:text="@string/zero"
                     android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
@@ -230,7 +232,7 @@
                             android:id="@+id/postLoadLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="আগারগাঁও"
+                            android:text="@string/demo_address_one_title"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -239,7 +241,7 @@
                             android:id="@+id/loadArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="মিরপুর, ঢাকা সিটি"
+                            android:text="@string/demo_address_one_sub"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -271,7 +273,7 @@
                             android:id="@+id/postUnLoadLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="সাদাপুর কাজিপাড়া"
+                            android:text="@string/demo_address_two_title"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -280,7 +282,7 @@
                             android:id="@+id/unLoadArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="বনগাঁও, সাভার"
+                            android:text="@string/demo_address_two_sub"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -294,7 +296,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="কার্টন/ প্লাস্টিক"
+                android:text="@string/long_boom"
                 android:textColor="@color/text_primary"
                 android:textSize="12sp"
                 android:gravity="center"
@@ -334,7 +336,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="কাস্টমার দিবেঃ "
+                        android:text="@string/customer_payable_dot"
                         android:textSize="15sp" />
 
                     <View
@@ -347,7 +349,7 @@
                         android:id="@+id/confirmOrderPriceTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="১,২০০"
+                        android:text="@string/zero"
                         android:textColor="@color/green"
                         android:textStyle="bold"
                         android:textSize="16sp"
@@ -365,7 +367,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="বিড করেছেনঃ "
+                        android:text="@string/bid_placed_dot"
                         android:textSize="15sp" />
 
                     <View
@@ -378,7 +380,7 @@
                         android:id="@+id/bidAmountTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="১,০০০"
+                        android:text="@string/zero"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold"
                         android:textSize="16sp"
@@ -397,7 +399,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="কোম্পানি পাবেঃ "
+                        android:text="@string/company_receivable_dot"
                         android:textSize="15sp" />
 
                     <View
@@ -410,7 +412,7 @@
                         android:id="@+id/companyAmountTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="২০০"
+                        android:text="@string/zero"
                         android:textColor="@color/warning"
                         android:textStyle="bold"
                         android:textSize="16sp"
@@ -436,7 +438,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="বিডের তারিখঃ "
+                        android:text="@string/bid_date_dot"
                         android:textSize="15sp" />
 
                     <View
@@ -448,9 +450,8 @@
                         android:id="@+id/bidDateTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10/10/2025"
+                        android:text="@string/demo_date_time"
                         android:textColor="@color/text_secondary"
-                        android:textStyle="bold"
                         android:textSize="16sp" />
                 </LinearLayout>
 

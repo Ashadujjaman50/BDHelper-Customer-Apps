@@ -3,6 +3,7 @@ package com.dropshep.bdhelper.partner;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
@@ -13,8 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.databinding.ActivityDashboardBinding;
 import com.dropshep.bdhelper.fragment.HelpFragment;
+import com.dropshep.bdhelper.model.BidSummary;
 import com.dropshep.bdhelper.myUtils.BaseActivity;
 import com.dropshep.bdhelper.FirebaseMessaging.FCMTokenManager;
+import com.dropshep.bdhelper.myUtils.CacheManager;
+import com.dropshep.bdhelper.myUtils.FinanceCache;
+import com.dropshep.bdhelper.myUtils.FinanceManager;
 import com.dropshep.bdhelper.myUtils.NetworkUtils;
 import com.dropshep.bdhelper.myUtils.NoInternetDialog;
 import com.dropshep.bdhelper.myUtils.NotificationPermissionHelper;
@@ -23,6 +28,9 @@ import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.dropshep.bdhelper.partnerFragment.MainFragment;
 import com.dropshep.bdhelper.partnerFragment.MoreFragment;
 import com.dropshep.bdhelper.partnerFragment.RentFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -42,6 +50,9 @@ public class DashboardActivity extends BaseActivity {
             NoInternetDialog internetDialog = new NoInternetDialog();
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
+        //Finance Info Preload (For MoreFragment)
+        preloadFinanceSummary(); // ✅ preload once
+        preloadVendorBidSummary(); // ✅ preload once
 
 
         //Post Notification Enable
@@ -90,6 +101,62 @@ public class DashboardActivity extends BaseActivity {
 
 
     }
+
+    private void preloadFinanceSummary() {
+        //FinanceCache.lastUpdated = System.currentTimeMillis();
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FinanceManager fm = new FinanceManager();
+
+        fm.getPartnerFinanceSummary(currentUserId, (totalEarned, partnerReceivable, companyReceivable) -> {
+            FinanceCache.totalEarned = totalEarned;
+            FinanceCache.partnerReceivable = partnerReceivable;
+            FinanceCache.companyReceivable = companyReceivable;
+            FinanceCache.isLoaded = true;
+            Log.d("FinanceCache", "✅ Preloaded finance summary");
+        });
+    }
+
+    private void preloadVendorBidSummary() {
+        String vendorId = FirebaseAuth.getInstance().getUid();
+        long todayMillis = System.currentTimeMillis();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("bidForOrder")
+                .whereEqualTo("bidInfo.vendorId", vendorId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    int totalCount = 0;
+                    int successCount = 0;
+                    int cancelCount = 0;
+
+                    for (DocumentSnapshot doc : querySnapshot) {
+                        totalCount++;
+
+                        String status = doc.getString("bidInfo.status");
+                        String rentTimeStr = doc.getString("orderInfo.rentTime");
+
+                        long rentTime = 0L;
+                        try {
+                            rentTime = Long.parseLong(rentTimeStr != null ? rentTimeStr : "0");
+                        } catch (NumberFormatException ignored) {}
+
+                        if ("confirmed".equals(status) || "done".equals(status)) {
+                            successCount++;
+                        } else if ("pending".equals(status) && rentTime < todayMillis) {
+                            cancelCount++;
+                        }
+                    }
+
+                    // ✅ Cache এ রাখো
+                    BidSummary summary = new BidSummary(totalCount, successCount, cancelCount);
+                    CacheManager.getInstance().setBidSummary(summary);
+
+                    Log.d("BidSummaryCache", "✅ Cached: " + totalCount + " | Success: " + successCount + " | Cancel: " + cancelCount);
+                })
+                .addOnFailureListener(e -> Log.e("BidSummaryCache", "❌ Failed: " + e.getMessage()));
+    }
+
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

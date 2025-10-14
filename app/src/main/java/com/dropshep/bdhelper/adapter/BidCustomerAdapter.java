@@ -102,7 +102,7 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
 
 
         // 🔹 প্রথমে check করো bid status কী
-        if (status.equals("confirmed")) {
+        if (status.equals("confirmed") || status.equals("done")) {
             // ✅ যদি confirmed হয় → fixed button
             holder.confirmIcon.setVisibility(View.VISIBLE);
             holder.confirmOrderBtn.setText("Confirmed");

@@ -28,6 +28,7 @@
     <color name="text_secondary">#757575</color> <!-- Medium gray -->
 
     <!--background color-->
+    <color name="card_light">#E9FAEE</color>
     <color name="bg_color">#FCFCFC</color>
     <color name="bg_toolbar_color">#FCFCFC</color>
     <color name="primary_light">#D8F2E0</color>

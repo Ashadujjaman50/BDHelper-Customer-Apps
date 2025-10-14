@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
@@ -122,14 +123,18 @@ public class BidByCategoryOrderFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void getAllOrderPost() {
+
         if (subCategoryIds == null || subCategoryIds.isEmpty()) {
             MyToast.showShort(getContext(), "❌ No SubCategory IDs found");
             return;
         }
 
+        long todayMillis = CommonClass.getTodayStartMillis(); // আজকের 00:00:00 সময় থেকে millis
+
         // Firestore limitation: whereIn max 10 values per query
         db.collection("orders")
-                .whereIn("orderInfo.subCategoryId", subCategoryIds) // ✅ nested path
+                .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(todayMillis))
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING) // rentTime অনুযায়ী সাজাও
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         Log.d("Firestore", "Error: " + error.getMessage());

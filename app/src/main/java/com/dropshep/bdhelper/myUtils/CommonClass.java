@@ -662,48 +662,6 @@ public class CommonClass {
         void onFailure(Exception e);
     }
 
-    public static void loadPartnerEarnings(Context context, String vendorId,
-                                           TextView totalEarnTv, TextView companyEarnTv, TextView partnerEarnTv) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("financialLedger")
-                .whereEqualTo("vendorId", vendorId)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    double totalEarn = 0;
-                    double totalCompany = 0;
-                    double totalPartner = 0;
-
-                    for (var doc : querySnapshot.getDocuments()) {
-                        Double totalAmount = doc.getDouble("totalAmount");
-                        Double companyEarn = doc.getDouble("companyEarn");
-                        Double partnerEarn = doc.getDouble("partnerEarn");
-
-                        if (totalAmount != null) totalEarn += totalAmount;
-                        if (companyEarn != null) totalCompany += companyEarn;
-                        if (partnerEarn != null) totalPartner += partnerEarn;
-                    }
-
-                    // Format nicely
-                    String totalTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalEarn));
-                    String companyTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalCompany));
-                    String partnerTxt = Replacement.ReplacementNumberInLocal(context, String.valueOf(totalPartner));
-
-                    totalEarnTv.setText(totalTxt + " ৳");
-                    companyEarnTv.setText(companyTxt + " ৳");
-                    partnerEarnTv.setText(partnerTxt + " ৳");
-
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("EarningLoad", "❌ Failed to load earnings: " + e.getMessage());
-                    totalEarnTv.setText("0 ৳");
-                    companyEarnTv.setText("0 ৳");
-                    partnerEarnTv.setText("0 ৳");
-                });
-    }
-
-
 
 
 }

@@ -183,13 +183,16 @@
 
                             <TextView
                                 android:id="@+id/totalAmount"
-                                android:text="৳ ০"
+                                android:text="০"
                                 android:textSize="20sp"
                                 android:textColor="@color/primaryColor"
                                 android:background="@color/transparent"
                                 android:textStyle="bold"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                app:drawableStartCompat="@drawable/ic_taka_symbol"
+                                app:drawableTint="@color/primaryColor"
+                                android:drawablePadding="4dp" />
 
                             <TextView
                                 android:text="@string/total_income"
@@ -217,13 +220,16 @@
 
                             <TextView
                                 android:id="@+id/partnerEarnTv"
-                                android:text="৳ ০"
+                                android:text="০"
                                 android:textSize="20sp"
                                 android:textColor="@color/primaryColor"
                                 android:background="@color/transparent"
                                 android:textStyle="bold"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                app:drawableStartCompat="@drawable/ic_taka_symbol"
+                                app:drawableTint="@color/primaryColor"
+                                android:drawablePadding="4dp"/>
 
                             <TextView
                                 android:text="@string/partner_commission"
@@ -254,10 +260,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@color/transparent"
-                                android:text="৳ ০"
+                                android:text="০"
                                 android:textColor="@color/primaryColor"
                                 android:textSize="20sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_taka_symbol"
+                                app:drawableTint="@color/primaryColor"
+                                android:drawablePadding="4dp" />
 
                             <TextView
                                 android:text="@string/company_commission"
@@ -294,6 +303,7 @@
                             android:gravity="center">
 
                             <TextView
+                                android:id="@+id/totalBidTv"
                                 android:text="০"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
@@ -330,6 +340,7 @@
                             android:gravity="center">
 
                             <TextView
+                                android:id="@+id/successBidTv"
                                 android:text="০"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
@@ -367,6 +378,7 @@
 
 
                             <TextView
+                                android:id="@+id/cancelBidTv"
                                 android:text="০"
                                 android:textSize="18sp"
                                 android:textStyle="bold"

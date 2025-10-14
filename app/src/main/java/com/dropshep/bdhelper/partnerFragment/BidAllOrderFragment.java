@@ -128,29 +128,39 @@ public class BidAllOrderFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void getAllOrderPost() {
+        long todayMillis = CommonClass.getTodayStartMillis(); // আজকের 00:00:00 সময় থেকে millis
 
         db.collection("orders")
-                .orderBy("orderInfo.timestamp" , Query.Direction.DESCENDING)
-                .addSnapshotListener((querySnapshot,error)->{
-                    if (error != null){
+                .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(todayMillis))
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING) // rentTime অনুযায়ী সাজাও
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
                         MyToast.showShort(getContext(), "❌ Error: " + error.getMessage());
-                        Log.d("Firestore", "loadAllData: "+error.getMessage());
+                        Log.d("Firestore", "loadAllData: " + error.getMessage());
                         return;
                     }
 
-                    if (querySnapshot != null){
+                    if (querySnapshot != null) {
                         orderModelArrayList.clear();
-                        for (DocumentSnapshot doc: querySnapshot.getDocuments()){
+
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                             OrderModel order = doc.toObject(OrderModel.class);
-                            if (order != null && (order.getOrderInfo().getStatus().equals("pending")  || order.getOrderInfo().getStatus().equals("process"))){
-                                orderModelArrayList.add(order);
+
+                            if (order != null) {
+                                String status = order.getOrderInfo().getStatus();
+
+                                // ✅ শুধু pending বা process এবং ভবিষ্যতের তারিখের order নেবে
+                                if ("pending".equals(status) || "process".equals(status)) {
+                                    orderModelArrayList.add(order);
+                                }
                             }
                         }
+
                         orderPartnerAdapter.notifyDataSetChanged();
                     }
                 });
-
     }
+
 
 
 

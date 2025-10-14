@@ -435,6 +435,8 @@
     <!--Harvester-->
     <string name="combine_harvester">Combine Harvester</string>
     <string name="specialized_harvester">Specialized Harvester</string>
+    <string name="full_feed">Full Feed</string>
+    <string name="half_feed">Half Feed</string>
     <string name="working">Work</string>
 
     <string name="rice_harvesting">Rice harvesting</string>
@@ -571,6 +573,23 @@
     <string name="your_order_rent">Order for you</string>
     <string name="no_one_order_for_rent">No one has placed an order for rent yet!</string>
     <string name="bidding_your_best_price">Bidding your Best Price</string>
+    <string name="order_no_dot">Order No:</string>
+    <string name="bid_date_dot">Bid date:</string>
+    <string name="customer_payable_dot">Customer payable:</string>
+    <string name="bid_placed_dot">Bid placed:</string>
+    <string name="company_receivable_dot">Company receivable:</string>
+
+    <!--Demo Text-->
+    <string name="demo_address_one_title">Agargaon</string>
+    <string name="demo_address_one_sub">Mirpur, Dhaka City</string>
+    <string name="demo_address_two_title">Sadapur Kazipara</string>
+    <string name="demo_address_two_sub">Bangaon, Savar</string>
+    <string name="demo_address_load">Agargaon, Mirpur, Dhaka City</string>
+    <string name="demo_address_unload">Sadapur Kazipara, Bangaon, Savar</string>
+
+    <string name="demo_date_time">11/07/2025 8:30 am</string>
+
+    <string name="more_btn">more</string>
 
     <!--Permission -->
     <string name="camera_permission_detail">

@@ -18,9 +18,13 @@ import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.RatingReviewActivity;
 import com.dropshep.bdhelper.ReferenceActivity;
 import com.dropshep.bdhelper.databinding.FragmentMoreBinding;
+import com.dropshep.bdhelper.model.BidSummary;
+import com.dropshep.bdhelper.myUtils.CacheManager;
 import com.dropshep.bdhelper.myUtils.CommonClass;
+import com.dropshep.bdhelper.myUtils.FinanceCache;
+import com.dropshep.bdhelper.myUtils.FinanceManager;
 import com.dropshep.bdhelper.myUtils.LocaleHelper;
-import com.dropshep.bdhelper.myUtils.PreloadingDialog;
+import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.myUtils.ThemeUtil;
 import com.dropshep.bdhelper.partner.DashboardActivity;
 import com.dropshep.bdhelper.partner.PaymentActivity;
@@ -33,6 +37,7 @@ import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
+import java.util.Map;
 
 public class MoreFragment extends Fragment {
 
@@ -42,6 +47,7 @@ public class MoreFragment extends Fragment {
     private FirebaseFirestore db;
 
     String userId;
+    FinanceManager financeManager;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -65,20 +71,63 @@ public class MoreFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        PreloadingDialog preloadingDialog = new PreloadingDialog(getContext());
-        preloadingDialog.show();
-
-        CommonClass.loadPartnerEarnings(
-                getContext(),
-                firebaseAuth.getUid(),
-                binding.totalAmount,
-                binding.companyEarnTv,
-                binding.partnerEarnTv
-        );
-
-        preloadingDialog.dismiss();
-
         userId = firebaseAuth.getCurrentUser().getUid();
+        showCachedBidSummary();
+        // 🔹 Partner Finance Summary Load
+        if (FinanceCache.isLoaded) {
+            FinanceCache.lastUpdated = System.currentTimeMillis();
+
+            double totalEarned = FinanceCache.totalEarned;
+            double partnerReceivable = FinanceCache.partnerReceivable;
+            double companyReceivable = FinanceCache.companyReceivable;
+
+            // 🔹 নেট হিসাব (কার পাওনা বেশি)
+            Map<String, Double> result = FinanceManager.getNetReceivable(partnerReceivable, companyReceivable);
+            double netAmount = result.get("netAmount");
+            double owedTo = result.get("owedTo");
+
+            // 🔹 মোট আয় দেখাও
+            binding.totalAmount.setText(Replacement.ReplacementNumberInLocal(
+                    getContext(), String.valueOf(totalEarned)));
+
+            // 🔹 কার পাওনা বেশি সেটার ভিত্তিতে টেক্সট আপডেট করো
+            if (owedTo == 1.0) {
+                binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
+                binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+            } else if (owedTo == 2.0) {
+                binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
+                binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+            } else {
+                binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+            }
+
+        }
+        else {
+            // 🔹 যদি cache লোড না থাকে, Firestore থেকে ডেটা নাও
+            financeManager.getPartnerFinanceSummary(userId, (totalEarned, partnerReceivable, companyReceivable) -> {
+
+                Map<String, Double> result = FinanceManager.getNetReceivable(partnerReceivable, companyReceivable);
+                double netAmount = result.get("netAmount");
+                double owedTo = result.get("owedTo");
+
+                binding.totalAmount.setText(Replacement.ReplacementNumberInLocal(
+                        getContext(), String.valueOf(totalEarned)));
+
+                if (owedTo == 1.0) {
+                    binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
+                    binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                } else if (owedTo == 2.0) {
+                    binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
+                    binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                } else {
+                    binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                    binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                }
+
+            });
+        }
+
 
         //Load Current Partner info
         loadCurrentPartnerInfo();
@@ -136,6 +185,33 @@ public class MoreFragment extends Fragment {
 
 
 
+    }
+
+    private void showCachedBidSummary() {
+        BidSummary summary = CacheManager.getInstance().getBidSummary();
+
+        if (summary != null) {
+            binding.totalBidTv.setText(
+                    Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(summary.getTotal()))
+            );
+            binding.successBidTv.setText(
+                    Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(summary.getSuccess()))
+            );
+            binding.cancelBidTv.setText(
+                    Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(summary.getCancel()))
+            );
+        } else {
+            binding.totalBidTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+            binding.successBidTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+            binding.cancelBidTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+        }
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (financeManager != null) financeManager.stopListening(); // 🔹 Stop realtime listener
     }
 
     private void loadCurrentPartnerInfo() {

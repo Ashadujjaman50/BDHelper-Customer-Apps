@@ -185,8 +185,8 @@ public class RentLocationFormFragment extends Fragment {
                     array_list.add(getString(R.string.mini_tractor));
                     break;
                 default:
-                    array_list.add(getString(R.string.combine_harvester));
-                    array_list.add(getString(R.string.specialized_harvester));
+                    array_list.add(getString(R.string.full_feed));
+                    array_list.add(getString(R.string.half_feed));
                     break;
             }
 

@@ -221,40 +221,75 @@ public class BidFragment extends Fragment {
         void onDismiss();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void getAllCurrentVendorBid() {
+
+   private void getAllCurrentVendorBid() {
         bidModelArrayList = new ArrayList<>();
         adapterBidDetail = new AdapterBidDetail(getContext(), bidModelArrayList);
         binding.bidRV.setAdapter(adapterBidDetail);
 
-        List<String> statusList;
-        if (!"pending".equals(bidAction)) {
-            // pending না হলে confirmed + done
-            statusList = Arrays.asList("confirmed", "done");
+        // ✅ bidAction অনুযায়ী আলাদা method কল হবে
+        if ("pending".equals(bidAction)) {
+            getAllPendingVendorBid();
         } else {
-            statusList = Collections.singletonList("pending");
+            getAllConfirmedVendorBid();
         }
+    }
+
+    /*
+     * 🔹 Pending Bid List Load করে (Future rentTime সহ)
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private void getAllPendingVendorBid() {
 
         long todayMillis = System.currentTimeMillis();
 
-        // Base query
         var query = db.collection("bidForOrder")
-                .whereEqualTo("bidInfo.vendorId", currentUserId);
+                .whereEqualTo("bidInfo.vendorId", currentUserId)
+                .whereEqualTo("bidInfo.status", "pending")
+                .whereGreaterThanOrEqualTo("orderInfo.rentTime", String.valueOf(todayMillis))
+                .orderBy("orderInfo.rentTime", Query.Direction.ASCENDING);
 
-        // যদি statusList multiple values থাকে, use whereIn()
-        if (statusList.size() > 1) {
-            query = query.whereIn("bidInfo.status", statusList);
-        } else {
-            query = query.whereEqualTo("bidInfo.status", statusList.get(0));
-        }
+        preloadingDialog.show();
 
-        // 🔹 যদি bidAction == "pending", তাহলে future rentTime filter করবে
-        if ("pending".equals(bidAction)) {
-            query = query.whereGreaterThanOrEqualTo("orderInfo.rentTime", String.valueOf(todayMillis));
-        }
+        query.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    bidModelArrayList.clear();
+                    preloadingDialog.dismiss();
 
-        // 🔹 প্রাথমিকভাবে rentTime দিয়ে orderBy
-        query = query.orderBy("orderInfo.rentTime", Query.Direction.ASCENDING);
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        binding.notBidYetTv.setVisibility(View.GONE);
+
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            BidModel bidModel = doc.toObject(BidModel.class);
+                            if (bidModel != null) {
+                                bidModelArrayList.add(bidModel);
+                            }
+                        }
+
+                        adapterBidDetail.notifyDataSetChanged();
+                    } else {
+                        binding.notBidYetTv.setVisibility(View.VISIBLE);
+                        Log.d("BidDebug", "⚠️ No pending bids found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    preloadingDialog.dismiss();
+                    binding.notBidYetTv.setVisibility(View.VISIBLE);
+                    Log.e("BidDebug", "❌ Firestore Error (pending): " + e.getMessage(), e);
+                });
+    }
+
+    /*
+     * 🔹 Confirmed + Done Bid List Load করে
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private void getAllConfirmedVendorBid() {
+        var query = db.collection("bidForOrder")
+                .whereEqualTo("bidInfo.vendorId", currentUserId)
+                .whereIn("bidInfo.status", Arrays.asList("confirmed", "done"))
+                .orderBy("orderInfo.rentTime", Query.Direction.ASCENDING);
+
+        preloadingDialog.show();
 
         query.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -274,18 +309,13 @@ public class BidFragment extends Fragment {
                         }
 
                         // 🔹 Custom Sort Logic:
-                        // 1️⃣ confirmed আগে
-                        // 2️⃣ done পরে
-                        // 3️⃣ একই status এর মধ্যে rentTime ascending
                         tempList.sort((a, b) -> {
                             String statusA = a.getBidInfo().getStatus();
                             String statusB = b.getBidInfo().getStatus();
 
-                            // status order: confirmed < done
                             int statusOrder = getStatusOrder(statusA) - getStatusOrder(statusB);
                             if (statusOrder != 0) return statusOrder;
 
-                            // যদি status same হয়, তাহলে rentTime অনুযায়ী sort
                             long rentA = Long.parseLong(a.getOrderInfo().getRentTime());
                             long rentB = Long.parseLong(b.getOrderInfo().getRentTime());
                             return Long.compare(rentA, rentB);
@@ -295,24 +325,24 @@ public class BidFragment extends Fragment {
                         adapterBidDetail.notifyDataSetChanged();
                     } else {
                         binding.notBidYetTv.setVisibility(View.VISIBLE);
-                        Log.d("BidDebug", "⚠️ No matching documents found");
+                        Log.d("BidDebug", "⚠️ No confirmed/done bids found");
                     }
                 })
                 .addOnFailureListener(e -> {
                     preloadingDialog.dismiss();
                     binding.notBidYetTv.setVisibility(View.VISIBLE);
-                    Log.e("BidDebug", "❌ Firestore Error: " + e.getMessage(), e);
+                    Log.e("BidDebug", "❌ Firestore Error (confirmed): " + e.getMessage(), e);
                 });
     }
 
-    /**
+    /*
      * Helper: status অনুযায়ী priority দেবে
      */
     private int getStatusOrder(String status) {
         switch (status) {
             case "confirmed": return 1;
             case "done": return 2;
-            default: return 3; // fallback
+            default: return 3;
         }
     }
 

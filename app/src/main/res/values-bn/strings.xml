@@ -436,6 +436,8 @@
     <!--Harvester-->
     <string name="combine_harvester">কম্বাইন হারভেস্টার</string>
     <string name="specialized_harvester">স্পেশালাইজড হারভেস্টার</string>
+    <string name="full_feed">ফুল ফিড</string>
+    <string name="half_feed">হাফ ফিড</string>
     <string name="working">কাজের</string>
 
     <string name="rice_harvesting">ধান কাটা</string>
@@ -571,7 +573,23 @@
     <string name="your_order_rent">আপনার জন্য অর্ডার</string>
     <string name="no_one_order_for_rent">কেউই ভাড়ার জন্য পোষ্ট করে নাই !</string>
     <string name="bidding_your_best_price">আপনার সেরা দর বিড করুন</string>
+    <string name="order_no_dot">অর্ডার নংঃ</string>
+    <string name="bid_date_dot">বিডের তারিখঃ</string>
+    <string name="customer_payable_dot">কাস্টমার দিবেঃ </string>
+    <string name="bid_placed_dot">বিড করেছেনঃ </string>
+    <string name="company_receivable_dot">কোম্পানি পাবেঃ</string>
 
+    <!--Demo Text-->
+    <string name="demo_address_one_title">আগারগাঁও</string>
+    <string name="demo_address_one_sub">মিরপুর, ঢাকা সিটি</string>
+    <string name="demo_address_two_title">সাদাপুর কাজিপাড়া</string>
+    <string name="demo_address_two_sub">বনগাঁও, সাভার</string>
+    <string name="demo_address_load">আগারগাঁও, মিরপুর, ঢাকা সিটি</string>
+    <string name="demo_address_unload">সাদাপুর কাজিপাড়া,বনগাঁও, সাভার</string>
+
+    <string name="demo_date_time">11/07/2025 8:30 am</string>
+
+    <string name="more_btn">more</string>
 
     <!--Permission -->
     <string name="camera_permission_detail">

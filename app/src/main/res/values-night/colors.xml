@@ -16,6 +16,8 @@
     <color name="bg_color">#121212</color>
     <color name="bg_toolbar_color">#1E1E1E</color>
 
+    <color name="card_light">#070B06</color>
+
     <!-- Dark theme specific colors -->
     <color name="background_dialog">#1D1D1D</color>
 

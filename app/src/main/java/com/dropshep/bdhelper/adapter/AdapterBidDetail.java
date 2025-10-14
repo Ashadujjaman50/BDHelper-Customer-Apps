@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dropshep.bdhelper.Interface.OnItemClickListener;
@@ -71,7 +72,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         //Bid Info
         String bidId = bidModel.getBidInfo().getBidId();
         String bidAmount = bidModel.getBidInfo().getBidAmount();
-        String status = bidModel.getBidInfo().getStatus();
+        String bidStatus = bidModel.getBidInfo().getStatus();
         String userId = bidModel.getBidInfo().getUserId();
         String vendorID = bidModel.getBidInfo().getVendorId();
         String bidTime = bidModel.getBidInfo().getTimestamp();
@@ -92,40 +93,10 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         holder.bidDateTv.setText(CommonClass.formatTime(bidTime, "dd-MMMM-yy  hh:mm aa"));
 
 
-        holder.orderIdTv.setText("অর্ডার নংঃ " + orderId);
+        holder.orderIdTv.setText(context.getString(R.string.order_no_dot) + " " + orderId);
 
         holder.postImage.setImageResource(CommonClass.getIconForSubCategory(subCategoryId));
         holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
-
-
-        //Bid Status
-        if (status.equals("confirmed")){
-            holder.bidStatusTv.setText("Confirmed");
-            holder.moreBtn.setVisibility(View.VISIBLE);
-            holder.callBtn.setVisibility(View.VISIBLE);
-            holder.row_one.setVisibility(View.VISIBLE);
-            holder.row_three.setVisibility(View.VISIBLE);
-        }
-        else if (status.equals("pending")){
-            holder.bidStatusTv.setText("Pending");
-            holder.row_one.setVisibility(View.GONE);
-            holder.row_three.setVisibility(View.GONE);
-            holder.dividerOne.setVisibility(View.VISIBLE);
-            holder.bidStatusTv.setTextColor(context.getColor(R.color.warning));
-            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_pending,0,0,0);
-            holder.moreBtn.setVisibility(View.GONE);
-            holder.callBtn.setVisibility(View.GONE);
-        }
-        else {
-            holder.bidStatusTv.setText("Done");
-            holder.bidStatusTv.setTextColor(context.getColor(R.color.blue));
-            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_done,0,0,0);
-            holder.moreBtn.setVisibility(View.GONE);
-            holder.callBtn.setVisibility(View.GONE);
-            holder.row_one.setVisibility(View.VISIBLE);
-            holder.row_three.setVisibility(View.VISIBLE);
-        }
-
 
 
         //get order info by OrderID
@@ -162,6 +133,76 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                     String quantity = order.getSpecInfo().getQuantity();
                     String capacity = order.getSpecInfo().getCapacity();
                     String types = order.getSpecInfo().getTypes();
+                    String orderStatus = order.getOrderInfo().getStatus();
+
+
+                    // assume orderStatus ও bidStatus string হিসেবে আছে, এবং context আছে
+                    if ("pending".equalsIgnoreCase(orderStatus) || "process".equalsIgnoreCase(orderStatus)) {
+                        // Order still active -> always show Pending (ignore bidStatus)
+                        holder.bidStatusTv.setText("Pending");
+                        holder.bidStatusTv.setTextColor(context.getColor(R.color.warning));
+                        holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_pending, 0, 0, 0);
+
+                        holder.moreBtn.setVisibility(View.GONE);
+                        holder.callBtn.setVisibility(View.GONE);
+                        holder.row_one.setVisibility(View.GONE);
+                        holder.row_three.setVisibility(View.GONE);
+                        holder.dividerOne.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        // Order is not pending/process -> check bid status
+                        if ("pending".equalsIgnoreCase(bidStatus)) {
+                            // Bid still pending but order not active -> expired
+                            holder.bidStatusTv.setText("Cancel");
+                            holder.bidStatusTv.setTextColor(context.getColor(R.color.red));
+                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_cancel, 0, 0, 0);
+
+                            holder.moreBtn.setVisibility(View.GONE);
+                            holder.callBtn.setVisibility(View.GONE);
+                            holder.row_one.setVisibility(View.GONE);
+                            holder.row_three.setVisibility(View.GONE);
+                            holder.dividerOne.setVisibility(View.VISIBLE);
+                        }
+                        else if ("confirmed".equalsIgnoreCase(bidStatus)) {
+                            holder.bidStatusTv.setText("Confirmed");
+                            holder.bidStatusTv.setTextColor(context.getColor(R.color.green));
+                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_confirm, 0, 0, 0);
+
+                            holder.moreBtn.setVisibility(View.VISIBLE);
+                            holder.callBtn.setVisibility(View.VISIBLE);
+                            holder.row_one.setVisibility(View.VISIBLE);
+                            holder.row_three.setVisibility(View.VISIBLE);
+                            holder.dividerOne.setVisibility(View.GONE);
+                        }
+                        else if ("done".equalsIgnoreCase(bidStatus)) {
+                            holder.bidStatusTv.setText("Done");
+                            holder.bidStatusTv.setTextColor(context.getColor(R.color.green));
+                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+
+                            holder.moreBtn.setVisibility(View.GONE);
+                            holder.callBtn.setVisibility(View.GONE);
+                            holder.row_one.setVisibility(View.VISIBLE);
+                            holder.row_three.setVisibility(View.VISIBLE);
+                            holder.dividerOne.setVisibility(View.GONE);
+
+                            // 🔹 CardView background পরিবর্তন
+                            holder.cardView.setCardBackgroundColor(context.getColor(R.color.card_light)); // অথবা চাইলে অন্য রঙ
+                        }
+                        else {
+                            // fallback for unknown statuses
+                            holder.bidStatusTv.setText(bidStatus == null ? "Unknown" : bidStatus);
+                            holder.bidStatusTv.setTextColor(context.getColor(R.color.text_primary));
+                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+
+                            holder.moreBtn.setVisibility(View.GONE);
+                            holder.callBtn.setVisibility(View.GONE);
+                            holder.row_one.setVisibility(View.GONE);
+                            holder.row_three.setVisibility(View.GONE);
+                            holder.dividerOne.setVisibility(View.GONE);
+                        }
+                    }
+
+
 
                     holder.callBtn.setOnClickListener(v -> {
                         String phone = order.getUserInfo().getUserPhone();
@@ -268,9 +309,12 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         LinearLayout row_one, row_three;
         View dividerOne;
 
+        CardView cardView;
+
         public HolderViewBidDetail(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
 
+            cardView = itemView.findViewById(R.id.cardView);
             orderIdTv = itemView.findViewById(R.id.orderIdTv);
             postNameTv = itemView.findViewById(R.id.postNameTv);
             bidDateTv = itemView.findViewById(R.id.bidDateTv);
