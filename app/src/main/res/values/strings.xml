@@ -125,6 +125,8 @@
 
     <string name="size_dot"><i>Size: </i></string>
     <string name="type_dot">Type: </string>
+    <string name="work_type_dot">Work type: </string>
+    <string name="work_area_dot">Work area: </string>
     <string name="which_type_dot"><i>Type: </i></string>
     <string name="product_type"><i>Product type: </i></string>
     <string name="duration_dot">Duration: </string>
@@ -273,6 +275,8 @@
     <string name="ten_wheel">10 wheel</string>
 
     <string name="regular">Regular</string>
+    <string name="regular_ambulance">Regular ambulance</string>
+    <string name="hearse_ambulance">Hearse ambulance</string>
     <string name="bls_ambulances">Basic Life Support (BLS)</string>
     <string name="als_ambulances">Advanced Life Support (ALS)</string>
 
@@ -322,6 +326,12 @@
     <string name="bachelor">Bachelor</string>
     <string name="bachelor_house">Bachelor House</string>
     <string name="family_house">Family house</string>
+    <string name="team_leader">Team Leader</string>
+    <string name="team_leader_dot">Team Leader:</string>
+    <string name="team_member">Team Member:</string>
+    <string name="team_member_dot">Team Member:</string>
+    <string name="team_member_and_area_dot">Member and work area:</string>
+
     <string name="one_room">1 room</string>
     <string name="two_room">2 room</string>
     <string name="three_room">3 room</string>
@@ -425,12 +435,51 @@
     <string name="six_Line_machine">6-Line machine</string>
 
     <!--Tractor-->
-    <string name="standard_tractor">Standard tractor</string>
-    <string name="mini_tractor">Mini tractor</string>
+    <string name="tractor_brand">Tractor company</string>
+    <string name="tractor_brand_dot">Tractor company:</string>
+    <string name="tractor_brand_trip_dot">Tractor company &amp; trip:</string>
+    <string name="tractor_type_dot">Size &amp; type:</string>
 
-    <string name="power_tiller">Power tiller</string>
-    <string name="utility_tractor">Utility tractor</string>
-    <string name="compact_tractor">Compact tractor</string>
+    <string name="sonalika_tractor">Sonalika</string>
+    <string name="mahindra_tractor">Mahindra</string>
+    <string name="yanmar_tractor">Yanmar</string>
+    <string name="john_deere_tractor">John Deere</string>
+    <string name="new_holland_tractor">New Holland</string>
+    <string name="massey_ferguson_tractor">Massey Ferguson</string>
+    <string name="eicher_tractor">Eicher</string>
+    <string name="foton_tractor">Foton</string>
+    <string name="force_motors_tractor">Force Motors</string>
+
+    <string name="acres">acres</string>
+    <string name="land_area_acres">Land area (acres)</string>
+    <string name="land_area">Land area</string>
+
+    <string name="hp_fal_21">21 horsepower, 2 fal</string>
+    <string name="hp_fal_24">24.6 horsepower, 1-2 fal</string>
+    <string name="hp_fal_25">25 horsepower, 2-3 fal</string>
+    <string name="hp_fal_26">26 horsepower, 2 fal</string>
+    <string name="hp_fal_27">27 horsepower, 1-2 fal</string>
+    <string name="hp_fal_31">31 horsepower, 2-3 fal</string>
+    <string name="hp_fal_35">35 horsepower, 2-3 fal</string>
+    <string name="hp_fal_36">36 horsepower, 3 fal</string>
+    <string name="hp_fal_40">40 horsepower, 3 fal</string>
+    <string name="hp_fal_42">42 horsepower, 2-3 fal</string>
+    <string name="hp_fal_45">45 horsepower, 3 fal</string>
+    <string name="hp_fal_46_3">46 horsepower, 2-3 fal</string>
+    <string name="hp_fal_46_4">46 horsepower, 4 fal</string>
+    <string name="hp_fal_50_3">50 horsepower, 2-3 fal</string>
+    <string name="hp_fal_50_4">50 horsepower, 3-4 fal</string>
+    <string name="hp_fal_55">55 horsepower, 4 fal</string>
+    <string name="hp_fal_56">56 horsepower, 4 fal</string>
+    <string name="hp_fal_59">59 horsepower, 4-5 fal</string>
+    <string name="hp_fal_60_4">60 horsepower, 4 fal</string>
+    <string name="hp_fal_60_5">60 horsepower, 5 fal</string>
+    <string name="hp_fal_62">62 horsepower, 5 fal</string>
+    <string name="hp_fal_70">70 horsepower, 4-5 fal</string>
+    <string name="hp_fal_71">71 horsepower, 5 fal</string>
+    <string name="hp_fal_85">85 horsepower, 4-5 fal</string>
+    <string name="hp_fal_90">90 horsepower, 5 fal</string>
+    <string name="hp_fal_113">113 horsepower, 5-6 fal</string>
 
     <!--Harvester-->
     <string name="combine_harvester">Combine Harvester</string>
@@ -543,6 +592,7 @@
     <string name="payment_account_found">Your payment accounts</string>
     <string name="add_payment_account">Add payment account</string>
     <string name="no_payment_history">No payment history</string>
+    <string name="withdraw_request">Withdraw balance</string>
 
     <string name="are_you_sure_alert_title">Service is complete?</string>
     <string name="are_you_sure_alert_msg">Are you sure?\nYou can’t cancel after confirming the</string>

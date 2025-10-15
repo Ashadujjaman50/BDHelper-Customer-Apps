@@ -125,6 +125,8 @@
 
     <string name="size_dot"><i>সাইজঃ </i></string>
     <string name="type_dot">ধরণঃ </string>
+    <string name="work_type_dot">কাজের ধরণঃ </string>
+    <string name="work_area_dot">কাজের এলাকাঃ </string>
     <string name="which_type_dot"><i>কোন ধরণেরঃ </i></string>
     <string name="product_type"><i>পন্যের ধরণঃ </i></string>
     <string name="duration_dot">কত সময়ের জন্যঃ </string>
@@ -274,6 +276,8 @@
     <string name="ten_wheel">১০ চাকা</string>
 
     <string name="regular">রেগুলার</string>
+    <string name="regular_ambulance">রেগুলার এম্বুলেন্স</string>
+    <string name="hearse_ambulance">লাশবাহী এম্বুলেন্স</string>
     <string name="bls_ambulances">বেসিক লাইফ সাপোর্ট (BLS)</string>
     <string name="als_ambulances">অ্যাডভান্সড লাইফ সাপোর্ট (ALS)</string>
 
@@ -323,6 +327,12 @@
     <string name="bachelor">ব্যাচেলর</string>
     <string name="bachelor_house">ব্যাচেলর বাসা</string>
     <string name="family_house">ফ্যামিলি বাসা</string>
+    <string name="team_leader">টিম লিডার</string>
+    <string name="team_leader_dot">টিম লিডারঃ</string>
+    <string name="team_member">টিম মেম্বার</string>
+    <string name="team_member_dot">টিম মেম্বারঃ</string>
+    <string name="team_member_and_area_dot">মেম্বার ও কাজের এলাকাঃ</string>
+
     <string name="one_room">১ রুম</string>
     <string name="two_room">২ রুম</string>
     <string name="three_room">৩ রুম</string>
@@ -426,12 +436,51 @@
     <string name="six_Line_machine">৬ সারির যন্ত্র</string>
 
     <!--Tractor-->
-    <string name="standard_tractor">স্ট্যান্ডার্ড ট্রাক্টর</string>
-    <string name="mini_tractor">মিনি ট্রাক্টর</string>
+    <string name="tractor_brand">ট্রাক্টর কোম্পানি</string>
+    <string name="tractor_brand_dot">ট্রাক্টর কোম্পানিঃ</string>
+    <string name="tractor_brand_trip_dot">ট্রাক্টর কোম্পানি এবং ট্রিপঃ</string>
+    <string name="tractor_type_dot">সাইজ ও ধরণঃ</string>
 
-    <string name="power_tiller">পাওয়ার টিলার</string>
-    <string name="utility_tractor">ইউটিলিটি ট্রাক্টর</string>
-    <string name="compact_tractor">কমপ্যাক্ট ট্রাক্টর</string>
+    <string name="sonalika_tractor">সোনালিকা</string>
+    <string name="mahindra_tractor">মাহিন্দ্রা</string>
+    <string name="yanmar_tractor">ইয়ানমার</string>
+    <string name="john_deere_tractor">জন ডিয়ার</string>
+    <string name="new_holland_tractor">নিউ হল্যান্ড</string>
+    <string name="massey_ferguson_tractor">মেসি ফার্গুসন</string>
+    <string name="eicher_tractor">আইশার</string>
+    <string name="foton_tractor">ফোটন</string>
+    <string name="force_motors_tractor">ফোর্স মোটরস</string>
+
+    <string name="acres">একর</string>
+    <string name="land_area_acres">জমির পরিমাণ (একর)</string>
+    <string name="land_area">জমির পরিমাণ</string>
+
+    <string name="hp_fal_21">২১ অশ্ব ক্ষমতা, ২ ফাল</string>
+    <string name="hp_fal_24">২৪.৬ অশ্ব ক্ষমতা, ১-২ ফাল</string>
+    <string name="hp_fal_25">২৫ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_26">২৬ অশ্ব ক্ষমতা, ২ ফাল</string>
+    <string name="hp_fal_27">২৭ অশ্ব ক্ষমতা, ১-২ ফাল</string>
+    <string name="hp_fal_31">৩১ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_35">৩৫ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_36">৩৬ অশ্ব ক্ষমতা, ৩ ফাল</string>
+    <string name="hp_fal_40">৪০ অশ্ব ক্ষমতা, ৩ ফাল</string>
+    <string name="hp_fal_42">৪২ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_45">৪৫ অশ্ব ক্ষমতা, ৩ ফাল</string>
+    <string name="hp_fal_46_3">৪৬ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_46_4">৪৬ অশ্ব ক্ষমতা, ৪ ফাল</string>
+    <string name="hp_fal_50_3">৫০ অশ্ব ক্ষমতা, ২-৩ ফাল</string>
+    <string name="hp_fal_50_4">৫০ অশ্ব ক্ষমতা, ৩-৪ ফাল</string>
+    <string name="hp_fal_55">৫৫ অশ্ব ক্ষমতা, ৪ ফাল</string>
+    <string name="hp_fal_56">৫৬ অশ্ব ক্ষমতা, ৪ ফাল</string>
+    <string name="hp_fal_59">৫৯ অশ্ব ক্ষমতা, ৪-৫ ফাল</string>
+    <string name="hp_fal_60_4">৬০ অশ্ব ক্ষমতা, ৪ ফাল</string>
+    <string name="hp_fal_60_5">৬০ অশ্ব ক্ষমতা, ৪-৫ ফাল</string>
+    <string name="hp_fal_62">৬২ অশ্ব ক্ষমতা, ৫ ফাল</string>
+    <string name="hp_fal_70">৭০ অশ্ব ক্ষমতা, ৪-৫ ফাল</string>
+    <string name="hp_fal_71">৭১ অশ্ব ক্ষমতা, ৫ ফাল</string>
+    <string name="hp_fal_85">৮৫ অশ্ব ক্ষমতা, ৪-৫ ফাল</string>
+    <string name="hp_fal_90">৯০ অশ্ব ক্ষমতা, ৫ ফাল</string>
+    <string name="hp_fal_113">১১৩ অশ্ব ক্ষমতা, ৫-৬ ফাল</string>
 
     <!--Harvester-->
     <string name="combine_harvester">কম্বাইন হারভেস্টার</string>
@@ -543,6 +592,7 @@
     <string name="payment_account_found">আপনার পেমেন্ট একাউন্ট সমূহ</string>
     <string name="add_payment_account">একাউন্ট যোগ করুন</string>
     <string name="no_payment_history">কোন পেমেন্ট নেই</string>
+    <string name="withdraw_request">ব্যালেন্স উত্তোলন করুন</string>
 
     <string name="select_payment_method">পেমেন্ট মেথড সিলেক্ট করুন</string>
     <string name="account_no">একাউন্ট নাম্বার দিন</string>
@@ -571,7 +621,7 @@
     <string name="order_list">অর্ডার লিস্ট</string>
     <string name="all_order_rent">সকল অর্ডার</string>
     <string name="your_order_rent">আপনার জন্য অর্ডার</string>
-    <string name="no_one_order_for_rent">কেউই ভাড়ার জন্য পোষ্ট করে নাই !</string>
+    <string name="no_one_order_for_rent">কেউই ভাড়ার জন্য অর্ডার করেনি!</string>
     <string name="bidding_your_best_price">আপনার সেরা দর বিড করুন</string>
     <string name="order_no_dot">অর্ডার নংঃ</string>
     <string name="bid_date_dot">বিডের তারিখঃ</string>

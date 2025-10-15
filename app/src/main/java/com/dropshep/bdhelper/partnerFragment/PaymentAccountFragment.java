@@ -27,6 +27,7 @@ import com.dropshep.bdhelper.adapter.AccountAdapter;
 import com.dropshep.bdhelper.databinding.FragmentPaymentAccountBinding;
 import com.dropshep.bdhelper.model.AccountModel;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.myUtils.PreloadingDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -58,6 +59,8 @@ public class PaymentAccountFragment extends Fragment {
     List<AccountModel> accountList = new ArrayList<>();
     private AccountAdapter adapter;
 
+    private PreloadingDialog preloadingDialog;
+
 
     public PaymentAccountFragment() {
         // Required empty public constructor
@@ -80,10 +83,12 @@ public class PaymentAccountFragment extends Fragment {
         userId = mAuth.getCurrentUser().getUid();
 
 
-        loadingDialog = new LoadingDialog(requireContext());
+        loadingDialog = new LoadingDialog(getContext());
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setCancelable(false);
         db = FirebaseFirestore.getInstance();
+
+        preloadingDialog = new PreloadingDialog(requireContext());
 
 
         loadData();
@@ -321,7 +326,7 @@ public class PaymentAccountFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
-
+        preloadingDialog.show();
 
         // Adapter একবার সেট করা (onCreateView বা init এ ভালো হবে)
         if (adapter == null) {
@@ -335,6 +340,7 @@ public class PaymentAccountFragment extends Fragment {
                 .orderBy("isPrimary", Query.Direction.ASCENDING) // যদি field থাকে
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    preloadingDialog.dismiss();
                     accountList.clear();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         AccountModel account = doc.toObject(AccountModel.class);
@@ -355,6 +361,7 @@ public class PaymentAccountFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
+                    preloadingDialog.dismiss();
                     MyToast.showShort(requireContext(), "Failed to load accounts: " + e.getMessage());
                 });
     }

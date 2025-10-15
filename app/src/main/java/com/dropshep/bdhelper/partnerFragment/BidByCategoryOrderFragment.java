@@ -158,6 +158,7 @@ public class BidByCategoryOrderFragment extends Fragment {
                         orderPartnerAdapter.notifyDataSetChanged();
                         Log.d("Firestore", "Loaded: " + orderModelArrayList.size() + " orders");
                     } else {
+                        binding.noOnePostYet.setVisibility(View.VISIBLE);
                         Log.d("Firestore", "No matching orders found");
                     }
                 });

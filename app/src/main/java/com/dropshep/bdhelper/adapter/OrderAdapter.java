@@ -124,9 +124,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 break;
             case MyUtils.SUB_EXCAVATOR_ID:
             case MyUtils.SUB_RICE_TRANSPLANTER_ID:
-            case MyUtils.SUB_TRACTOR_ID:
                 holder.serviceNameTV.setText(CommonClass.getSubCategoryName(subCategoryId));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.size_and_trip));
+                holder.typesTv.setText(types);
+                holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
+                break;
+            case MyUtils.SUB_TRACTOR_ID:
+                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(subCategoryId));
+                holder.sizeCapacityDefTV.setText(context.getString(R.string.tractor_brand_trip_dot));
                 holder.typesTv.setText(types);
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;

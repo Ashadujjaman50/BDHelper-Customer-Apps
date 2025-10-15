@@ -72,6 +72,7 @@ public class MoreFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         userId = firebaseAuth.getCurrentUser().getUid();
+
         showCachedBidSummary();
         // 🔹 Partner Finance Summary Load
         if (FinanceCache.isLoaded) {

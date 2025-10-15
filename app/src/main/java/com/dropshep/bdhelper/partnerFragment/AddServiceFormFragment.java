@@ -728,12 +728,19 @@ public class AddServiceFormFragment extends Fragment {
             popupMenu.getMenu().add(Menu.NONE, 18, 0, "৮৫০ সিএফটি");
         }
         else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
-            popupMenu.getMenu().add(Menu.NONE, 19, 0, getString(R.string.standard_tractor));
-            popupMenu.getMenu().add(Menu.NONE, 20, 0, getString(R.string.mini_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 19, 0, getString(R.string.sonalika_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 20, 0, getString(R.string.mahindra_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 21, 0, getString(R.string.yanmar_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 22, 0, getString(R.string.john_deere_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 23, 0, getString(R.string.new_holland_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 24, 0, getString(R.string.massey_ferguson_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 25, 0, getString(R.string.eicher_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 26, 0, getString(R.string.foton_tractor));
+           popupMenu.getMenu().add(Menu.NONE, 27, 0, getString(R.string.force_motors_tractor));
         }
         else if (subCategoryId.equals(MyUtils.SUB_RICE_TRANSPLANTER_ID)) {
-            popupMenu.getMenu().add(Menu.NONE, 21, 0, getString(R.string.riding_type));
-            popupMenu.getMenu().add(Menu.NONE, 22, 0, getString(R.string.walking_type));
+            popupMenu.getMenu().add(Menu.NONE, 28, 0, getString(R.string.riding_type));
+            popupMenu.getMenu().add(Menu.NONE, 29, 0, getString(R.string.walking_type));
         }
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -775,16 +782,44 @@ public class AddServiceFormFragment extends Fragment {
              } else if (id == 18) {
                  binding.equipmentCapabilityEt.setText("৮৫০ সিএফটি");
              } else if (id == 19) {
-                 binding.equipmentCapabilityEt.setText("স্ট্যান্ডার্ড ট্রাক্টর");
+                 binding.equipmentCapabilityEt.setText("সোনালিকা");
                  binding.equipmentCategoryEt.setText("");
-                 binding.equipmentCapabilityEt.setTag(getString(R.string.standard_tractor)); // save selected capacity
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.sonalika_tractor)); // save selected capacity
              }  else if (id == 20) {
-                 binding.equipmentCapabilityEt.setText("মিনি ট্রাক্টর");
+                 binding.equipmentCapabilityEt.setText("মাহিন্দ্রা");
                  binding.equipmentCategoryEt.setText("");
-                 binding.equipmentCapabilityEt.setTag(getString(R.string.mini_tractor)); // save selected capacity
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.mahindra_tractor)); // save selected capacity
              } else if (id == 21) {
+                 binding.equipmentCapabilityEt.setText("ইয়ানমার");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.yanmar_tractor)); // save selected capacity
+             }  else if (id == 22) {
+                 binding.equipmentCapabilityEt.setText("জন ডিয়ার");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.john_deere_tractor)); // save selected capacity
+             } else if (id == 23) {
+                 binding.equipmentCapabilityEt.setText("নিউ হল্যান্ড");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.new_holland_tractor)); // save selected capacity
+             }  else if (id == 24) {
+                 binding.equipmentCapabilityEt.setText("মেসি ফার্গুসন");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.massey_ferguson_tractor)); // save selected capacity
+             } else if (id == 25) {
+                 binding.equipmentCapabilityEt.setText("আইশার");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.eicher_tractor)); // save selected capacity
+             }  else if (id == 26) {
+                 binding.equipmentCapabilityEt.setText("ফোটন");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.foton_tractor)); // save selected capacity
+             }  else if (id == 27) {
+                 binding.equipmentCapabilityEt.setText("ফোর্স মোটরস");
+                 binding.equipmentCategoryEt.setText("");
+                 binding.equipmentCapabilityEt.setTag(getString(R.string.force_motors_tractor)); // save selected capacity
+             } else if (id == 28) {
                  binding.equipmentCapabilityEt.setText("রাইডিং টাইপ");
-             } else if (id == 22) {
+             } else if (id == 29) {
                  binding.equipmentCapabilityEt.setText("ওয়াকিং টাইপ");
              }
 
@@ -808,22 +843,67 @@ public class AddServiceFormFragment extends Fragment {
             String selectedCapacity = (String) binding.equipmentCapabilityEt.getTag(); // capacity stored in Tag
 
             if (selectedCapacity != null) {
-                if (selectedCapacity.equals(getString(R.string.mini_tractor))) {
-                    popupMenu.getMenu().add(Menu.NONE, 5, 0, getString(R.string.power_tiller));
-                } else if (selectedCapacity.equals(getString(R.string.standard_tractor))) {
-                    popupMenu.getMenu().add(Menu.NONE, 6, 0, getString(R.string.utility_tractor));
-                    popupMenu.getMenu().add(Menu.NONE, 7, 0, getString(R.string.compact_tractor));
+                if (selectedCapacity.equals(getString(R.string.sonalika_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 5, 0, getString(R.string.hp_fal_40));
+                    popupMenu.getMenu().add(Menu.NONE, 6, 0, getString(R.string.hp_fal_50_4));
+                    popupMenu.getMenu().add(Menu.NONE, 7, 0, getString(R.string.hp_fal_60_4));
+                }
+                else if (selectedCapacity.equals(getString(R.string.mahindra_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 8, 0, getString(R.string.hp_fal_42));
+                    popupMenu.getMenu().add(Menu.NONE, 9, 0, getString(R.string.hp_fal_45));
+                    popupMenu.getMenu().add(Menu.NONE, 10, 0, getString(R.string.hp_fal_62));
+                    popupMenu.getMenu().add(Menu.NONE, 11, 0, getString(R.string.hp_fal_71));
+                }
+                else if (selectedCapacity.equals(getString(R.string.yanmar_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 12, 0, getString(R.string.hp_fal_21));
+                    popupMenu.getMenu().add(Menu.NONE, 13, 0, getString(R.string.hp_fal_26));
+                    popupMenu.getMenu().add(Menu.NONE, 14, 0, getString(R.string.hp_fal_42));
+                    popupMenu.getMenu().add(Menu.NONE, 15, 0, getString(R.string.hp_fal_46_4));
+                    popupMenu.getMenu().add(Menu.NONE, 16, 0, getString(R.string.hp_fal_59));
+                }
+                else if (selectedCapacity.equals(getString(R.string.john_deere_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 17, 0, getString(R.string.hp_fal_35));
+                    popupMenu.getMenu().add(Menu.NONE, 18, 0, getString(R.string.hp_fal_55));
+                    popupMenu.getMenu().add(Menu.NONE, 19, 0, getString(R.string.hp_fal_113));
+                }
+                else if (selectedCapacity.equals(getString(R.string.new_holland_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 20, 0, getString(R.string.hp_fal_50_4));
+                    popupMenu.getMenu().add(Menu.NONE, 21, 0, getString(R.string.hp_fal_56));
+                    popupMenu.getMenu().add(Menu.NONE, 22, 0, getString(R.string.hp_fal_60_5));
+                }
+                else if (selectedCapacity.equals(getString(R.string.massey_ferguson_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 23, 0, getString(R.string.hp_fal_50_3));
+                    popupMenu.getMenu().add(Menu.NONE, 24, 0, getString(R.string.hp_fal_50_4));
+                    popupMenu.getMenu().add(Menu.NONE, 25, 0, getString(R.string.hp_fal_85));
+                }
+                else if (selectedCapacity.equals(getString(R.string.eicher_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 26, 0, getString(R.string.hp_fal_25));
+                    popupMenu.getMenu().add(Menu.NONE, 27, 0, getString(R.string.hp_fal_36));
+                    popupMenu.getMenu().add(Menu.NONE, 28, 0, getString(R.string.hp_fal_40));
+                    popupMenu.getMenu().add(Menu.NONE, 29, 0, getString(R.string.hp_fal_45));
+                    popupMenu.getMenu().add(Menu.NONE, 30, 0, getString(R.string.hp_fal_50_4));
+                    popupMenu.getMenu().add(Menu.NONE, 31, 0, getString(R.string.hp_fal_60_5));
+                }
+                else if (selectedCapacity.equals(getString(R.string.foton_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 32, 0, getString(R.string.hp_fal_24));
+                    popupMenu.getMenu().add(Menu.NONE, 33, 0, getString(R.string.hp_fal_46_3));
+                    popupMenu.getMenu().add(Menu.NONE, 34, 0, getString(R.string.hp_fal_50_4));
+                    popupMenu.getMenu().add(Menu.NONE, 35, 0, getString(R.string.hp_fal_70));
+                    popupMenu.getMenu().add(Menu.NONE, 36, 0, getString(R.string.hp_fal_90));
+                }
+                else if (selectedCapacity.equals(getString(R.string.force_motors_tractor))) {
+                    popupMenu.getMenu().add(Menu.NONE, 37, 0, getString(R.string.hp_fal_27));
+                    popupMenu.getMenu().add(Menu.NONE, 38, 0, getString(R.string.hp_fal_31));
+                    popupMenu.getMenu().add(Menu.NONE, 39, 0, getString(R.string.hp_fal_40));
+                    popupMenu.getMenu().add(Menu.NONE, 40, 0, getString(R.string.hp_fal_45));
+                    popupMenu.getMenu().add(Menu.NONE, 41, 0, getString(R.string.hp_fal_50_4));
                 }
             }
-            else {
-                popupMenu.getMenu().add(Menu.NONE, 5, 0, getString(R.string.power_tiller));
-                popupMenu.getMenu().add(Menu.NONE, 6, 0, getString(R.string.utility_tractor));
-                popupMenu.getMenu().add(Menu.NONE, 7, 0, getString(R.string.compact_tractor));
-            }
+
         }
         else if (subCategoryId.equals(MyUtils.SUB_RICE_TRANSPLANTER_ID)) {
-            popupMenu.getMenu().add(Menu.NONE, 8, 0, getString(R.string.four_line_machine));
-            popupMenu.getMenu().add(Menu.NONE, 9, 0, getString(R.string.six_Line_machine));
+            popupMenu.getMenu().add(Menu.NONE, 42, 0, getString(R.string.four_line_machine));
+            popupMenu.getMenu().add(Menu.NONE, 43, 0, getString(R.string.six_Line_machine));
         }
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -837,14 +917,82 @@ public class AddServiceFormFragment extends Fragment {
             } else if (id == 4) {
                 binding.equipmentCategoryEt.setText("লং বুম");
             } else if (id == 5) {
-                binding.equipmentCategoryEt.setText("পাওয়ার টিলার");
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_40));
             } else if (id == 6) {
-                binding.equipmentCategoryEt.setText("ইউটিলিটি ট্রাক্টর");
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
             } else if (id == 7) {
-                binding.equipmentCategoryEt.setText("কমপ্যাক্ট ট্রাক্টর");
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_60_4));
             } else if (id == 8) {
-                binding.equipmentCategoryEt.setText("৪ সারির যন্ত্র");
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_42));
             } else if (id == 9) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_45));
+            } else if (id == 10) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_62));
+            } else if (id == 11) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_71));
+            } else if (id == 12) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_21));
+            } else if (id == 13) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_26));
+            } else if (id == 14) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_42));
+            } else if (id == 15) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_46_4));
+            } else if (id == 16) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_59));
+            } else if (id == 17) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_35));
+            } else if (id == 18) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_55));
+            } else if (id == 19) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_113));
+            } else if (id == 20) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
+            } else if (id == 21) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_56));
+            } else if (id == 22) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_60_5));
+            } else if (id == 23) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_3));
+            } else if (id == 24) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
+            } else if (id == 25) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_85));
+            } else if (id == 26) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_25));
+            } else if (id == 27) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_36));
+            } else if (id == 28) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_40));
+            } else if (id == 29) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_45));
+            } else if (id == 30) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
+            } else if (id == 31) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_60_5));
+            } else if (id == 32) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_24));
+            } else if (id == 33) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_46_3));
+            } else if (id == 34) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
+            }  else if (id == 35) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_70));
+            }  else if (id == 36) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_90));
+            } else if (id == 37) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_27));
+            }  else if (id == 38) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_31));
+            }  else if (id == 39) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_40));
+            }  else if (id == 40) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_45));
+            }  else if (id == 41) {
+                binding.equipmentCategoryEt.setText(getString(R.string.hp_fal_50_4));
+            } else if (id == 42) {
+                binding.equipmentCategoryEt.setText("৪ সারির যন্ত্র");
+            } else if (id == 43) {
                 binding.equipmentCategoryEt.setText("৬ সারির যন্ত্র");
             }
             setErrorWatcher(binding.equipmentCategoryEt, false);

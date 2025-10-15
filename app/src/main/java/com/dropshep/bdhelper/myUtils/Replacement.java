@@ -170,20 +170,34 @@ public class Replacement {
     }
 
     // 🔹 Auto Local Method In Person
-    public static String ReplacementPersonInLocal(Context context, String number){
-        String lang = LocaleHelper.getLanguage(context); // en or bn
+    public static String ReplacementPersonInLocal(Context context, String number) {
+        String lang = LocaleHelper.getLanguage(context); // "en" or "bn"
 
-        if ("bn".equals(lang)){
+        if ("bn".equals(lang)) {
             String replace = ReplacementNumberEnToBn(number);
-            replace = replace.replace("person","জন");
+
+            // যদি "জন" না থাকে তাহলে যোগ করো
+            if (!replace.contains("জন")) {
+                replace = replace.trim() + " জন";
+            }
+
+            // যদি ভুলক্রমে "person" থাকে তাহলে সরাও
+            replace = replace.replace("person", "জন");
             return replace;
-        }
-        else {
+        } else {
             String replace = ReplacementNumberBnToEn(number);
-            replace = replace.replace("জন","person");
+
+            // যদি "person" না থাকে তাহলে যোগ করো
+            if (!replace.toLowerCase().contains("person")) {
+                replace = replace.trim() + " person";
+            }
+
+            // যদি ভুলক্রমে "জন" থাকে তাহলে সরাও
+            replace = replace.replace("জন", "person");
             return replace;
         }
     }
+
 
     // 🔹 Auto Local Method In Experience
     public static String ReplacementExperienceInLocal(Context context, String number){

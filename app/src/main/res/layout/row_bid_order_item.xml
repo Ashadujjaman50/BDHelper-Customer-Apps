@@ -111,6 +111,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/serviceNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
@@ -138,6 +139,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/modelAndTypeTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
@@ -190,7 +192,7 @@
                         android:textStyle="bold"
                         android:text="1000"
                         app:drawableStartCompat="@drawable/ic_taka_symbol"
-                        app:drawableTint="@color/icon_color"
+                        app:drawableTint="@color/primaryMid"
                         android:drawablePadding="3dp"/>
 
 

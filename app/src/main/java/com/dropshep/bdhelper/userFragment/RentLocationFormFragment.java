@@ -30,6 +30,7 @@ import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyToast;
 import com.dropshep.bdhelper.myUtils.MyUtils;
 import com.dropshep.bdhelper.myUtils.OrderHelper;
+import com.dropshep.bdhelper.myUtils.Replacement;
 import com.dropshep.bdhelper.user.AddressActivity;
 import com.dropshep.bdhelper.user.SubCategoryActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -132,7 +133,10 @@ public class RentLocationFormFragment extends Fragment {
             case "ট্রাক্টর":
             case "Tractor":
                 binding.vehicleNameTV.setText(subCategoryName);
+                binding.capacitySizeProgramTv.setText(getString(R.string.tractor_brand));
+                binding.capacityTV.setHint(getString(R.string.tractor_brand));
                 binding.productTypeTV.setHint(getString(R.string.tractor)+" "+getString(R.string.which_types));
+                binding.landAreaTypeLL.setVisibility(View.VISIBLE);
                 break;
             default:
                 binding.capacitySizeProgramTv.setText(subCategoryName+" "+getString(R.string.types));
@@ -181,8 +185,15 @@ public class RentLocationFormFragment extends Fragment {
                     break;
                 case "ট্রাক্টর":
                 case "Tractor":
-                    array_list.add(getString(R.string.standard_tractor));
-                    array_list.add(getString(R.string.mini_tractor));
+                    array_list.add(getString(R.string.sonalika_tractor));
+                    array_list.add(getString(R.string.mahindra_tractor));
+                    array_list.add(getString(R.string.yanmar_tractor));
+                    array_list.add(getString(R.string.john_deere_tractor));
+                    array_list.add(getString(R.string.new_holland_tractor));
+                    array_list.add(getString(R.string.massey_ferguson_tractor));
+                    array_list.add(getString(R.string.eicher_tractor));
+                    array_list.add(getString(R.string.foton_tractor));
+                    array_list.add(getString(R.string.force_motors_tractor));
                     break;
                 default:
                     array_list.add(getString(R.string.full_feed));
@@ -279,17 +290,71 @@ public class RentLocationFormFragment extends Fragment {
                     String selectedCapacity = (String) binding.productTypeTV.getTag(); // capacity stored in Tag
 
                     if (selectedCapacity != null) {
-                        if (selectedCapacity.equals(getString(R.string.mini_tractor))) {
-                            array_list.add(getString(R.string.power_tiller));
-                        } else if (selectedCapacity.equals(getString(R.string.standard_tractor))) {
-                            array_list.add(getString(R.string.utility_tractor));
-                            array_list.add(getString(R.string.compact_tractor));
+                        if (selectedCapacity.equals(getString(R.string.sonalika_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_40));
+                            array_list.add(getString(R.string.hp_fal_50_4));
+                            array_list.add(getString(R.string.hp_fal_60_4));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.mahindra_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_42));
+                            array_list.add(getString(R.string.hp_fal_45));
+                            array_list.add(getString(R.string.hp_fal_62));
+                            array_list.add(getString(R.string.hp_fal_71));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.yanmar_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_21));
+                            array_list.add(getString(R.string.hp_fal_26));
+                            array_list.add(getString(R.string.hp_fal_42));
+                            array_list.add(getString(R.string.hp_fal_46_4));
+                            array_list.add(getString(R.string.hp_fal_59));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.john_deere_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_35));
+                            array_list.add(getString(R.string.hp_fal_55));
+                            array_list.add(getString(R.string.hp_fal_113));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.new_holland_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_50_4));
+                            array_list.add(getString(R.string.hp_fal_56));
+                            array_list.add(getString(R.string.hp_fal_60_5));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.massey_ferguson_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_50_3));
+                            array_list.add(getString(R.string.hp_fal_50_4));
+                            array_list.add(getString(R.string.hp_fal_85));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.eicher_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_25));
+                            array_list.add(getString(R.string.hp_fal_36));
+                            array_list.add(getString(R.string.hp_fal_40));
+                            array_list.add(getString(R.string.hp_fal_45));
+                            array_list.add(getString(R.string.hp_fal_50_4));
+                            array_list.add(getString(R.string.hp_fal_60_5));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.foton_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_24));
+                            array_list.add(getString(R.string.hp_fal_46_3));
+                            array_list.add(getString(R.string.hp_fal_50_4));
+                            array_list.add(getString(R.string.hp_fal_70));
+                            array_list.add(getString(R.string.hp_fal_90));
+                        }
+                        else if (selectedCapacity.equals(getString(R.string.force_motors_tractor))) {
+                            array_list.add(getString(R.string.hp_fal_27));
+                            array_list.add(getString(R.string.hp_fal_31));
+                            array_list.add(getString(R.string.hp_fal_40));
+                            array_list.add(getString(R.string.hp_fal_45));
+                            array_list.add(getString(R.string.hp_fal_50_4));
                         }
                     }
                     else {
-                        array_list.add(getString(R.string.power_tiller));
-                        array_list.add(getString(R.string.utility_tractor));
-                        array_list.add(getString(R.string.compact_tractor));
+                        array_list.add(getString(R.string.hp_fal_26));
+                        array_list.add(getString(R.string.hp_fal_40));
+                        array_list.add(getString(R.string.hp_fal_42));
+                        array_list.add(getString(R.string.hp_fal_45));
+                        array_list.add(getString(R.string.hp_fal_71));
+                        array_list.add(getString(R.string.hp_fal_85));
+                        array_list.add(getString(R.string.hp_fal_90));
+                        array_list.add(getString(R.string.hp_fal_113));
                     }
                     break;
                 default:
@@ -305,6 +370,7 @@ public class RentLocationFormFragment extends Fragment {
                 bottomSheetDialog.dismiss();
             });
         });
+
 
         binding.continuePostBtn.setOnClickListener(v -> {
             continueToReview();
@@ -354,7 +420,28 @@ public class RentLocationFormFragment extends Fragment {
         specificationDuration = binding.durationTV.getText().toString().trim();
         specificationTypes = binding.productTypeTV.getText().toString().trim();
         quantity = binding.countTV.getText().toString().trim();
-        description = binding.detailsET.getText().toString().trim();
+
+        if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
+            if (CommonClass.validateField(binding.landAreaEt)) return;
+
+            String landArea = binding.landAreaEt.getText().toString().trim();
+            String details = binding.detailsET.getText() != null
+                    ? binding.detailsET.getText().toString().trim()
+                    : "";
+
+            if (details.isEmpty()) {
+                description = landArea + " " + getString(R.string.acres);
+            } else {
+                description = landArea + " " + getString(R.string.acres) + "\n" + details;
+            }
+        } else {
+            description = binding.detailsET.getText() != null
+                    ? binding.detailsET.getText().toString().trim()
+                    : "";
+        }
+
+
+
 
         // ✅ Setup BottomSheet
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
@@ -369,6 +456,7 @@ public class RentLocationFormFragment extends Fragment {
         TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
         TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
         TextView productDef = dialog.findViewById(R.id.productDefTV);
+        TextView detailsTV = dialog.findViewById(R.id.detailsTV);
         TextView time = dialog.findViewById(R.id.popupTimeTV);
         TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
 
@@ -393,13 +481,18 @@ public class RentLocationFormFragment extends Fragment {
 
         // ✅ Set texts safely
         if (countDef != null) countDef.setText(subCategoryName);
-        if (count != null) count.setText(quantity);
+        if (count != null) count.setText(Replacement.ReplacementQtyToLocal(getContext(), quantity));
 
         if (locationTv != null) locationTv.setText(loadLocation);
         if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
         if (areaLocationTv != null) areaLocationTv.setText(rentLocation);
 
-        if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
+            if (sizeDef != null) sizeDef.setText(getString(R.string.tractor_brand));
+        }
+        else {
+            if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
+        }
         if (size != null) size.setText(specificationCapacity);
 
         if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
@@ -407,6 +500,8 @@ public class RentLocationFormFragment extends Fragment {
 
         if (productDef != null) productDef.setText(subCategoryName+" "+getString(R.string.type_dot));
         if (product != null) product.setText(specificationTypes);
+
+        if (detailsTV != null) detailsTV.setText(Replacement.ReplacementNumberInLocal(getContext(), description));
 
         if (time != null) time.setText(binding.dateTimeTV.getText().toString());
 

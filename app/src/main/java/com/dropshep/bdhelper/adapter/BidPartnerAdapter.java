@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         return new HolderViewBid(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HolderViewBid holder, int position) {
         BidModel bidModel = bidModelArrayList.get(position);
@@ -77,6 +79,20 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
                 subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) || subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
         }
+        else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
+            holder.vehicleRegNoTv.setText(vehicleModel);
+            holder.serviceNameTv.setText(R.string.tractor_brand_dot);
+            holder.vehicleModel.setText(vehicleCatAndYear);
+            holder.vehicleCatAndYearTv.setVisibility(View.GONE);
+            holder.modelAndTypeTv.setText(R.string.tractor_type_dot);
+        }
+        else if (subCategoryId.equals(MyUtils.HOME_SHIFTING_ID)){
+            holder.serviceNameTv.setText(R.string.team_leader_dot);
+            holder.modelAndTypeTv.setText(R.string.team_member_and_area_dot);
+            holder.vehicleRegNoTv.setText(vehicleRegNo);
+            holder.vehicleModel.setText(Replacement.ReplacementPersonInLocal(context, vehicleModel)+", ");
+            holder.vehicleCatAndYearTv.setText(vehicleCatAndYear);
+        }
         else {
             holder.vehicleRegNoTv.setText(vehicleRegNo);
             if (vehicleRegNo.isEmpty()){
@@ -104,8 +120,8 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
 
 
     static class HolderViewBid extends RecyclerView.ViewHolder {
-        TextView postNameTv, bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
-                vehicleRegNoTv,vehicleModel, vehicleCatAndYearTv, rentTimeTv;
+        TextView serviceNameTv, postNameTv, bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
+                vehicleRegNoTv,modelAndTypeTv, vehicleModel, vehicleCatAndYearTv, rentTimeTv;
         ImageView call, moreBtn;
         LinearLayout vehicleRegisterLL, modelYearLL;
         public HolderViewBid(@NonNull View itemView) {
@@ -114,6 +130,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             vehicleRegisterLL = itemView.findViewById(R.id.vehicleRegisterLL);
 
             modelYearLL = itemView.findViewById(R.id.modelYearLL);
+            serviceNameTv = itemView.findViewById(R.id.serviceNameTv);
             postNameTv = itemView.findViewById(R.id.postNameTv);
             bidDateTv = itemView.findViewById(R.id.bidDateTv);
             vendorNameTV = itemView.findViewById(R.id.vendorNameTV);
@@ -123,6 +140,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             moreBtn = itemView.findViewById(R.id.moreBtn);
             checkedConfirmTv = itemView.findViewById(R.id.checkedConfirmTv);
             vehicleRegNoTv = itemView.findViewById(R.id.vehicleRegNoTv);
+            modelAndTypeTv = itemView.findViewById(R.id.modelAndTypeTv);
             vehicleModel = itemView.findViewById(R.id.vehicleModel);
             vehicleCatAndYearTv = itemView.findViewById(R.id.vehicleCatAndYearTv);
             rentTimeTv = itemView.findViewById(R.id.rentTimeTv);

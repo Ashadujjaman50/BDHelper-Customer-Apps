@@ -215,6 +215,39 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/landAreaTypeLL"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/landAreaNameTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/land_area_acres"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/landAreaEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:autofillHints="@string/land_area"
+                        android:background="@drawable/bg_edit_text"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:hint="@string/land_area"
+                        android:inputType="numberDecimal"
+                        android:padding="16dp"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/detailsLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

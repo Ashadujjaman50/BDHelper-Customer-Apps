@@ -30,101 +30,107 @@
 
                 <!-- Total Income -->
                 <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@color/transparent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
-                        android:text="৳ ০"
-                        android:textColor="@color/primaryColor"
+                        android:id="@+id/totalAmount"
+                        android:text="০"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
+                        android:textColor="@color/primaryColor"
+                        android:background="@color/transparent"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
+                        app:drawableStartCompat="@drawable/ic_taka_symbol"
+                        app:drawableTint="@color/primaryColor"
+                        android:drawablePadding="4dp" />
+
+                    <TextView
                         android:text="@string/total_income"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:background="@color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="4dp"
-                    android:background="@color/card_divider_color" />
+                    android:background="@color/card_divider_color"
+                    android:layout_marginVertical="4dp"/>
 
                 <!-- Commission -->
                 <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@color/transparent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
-                        android:text="৳ ০"
-                        android:textColor="@color/primaryColor"
+                        android:id="@+id/partnerEarnTv"
+                        android:text="০"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
+                        android:textColor="@color/primaryColor"
+                        android:background="@color/transparent"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
+                        app:drawableStartCompat="@drawable/ic_taka_symbol"
+                        app:drawableTint="@color/primaryColor"
+                        android:drawablePadding="4dp"/>
+
+                    <TextView
                         android:text="@string/partner_commission"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:background="@color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="4dp"
-                    android:background="@color/card_divider_color" />
+                    android:background="@color/card_divider_color"
+                    android:layout_marginVertical="4dp"/>
 
                 <!-- Company Income -->
                 <LinearLayout
+                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@color/transparent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
+                        android:id="@+id/companyEarnTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
-                        android:text="৳ ০"
+                        android:text="০"
                         android:textColor="@color/primaryColor"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic_taka_symbol"
+                        app:drawableTint="@color/primaryColor"
+                        android:drawablePadding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:fontFamily="@font/solaimanlipi"
                         android:text="@string/company_commission"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:background="@color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -154,8 +160,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/addPaymentAccountButton"
-            android:visibility="gone"
+            android:id="@+id/withdrawPaymentButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_margin="24dp"
@@ -166,7 +171,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="@string/add_payment_account"
+            android:text="@string/withdraw_request"
             android:textColor="@color/white"
             android:textAllCaps="false"
             android:textSize="16sp"

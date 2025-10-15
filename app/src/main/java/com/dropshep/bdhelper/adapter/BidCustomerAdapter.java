@@ -71,7 +71,13 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         String vehicleRegNo = bidModel.getServiceInfo().getVehicleRegNo();
         String vehicleCatAndYear = bidModel.getServiceInfo().getVehicleCatAndYear();
 
-        holder.nameTv.setText(vehicleModel);
+        if (categoryId.equals(MyUtils.SKILLED_LABOR_ID)){
+            holder.nameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+        }
+        else {
+            holder.nameTv.setText(vehicleModel);
+        }
+
         if (subCategoryId.equals(MyUtils.SUB_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_PICKUP_ID) ||
                 subCategoryId.equals(MyUtils.SUB_COVERED_VAN_ID)||subCategoryId.equals(MyUtils.SUB_FREEZER_VAN_ID)||
                 subCategoryId.equals(MyUtils.SUB_DUMP_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_TRAILER_ID)||
@@ -79,6 +85,22 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
                 subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) || subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
             holder.modelAndYear.setText(Replacement.ReplacementNumberInLocal(context, vehicleCatAndYear));
+        }
+        else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
+            holder.registerNameTv.setText(R.string.work_type_dot);
+            holder.modelAndTypeTv.setText(R.string.work_area_dot);
+            holder.vehicleRegNoTv.setText(vehicleRegNo);
+            holder.modelAndYear.setText(vehicleCatAndYear);
+            holder.transportLl.setVisibility(View.GONE);
+            holder.modelAndTypeTv.setText(R.string.tractor_type_dot);
+        }
+        else if (subCategoryId.equals(MyUtils.HOME_SHIFTING_ID)){
+            holder.serviceNameTv.setText(R.string.team_leader_dot);
+            holder.registerNameTv.setText(R.string.team_member_dot);
+            holder.modelAndTypeTv.setText(R.string.work_area_dot);
+            holder.nameTv.setText(vehicleRegNo);
+            holder.vehicleRegNoTv.setText(Replacement.ReplacementPersonInLocal(context, vehicleModel));
+            holder.modelAndYear.setText(vehicleCatAndYear);
         }
         else {
             holder.vehicleRegNoTv.setText(vehicleRegNo);
@@ -143,7 +165,7 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
 
 
     static class HolderViewBid extends RecyclerView.ViewHolder {
-        TextView nameTv, mobile, rentTimeTv, amountTv, registerNameTv, modelAndYear, vehicleRegNoTv;
+        TextView serviceNameTv, nameTv, mobile, rentTimeTv, amountTv, registerNameTv, modelAndTypeTv, modelAndYear, vehicleRegNoTv;
         TextView confirmOrderBtn, callBtn;
         ImageView confirmIcon;
         CardView cardLayout;
@@ -151,11 +173,13 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         public HolderViewBid(@NonNull View itemView) {
             super(itemView);
             //
+            serviceNameTv = itemView.findViewById(R.id.serviceNameTv);
             nameTv = itemView.findViewById(R.id.nameTV);
             mobile = itemView.findViewById(R.id.mobileNumberTv);
             amountTv = itemView.findViewById(R.id.bidAmount);
             modelAndYear = itemView.findViewById(R.id.modelAndYear);
             registerNameTv = itemView.findViewById(R.id.registerNameTv);
+            modelAndTypeTv = itemView.findViewById(R.id.modelAndTypeTv);
             rentTimeTv = itemView.findViewById(R.id.rentTimeTv);
             vehicleRegNoTv = itemView.findViewById(R.id.vehicleRegNoTv);
             confirmIcon = itemView.findViewById(R.id.confirmIcon);

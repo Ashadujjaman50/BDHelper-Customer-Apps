@@ -156,7 +156,17 @@ public class BidAllOrderFragment extends Fragment {
                             }
                         }
 
+                        if (orderModelArrayList.isEmpty()){
+                            binding.noOnePostYet.setVisibility(View.VISIBLE);
+                            binding.myRentRecyclerView.setVisibility(View.GONE);
+                        }
+                        else {
+                            binding.noOnePostYet.setVisibility(View.GONE);
+                            binding.myRentRecyclerView.setVisibility(View.VISIBLE);
+                        }
+
                         orderPartnerAdapter.notifyDataSetChanged();
+
                     }
                 });
     }

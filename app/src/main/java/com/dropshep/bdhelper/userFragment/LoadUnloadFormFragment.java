@@ -243,8 +243,8 @@ public class LoadUnloadFormFragment extends Fragment{
                     break;
                 case "অ্যাম্বুলেন্স":
                 case "Ambulance":
-                    array_list.add(getString(R.string.ac_ambulances));
-                    array_list.add(getString(R.string.non_ac_ambulances));
+                    array_list.add(getString(R.string.regular_ambulance));
+                    array_list.add(getString(R.string.hearse_ambulance));
                     break;
                 case "ড্রাম্প ট্রাক":
                 case "Dump Truck":
@@ -272,6 +272,14 @@ public class LoadUnloadFormFragment extends Fragment{
             bottomSheetDialog.show();
             lv.setOnItemClickListener((parent, viewList, position, id) -> {
                 binding.capacityTV.setText(array_list.get(position));
+
+                if (subCategoryName.equals("অ্যাম্বুলেন্স") || subCategoryName.equals("Ambulance")){
+                    String selectedCapacity = array_list.get(position);
+                    // ✅ Capacity অনুযায়ী ProductType এর options reset করে রাখা
+                    binding.productTypeTV.setText(""); // clear old value
+                    binding.productTypeTV.setTag(selectedCapacity); // save selected capacity
+                }
+
                 bottomSheetDialog.dismiss();
             });
         });
@@ -378,10 +386,24 @@ public class LoadUnloadFormFragment extends Fragment{
                     break;
                 case "অ্যাম্বুলেন্স":
                 case "Ambulance":
-                    array_list.add(getString(R.string.regular));
-                    array_list.add(getString(R.string.bls_ambulances));
-                    array_list.add(getString(R.string.als_ambulances));
-                    array_list.add(getString(R.string.icu_ambulances));
+                    String selectedCapacity = (String) binding.productTypeTV.getTag(); // capacity stored in Tag
+
+                    if (selectedCapacity != null){
+                        if (selectedCapacity.equals(getString(R.string.regular_ambulance))){
+                            array_list.add(getString(R.string.bls_ambulances));
+                            array_list.add(getString(R.string.als_ambulances));
+                            array_list.add(getString(R.string.icu_ambulances));
+                        }
+                        else {
+                            array_list.add(getString(R.string.regular));
+                        }
+                    }
+                    else {
+                        array_list.add(getString(R.string.regular));
+                        array_list.add(getString(R.string.bls_ambulances));
+                        array_list.add(getString(R.string.als_ambulances));
+                        array_list.add(getString(R.string.icu_ambulances));
+                    }
                     break;
                 case "চার্জার ভ্যান":
                 case "Charger van":
