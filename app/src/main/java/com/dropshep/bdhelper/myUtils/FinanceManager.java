@@ -38,6 +38,8 @@ public class FinanceManager {
         this.db = FirebaseFirestore.getInstance();
     }
 
+
+
     // 🔹 1️⃣ Create Ledger & Update Partner Balance
     public void createLedgerAndUpdateBalance(String bidId, String orderId, String vendorId, String bidAmount) {
         String finalAmount = CommonClass.getRoundedTenPercentValue(bidAmount, 10);
@@ -64,6 +66,8 @@ public class FinanceManager {
                 .addOnFailureListener(e ->
                         Log.e(TAG, "❌ Failed to create ledger: " + e.getMessage(), e));
     }
+
+
 
     // 🔹 2️⃣ Update Partner Balance (Earned amount add হবে)
     public void updatePartnerBalance(String vendorId, double partnerEarn) {
@@ -98,9 +102,12 @@ public class FinanceManager {
                         Log.e(TAG, "❌ Failed to update partner balance: " + e.getMessage(), e));
     }
 
+
+
     // 🔹 3️⃣ Withdraw Request
     // ✅ fm.requestWithdraw(vendorId, 5000, "bkash", "017XXXXXXXX");
-    public void requestWithdraw(String vendorId, double amount, String paymentMethod, String accountNumber) {
+    public void requestWithdraw(String vendorId, double amount, String paymentMethod, String accountNumber,
+                                OnWithdrawResult callback) {
         Map<String, Object> withdrawData = new HashMap<>();
         withdrawData.put("vendorId", vendorId);
         withdrawData.put("requestedAmount", amount);
@@ -111,56 +118,101 @@ public class FinanceManager {
 
         db.collection(COLLECTION_WITHDRAW)
                 .add(withdrawData)
-                .addOnSuccessListener(docRef ->
-                        Log.d(TAG, "✅ Withdraw request created: " + docRef.getId()))
-                .addOnFailureListener(e ->
-                        Log.e(TAG, "❌ Failed to create withdraw request: " + e.getMessage(), e));
+                .addOnSuccessListener(docRef -> {
+                    Log.d(TAG, "✅ Withdraw request created: " + docRef.getId());
+                    if (callback != null) callback.onSuccess(docRef.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "❌ Failed to create withdraw request: " + e.getMessage(), e);
+                    if (callback != null) callback.onFailure(e);
+                });
     }
 
-    // 🔹 4️⃣ Approve Withdraw & Deduct from Partner Balance
+
+    public interface OnWithdrawResult {
+        void onSuccess(String docId); // ডকুমেন্ট আইডি ফেরত দিবে
+        void onFailure(Exception e);
+    }
+
+
+    // 🔹 4️⃣ Approve Withdraw & Deduct from Partner Balance + Ledger Entry (Schema Maintained)
     // ✅ fm.approveWithdraw(requestId, vendorId, 5000);
     public void approveWithdraw(String requestId, String vendorId, double amount) {
         DocumentReference balanceRef = db.collection(COLLECTION_BALANCE).document(vendorId);
         DocumentReference withdrawRef = db.collection(COLLECTION_WITHDRAW).document(requestId);
 
         db.runTransaction(transaction -> {
-                    DocumentSnapshot balanceSnap = transaction.get(balanceRef);
-                    if (!balanceSnap.exists()) {
-                        throw new FirebaseFirestoreException("Balance record not found",
-                                FirebaseFirestoreException.Code.NOT_FOUND);
-                    }
+            DocumentSnapshot balanceSnap = transaction.get(balanceRef);
+            DocumentSnapshot withdrawSnap = transaction.get(withdrawRef);
 
-                    double totalEarned = balanceSnap.getDouble("totalEarned");
-                    double totalWithdrawn = balanceSnap.getDouble("totalWithdrawn");
-                    double newWithdrawn = totalWithdrawn + amount;
-                    double newBalance = totalEarned - newWithdrawn;
+            if (!balanceSnap.exists()) {
+                throw new FirebaseFirestoreException("Balance record not found",
+                        FirebaseFirestoreException.Code.NOT_FOUND);
+            }
+            if (!withdrawSnap.exists()) {
+                throw new FirebaseFirestoreException("Withdraw request not found",
+                        FirebaseFirestoreException.Code.NOT_FOUND);
+            }
 
-                    // ✅ Update Balance
-                    Map<String, Object> updateBalance = new HashMap<>();
-                    updateBalance.put("totalWithdrawn", newWithdrawn);
-                    updateBalance.put("currentBalance", newBalance);
-                    updateBalance.put("lastUpdated", System.currentTimeMillis());
-                    transaction.update(balanceRef, updateBalance);
+            double currentBalance = balanceSnap.getDouble("currentBalance") != null
+                    ? balanceSnap.getDouble("currentBalance") : 0;
+            double totalWithdrawn = balanceSnap.getDouble("totalWithdrawn") != null
+                    ? balanceSnap.getDouble("totalWithdrawn") : 0;
 
-                    // ✅ Update Withdraw Status
-                    Map<String, Object> updateWithdraw = new HashMap<>();
-                    updateWithdraw.put("status", "approved");
-                    updateWithdraw.put("approvedAt", System.currentTimeMillis());
-                    transaction.update(withdrawRef, updateWithdraw);
+            if (currentBalance < amount) {
+                throw new FirebaseFirestoreException("Insufficient balance",
+                        FirebaseFirestoreException.Code.ABORTED);
+            }
 
-                    return null;
-                }).addOnSuccessListener(aVoid ->
-                        Log.d(TAG, "✅ Withdraw approved and balance deducted"))
-                .addOnFailureListener(e ->
-                        Log.e(TAG, "❌ Withdraw approval failed: " + e.getMessage(), e));
+            double newWithdrawn = totalWithdrawn + amount;
+            double newBalance = currentBalance - amount;
+
+            // ✅ Update Balance
+            Map<String, Object> updateBalance = new HashMap<>();
+            updateBalance.put("totalWithdrawn", newWithdrawn);
+            updateBalance.put("currentBalance", newBalance);
+            updateBalance.put("lastUpdated", System.currentTimeMillis());
+            transaction.update(balanceRef, updateBalance);
+
+            // ✅ Update Withdraw Status
+            Map<String, Object> updateWithdraw = new HashMap<>();
+            updateWithdraw.put("status", "approved");
+            updateWithdraw.put("approvedAt", System.currentTimeMillis());
+            transaction.update(withdrawRef, updateWithdraw);
+
+            return null;
+        }).addOnSuccessListener(aVoid -> {
+            Log.d(TAG, "✅ Withdraw approved and balance deducted");
+
+            // ✅ Ledger entry (maintaining original schema)
+            Map<String, Object> ledgerEntry = new HashMap<>();
+            ledgerEntry.put("bidId", "withdraw"); // static placeholder since not tied to bid
+            ledgerEntry.put("orderId", requestId); // use withdraw request id as order ref
+            ledgerEntry.put("vendorId", vendorId);
+            ledgerEntry.put("totalAmount", amount);
+            ledgerEntry.put("partnerEarn", -amount); // negative because it's deducted
+            ledgerEntry.put("companyEarn", 0); // company gets nothing from withdraw
+            ledgerEntry.put("paymentReceiver", "company"); // changed to "company" to reflect that this is an adjustment for partner receivable (company paying out to partner)
+            ledgerEntry.put("status", "withdraw");
+            ledgerEntry.put("createdAt", System.currentTimeMillis());
+
+            db.collection(COLLECTION_LEDGER)
+                    .add(ledgerEntry)
+                    .addOnSuccessListener(doc ->
+                            Log.d(TAG, "✅ Withdraw ledger entry added: " + doc.getId()))
+                    .addOnFailureListener(err ->
+                            Log.e(TAG, "❌ Failed to add withdraw ledger entry: " + err.getMessage()));
+
+        }).addOnFailureListener(e ->
+                Log.e(TAG, "❌ Withdraw approval failed: " + e.getMessage(), e)
+        );
     }
+
 
     // 🔹 5️⃣ Get Partner Finance Summary (for Profile UI)
     private ListenerRegistration financeListener;
     public void getPartnerFinanceSummary(String vendorId, OnFinanceSummary callback) {
-        // যদি cache এখনো valid থাকে, cache থেকে দাও
         if (!FinanceCache.needsRefresh()) {
-            // cache fresh → সরাসরি callback দাও
             callback.onSummary(
                     FinanceCache.totalEarned,
                     FinanceCache.partnerReceivable,
@@ -169,46 +221,46 @@ public class FinanceManager {
             return;
         }
 
+        // 🔹 Ledger listener
+        financeListener = db.collection(COLLECTION_LEDGER)
+                .whereEqualTo("vendorId", vendorId)
+                .addSnapshotListener((querySnapshot, e) -> {
+                    if (e != null || querySnapshot == null) return;
 
-        // 🔹 Real-time listener on partnerBalance document
-        financeListener = db.collection(COLLECTION_BALANCE)
-                .document(vendorId)
-                .addSnapshotListener((snapshot, e) -> {
-                    if (e != null) {
-                        Log.e(TAG, "❌ Real-time listener failed: " + e.getMessage());
-                        return;
+                    double totalEarned = 0;
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        double earn = doc.getDouble("partnerEarn") != null ? doc.getDouble("partnerEarn") : 0;
+                        String status = doc.getString("status");
+                        if (status != null && !status.equalsIgnoreCase("withdraw"))
+                            totalEarned += earn;
                     }
 
-                    if (snapshot != null && snapshot.exists()) {
-                        double totalEarned = snapshot.getDouble("totalEarned") != null
-                                ? snapshot.getDouble("totalEarned") : 0;
+                    // 🔹 Recalculate receivables
+                    double finalTotalEarned = totalEarned;
+                    calculatePartnerReceivable(vendorId, partnerReceivable ->
+                            calculateCompanyReceivable(vendorId, companyReceivable -> {
 
-                        // 🔹 Recalculate real-time partner/company receivables
-                        calculatePartnerReceivable(vendorId, partnerReceivable ->
-                                calculateCompanyReceivable(vendorId, companyReceivable -> {
+                                FinanceCache.totalEarned = finalTotalEarned;
+                                FinanceCache.partnerReceivable = partnerReceivable;
+                                FinanceCache.companyReceivable = companyReceivable;
+                                FinanceCache.lastUpdated = System.currentTimeMillis();
+                                FinanceCache.isLoaded = true;
 
-                                    // Cache update
-                                    FinanceCache.totalEarned = totalEarned;
-                                    FinanceCache.partnerReceivable = partnerReceivable;
-                                    FinanceCache.companyReceivable = companyReceivable;
-                                    FinanceCache.lastUpdated = System.currentTimeMillis();
-                                    FinanceCache.isLoaded = true;
-
-                                    // ✅ Callback to UI
-                                    callback.onSummary(totalEarned, partnerReceivable, companyReceivable);
-                                })
-                        );
-                    }
+                                callback.onSummary(finalTotalEarned, partnerReceivable, companyReceivable);
+                            })
+                    );
                 });
     }
 
-    // 🔹 2️⃣ Stop listening (যদি Fragment destroy হয়)
+
+    // Stop listening (যদি Fragment destroy হয়)
     public void stopListening() {
         if (financeListener != null) {
             financeListener.remove();
             financeListener = null;
         }
     }
+
 
     // 🔹 6️⃣ Calculate Partner Receivable (যেখানে paymentReceiver = company)
     public void calculatePartnerReceivable(String vendorId, OnFinanceResult callback) {
@@ -224,12 +276,21 @@ public class FinanceManager {
                     double total = 0;
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         String receiver = doc.getString("paymentReceiver");
+                        String status = doc.getString("status");
                         double partnerShare = doc.getDouble("partnerEarn") != null ? doc.getDouble("partnerEarn") : 0;
-                        if ("company".equals(receiver)) total += partnerShare;
+
+                        // ✅ Include withdraw entries as negative adjustments; exclude only cancelled
+                        if ("company".equals(receiver)
+                                && status != null
+                                && !status.equalsIgnoreCase("cancelled")) {
+                            total += partnerShare;
+                        }
                     }
+
                     callback.onResult(total);
                 });
     }
+
 
     // 🔹 7️⃣ Calculate Company Receivable (যেখানে paymentReceiver = partner)
     public void calculateCompanyReceivable(String vendorId, OnFinanceResult callback) {
@@ -245,14 +306,23 @@ public class FinanceManager {
                     double total = 0;
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         String receiver = doc.getString("paymentReceiver");
+                        String status = doc.getString("status");
                         double companyShare = doc.getDouble("companyEarn") != null ? doc.getDouble("companyEarn") : 0;
-                        if ("partner".equals(receiver)) total += companyShare;
+
+                        // ✅ Include withdraw entries as negative adjustments; exclude only cancelled
+                        if ("partner".equals(receiver)
+                                && status != null
+                                && !status.equalsIgnoreCase("cancelled")) {
+                            total += companyShare;
+                        }
                     }
+
                     callback.onResult(total);
                 });
     }
 
-    // 🔹 Interfaces for callbacks
+
+    // 🔹8 Interfaces for callbacks
     public interface OnFinanceResult {
         void onResult(double value);
     }
@@ -260,6 +330,7 @@ public class FinanceManager {
     public interface OnFinanceSummary {
         void onSummary(double totalEarned, double partnerReceivable, double companyReceivable);
     }
+
 
     public static Map<String, Double> getNetReceivable(double partnerReceivable, double companyReceivable) {
         Map<String, Double> result = new HashMap<>();

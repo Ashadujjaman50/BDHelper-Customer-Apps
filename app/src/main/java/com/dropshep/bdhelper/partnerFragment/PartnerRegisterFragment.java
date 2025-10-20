@@ -165,7 +165,7 @@ public class PartnerRegisterFragment extends Fragment {
             String timestamp = String.valueOf(System.currentTimeMillis());
             String userId = firebaseUser.getUid();
             String email = firebaseUser.getEmail();
-            double rating = 0.0;
+            double rating = 5.0;
 
             Map<String, Object> userMap = new HashMap<>();
             userMap.put("userId", userId);

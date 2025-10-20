@@ -598,6 +598,9 @@
     <string name="account_no">একাউন্ট নাম্বার দিন</string>
     <string name="account_contact_name">একাউন্টের পরিচিতি নাম</string>
     <string name="use_as_primary_payment_account">প্রাথমিক পেমেন্ট অ্যাকাউন্ট সেট করুন</string>
+    <string name="primary_payment_account">প্রাথমিক পেমেন্ট অ্যাকাউন্ট</string>
+    <string name="withdraw_amount">উত্তোলনের পরিমাণ</string>
+    <string name="i_confirm_this_withdrawa">আমি নিশ্চিত করছি যে, উল্লিখিত তথ্য অনুযায়ী পেমেন্ট উত্তোলন করতে চাই।</string>
     <string name="bKash">বিকাশ</string>
     <string name="nagad">নগদ</string>
     <string name="rocket">রকেট</string>

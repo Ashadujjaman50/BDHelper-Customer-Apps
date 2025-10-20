@@ -1,5 +1,6 @@
 package com.dropshep.bdhelper.partnerFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -62,6 +63,7 @@ public class MoreFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,6 +76,8 @@ public class MoreFragment extends Fragment {
         userId = firebaseAuth.getCurrentUser().getUid();
 
         showCachedBidSummary();
+
+        financeManager = new FinanceManager();
         // 🔹 Partner Finance Summary Load
         if (FinanceCache.isLoaded) {
             FinanceCache.lastUpdated = System.currentTimeMillis();

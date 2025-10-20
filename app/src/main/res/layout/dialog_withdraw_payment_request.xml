@@ -32,132 +32,35 @@
             android:layout_marginBottom="15dp"
             android:background="@color/divider_color" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_payment_method"
-            android:textColor="@color/text_primary"/>
-
-        <RadioGroup
-            android:id="@+id/paymentMethodRG"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:orientation="vertical"
-            app:singleSelection="true">
-
-            <!-- First Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="8dp">
-
-                <!-- bKash -->
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/bkashRB"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_card_selector"
-                    app:buttonTint="@color/radio_button_tint"
-                    android:gravity="center"
-                    android:text="@string/bKash"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:drawableStart="@drawable/ic_mfs_bkash" />
-
-                <Space
-                    android:layout_width="8dp"
-                    android:layout_height="match_parent"/>
-
-                <!-- Nagad -->
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/nagadRB"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_card_selector"
-                    app:buttonTint="@color/radio_button_tint"
-                    android:gravity="center"
-                    android:text="@string/nagad"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:drawableStart="@drawable/ic_mfs_nagad" />
-            </LinearLayout>
-
-            <!-- Second Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <!-- Rocket -->
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/rocketRB"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_card_selector"
-                    app:buttonTint="@color/radio_button_tint"
-                    android:gravity="center"
-                    android:text="@string/rocket"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:drawableStart="@drawable/ic_mfs_rocket" />
-
-                <Space
-                    android:layout_width="8dp"
-                    android:layout_height="match_parent"/>
-
-                <!-- Upay -->
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/upayRB"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_card_selector"
-                    app:buttonTint="@color/radio_button_tint"
-                    android:gravity="center"
-                    android:text="@string/uPay"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:drawableStart="@drawable/ic_mfs_upay" />
-            </LinearLayout>
-
-        </RadioGroup>
-
         <LinearLayout
             android:id="@+id/nameLl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/mobileTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_no" />
+                android:text="@string/primary_payment_account" />
 
-
-            <EditText
+            <TextView
                 android:id="@+id/accountNumberEt"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
                 android:background="@drawable/bg_edit_text"
-                android:drawableStart="@drawable/ic_phone_outline"
-                android:drawablePadding="12dp"
                 android:textSize="16sp"
                 android:hint="@string/account_no"
                 android:inputType="phone"
                 android:paddingStart="12dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:textColorHint="@color/text_secondary"
+                app:drawableStartCompat="@drawable/ic_mfs_bkash"
+                android:drawablePadding="12dp" />
 
         </LinearLayout>
 
@@ -170,55 +73,53 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/account_contact_name" />
+                android:text="@string/withdraw_amount" />
 
             <EditText
-                android:id="@+id/accountTypeEt"
+                android:id="@+id/withdrawAmountEt"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/bg_edit_text"
-                android:drawableStart="@drawable/ic_profile"
+                android:drawableStart="@drawable/ic_taka_symbol"
+                android:drawableTint="@color/icon_color"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:textSize="16sp"
-                android:hint="@string/account_contact_name"
-                android:inputType="text"
+                android:hint="@string/withdraw_amount"
+                android:inputType="numberDecimal"
                 android:paddingStart="12dp"
                 android:paddingEnd="0dp"
                 android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"/>
+                android:textColorHint="@color/text_secondary" />
 
         </LinearLayout>
 
-        <!-- Primary Payment Account Switch -->
+        <!-- ✅ Checkbox for confirming withdrawal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center_vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/primaryAccountSwitch"
+            <CheckBox
+                android:id="@+id/withdrawConfirmCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:thumbTint="@color/radio_button_tint"
-                app:trackTint="@color/radio_button_tint"
-                android:checked="false" />
+                android:paddingStart="0dp"
+                android:paddingEnd="15dp"/>
 
             <TextView
                 android:id="@+id/primaryText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/use_as_primary_payment_account"
+                android:text="@string/i_confirm_this_withdrawa"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
+                android:textSize="15sp"
+                android:paddingStart="6dp" />
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/submitBtn"
@@ -232,7 +133,7 @@
             android:text="@string/submit"
             android:textColor="@color/white"
             android:textAllCaps="false"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 

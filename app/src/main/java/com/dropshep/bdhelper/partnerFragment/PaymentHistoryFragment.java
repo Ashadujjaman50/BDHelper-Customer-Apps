@@ -5,25 +5,32 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
+import com.dropshep.bdhelper.Interface.OnItemClickListener;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.AccountAdapter;
+import com.dropshep.bdhelper.adapter.WithdrawAdapter;
 import com.dropshep.bdhelper.databinding.FragmentPaymentHistoryBinding;
 import com.dropshep.bdhelper.model.AccountModel;
+import com.dropshep.bdhelper.model.WithdrawRequest;
 import com.dropshep.bdhelper.myUtils.FinanceCache;
 import com.dropshep.bdhelper.myUtils.FinanceManager;
 import com.dropshep.bdhelper.myUtils.MyToast;
+import com.dropshep.bdhelper.myUtils.PreloadingDialog;
 import com.dropshep.bdhelper.myUtils.Replacement;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -37,6 +44,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +59,15 @@ public class PaymentHistoryFragment extends Fragment {
 
     private LoadingDialog loadingDialog;
 
-    String accountId, accountName, accountNumber, contactName;
+    PreloadingDialog preloadingDialog;
+
+    String accountName, accountNumber;
+    double partnerEarn;
+
+
+    WithdrawAdapter withdrawAdapter;
+    ArrayList<WithdrawRequest> withdrawRequestArrayList;
+
 
     public PaymentHistoryFragment() {
         // Required empty public constructor
@@ -77,9 +93,14 @@ public class PaymentHistoryFragment extends Fragment {
 
         userId = firebaseAuth.getCurrentUser().getUid();
 
+        financeManager = new FinanceManager();
+
         loadingDialog = new LoadingDialog(getContext());
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setCancelable(false);
+
+        preloadingDialog = new PreloadingDialog(requireContext());
+
 
         // 🔹 Partner Finance Summary Load
         partnerFinanceSummaryLoad();
@@ -87,6 +108,36 @@ public class PaymentHistoryFragment extends Fragment {
 
         //load Default Account
         loadDefaultAccountData();
+
+
+        //load loadWithdrawRequests
+        loadWithdrawRequests();
+
+
+        //Is testing purpose
+        withdrawAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                WithdrawRequest req = withdrawRequestArrayList.get(position);
+                if (req.getStatus().equals("pending")){
+                    FinanceManager fm = new FinanceManager();
+                    fm.approveWithdraw(req.getId(), req.getVendorId(), req.getRequestedAmount());
+                }
+                else {
+                    MyToast.showShort(getContext(),"Already Approve");
+                }
+            }
+
+            @Override
+            public void onShowItemClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteItemClick(int position) {
+
+            }
+        });
 
         binding.withdrawPaymentButton.setOnClickListener(v -> {
             //show Bottom Dialog in Add Payment Method
@@ -116,12 +167,15 @@ public class PaymentHistoryFragment extends Fragment {
             if (owedTo == 1.0) {
                 binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
                 binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                partnerEarn = netAmount;
             } else if (owedTo == 2.0) {
                 binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
                 binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                partnerEarn = 0;
             } else {
                 binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
                 binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                partnerEarn = 0;
             }
 
         }
@@ -139,12 +193,15 @@ public class PaymentHistoryFragment extends Fragment {
                 if (owedTo == 1.0) {
                     binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
                     binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                    partnerEarn = netAmount;
                 } else if (owedTo == 2.0) {
                     binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(netAmount)));
                     binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                    partnerEarn = 0;
                 } else {
                     binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
                     binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                    partnerEarn = 0;
                 }
 
             });
@@ -170,10 +227,8 @@ public class PaymentHistoryFragment extends Fragment {
                         DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
 
                         // 🔹 Account Data Load করো
-                        accountId = doc.getString("accountId");
                         accountName = doc.getString("accountName");
                         accountNumber = doc.getString("accountNumber");
-                        contactName = doc.getString("contactName");
 
                         Log.d("AccountDebug", "✅ Default account loaded: " + accountName);
                     } else {
@@ -185,93 +240,185 @@ public class PaymentHistoryFragment extends Fragment {
                 });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadWithdrawRequests() {
+        withdrawRequestArrayList = new ArrayList<>();
+        withdrawAdapter = new WithdrawAdapter(getContext(), withdrawRequestArrayList);
+        binding.paymentAccountRv.setAdapter(withdrawAdapter);
+
+        preloadingDialog.show();
+
+        db.collection("withdrawRequests")
+                .whereEqualTo("vendorId", userId)
+                .orderBy("requestedAt", Query.Direction.DESCENDING)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    preloadingDialog.dismiss();
+                    if (error != null) {
+                        Log.e("Withdraw Request", "❌ loadWithdrawRequests: " + error.getMessage(), error);
+                        MyToast.showShort(requireContext(), "Failed to load withdraw requests: " + error.getMessage());
+                        return;
+                    }
+
+                    if (querySnapshot != null) {
+                        withdrawRequestArrayList.clear();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            WithdrawRequest request = doc.toObject(WithdrawRequest.class);
+                            if (request != null) {
+                                request.setId(doc.getId()); // 🔹 ডকুমেন্ট আইডি সেট করো
+                                withdrawRequestArrayList.add(request);
+                            }
+                        }
+
+                        // ✅ Empty view handle
+                        if (withdrawRequestArrayList.isEmpty()) {
+                            binding.noPaymentAccountFound.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.noPaymentAccountFound.setVisibility(View.GONE);
+                        }
+
+                        withdrawAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     private void showBottomDialogAddPaymentAccount() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_add_payment_account);
+        bottomSheetDialog.setContentView(R.layout.dialog_withdraw_payment_request);
 
-        MaterialRadioButton bkashRB = bottomSheetDialog.findViewById(R.id.bkashRB);
-        MaterialRadioButton nagadRB = bottomSheetDialog.findViewById(R.id.nagadRB);
-        MaterialRadioButton rocketRB = bottomSheetDialog.findViewById(R.id.rocketRB);
-        MaterialRadioButton upayRB = bottomSheetDialog.findViewById(R.id.upayRB);
 
-        SwitchMaterial primarySwitch = bottomSheetDialog.findViewById(R.id.primaryAccountSwitch);
+        TextView accountNumberEt = bottomSheetDialog.findViewById(R.id.accountNumberEt);
+        EditText withdrawAmountEt = bottomSheetDialog.findViewById(R.id.withdrawAmountEt);
+        CheckBox withdrawConfirmCheckbox = bottomSheetDialog.findViewById(R.id.withdrawConfirmCheckbox);
+
+
         TextView primaryText = bottomSheetDialog.findViewById(R.id.primaryText); // TextView এর id দিন
-        EditText accountNumberEt = bottomSheetDialog.findViewById(R.id.accountNumberEt);
-        EditText accountTypeEt = bottomSheetDialog.findViewById(R.id.accountTypeEt);
         TextView submitBtn = bottomSheetDialog.findViewById(R.id.submitBtn);
 
-        // সব button array তে রাখো
-        MaterialRadioButton[] paymentButtons = {bkashRB, nagadRB, rocketRB, upayRB};
 
-        // প্রতিটি button এ click listener set করো
-        for (MaterialRadioButton rb : paymentButtons) {
-            rb.setOnClickListener(v -> {
-                // click হওয়া button বাদে সব button uncheck করো
-                for (MaterialRadioButton other : paymentButtons) {
-                    if (other != rb) other.setChecked(false);
-                }
-            });
-        }
-
+        assert primaryText != null;
         primaryText.setOnClickListener(v -> {
-            primarySwitch.setChecked(!primarySwitch.isChecked());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setTitle("Withdrawal Terms & Conditions");
+
+            builder.setMessage("Before confirming withdrawal, please note:\n\n" +
+                    "1️⃣ Payment will be processed within 2-3 working days.\n" +
+                    "2️⃣ Ensure your primary account information is correct.\n" +
+                    "3️⃣ Once submitted, withdrawal requests cannot be cancelled.\n" +
+                    "4️⃣ The company reserves the right to review and verify all transactions.\n\n" +
+                    "✅ By confirming, you agree to these terms and conditions.");
+
+            builder.setPositiveButton("Got it", (dialog, which) -> dialog.dismiss());
+            builder.show();
         });
 
+        assert accountNumberEt != null;
+        accountNumberEt.setText(accountNumber);
+
+        switch (accountName) {
+            case "bKash":
+                accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_bkash, 0, 0, 0);
+                break;
+            case "Rocket":
+                accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_rocket, 0, 0, 0);
+                break;
+            case "Nagad":
+                accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_nagad, 0, 0, 0);
+                break;
+            case "Upay":
+                accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_upay, 0, 0, 0);
+                break;
+        }
+
+
+        assert submitBtn != null;
         submitBtn.setOnClickListener(v -> {
-            loadingDialog.setMessage("আপনার একাউন্ট যোগ করা হচ্ছে");
+            loadingDialog.setMessage("আপনার রিকুয়েস্ট সাবমিট হচ্ছে");
 
-
-
-            // 1. Get selected payment method
-            String accountName = "";
-            if (bkashRB.isChecked()) accountName = "bKash";
-            else if (nagadRB.isChecked()) accountName = "Nagad";
-            else if (rocketRB.isChecked()) accountName = "Rocket";
-            else if (upayRB.isChecked()) accountName = "uPay";
-
-            // 2. Get EditText values
             String accountNumber = accountNumberEt.getText().toString().trim();
-            String accountType = accountTypeEt.getText().toString().trim();
+            String withdrawAmountStr = withdrawAmountEt.getText().toString().trim();
 
-            // 3. Get switch value
-            assert primarySwitch != null;
-            boolean isPrimary = primarySwitch.isChecked();
-            String setPrimary = isPrimary ? "Default" : "No";
-
-            // 4. Validation Check
-            if (accountName.isEmpty()) {
-                Toast.makeText(requireContext(), "দয়া করে পেমেন্ট মেথড সিলেক্ট করুন", Toast.LENGTH_SHORT).show();
-                return; // exit click
-            }
-            else if (accountNumber.isEmpty()) {
+            if (accountNumber.isEmpty()) {
                 accountNumberEt.setError("একাউন্ট নাম্বার দিন");
                 accountNumberEt.requestFocus();
                 return;
-            }
-            else if (accountType.isEmpty()) {
-                accountTypeEt.setError("একাউন্টের পরিচিতি নাম দিন");
-                accountTypeEt.requestFocus();
+            } else if (withdrawAmountStr.isEmpty()) {
+                withdrawAmountEt.setError("এমাউন্ট দিন");
+                withdrawAmountEt.requestFocus();
                 return;
             }
 
+            double withdrawAmount;
+            try {
+                withdrawAmount = Double.parseDouble(withdrawAmountStr);
+            } catch (NumberFormatException e) {
+                withdrawAmountEt.setError("সঠিক এমাউন্ট দিন");
+                withdrawAmountEt.requestFocus();
+                return;
+            }
+
+            if (withdrawAmount > partnerEarn) {
+                withdrawAmountEt.setError("আপনার পাওনার চেয়ে বেশি উত্তোলন করা যাবে না");
+                withdrawAmountEt.requestFocus();
+                return;
+            } else if (withdrawAmount <= 0) {
+                withdrawAmountEt.setError("সঠিক এমাউন্ট দিন");
+                withdrawAmountEt.requestFocus();
+                return;
+            } else if (!withdrawConfirmCheckbox.isChecked()) {
+                withdrawConfirmCheckbox.setError("আপনার উত্তোলন নিশ্চিত করুন");
+                MyToast.showShort(requireContext(), "আপনার উত্তোলন নিশ্চিত করুন");
+                return;
+            }
+
+            // ✅ প্রথমে চেক করবে কোনো Pending request আছে কি না
             loadingDialog.show();
+            db.collection("withdrawRequests")
+                    .whereEqualTo("vendorId", userId)
+                    .whereEqualTo("status", "pending")
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            // ⚠️ Pending request already exists
+                            loadingDialog.dismiss();
+                            MyToast.showShort(getContext(), "আপনার একটি Pending রিকুয়েস্ট আছে,\nসেটি সম্পন্ন হওয়ার পর নতুন রিকুয়েস্ট দিতে পারবেন।");
+                        }
+                        else {
+                            // ✅ কোনো Pending request নেই → এখন নতুন request সাবমিট করবে
+                            financeManager.requestWithdraw(userId, withdrawAmount, accountName, accountNumber, new FinanceManager.OnWithdrawResult() {
+                                @Override
+                                public void onSuccess(String docId) {
+                                    withdrawAmountEt.setText("");
+                                    MyToast.showShort(getContext(), "✅ রিকুয়েস্ট সফলভাবে সাবমিট হয়েছে!");
+                                    bottomSheetDialog.dismiss();
+                                    loadingDialog.dismiss();
+                                }
 
-
-            // Create unique document ID
-            String docId = db.collection("users")
-                    .document(userId)
-                    .collection("accounts")
-                    .document()
-                    .getId();
-
-
-
-
+                                @Override
+                                public void onFailure(Exception e) {
+                                    MyToast.showShort(getContext(), "❌ রিকুয়েস্ট সাবমিট ব্যর্থ: " + e.getMessage());
+                                    bottomSheetDialog.dismiss();
+                                    loadingDialog.dismiss();
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
+                        MyToast.showShort(getContext(), "Error checking pending request: " + e.getMessage());
+                    });
         });
+
 
         bottomSheetDialog.show();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        partnerFinanceSummaryLoad();
+    }
 }

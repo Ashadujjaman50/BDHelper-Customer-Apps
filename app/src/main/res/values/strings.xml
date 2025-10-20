@@ -602,6 +602,9 @@
     <string name="account_no">Account number</string>
     <string name="account_contact_name">Account contact name</string>
     <string name="use_as_primary_payment_account">Set default payment account</string>
+    <string name="primary_payment_account">Default payment account</string>
+    <string name="withdraw_amount">Withdraw amount</string>
+    <string name="i_confirm_this_withdrawa">I confirm this withdrawa</string>
     <string name="bKash">bKash</string>
     <string name="nagad">Nagad</string>
     <string name="rocket">Rocket</string>

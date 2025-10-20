@@ -144,18 +144,14 @@
                 android:text="@string/no_payment_history"
                 android:textColor="@color/text_secondary"
                 android:textSize="22sp"
-                android:visibility="visible" />
-
-            <!--Demo-->
-            <include layout="@layout/row_payment_account" />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/paymentAccountRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_payment_account" />
-
+                tools:listitem="@layout/row_withdraw_request" />
 
         </LinearLayout>
 
