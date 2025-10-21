@@ -632,6 +632,11 @@
     <string name="bid_placed_dot">বিড করেছেনঃ </string>
     <string name="company_receivable_dot">কোম্পানি পাবেঃ</string>
 
+    <string name="write_your_review">আপনার মতামত লিখুন</string>
+    <string name="give_your_valuable_feedback">আপনার মূল্যবান মতামত দিন</string>
+    <string name="your_review">আপনার রিভিউ</string>
+
+
     <!--Demo Text-->
     <string name="demo_address_one_title">আগারগাঁও</string>
     <string name="demo_address_one_sub">মিরপুর, ঢাকা সিটি</string>
@@ -1986,5 +1991,6 @@
     <string name="lakhai">লাখাই</string>
     <string name="shaistaganj">শায়েস্তাগঞ্জ</string>
     <string name="habiganj_sadar">হবিগঞ্জ সদর</string>
+    <string name="vendor_profile">Vendor profile</string>
 
 </resources>

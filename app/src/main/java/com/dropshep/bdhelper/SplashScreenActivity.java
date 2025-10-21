@@ -59,6 +59,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         textView.setTypeface(customFont);
 
+
         // ✅ Already logged-in user check
         if (mAuth.getCurrentUser() != null) {
             gotoNextActivity();

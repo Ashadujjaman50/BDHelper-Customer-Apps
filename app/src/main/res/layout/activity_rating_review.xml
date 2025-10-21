@@ -358,6 +358,7 @@
 
                     <!-- Empty State -->
                     <LinearLayout
+                        android:id="@+id/reviewLl"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -386,6 +387,15 @@
                             android:textColor="@color/text_secondary"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewRv"
+                        app:stackFromEnd="true"
+                        app:reverseLayout="true"
+                        tools:listitem="@layout/row_review_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 </LinearLayout>
             </ScrollView>

@@ -25,9 +25,11 @@ import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.dropshep.bdhelper.R;
 import com.dropshep.bdhelper.adapter.BidCustomerAdapter;
 import com.dropshep.bdhelper.adapter.BidPartnerAdapter;
+import com.dropshep.bdhelper.adapter.ReviewAdapter;
 import com.dropshep.bdhelper.databinding.FragmentBidSkilledLaborBinding;
 import com.dropshep.bdhelper.model.BidModel;
 import com.dropshep.bdhelper.model.OrderModel;
+import com.dropshep.bdhelper.model.ReviewModel;
 import com.dropshep.bdhelper.model.ServiceModel;
 import com.dropshep.bdhelper.myUtils.CommonClass;
 import com.dropshep.bdhelper.myUtils.MyToast;
@@ -49,7 +51,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
     private FragmentBidSkilledLaborBinding binding;
 
-    private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type;
+    private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, orderStatus, vendorId;
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
@@ -307,9 +309,10 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
                             // ============ Order Info ============
                             categoryId = order.getOrderInfo().getCategoryId();
-                            String orderStatus = order.getOrderInfo().getStatus();
+                            orderStatus = order.getOrderInfo().getStatus();
                             long timestamp = order.getOrderInfo().getTimestamp();
                             userId = order.getOrderInfo().getUid();
+                            vendorId= order.getBidInfo().getVendorId();
 
                             // ============ Route Info ============
                             String rentArea = order.getRouteInfo().getRentLocation();
@@ -322,6 +325,14 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                             String types = order.getSpecInfo().getTypes();
                             String postDescription = order.getSpecInfo().getDesc();
                             rentTime = order.getRouteInfo().getRentTime();
+
+                            // ✅ যদি user_type customer হয় এবং orderStatus complete/done হয়
+                            if ("customer".equals(user_type) &&
+                                    (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete"))) {
+
+                                // 🔹 রিভিউ ফর্ম লোড করো
+                                loadPartnerReview();
+                            }
 
 
                             // Set icon
@@ -368,6 +379,96 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                     preloadingDialog.dismiss(); // Hide on failure
                     MyToast.showShort(getContext(),"Error: " + e.getMessage());
                 });
+    }
+
+    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
+    private void loadPartnerReview() {
+
+        binding.ratingBar.setOnRatingBarChangeListener( (ratingBar, rating, fromUser) -> {
+            //Rating BAr Count
+            binding.ratingTv.setText(rating+"/5");
+        });
+
+        ArrayList<ReviewModel> reviewList = new ArrayList<>();
+        ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviewList);
+        binding.reviewRv.setAdapter(reviewAdapter);
+
+        db.collection("reviews")
+                .whereEqualTo("orderId", orderId)
+                .whereEqualTo("customerId", currentUserId)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    reviewList.clear();
+                    if (!snapshot.isEmpty()) {
+                        //MyToast.showShort(getContext(), "You have already reviewed this order.");
+
+                        binding.reviewRvCard.setVisibility(View.VISIBLE);
+
+
+                        //recycleView
+                        for (var doc : snapshot.getDocuments()) {
+                            ReviewModel model = doc.toObject(ReviewModel.class);
+                            if (model != null) reviewList.add(model);
+                        }
+                    }
+
+                    reviewAdapter.notifyDataSetChanged();
+
+                    if (reviewList.isEmpty()) {
+                        binding.reviewCard.setVisibility(View.VISIBLE);
+                        binding.reviewRvCard.setVisibility(View.GONE);
+                    }
+                    else {
+                        binding.reviewCard.setVisibility(View.GONE);
+                        binding.reviewRvCard.setVisibility(View.VISIBLE);
+                    }
+
+                });
+
+
+        binding.reviewSubmit.setOnClickListener(v -> {
+            float rating = binding.ratingBar.getRating();
+            String review = binding.customerReviewEt.getText().toString().trim();
+
+            if (rating == 0) {
+                MyToast.showShort(getContext(), "Please give a rating");
+                return;
+            }
+
+            binding.progressBar.setVisibility(View.VISIBLE);
+
+            // 🔹 Generate unique reviewId
+            String reviewId = db.collection("reviews").document().getId();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("reviewId", reviewId);
+            data.put("vendorId", vendorId);            // Partner ID
+            data.put("customerId", currentUserId);     // Customer ID
+            data.put("orderId", orderId);
+            data.put("rating", rating);
+            data.put("review", review);
+            data.put("createdAt", System.currentTimeMillis());
+
+            // 🔹 Save to Firestore with fixed ID
+            db.collection("reviews")
+                    .document(reviewId)
+                    .set(data)
+                    .addOnSuccessListener(aVoid -> {
+                        binding.progressBar.setVisibility(View.GONE);
+                        MyToast.showShort(getContext(), "Review submitted ✅");
+                        loadPartnerReview();
+
+                        // Optional: clear input fields
+                        binding.customerReviewEt.setText("");
+                        binding.ratingBar.setRating(0);
+
+                        binding.reviewCard.setVisibility(View.GONE);
+                        binding.reviewRvCard.setVisibility(View.VISIBLE);
+                    })
+                    .addOnFailureListener(e -> {
+                        MyToast.showShort(getContext(), "Failed: " + e.getMessage());
+                    });
+        });
     }
 
 

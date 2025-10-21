@@ -229,6 +229,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 if ("pending".equals(post.getPaymentInfo().getPayStatus())) {
                     setBidAction(holder, R.string.pay_now, R.drawable.ic_payment, R.drawable.ic_arrow_drop_down);
                 }
+                else {
+                    setBidAction(holder, R.string.review, R.drawable.ic_review, R.drawable.ic_arrow_drop_down);
+                }
                 break;
 
             case "complete":

@@ -32,6 +32,9 @@ public class LogoutHelper {
 
         btnYes.setOnClickListener(v2 -> {
             dialog.dismiss();
+            FinanceManager financeManager = new FinanceManager();
+            financeManager.stopListening();
+
             FirebaseAuth.getInstance().signOut();
 
             Intent intent = new Intent(activity, LoginActivity.class);

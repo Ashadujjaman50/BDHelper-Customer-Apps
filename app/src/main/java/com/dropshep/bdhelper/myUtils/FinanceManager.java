@@ -253,18 +253,10 @@ public class FinanceManager {
     }
 
 
-    // Stop listening (যদি Fragment destroy হয়)
-    public void stopListening() {
-        if (financeListener != null) {
-            financeListener.remove();
-            financeListener = null;
-        }
-    }
-
-
     // 🔹 6️⃣ Calculate Partner Receivable (যেখানে paymentReceiver = company)
+    private ListenerRegistration partnerReceivableListener;
     public void calculatePartnerReceivable(String vendorId, OnFinanceResult callback) {
-        db.collection(COLLECTION_LEDGER)
+        partnerReceivableListener = db.collection(COLLECTION_LEDGER)
                 .whereEqualTo("vendorId", vendorId)
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null || querySnapshot == null) {
@@ -293,8 +285,9 @@ public class FinanceManager {
 
 
     // 🔹 7️⃣ Calculate Company Receivable (যেখানে paymentReceiver = partner)
+    private ListenerRegistration companyReceivableListener;
     public void calculateCompanyReceivable(String vendorId, OnFinanceResult callback) {
-        db.collection(COLLECTION_LEDGER)
+        companyReceivableListener = db.collection(COLLECTION_LEDGER)
                 .whereEqualTo("vendorId", vendorId)
                 .addSnapshotListener((querySnapshot, e) -> {
                     if (e != null || querySnapshot == null) {
@@ -320,6 +313,23 @@ public class FinanceManager {
                     callback.onResult(total);
                 });
     }
+
+    // Stop listening (যদি Fragment destroy হয়)
+    public void stopListening() {
+        if (financeListener != null) {
+            financeListener.remove();
+            financeListener = null;
+        }
+        if (partnerReceivableListener != null) {
+            partnerReceivableListener.remove();
+            partnerReceivableListener = null;
+        }
+        if (companyReceivableListener != null) {
+            companyReceivableListener.remove();
+            companyReceivableListener = null;
+        }
+    }
+
 
 
     // 🔹8 Interfaces for callbacks
