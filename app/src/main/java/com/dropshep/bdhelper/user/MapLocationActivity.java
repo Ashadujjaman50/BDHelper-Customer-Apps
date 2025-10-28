@@ -96,6 +96,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         Places.initialize(this, getString(R.string.google_maps_key));
         placesClient = Places.createClient(this);
         token = AutocompleteSessionToken.newInstance();
+        apiInterface = BarikoiClient.getClient();
 
         // Set up map fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -222,7 +223,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
     private boolean handleGlobalSearch(String queryText) {
         mMap.clear();
 
-        if (queryText != null || !queryText.equals("")) {
+        if (!TextUtils.isEmpty(queryText)) {
 
             Geocoder geocoder = new Geocoder(MapLocationActivity.this);
 
@@ -343,8 +344,6 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
 
     String address, area, city,subDistrict, district;
     private void loadDataList(double lat, double lng) {
-
-        apiInterface = BarikoiClient.getClient();
 
         Call<BarikoiResponse> call = apiInterface.getPlaceInfo(MyUtils.barikoi_api_key, lng, lat,
                 true, // district
