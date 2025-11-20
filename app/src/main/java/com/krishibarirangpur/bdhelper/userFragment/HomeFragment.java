@@ -151,12 +151,12 @@ public class HomeFragment extends Fragment {
 
         binding.shopLl.setOnClickListener(v -> {
             //Shop Coming soon
-            MyToast.showShort(requireActivity(),"Coming soon...");
+            MyToast.showShort(requireContext(),"Coming soon...");
         });
 
         binding.contactUsText.setOnClickListener(v -> {
             //Chat Activity
-            Intent intent = new Intent(requireActivity(), ChatActivity.class);
+            Intent intent = new Intent(requireContext(), ChatActivity.class);
             intent.putExtra("adminID", MyUtils.CHAT_ADMIN_ID);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

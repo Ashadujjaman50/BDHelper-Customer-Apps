@@ -67,7 +67,7 @@ public class VerifyPhoneFragment extends Fragment {
 
         binding.resendBtn.setOnClickListener(v -> {
             // এখানে OTP resend API call করুন
-            MyToast.showShort(requireActivity(),"OTP পুনরায় পাঠানো হচ্ছে...");
+            MyToast.showShort(requireContext(),"OTP পুনরায় পাঠানো হচ্ছে...");
 
             // আবার টাইমার শুরু করুন
             startOtpCountdown();

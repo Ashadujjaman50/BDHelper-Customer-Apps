@@ -390,10 +390,10 @@ public class CustomerRegisterFragment extends Fragment {
                 .document(timestamp)   // timestamp কে documentId হিসেবে ব্যবহার করছ
                 .set(hashMap)
                 .addOnSuccessListener(unused -> {
-                    MyToast.showShort(requireActivity(), "Register successfully....");
+                    MyToast.showShort(requireContext(), "Register successfully....");
                 })
                 .addOnFailureListener(e -> {
-                    MyToast.showShort(requireActivity(), "Failed: " + e.getMessage());
+                    MyToast.showShort(requireContext(), "Failed: " + e.getMessage());
                 });
     }
 
