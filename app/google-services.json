@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:698562556443:android:c8b26d1c844c736a7fbebe",
+        "mobilesdk_app_id": "1:698562556443:android:cead2a188738b0b47fbebe",
         "android_client_info": {
-          "package_name": "com.dropshep.bdhelper"
+          "package_name": "com.krishibarirangpur.bdhelper"
         }
       },
       "oauth_client": [
         {
-          "client_id": "698562556443-6n2b1i43npvogk5ecn2f8csie3qd4k5i.apps.googleusercontent.com",
+          "client_id": "698562556443-5n5vbj6vnuqdf0tcdg8r6lpllpm941qr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.dropshep.bdhelper",
+            "package_name": "com.krishibarirangpur.bdhelper",
             "certificate_hash": "4c83408bc4c019297a25d637da7cfb1c9514983d"
           }
         },

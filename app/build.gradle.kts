@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.dropshep.bdhelper"
+    namespace = "com.krishibarirangpur.bdhelper"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.dropshep.bdhelper"
+        applicationId = "com.krishibarirangpur.bdhelper"
         minSdk = 28
         targetSdk = 36
         versionCode = 1
@@ -38,6 +38,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
     compileOptions {
