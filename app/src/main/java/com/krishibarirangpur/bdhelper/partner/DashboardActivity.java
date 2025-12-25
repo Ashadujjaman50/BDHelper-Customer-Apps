@@ -182,7 +182,7 @@ public class DashboardActivity extends BaseActivity {
             // অন্য tab থাকলে প্রথমে home-এ ফেরত যাও
             backPress = true;
             replaceFragment(new MainFragment());
-            binding.customBottomBar2.getMenu().findItem(R.id.home).setChecked(true);
+            binding.customBottomBar2.getMenu().findItem(R.id.nav_home).setChecked(true);
 
             return true;
         }

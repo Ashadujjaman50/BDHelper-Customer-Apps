@@ -109,7 +109,16 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         }
 
         // 🔹 এখন local format এ দেখাও
-        String finalBidAmount = CommonClass.getRoundedTenPercentValue( bidAmount, 10);
+        String finalBidAmount;
+        if (categoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
+            // HARVESTER_MACHINE_ID হলে: 1000 + 1%
+            String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 1);
+            double calculatedAmount = 1000 + Double.parseDouble(HarvesterAmount);
+            finalBidAmount = String.valueOf(calculatedAmount);
+        }
+        else {
+            finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
+        }
         holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(finalBidAmount)));
 
 

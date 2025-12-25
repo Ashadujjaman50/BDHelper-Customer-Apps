@@ -119,14 +119,14 @@
 
                     </RelativeLayout>
 
-                    <View
+                    <!--<View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginVertical="4dp"
-                        android:background="@color/divider_color"/>
+                        android:background="@color/divider_color"/>-->
 
                     <!-- Category Info Row -->
-                    <RelativeLayout
+                    <!--<RelativeLayout
                         android:id="@+id/categoryInfoRL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                             android:src="@drawable/ic_arrow_right"
                             app:tint="@color/icon_color"/>
 
-                    </RelativeLayout>
+                    </RelativeLayout>-->
 
 
                 </LinearLayout>

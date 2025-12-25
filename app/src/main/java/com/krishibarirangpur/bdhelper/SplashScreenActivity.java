@@ -55,7 +55,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // ✅ Already logged-in user check
         if (mAuth.getCurrentUser() != null) {
-            gotoNextActivity();
+            new Handler().postDelayed(this::gotoNextActivity,2500);
         }
         else {
             new Handler().postDelayed(() -> {
@@ -72,7 +72,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }, 3500);
+            }, 3000);
         }
 
 

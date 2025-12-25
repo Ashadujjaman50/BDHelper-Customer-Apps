@@ -509,7 +509,19 @@ public class CommonClass {
             double amount = Double.parseDouble(amountStr);
 
             // 🔹 নির্দিষ্ট percent অনুযায়ী বাড়ানো
-            double increased = amount + (amount * (percent / 100.0));
+            double addPercent = amount * (percent / 100.0);
+
+            // 🔹 addPercent যদি 100-এর কম হয়
+            if (addPercent < 100) {
+                if (addPercent < 30){
+                    return String.valueOf(amount+20);
+                }
+                else {
+                    return String.valueOf(amount+addPercent);
+                }
+            }
+
+            double increased = amount + addPercent;
 
             // 🔹 শেষ দুই ডিজিট বের করো
             long roundedValue = (long) increased;
@@ -525,7 +537,8 @@ public class CommonClass {
             // 🔹 Local number format এ রিটার্ন করো
             return String.valueOf(roundedValue);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return amountStr;
         }

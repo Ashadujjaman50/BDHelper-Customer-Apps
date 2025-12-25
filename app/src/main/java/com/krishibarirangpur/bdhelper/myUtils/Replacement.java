@@ -175,26 +175,32 @@ public class Replacement {
 
         if ("bn".equals(lang)) {
             String replace = ReplacementNumberEnToBn(number);
-
-            // যদি "জন" না থাকে তাহলে যোগ করো
-            if (!replace.contains("জন")) {
-                replace = replace.trim() + " জন";
+            // যদি number-এ আগেই "person" থাকে, তাকে বাংলা "জন"-এ convert
+            if (replace.toLowerCase().contains("person")) {
+                // ignore case
+                return replace.replaceAll("(?i)person", "জন");
             }
-
-            // যদি ভুলক্রমে "person" থাকে তাহলে সরাও
-            replace = replace.replace("person", "জন");
-            return replace;
+            else if (!replace.contains("জন")) {
+                // যদি "জন" না থাকে, default হিসেবে যোগ করো
+                return replace.trim() + " জন";
+            }
+            else {
+                // যদি number-এ already "জন" থাকে, 그대로 রাখো
+                return replace;
+            }
         } else {
             String replace = ReplacementNumberBnToEn(number);
-
-            // যদি "person" না থাকে তাহলে যোগ করো
-            if (!replace.toLowerCase().contains("person")) {
-                replace = replace.trim() + " person";
+            // English case
+            if (replace.contains("জন")) {
+                // "জন" কে "person"-এ convert
+                return replace.replace("জন", "person");
+            } else if (!replace.toLowerCase().contains("person")) {
+                // যদি "person" না থাকে, default হিসেবে যোগ করো
+                return replace.trim() + " person";
+            } else {
+                // যদি replace-এ already "person" থাকে, 그대로 রাখো
+                return replace;
             }
-
-            // যদি ভুলক্রমে "জন" থাকে তাহলে সরাও
-            replace = replace.replace("জন", "person");
-            return replace;
         }
     }
 

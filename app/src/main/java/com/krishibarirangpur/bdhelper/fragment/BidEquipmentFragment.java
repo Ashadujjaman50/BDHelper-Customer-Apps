@@ -228,9 +228,21 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                     loadingDialog.show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
+
+
+                    String categoryID = bidModel.getOrderInfo().getCategoryId();
+                    String finalBidAmount;
+                    if (categoryID.equals(MyUtils.HARVESTER_MACHINE_ID)){
+                        // HARVESTER_MACHINE_ID হলে: 1000 + 1%
+                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 1);
+                        double calculatedAmount = 1000 + Double.parseDouble(HarvesterAmount);
+                        finalBidAmount = String.valueOf(calculatedAmount);
+                    }
+                    else {
+                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
+                    }
 
                     // ✅ 1️⃣ bidForOrder -> status update
                     db.collection("bidForOrder")
@@ -242,7 +254,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                                 Map<String, Object> bidInfoUpdate = new HashMap<>();
                                 bidInfoUpdate.put("bidInfo.bidId", bidId);
                                 bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(bidModel.getBidInfo().getBidAmount()));
+                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
                                 bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
                                 bidInfoUpdate.put("orderInfo.status", "confirmed");
 

@@ -126,6 +126,8 @@ public class MoreFragment extends Fragment {
         //Load Current Partner info
         loadCurrentPartnerInfo();
 
+        showCachedBidSummary();
+
         /// Show Android Version And Apps Version Name
         binding.applicationVersionTv.setText(CommonClass.showAndroidVersionAndAppVersion(requireActivity()));
 

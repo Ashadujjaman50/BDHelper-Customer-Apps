@@ -294,35 +294,92 @@ public class PaymentAccountFragment extends Fragment {
         Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
         Button btnYes = dialogView.findViewById(R.id.btn_yes);
 
-        btnCancel.setOnClickListener(v1 -> dialog.dismiss());
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v1 -> dialog.dismiss());
+        }
 
-        btnYes.setOnClickListener(v2 -> {
-            AccountModel account = accountList.get(position);
+        if (btnYes != null) {
+            btnYes.setOnClickListener(v2 -> {
+                loadingDialog.setMessage("Deleting account...");
+                loadingDialog.show();
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("paymentAccount")
-                    .document(userId)
-                    .collection("accounts")
-                    .document(account.getAccountId())   // accountId দিয়ে document target করো
-                    .delete()
-                    .addOnSuccessListener(unused -> {
-                        // লোকালি লিস্ট থেকেও রিমুভ করে দাও
-                        accountList.remove(position);
-                        adapter.notifyItemRemoved(position);
+                AccountModel accountToDelete = accountList.get(position);
+
+                // Correct Firestore reference
+                DocumentReference docToDeleteRef = db.collection("users")
+                        .document(userId)
+                        .collection("accounts")
+                        .document(accountToDelete.getAccountId());
+
+                // Check if the account to be deleted is the default one
+                if ("Default".equals(accountToDelete.getIsPrimary())) {
+                    // It's the default account. We need to find a new one.
+                    AccountModel newDefaultAccount = null;
+                    for (AccountModel account : accountList) {
+                        if (!account.getAccountId().equals(accountToDelete.getAccountId())) {
+                            newDefaultAccount = account;
+                            break; // Found a candidate, exit loop
+                        }
+                    }
+
+                    if (newDefaultAccount != null) {
+                        // Another account exists. Set it as default, then delete the old one.
+                        DocumentReference newDefaultRef = db.collection("users")
+                                .document(userId)
+                                .collection("accounts")
+                                .document(newDefaultAccount.getAccountId());
+
+                        WriteBatch batch = db.batch();
+                        batch.update(newDefaultRef, "isPrimary", "Default"); // Set new default
+                        batch.delete(docToDeleteRef); // Delete the old default
+
+                        batch.commit().addOnSuccessListener(unused -> {
+                            loadingDialog.dismiss();
+                            dialog.dismiss();
+                            MyToast.showShort(requireContext(), "Account deleted. New default set.");
+                            loadData(); // Reload all data to ensure consistency
+                        }).addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            dialog.dismiss();
+                            MyToast.showShort(requireContext(), "Operation failed: " + e.getMessage());
+                        });
+                    } else {
+                        // It's the only account in the list. Just delete it.
+                        docToDeleteRef.delete().addOnSuccessListener(unused -> {
+                            loadingDialog.dismiss();
+                            dialog.dismiss();
+                            MyToast.showShort(requireContext(), "Account deleted successfully.");
+                            loadData(); // Reload
+                        }).addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            dialog.dismiss();
+                            MyToast.showShort(requireContext(), "Delete failed: " + e.getMessage());
+                        });
+                    }
+                } else {
+                    // It's not a default account, so just delete it directly.
+                    docToDeleteRef.delete().addOnSuccessListener(unused -> {
+                        loadingDialog.dismiss();
                         dialog.dismiss();
-                        MyToast.showShort(requireContext(), "Account deleted successfully");
-                    })
-                    .addOnFailureListener(e -> {
+                        MyToast.showShort(requireContext(), "Account deleted successfully.");
+                        loadData(); // Reload
+                    }).addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
                         dialog.dismiss();
                         MyToast.showShort(requireContext(), "Delete failed: " + e.getMessage());
                     });
-        });
+                }
+            });
+        }
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setGravity(Gravity.CENTER);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setGravity(Gravity.CENTER);
+        }
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadData() {
@@ -401,7 +458,6 @@ public class PaymentAccountFragment extends Fragment {
 
         submitBtn.setOnClickListener(v -> {
             loadingDialog.setMessage("আপনার একাউন্ট যোগ করা হচ্ছে");
-
 
 
             // 1. Get selected payment method

@@ -225,9 +225,9 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                     loadingDialog.show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
 
                     // ✅ 1️⃣ bidForOrder -> status update
                     db.collection("bidForOrder")
@@ -239,7 +239,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                                 Map<String, Object> bidInfoUpdate = new HashMap<>();
                                 bidInfoUpdate.put("bidInfo.bidId", bidId);
                                 bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(bidModel.getBidInfo().getBidAmount()));
+                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
                                 bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
                                 bidInfoUpdate.put("orderInfo.status", "confirmed");
 
