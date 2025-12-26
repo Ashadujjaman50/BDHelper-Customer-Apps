@@ -86,22 +86,6 @@ public class Replacement {
         return cityCh;
     }
 
-
-    public static String NumberFormatInBangla(double number) {
-        try {
-
-            // ইংরেজি সংখ্যাকে বাংলাদেশি লোকেল ফরম্যাটে নিয়ে আসা
-            NumberFormat formatter = NumberFormat.getInstance(new Locale("bn", "BD"));
-            //formatter.setMinimumFractionDigits(2);
-            //formatter.setMaximumFractionDigits(2);
-
-            return formatter.format(number);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "০";
-        }
-    }
-
     public static String NumberFormatFullTimer(String value) {
         if (Locale.getDefault().getLanguage().equals("bn")) {
             char[] banglaDigits = {'০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'};
@@ -188,7 +172,8 @@ public class Replacement {
                 // যদি number-এ already "জন" থাকে, 그대로 রাখো
                 return replace;
             }
-        } else {
+        }
+        else {
             String replace = ReplacementNumberBnToEn(number);
             // English case
             if (replace.contains("জন")) {
@@ -221,50 +206,26 @@ public class Replacement {
         }
     }
 
-    //------(QTY start)-------//
-    // 🔹 English → Bangla
-    public static String ReplacementQtyEnToBn(String replacement) {
-        replacement = replacement.replace("10", "১০ টি");
-        replacement = replacement.replace("0", "০ টি");
-        replacement = replacement.replace("1", "১ টি");
-        replacement = replacement.replace("2", "২ টি");
-        replacement = replacement.replace("3", "৩ টি");
-        replacement = replacement.replace("4", "৪ টি");
-        replacement = replacement.replace("5", "৫ টি");
-        replacement = replacement.replace("6", "৬ টি");
-        replacement = replacement.replace("7", "৭ টি");
-        replacement = replacement.replace("8", "৮ টি");
-        replacement = replacement.replace("9", "৯ টি");
-        return replacement;
-    }
 
-    // 🔹 Bangla → English
-    public static String ReplacementQtyBnToEn(String replacement) {
-        replacement = replacement.replace("১০ টি","10");
-        replacement = replacement.replace("০ টি","0");
-        replacement = replacement.replace("১ টি","1");
-        replacement = replacement.replace("২ টি","2");
-        replacement = replacement.replace("৩ টি","3");
-        replacement = replacement.replace("৪ টি","4");
-        replacement = replacement.replace("৫ টি","5");
-        replacement = replacement.replace("৬ টি","6");
-        replacement = replacement.replace("৭ টি","7");
-        replacement = replacement.replace("৮ টি","8");
-        replacement = replacement.replace("৯ টি","9");
-        return replacement;
-    }
-
-    // 🔹 Auto Local Method
+    // 🔹 Auto Local Method In Qty
     public static String ReplacementQtyToLocal(Context context, String quantity) {
         String lang = LocaleHelper.getLanguage(context); // en or bn
 
         if ("bn".equals(lang)) {
-            return ReplacementQtyEnToBn(quantity);
+            // আগে যেকোনো "টি" remove করো
+            String clean = quantity.replace("টি", "").trim();
+
+            // number convert
+            String num = ReplacementNumberEnToBn(clean);
+
+            // একবারই " টি" যোগ করো
+            return num + " টি";
         } else {
-            return ReplacementQtyBnToEn(quantity);
+            // BN → EN (আগে "টি" remove)
+            String clean = quantity.replace("টি", "").trim();
+            return ReplacementNumberBnToEn(clean);
         }
     }
-    //------(QTY End)-------//
 
 
     // 🔹 Dynamic minutes in local
