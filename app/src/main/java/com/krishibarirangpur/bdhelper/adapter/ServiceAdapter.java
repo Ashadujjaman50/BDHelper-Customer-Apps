@@ -17,8 +17,8 @@ import com.bumptech.glide.Glide;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.List;
 

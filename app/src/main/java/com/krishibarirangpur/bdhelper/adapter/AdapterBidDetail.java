@@ -21,9 +21,9 @@ import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
 
@@ -96,7 +96,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         holder.orderIdTv.setText(context.getString(R.string.order_no_dot) + " " + orderId);
 
         holder.postImage.setImageResource(CommonClass.getIconForSubCategory(subCategoryId));
-        holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+        holder.postNameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
 
 
         //get order info by OrderID

@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivitySettingBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.krishibarirangpur.bdhelper.partnerFragment.SettingFragment;
 
 public class SettingActivity extends BaseActivity {

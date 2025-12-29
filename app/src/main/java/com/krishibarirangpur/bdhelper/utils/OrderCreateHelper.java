@@ -1,9 +1,9 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrderHelper {
+public class OrderCreateHelper {
 
     public static Map<String, Object> createOrder(
             String orderId,

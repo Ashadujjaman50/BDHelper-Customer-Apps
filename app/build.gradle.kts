@@ -71,6 +71,8 @@ dependencies {
 
     //slider
     implementation(libs.autoimageslider)
+    //Swipe Decorator
+    implementation(libs.swipe.decorator)
 
     //Google maps activity
     implementation (libs.google.play.services.maps)

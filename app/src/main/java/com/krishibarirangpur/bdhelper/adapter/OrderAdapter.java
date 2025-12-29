@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +89,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         holder.postedDate.setText(CommonClass.formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
 
         // ============ Common Info ============
-        holder.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+        holder.postNameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
         holder.orderIdTv.setText(orderId);
         holder.loadLocation.setText(loadLocation);
         holder.unLoadLocation.setText(unLoadLocation);
@@ -115,20 +115,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         switch (subCategoryId) {
             case MyUtils.SUB_MICROBUS_ID:
             case MyUtils.SUB_AMBULANCE_ID:
-                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(subCategoryId));
+                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(context, subCategoryId));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.category_and_trip));
                 holder.typesTv.setText(types);
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             case MyUtils.SUB_EXCAVATOR_ID:
             case MyUtils.SUB_RICE_TRANSPLANTER_ID:
-                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(subCategoryId));
+                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(context, subCategoryId));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.size_and_trip));
                 holder.typesTv.setText(types);
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             case MyUtils.SUB_TRACTOR_ID:
-                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(subCategoryId));
+                holder.serviceNameTV.setText(CommonClass.getSubCategoryName(context, subCategoryId));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.tractor_brand_trip_dot));
                 holder.typesTv.setText(types);
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));

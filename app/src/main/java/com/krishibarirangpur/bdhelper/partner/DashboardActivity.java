@@ -15,15 +15,15 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityDashboardBinding;
 import com.krishibarirangpur.bdhelper.fragment.HelpFragment;
 import com.krishibarirangpur.bdhelper.model.BidSummary;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.CacheManager;
-import com.krishibarirangpur.bdhelper.myUtils.FinanceCache;
-import com.krishibarirangpur.bdhelper.myUtils.FinanceManager;
-import com.krishibarirangpur.bdhelper.myUtils.NetworkUtils;
-import com.krishibarirangpur.bdhelper.myUtils.NoInternetDialog;
-import com.krishibarirangpur.bdhelper.myUtils.NotificationPermissionHelper;
-import com.krishibarirangpur.bdhelper.myUtils.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.CacheManager;
+import com.krishibarirangpur.bdhelper.utils.FinanceCache;
+import com.krishibarirangpur.bdhelper.utils.FinanceManager;
+import com.krishibarirangpur.bdhelper.utils.NetworkUtils;
+import com.krishibarirangpur.bdhelper.utils.NoInternetDialog;
+import com.krishibarirangpur.bdhelper.utils.NotificationPermissionHelper;
+import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.krishibarirangpur.bdhelper.partnerFragment.MainFragment;
 import com.krishibarirangpur.bdhelper.partnerFragment.MoreFragment;
 import com.krishibarirangpur.bdhelper.partnerFragment.RentFragment;
@@ -140,6 +140,7 @@ public class DashboardActivity extends BaseActivity {
                             rentTime = Long.parseLong(rentTimeStr != null ? rentTimeStr : "0");
                         } catch (NumberFormatException ignored) {}
 
+                        //Log.d("preloadVendorBidSummary", "Status: "+status);
                         if ("confirmed".equals(status) || "done".equals(status)) {
                             successCount++;
                         } else if ("pending".equals(status) && rentTime < todayMillis) {

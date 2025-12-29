@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 
 import android.annotation.SuppressLint;
@@ -61,8 +61,6 @@ public class CommonClass {
         }
     }
 
-
-
     public static String showAndroidVersionAndAppVersion(Activity activity) {
         String versionText = null;
         try {
@@ -81,8 +79,6 @@ public class CommonClass {
         }
         return  versionText;
     }
-    
-    
 
     public interface DateTimeCallback {
         void onDateTimeSelected(String displayDateTime, String returnDateTime, long millis);
@@ -259,37 +255,42 @@ public class CommonClass {
     }
 
     //Helper subCategory Id to String subCategory Name
-    public static int getSubCategoryName(String subCategoryId) {
+    public static String getSubCategoryName(Context context, String subCategoryId) {
+        int resId;
+
         switch (subCategoryId) {
-            case MyUtils.SUB_TRUCK_ID: return R.string.truck;
-            case MyUtils.SUB_PICKUP_ID: return R.string.pickup;
-            case MyUtils.SUB_COVERED_VAN_ID: return R.string.coveredvan;
-            case MyUtils.SUB_TRAILER_ID: return R.string.trailer;
-            case MyUtils.SUB_LOW_BED_ID: return R.string.low_bed;
-            case MyUtils.SUB_FREEZER_VAN_ID: return R.string.freezervan;
-            case MyUtils.SUB_DUMP_TRUCK_ID: return R.string.dump_truck;
-            case MyUtils.SUB_CHARGER_VAN_ID: return R.string.charger_van;
+            case MyUtils.SUB_TRUCK_ID: resId = R.string.truck; break;
+            case MyUtils.SUB_PICKUP_ID: resId = R.string.pickup; break;
+            case MyUtils.SUB_COVERED_VAN_ID: resId = R.string.coveredvan; break;
+            case MyUtils.SUB_TRAILER_ID: resId = R.string.trailer; break;
+            case MyUtils.SUB_LOW_BED_ID: resId = R.string.low_bed; break;
+            case MyUtils.SUB_FREEZER_VAN_ID: resId = R.string.freezervan; break;
+            case MyUtils.SUB_DUMP_TRUCK_ID: resId = R.string.dump_truck; break;
+            case MyUtils.SUB_CHARGER_VAN_ID: resId = R.string.charger_van; break;
 
-            case MyUtils.SUB_CAR_ID: return R.string.car;
-            case MyUtils.SUB_MICROBUS_ID: return R.string.microbus;
-            case MyUtils.SUB_AMBULANCE_ID: return R.string.ambulance;
+            case MyUtils.SUB_CAR_ID: resId = R.string.car; break;
+            case MyUtils.SUB_MICROBUS_ID: resId = R.string.microbus; break;
+            case MyUtils.SUB_AMBULANCE_ID: resId = R.string.ambulance; break;
 
-            case MyUtils.HOME_SHIFTING_ID: return R.string.home_office_shifting;
+            case MyUtils.HOME_SHIFTING_ID: resId = R.string.home_office_shifting; break;
 
-            case MyUtils.SUB_EXCAVATOR_ID: return R.string.excavator;
-            case MyUtils.SUB_RICE_TRANSPLANTER_ID: return R.string.rice_transplanter;
-            case MyUtils.SUB_TRACTOR_ID: return R.string.tractor;
-            case MyUtils.HARVESTER_MACHINE_ID: return R.string.harvester;
+            case MyUtils.SUB_EXCAVATOR_ID: resId = R.string.excavator; break;
+            case MyUtils.SUB_RICE_TRANSPLANTER_ID: resId = R.string.rice_transplanter; break;
+            case MyUtils.SUB_TRACTOR_ID: resId = R.string.tractor; break;
+            case MyUtils.HARVESTER_MACHINE_ID: resId = R.string.harvester; break;
 
-            case MyUtils.SUB_DRIVER_ID: return R.string.driver;
-            case MyUtils.SUB_MECHANIC_ID: return R.string.mechanic;
-            case MyUtils.SUB_ELECTRICIAN_ID: return R.string.electrician;
-            case MyUtils.SUB_STOVE_TECHNICIAN_ID: return R.string.stove_mechanic;
-            case MyUtils.SUB_PLUMBER_ID: return R.string.plumber;
+            case MyUtils.SUB_DRIVER_ID: resId = R.string.driver; break;
+            case MyUtils.SUB_MECHANIC_ID: resId = R.string.mechanic; break;
+            case MyUtils.SUB_ELECTRICIAN_ID: resId = R.string.electrician; break;
+            case MyUtils.SUB_STOVE_TECHNICIAN_ID: resId = R.string.stove_mechanic; break;
+            case MyUtils.SUB_PLUMBER_ID: resId = R.string.plumber; break;
 
-            default: return R.string.app_name;
+            default: resId = R.string.app_name;
         }
+
+        return context.getString(resId);
     }
+
 
     // Helper method to get correct drawable for subCategory
     public static int getIconForSubCategory(String subCategoryId) {
@@ -543,9 +544,6 @@ public class CommonClass {
             return amountStr;
         }
     }
-
-
-
 
 
     /** ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅

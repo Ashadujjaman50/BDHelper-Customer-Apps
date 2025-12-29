@@ -7,10 +7,10 @@ import androidx.databinding.DataBindingUtil;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityUserTypeSelectionBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 
 public class UserTypeSelectionActivity extends BaseActivity {
 

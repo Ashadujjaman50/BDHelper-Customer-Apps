@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 import android.net.Uri;
 import android.util.Log;

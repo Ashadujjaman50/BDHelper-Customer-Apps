@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.AccountModel;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.List;
 import java.util.Objects;

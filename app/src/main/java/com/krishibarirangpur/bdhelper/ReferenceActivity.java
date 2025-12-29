@@ -1,5 +1,6 @@
 package com.krishibarirangpur.bdhelper;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,9 +11,9 @@ import android.text.TextUtils;
 import androidx.databinding.DataBindingUtil;
 
 import com.krishibarirangpur.bdhelper.databinding.ActivityReferenceBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,7 +23,7 @@ public class ReferenceActivity extends BaseActivity {
 
     private ActivityReferenceBinding binding;
 
-    String referralCode,referralId;
+    String referralId;
 
 
     private ListenerRegistration referralListener;
@@ -41,13 +42,11 @@ public class ReferenceActivity extends BaseActivity {
         //load Current User referral code
         loadUserReferralCode();
 
-
-
         binding.copyBtn.setOnClickListener(v -> {
             referralId = binding.referIdTv.getText().toString().trim();
             if (!referralId.isEmpty()) {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Refer ID", referralCode);
+                ClipData clip = ClipData.newPlainText("Refer ID", referralId);
                 clipboard.setPrimaryClip(clip);
 
                 MyToast.snackBar(v, "Refer code successfully copied");
@@ -73,6 +72,7 @@ public class ReferenceActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadUserReferralCode() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) return;

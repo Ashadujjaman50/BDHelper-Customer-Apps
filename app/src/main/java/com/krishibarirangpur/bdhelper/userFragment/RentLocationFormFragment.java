@@ -26,11 +26,12 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentRentLocationFormBinding;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.OrderHelper;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.OrderCreateHelper;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.user.AddressActivity;
 import com.krishibarirangpur.bdhelper.user.SubCategoryActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -549,7 +550,7 @@ public class RentLocationFormFragment extends Fragment {
                 new CommonClass.OrderIdCallback() {
             @Override
             public void onSuccess(String orderId) {
-                Map<String, Object> order = OrderHelper.createOrder(
+                Map<String, Object> order = OrderCreateHelper.createOrder(
                         orderId,
                         userId,
                         userName,
@@ -568,6 +569,7 @@ public class RentLocationFormFragment extends Fragment {
                         postDistrict
                 );
 
+
                 db.collection("orders")
                         .document(orderId)
                         .set(order)
@@ -577,6 +579,16 @@ public class RentLocationFormFragment extends Fragment {
 
                             binding.mainBodyLl.setVisibility(View.GONE);
                             binding.donePostRent.setVisibility(View.VISIBLE);
+
+                            //Send Custom Notice
+                            sendCustomNotice(
+                                    userId,
+                                    orderId,
+                                    subCategoryId,
+                                    rentDateAndTime,
+                                    quantity
+                            );
+
                             new Handler().postDelayed(()->{
                                 // ✅ Submit Success হলে
                                 Intent intent;
@@ -611,7 +623,41 @@ public class RentLocationFormFragment extends Fragment {
             }
         });
 
+    }
 
+    private void sendCustomNotice( String currentUserId, String orderId, String subCategoryId, String rentDateAndTime,String quantity) {
+
+        String sender = MyUtils.NOTICE_SENDER_CUSTOMER;
+        String subCatName = CommonClass.getSubCategoryName(requireContext(), subCategoryId);
+        String noticeType = MyUtils.NOTICE_TYPE_POST;
+        String date = CommonClass.formatTime(rentDateAndTime, "dd MMMM");
+        String qty = Replacement.ReplacementNumberEnToBn(quantity)+ " টি";
+
+        String dec = "“" + rentLocation +"” এ " + qty+ " " + subCatName +" লাগবে ";
+        //dec = dec.replace("person", "জন");
+
+        String messageForUser = dec;
+        String messageForAdmin = date +" " + dec;
+
+        // 🔹 Send to User
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_PARTNER,
+                orderId,
+                messageForUser
+        );
+
+        // 🔹 Send to Admin
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_ADMIN,
+                orderId,
+                messageForAdmin
+        );
     }
 
 }

@@ -18,7 +18,7 @@ import com.krishibarirangpur.bdhelper.ChatActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.SliderAdapterAuto;
 import com.krishibarirangpur.bdhelper.model.SlideImage;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.user.ServiceRequestActivity;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHelpBinding;
 import com.google.firebase.firestore.DocumentSnapshot;

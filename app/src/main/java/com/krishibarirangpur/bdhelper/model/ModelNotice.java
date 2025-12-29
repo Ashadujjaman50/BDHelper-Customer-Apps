@@ -2,18 +2,18 @@ package com.krishibarirangpur.bdhelper.model;
 
 public class ModelNotice {
 
-    private String noticeId, sendUserId, receivedUserId, senderType, postId, noticeCategory,
+    private String noticeId, sendUserId, receivedUserId, senderType, orderId, noticeCategory,
             noticeTitle, postDistrict, noticeDescription, timestamp;
 
     public ModelNotice() {
     }
 
-    public ModelNotice(String noticeId, String sendUserId, String receivedUserId, String senderType, String postId, String noticeCategory, String noticeTitle, String postDistrict, String noticeDescription, String timestamp) {
+    public ModelNotice(String noticeId, String sendUserId, String receivedUserId, String senderType, String orderId, String noticeCategory, String noticeTitle, String postDistrict, String noticeDescription, String timestamp) {
         this.noticeId = noticeId;
         this.sendUserId = sendUserId;
         this.receivedUserId = receivedUserId;
         this.senderType = senderType;
-        this.postId = postId;
+        this.orderId = orderId;
         this.noticeCategory = noticeCategory;
         this.noticeTitle = noticeTitle;
         this.postDistrict = postDistrict;
@@ -53,12 +53,12 @@ public class ModelNotice {
         this.senderType = senderType;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getNoticeCategory() {

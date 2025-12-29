@@ -12,9 +12,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.ViewPagerProductAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityProductBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.android.material.tabs.TabLayout;
 
 public class ProductActivity extends BaseActivity {

@@ -14,9 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.krishibarirangpur.bdhelper.databinding.ActivityPermissionBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.PermissionUtil;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.PermissionUtil;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 
 public class PermissionActivity extends BaseActivity {
 

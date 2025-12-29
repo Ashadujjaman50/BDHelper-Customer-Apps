@@ -26,11 +26,11 @@ import android.widget.Toast;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.adapter.DistrictAdapter;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.LocaleHelper;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.user.MainActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentCustomerRegisterBinding;
@@ -247,14 +247,14 @@ public class CustomerRegisterFragment extends Fragment {
                                         referralMap.put("createdAt", FieldValue.serverTimestamp());
 
                                         db.collection("referrals").add(referralMap);
-                                        notification("Refer", referrerId, inputReferralCode);
+                                        customNoticeSend(false, referrerId, inputReferralCode);
                                     }
                                 });
                     }
 
                     prefHelper.remove("userSignWith");
                     loadingDialog.dismiss();
-                    notification("Welcome", newUserId,  userMap.get("district"));
+                    customNoticeSend(true, newUserId,  userMap.get("district"));
                     gotoNextActivity();
 
                 })
@@ -357,44 +357,28 @@ public class CustomerRegisterFragment extends Fragment {
         return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private void notification(String type, String userId, Object msg) {
+    private void customNoticeSend(boolean firstLogin, String userId, Object referCode) {
         //When Successfully rent post submit then Notice Vendor apps
-        String timestamp = "" + System.currentTimeMillis();
-        long noticeId = System.currentTimeMillis();
 
-        String description, title;
-        if (type.equals("Welcome")){
-            title= "Welcome";
-            description = "অ্যাপ এ রেজিস্ট্রেশন করে যুক্ত হওয়ায় আপনাকে স্বাগতম";
+        String noticeType, msg;
+        if (firstLogin){
+            msg = "অ্যাপ এ রেজিস্ট্রেশন করে যুক্ত হওয়ায় আপনাকে স্বাগতম";
+            noticeType = MyUtils.NOTICE_TYPE_WELCOME;
         }
         else {
-            title = "নতুন রেফারেল পেয়েছেন";
-            description = "আপনার রেফারেল কোড "+msg+ " ব্যবহার করে একজন রেজিস্ট্রেশন করেছে।";
+            msg = "আপনার রেফারেল কোড "+referCode+ " ব্যবহার করে একজন রেজিস্ট্রেশন করেছে।";
+            noticeType = MyUtils.NOTICE_TYPE_REFERRAL;
         }
 
+        NoticeSend.sendNotice(
+                MyUtils.NOTICE_SENDER_ADMIN,
+                noticeType,
+                "",
+                userId,
+                "",
+                msg
+        );
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("noticeId", String.valueOf(noticeId + 1000));
-        hashMap.put("sendUserId", "");
-        hashMap.put("receivedUserId", userId);
-        hashMap.put("senderType", "admin");
-        hashMap.put("postId", timestamp);
-        hashMap.put("noticeCategory", "Customer Account create");
-        hashMap.put("noticeTitle", title);
-        hashMap.put("postDistrict", "");
-        hashMap.put("noticeDescription", description);
-        hashMap.put("timestamp", timestamp);
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("Notice")
-                .document(timestamp)   // timestamp কে documentId হিসেবে ব্যবহার করছ
-                .set(hashMap)
-                .addOnSuccessListener(unused -> {
-                    MyToast.showShort(requireContext(), "Register successfully....");
-                })
-                .addOnFailureListener(e -> {
-                    MyToast.showShort(requireContext(), "Failed: " + e.getMessage());
-                });
     }
 
 

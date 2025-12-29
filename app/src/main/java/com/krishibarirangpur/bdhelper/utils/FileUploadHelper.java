@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 import android.Manifest;
 import android.content.Context;
@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileUploadHelper {
-
 
     public static boolean checkAndRequestCameraPermissions(Activity activity, int requestCodeCamera) {
         boolean cameraPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)

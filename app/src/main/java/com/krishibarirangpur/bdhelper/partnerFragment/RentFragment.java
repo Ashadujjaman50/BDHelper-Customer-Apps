@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -64,6 +65,7 @@ public class RentFragment extends Fragment {
         //notification  Activity
         binding.notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), NotificationActivity.class);
+            intent.putExtra(MyUtils.USER_TYPE ,MyUtils.NOTICE_RECEIVER_PARTNER);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });

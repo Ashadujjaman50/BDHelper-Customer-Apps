@@ -23,8 +23,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHomeBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
 import com.krishibarirangpur.bdhelper.model.SlideImage;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.user.AddressActivity;
 import com.krishibarirangpur.bdhelper.user.SubCategoryActivity;
 import com.krishibarirangpur.bdhelper.user.TrendingCategoryActivity;
@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
         //notification  Activity
         binding.notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), NotificationActivity.class);
+            intent.putExtra(MyUtils.USER_TYPE ,MyUtils.NOTICE_RECEIVER_CUSTOMER);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -231,10 +232,10 @@ public class HomeFragment extends Fragment {
                                             ModelNotice modelNotice = doc.toObject(ModelNotice.class);
                                             assert receivedUserId != null;
                                             if ((receivedUserId.equals(currentUserId) ||
-                                                    receivedUserId.equals("all") ||
-                                                    receivedUserId.equals("customer"))) {
+                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_ALL) ||
+                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_CUSTOMER))) {
                                                 assert senderType != null;
-                                                if (senderType.equals("admin") || senderType.equals("vendor")) {
+                                                if (senderType.equals(MyUtils.NOTICE_SENDER_ADMIN) || senderType.equals(MyUtils.NOTICE_SENDER_PARTNER)) {
 
                                                     noticeArrayList.add(modelNotice);
                                                 }

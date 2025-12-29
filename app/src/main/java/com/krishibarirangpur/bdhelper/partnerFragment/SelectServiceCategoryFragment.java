@@ -18,7 +18,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.AdapterSubCategory;
 import com.krishibarirangpur.bdhelper.databinding.FragmentSelectServiceCategoryBinding;
 import com.krishibarirangpur.bdhelper.model.ModelSubCategory;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,8 +6,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.krishibarirangpur.bdhelper.databinding.ActivityEditProfileBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.krishibarirangpur.bdhelper.partnerFragment.EditPartnerProfileFragment;
 import com.krishibarirangpur.bdhelper.userFragment.EditUserProfileFragment;
 

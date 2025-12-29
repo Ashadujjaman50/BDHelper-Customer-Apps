@@ -23,10 +23,10 @@ import com.krishibarirangpur.bdhelper.api.BarikoiApiService;
 import com.krishibarirangpur.bdhelper.api.BarikoiClient;
 import com.krishibarirangpur.bdhelper.api.SearchAutoCompleteResponse;
 import com.krishibarirangpur.bdhelper.databinding.ActivityAddressBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -22,8 +22,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentMainBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
 import com.krishibarirangpur.bdhelper.model.SlideImage;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.krishibarirangpur.bdhelper.partner.OrderRentActivity;
 import com.krishibarirangpur.bdhelper.partner.ProductActivity;
@@ -83,6 +83,7 @@ public class MainFragment extends Fragment {
         //notification  Activity
         binding.notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), NotificationActivity.class);
+            intent.putExtra(MyUtils.USER_TYPE ,MyUtils.NOTICE_RECEIVER_PARTNER);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -91,7 +92,7 @@ public class MainFragment extends Fragment {
         binding.successBidLL.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), BidActivity.class);
             intent.putExtra(MyUtils.bidAction,"confirmed");
-            intent.putExtra("user_type", "partner");
+            intent.putExtra(MyUtils.USER_TYPE, "partner");
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -100,7 +101,7 @@ public class MainFragment extends Fragment {
         binding.pendingBidLL.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), BidActivity.class);
             intent.putExtra(MyUtils.bidAction,"pending");
-            intent.putExtra("user_type", "partner");
+            intent.putExtra(MyUtils.USER_TYPE, "partner");
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -174,10 +175,10 @@ public class MainFragment extends Fragment {
                                             ModelNotice modelNotice = doc.toObject(ModelNotice.class);
                                             assert receivedUserId != null;
                                             if ((receivedUserId.equals(currentUserId) ||
-                                                    receivedUserId.equals("all") ||
-                                                    receivedUserId.equals("customer"))) {
+                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_ALL) ||
+                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_PARTNER))) {
                                                 assert senderType != null;
-                                                if (senderType.equals("admin") || senderType.equals("vendor")) {
+                                                if (senderType.equals(MyUtils.NOTICE_SENDER_ADMIN) || senderType.equals(MyUtils.NOTICE_SENDER_CUSTOMER)) {
 
                                                     noticeArrayList.add(modelNotice);
                                                 }

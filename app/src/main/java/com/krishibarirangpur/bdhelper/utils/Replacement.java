@@ -1,8 +1,8 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 import android.content.Context;
 
-import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 
@@ -29,36 +29,15 @@ public class Replacement {
         String[] parts = address.split("\\s*,\\s*");  // Comma দিয়ে স্প্লিট করে ফেলছি
         LinkedHashSet<String> uniqueParts = new LinkedHashSet<>();
 
-        for (String part : parts) {
-            uniqueParts.add(part);  // ডুপ্লিকেট হলে add হবে না
-        }
+        Collections.addAll(uniqueParts, parts);
 
         return String.join(", ", uniqueParts);
     }
 
-    public static String cleanAddress(String address) {
-        // Step 1: Remove redundant commas
-        address = address.replace(", , ,", ",");
-        address = address.replace(", ,", ",");
-        address = address.replace(",,", ",");
 
-        // Step 2: Remove duplicate parts
-        String[] parts = address.split("\\s*,\\s*");  // Split by comma
-        LinkedHashSet<String> uniqueParts = new LinkedHashSet<>();
+    public static boolean cityCheck( String cityName){
 
-        for (String part : parts) {
-            if (!part.trim().isEmpty()) {
-                uniqueParts.add(part.trim());  // Maintain order, avoid duplicates
-            }
-        }
-
-        // Step 3: Join back into a cleaned string
-        return String.join(", ", uniqueParts);
-    }
-
-    public static boolean cityCheck(boolean cityCh, String cityName){
-
-        cityCh = false;
+        boolean cityCh = false;
 
         switch (cityName){
             case "Dhaka":
@@ -79,7 +58,6 @@ public class Replacement {
             }
             break;
             default:
-                cityCh = false;
                 break;
         }
 
@@ -194,16 +172,16 @@ public class Replacement {
     public static String ReplacementExperienceInLocal(Context context, String number){
         String lang = LocaleHelper.getLanguage(context); // en or bn
 
+        String replace;
         if ("bn".equals(lang)){
-            String replace = ReplacementNumberEnToBn(number);
+            replace = ReplacementNumberEnToBn(number);
             replace = replace.replace("Year", "বছর");
-            return replace;
         }
         else {
-            String replace = ReplacementNumberBnToEn(number);
+            replace = ReplacementNumberBnToEn(number);
             replace = replace.replace( "বছর", "Year");
-            return replace;
         }
+        return replace;
     }
 
 
@@ -211,9 +189,9 @@ public class Replacement {
     public static String ReplacementQtyToLocal(Context context, String quantity) {
         String lang = LocaleHelper.getLanguage(context); // en or bn
 
+        String clean = quantity.replace("টি", "").trim();
         if ("bn".equals(lang)) {
             // আগে যেকোনো "টি" remove করো
-            String clean = quantity.replace("টি", "").trim();
 
             // number convert
             String num = ReplacementNumberEnToBn(clean);
@@ -222,7 +200,6 @@ public class Replacement {
             return num + " টি";
         } else {
             // BN → EN (আগে "টি" remove)
-            String clean = quantity.replace("টি", "").trim();
             return ReplacementNumberBnToEn(clean);
         }
     }

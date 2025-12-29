@@ -31,11 +31,12 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.PreloadingDialog;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -246,6 +247,11 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                                         .update(bidInfoUpdate)
                                         .addOnSuccessListener(unused -> {
                                             loadingDialog.dismiss();
+
+                                            //Send Custom Notice
+                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
+                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
+
                                             MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
                                             Log.d("ConfirmOrder", "Order & Bid updated successfully.");
                                             loadCurrentOrderBid();
@@ -340,7 +346,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
                             // Example: binding data
                             binding.orderIdTv.setText(orderId);
-                            binding.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+                            binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
                             binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
 
                             binding.locationNameTv.setText(CommonClass.formatAddress(rentArea).first);
@@ -633,6 +639,11 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                     loadingDialog.dismiss();
                     binding.bottomPart.setVisibility(View.GONE);
 
+                    //Custome Notice Send
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, 5);
+                    sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+
+
                     loadCurrentPartnerBid();
                 })
                 .addOnFailureListener(e->{
@@ -643,6 +654,51 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                 });
 
 
+    }
+
+    private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
+
+        String sender;
+        String messageForUser;
+        String messageForAdmin;
+
+        if ("partner".equals(user_type)) {
+            sender = MyUtils.NOTICE_SENDER_PARTNER;
+
+            String subCatName = CommonClass.getSubCategoryName(requireContext(), subCategoryId);
+            String cleanAmount = bidAmount.replace(".0", "");
+            String bnAmount = Replacement.ReplacementNumberEnToBn(cleanAmount);
+
+            messageForUser = "একজন " + subCatName + " পার্টনার " + bnAmount + "/= বিড করেছেন।";
+            messageForAdmin = messageForUser; // same message
+
+        }
+        else {
+            sender = MyUtils.NOTICE_SENDER_CUSTOMER;
+
+            messageForUser = "কাস্টমার আপনার করা বিড কনফার্ম করেছেন।";
+            messageForAdmin = "অর্ডার " + orderId + " এর বিড কনফার্ম হয়েছে।";
+        }
+
+        // 🔹 Send to User
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                userId,
+                orderId,
+                messageForUser
+        );
+
+        // 🔹 Send to Admin
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_ADMIN,
+                orderId,
+                messageForAdmin
+        );
     }
 
 

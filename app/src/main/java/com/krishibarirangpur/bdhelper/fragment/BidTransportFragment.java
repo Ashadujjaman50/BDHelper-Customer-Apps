@@ -31,11 +31,12 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.PreloadingDialog;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -224,12 +225,14 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
                 btnConfirm.setOnClickListener(v2 -> {
                     dialog.dismiss();
-                    loadingDialog.show();
+                    //loadingDialog.show();
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
                     String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
+
+
 
                     db.collection("bidForOrder")
                             .document(bidId)
@@ -247,6 +250,11 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                                         .update(bidInfoUpdate)
                                         .addOnSuccessListener(unused -> {
                                             loadingDialog.dismiss();
+
+                                            //Send Custom Notice
+                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
+                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
+
                                             MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
                                             getCurrentOrderInfo();
                                         })
@@ -334,7 +342,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
                             // Example: binding data
                             binding.orderIdTv.setText(orderId);
-                            binding.postNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+                            binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
                             binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
 
                             binding.postLoadLocation.setText(CommonClass.formatAddress(loadLocation).first);
@@ -589,9 +597,8 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void dataUploadInDatabase(ServiceModel model) {
-        loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
+        loadingDialog.setMessage("বিড সাবমিট হচ্ছে...");
         loadingDialog.show();
-
 
         String bidAmount = binding.amountEt.getText().toString().trim();
         String modelName = model.getServiceModelNumber();
@@ -636,6 +643,10 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                     loadingDialog.dismiss();
                     binding.bottomPart.setVisibility(View.GONE);
 
+                    //Custome Notice Send
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, 10);
+                    sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+
                     loadCurrentPartnerBid();
                 })
                 .addOnFailureListener(e->{
@@ -647,5 +658,51 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
 
     }
+
+    private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
+
+        String sender;
+        String messageForUser;
+        String messageForAdmin;
+
+        if ("partner".equals(user_type)) {
+            sender = MyUtils.NOTICE_SENDER_PARTNER;
+
+            String subCatName = CommonClass.getSubCategoryName(requireContext(), subCategoryId);
+            String cleanAmount = bidAmount.replace(".0", "");
+            String bnAmount = Replacement.ReplacementNumberEnToBn(cleanAmount);
+
+            messageForUser = "একজন " + subCatName + " পার্টনার " + bnAmount + "/= বিড করেছেন।";
+            messageForAdmin = messageForUser; // same message
+
+        }
+        else {
+            sender = MyUtils.NOTICE_SENDER_CUSTOMER;
+
+            messageForUser = "কাস্টমার আপনার করা বিড কনফার্ম করেছেন।";
+            messageForAdmin = "অর্ডার " + orderId + " এর বিড কনফার্ম হয়েছে।";
+        }
+
+        // 🔹 Send to User
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                userId,
+                orderId,
+                messageForUser
+        );
+
+        // 🔹 Send to Admin
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_ADMIN,
+                orderId,
+                messageForAdmin
+        );
+    }
+
 
 }

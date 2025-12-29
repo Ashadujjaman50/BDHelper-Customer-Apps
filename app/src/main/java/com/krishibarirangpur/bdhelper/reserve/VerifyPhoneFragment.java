@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentVerifyPhoneBinding;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 public class VerifyPhoneFragment extends Fragment {
 

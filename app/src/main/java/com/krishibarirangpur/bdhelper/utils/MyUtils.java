@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.myUtils;
+package com.krishibarirangpur.bdhelper.utils;
 
 public class MyUtils {
 
@@ -18,6 +18,29 @@ public class MyUtils {
     public static final String instagram_url = "";
     public static final String twitter_x_url = "";
     public static final String linkedIn_url = "";
+
+    //NOTICE Category Set
+    public static final String NOTICE_TYPE_NOTICE = "notice";
+    public static final String NOTICE_TYPE_POST = "post";
+    public static final String NOTICE_TYPE_BID = "bid";
+    public static final String NOTICE_TYPE_BID_CONFIRM = "bidConfirm";
+    public static final String NOTICE_TYPE_WELCOME = "welcome";
+    public static final String NOTICE_TYPE_REFERRAL = "referral";
+
+    //NOTICE Sender Type
+    public static final String NOTICE_SENDER_PARTNER = "partner";
+    public static final String NOTICE_SENDER_ADMIN = "admin";
+    public static final String NOTICE_SENDER_CUSTOMER = "customer";
+
+    //Notice Receiver Type
+    public static final String NOTICE_RECEIVER_PARTNER = "partner";
+    public static final String NOTICE_RECEIVER_CUSTOMER = "customer";
+    public static final String NOTICE_RECEIVER_ALL = "all";
+    public static final String NOTICE_RECEIVER_ADMIN = "admin";
+
+    //USer Type
+    public static final String USER_TYPE = "user_type";
+
 
 
     //Admin Photo Url

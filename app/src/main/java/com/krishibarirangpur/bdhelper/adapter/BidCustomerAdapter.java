@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         String vehicleCatAndYear = bidModel.getServiceInfo().getVehicleCatAndYear();
 
         if (categoryId.equals(MyUtils.SKILLED_LABOR_ID)){
-            holder.nameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+            holder.nameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
         }
         else {
             holder.nameTv.setText(vehicleModel);

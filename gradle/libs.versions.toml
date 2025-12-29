@@ -27,6 +27,7 @@ material-searchbar = "0.8.5"
 google-places = "4.4.1"
 picassoVer = "2.71828"
 glideVer = "4.16.0"
+swipeDecorator = "1.3"
 
 retrofit = "2.9.0"
 gson-converter = "2.9.0"
@@ -55,6 +56,7 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 image-slider = { group = "com.github.denzcoskun", name = "ImageSlideshow", version.ref = "imageSlider" }
 autoimageslider = { module = "com.github.smarteist:Android-Image-Slider", version.ref = "autoimagesliderVer" }
+swipe-decorator = { group = "com.github.xabaras", name = "RecyclerViewSwipeDecorator", version.ref = "swipeDecorator" }
 
 
 google-play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "google-play-services-maps" }

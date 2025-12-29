@@ -16,8 +16,8 @@ import com.krishibarirangpur.bdhelper.databinding.ActivityAreaLocationBinding;
 import com.krishibarirangpur.bdhelper.model.Area;
 import com.krishibarirangpur.bdhelper.model.City;
 import com.krishibarirangpur.bdhelper.model.SubArea;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

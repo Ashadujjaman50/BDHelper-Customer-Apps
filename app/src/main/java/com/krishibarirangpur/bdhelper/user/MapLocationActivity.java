@@ -33,10 +33,10 @@ import com.krishibarirangpur.bdhelper.api.BarikoiApiService;
 import com.krishibarirangpur.bdhelper.api.BarikoiClient;
 import com.krishibarirangpur.bdhelper.api.BarikoiResponse;
 import com.krishibarirangpur.bdhelper.databinding.ActivityMapLocationBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.Replacement;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -390,7 +390,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                                 city = barikoiResponse.getPlace().getCity();
                             }
 
-                            boolean check = Replacement.cityCheck(false, city);
+                            boolean check = Replacement.cityCheck(city);
 
                             if (!TextUtils.isEmpty(address)) {
                                 if (TextUtils.isEmpty(subDistrict)) {
@@ -403,9 +403,9 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                             String finalAddress;
                             if (!TextUtils.isEmpty(city) && check) {
                                 if (TextUtils.isEmpty(subDistrict) || Objects.equals(area, subDistrict)) {
-                                    finalAddress = address + ", " + area + ", " + city + " " + getString(R.string.city);
+                                    finalAddress = address + ", " + area + ", " + city + " " + "সিটি";
                                 } else {
-                                    finalAddress = address + ", " + subDistrict + ", " + area + ", " + city + " " + getString(R.string.city);
+                                    finalAddress = address + ", " + subDistrict + ", " + area + ", " + city + " " +  "সিটি";
                                 }
                             } else {
                                 if (!TextUtils.isEmpty(address)) {

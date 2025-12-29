@@ -1,18 +1,24 @@
 package com.krishibarirangpur.bdhelper.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,6 +30,8 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
     Context context;
     ArrayList<ModelNotice> noticeArrayList;
 
+    private OnItemClickListener mListener; // 🔹 OnItemClickListener
+
     public AdapterNotice(Context context, ArrayList<ModelNotice> noticeArrayList) {
         this.context = context;
         this.noticeArrayList = noticeArrayList;
@@ -34,7 +42,7 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
     public HolderViewNotice onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Inflate
         View view = LayoutInflater.from(context).inflate(R.layout.row_notice_item, parent, false);
-        return new HolderViewNotice(view);
+        return new HolderViewNotice(view, mListener);
     }
 
     @Override
@@ -42,7 +50,7 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
         //get data
         ModelNotice modelNotice = noticeArrayList.get(position);
         String noticeId = modelNotice.getNoticeId();
-        String postId = modelNotice.getPostId();   //If notice with image Then This Is Used Image Url
+        String orderId = modelNotice.getOrderId();   //If notice with image Then This Is Used Image Url
         String noticeTitle = modelNotice.getNoticeTitle();;
         String noticeCategory = modelNotice.getNoticeCategory();
         String noticeDesc = modelNotice.getNoticeDescription();
@@ -62,21 +70,33 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
         holder.noticeDescriptionTv.setText(noticeDesc);
         holder.noticeTimeTv.setText(noticeDate);
 
-        //If Notice With Image Then post Id Used Image Url
-        if (noticeCategory.equals("notice")) {
-            if (!postId.isEmpty()) {
+        //If Notice With Image Then Order Id Used Image Url
+        // 🔹 default state (VERY IMPORTANT)
+        holder.noticeImageIV.setVisibility(View.GONE);
+        holder.noticeCard.setBackgroundColor(
+                ContextCompat.getColor(holder.itemView.getContext(), R.color.bg_color)
+        );
+        if (MyUtils.NOTICE_TYPE_NOTICE.equals(noticeCategory)) {
+
+            if (!TextUtils.isEmpty(orderId) && !"null".equalsIgnoreCase(orderId)) {
                 holder.noticeImageIV.setVisibility(View.VISIBLE);
-                Picasso.get().load(postId).placeholder(R.drawable.ic_notice).into(holder.noticeImageIV);
-            } else {
-                holder.noticeImageIV.setVisibility(View.GONE);
+
+                Picasso.get()
+                        .load(orderId)
+                        .placeholder(R.drawable.ic_notice)
+                        .error(R.drawable.ic_notice)
+                        .into(holder.noticeImageIV);
             }
         }
-        else {
-            holder.noticeImageIV.setVisibility(View.GONE);
+        else if (MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeCategory)) {
+            holder.noticeCard.setBackgroundColor(
+                    ContextCompat.getColor(holder.itemView.getContext(), R.color.radio_card_selected_bg)
+            );
         }
 
         //senderType
-        if (senderType.equals("partner")){
+        if (senderType.equals(MyUtils.NOTICE_SENDER_PARTNER) ||
+                senderType.equals(MyUtils.NOTICE_SENDER_CUSTOMER)){
             holder.noticeTitleTv.setText(noticeTitle);
             //
             switch (noticeTitle){
@@ -168,12 +188,13 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
 
 
         //Click to Next
-        holder.itemView.setOnClickListener(v -> {
-            if (noticeCategory.equals("post")){
+        /*holder.itemView.setOnClickListener(v -> {
+            if (noticeCategory.equals(MyUtils.NOTICE_TYPE_POST) ||
+                    noticeCategory.equals(MyUtils.NOTICE_TYPE_BID)){
                 //
+                MyToast.showShort(context, noticeDesc);
             }
-        });
-
+        }); */
 
     }
 
@@ -186,15 +207,32 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
 
         ImageView noticeIv, noticeImageIV;
         TextView noticeTitleTv, noticeDescriptionTv, noticeTimeTv;
+        RelativeLayout noticeCard;
 
-        public HolderViewNotice(@NonNull View itemView) {
+        public HolderViewNotice(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             //init views
+            noticeCard = itemView.findViewById(R.id.noticeCard);
             noticeIv = itemView.findViewById(R.id.noticeIv);
             noticeImageIV = itemView.findViewById(R.id.noticeImageIV);
             noticeTitleTv = itemView.findViewById(R.id.noticeTitleTv);
             noticeDescriptionTv = itemView.findViewById(R.id.noticeDescriptionTv);
             noticeTimeTv = itemView.findViewById(R.id.noticeTimeTv);
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null){
+                    int position = getBindingAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(v, position);
+                    }
+                }
+            });
         }
     }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+        notifyDataSetChanged();
+    }
+
 }

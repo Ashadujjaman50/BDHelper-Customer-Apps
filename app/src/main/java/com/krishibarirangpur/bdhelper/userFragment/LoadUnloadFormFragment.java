@@ -26,16 +26,18 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentLoadUnloadFormBinding;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.OrderHelper;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.OrderCreateHelper;
 import com.krishibarirangpur.bdhelper.user.AddressActivity;
 import com.krishibarirangpur.bdhelper.user.SubCategoryActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -590,7 +592,7 @@ public class LoadUnloadFormFragment extends Fragment{
             @Override
             public void onSuccess(String orderId) {
                 // 🔽 Order Map তৈরি
-                Map<String, Object> order = OrderHelper.createOrder(
+                Map<String, Object> order = OrderCreateHelper.createOrder(
                         orderId,
                         userId,
                         userName,
@@ -617,6 +619,15 @@ public class LoadUnloadFormFragment extends Fragment{
                             loadingDialog.dismiss();
                             binding.mainBodyLl.setVisibility(View.GONE);
                             binding.donePostRent.setVisibility(View.VISIBLE);
+
+                            //Send Custom Notice
+                            sendCustomNotice(
+                                    userId,
+                                    orderId,
+                                    subCategoryId,
+                                    rentDateAndTime,
+                                    quantity
+                            );
 
                             new Handler().postDelayed(() -> {
                                 Intent intent;
@@ -649,8 +660,37 @@ public class LoadUnloadFormFragment extends Fragment{
         });
     }
 
+    private void sendCustomNotice( String currentUserId, String orderId, String subCategoryId, String rentDateAndTime,String quantity) {
 
+        String sender = MyUtils.NOTICE_SENDER_CUSTOMER;
+        String subCatName = CommonClass.getSubCategoryName(requireContext(), subCategoryId);
+        String noticeType = MyUtils.NOTICE_TYPE_POST;
+        String date = CommonClass.formatTime(rentDateAndTime, "dd MMMM");
+        String qty = Replacement.ReplacementNumberEnToBn(quantity)+" টি";
 
+        String messageForUser = "“"+loadLocation+ "” থেকে “" + unloadLocation +"” \n" + qty+ " " + subCatName +" লাগবে ";
+        String messageForAdmin = date +" “"+loadLocation+ "” থেকে “" + unloadLocation +"”\n" + qty+ " " + subCatName +" লাগবে ";
+
+        // 🔹 Send to User
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_PARTNER,
+                orderId,
+                messageForUser
+        );
+
+        // 🔹 Send to Admin
+        NoticeSend.sendNotice(
+                sender,
+                noticeType,
+                currentUserId,
+                MyUtils.NOTICE_RECEIVER_ADMIN,
+                orderId,
+                messageForAdmin
+        );
+    }
 
 
 }

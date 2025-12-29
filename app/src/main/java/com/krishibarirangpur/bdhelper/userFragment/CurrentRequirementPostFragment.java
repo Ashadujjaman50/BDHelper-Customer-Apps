@@ -19,8 +19,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.OrderAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentCurrentRequirementPostBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,7 +76,7 @@ public class CurrentRequirementPostFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), BidActivity.class);
                 intent.putExtra(MyUtils.bidAction,"new");
-                intent.putExtra("user_type", "customer");
+                intent.putExtra(MyUtils.USER_TYPE, MyUtils.NOTICE_RECEIVER_CUSTOMER);
                 intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
                 intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
                 intent.putExtra(MyUtils.subCategoryId, subCategoryId);

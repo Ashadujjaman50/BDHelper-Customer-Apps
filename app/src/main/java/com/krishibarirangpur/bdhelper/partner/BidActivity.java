@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityBidBinding;
-import com.krishibarirangpur.bdhelper.myUtils.BaseActivity;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.krishibarirangpur.bdhelper.fragment.BidEquipmentFragment;
 import com.krishibarirangpur.bdhelper.fragment.BidHomeShiftingFragment;
 import com.krishibarirangpur.bdhelper.fragment.BidSkilledLaborFragment;
@@ -31,23 +31,18 @@ public class BidActivity extends BaseActivity {
 
         // init views
         bidAction = getIntent().getStringExtra(MyUtils.bidAction);
-        user_type = getIntent().getStringExtra("user_type");
+        user_type = getIntent().getStringExtra(MyUtils.USER_TYPE);
 
         //header title
         String title = "";
 
         if ("partner".equals(user_type)) {
-            switch (bidAction) {
-                case "new":
-                    title = getString(R.string.bid);
-                    break;
-                case "confirmed":
-                    title = getString(R.string.accepted_bid);
-                    break;
-                case "pending":
-                    title = getString(R.string.pending_bid);
-                    break;
-            }
+            title = switch (bidAction) {
+                case "new" -> getString(R.string.bid);
+                case "confirmed" -> getString(R.string.accepted_bid);
+                case "pending" -> getString(R.string.pending_bid);
+                default -> title;
+            };
         }
         else {
             title = getString(R.string.bidding);

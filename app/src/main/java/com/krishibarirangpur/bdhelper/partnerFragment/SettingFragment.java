@@ -17,9 +17,9 @@ import com.krishibarirangpur.bdhelper.NIDPhotoActivity;
 import com.krishibarirangpur.bdhelper.PermissionActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentSettingBinding;
-import com.krishibarirangpur.bdhelper.myUtils.LogoutHelper;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
-import com.krishibarirangpur.bdhelper.myUtils.NotificationPermissionHelper;
+import com.krishibarirangpur.bdhelper.utils.LogoutHelper;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NotificationPermissionHelper;
 
 public class SettingFragment extends Fragment {
 

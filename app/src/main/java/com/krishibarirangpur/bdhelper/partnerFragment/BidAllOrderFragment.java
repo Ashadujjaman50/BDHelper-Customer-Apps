@@ -24,9 +24,9 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidAllOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.AddServiceActivity;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -105,7 +105,7 @@ public class BidAllOrderFragment extends Fragment {
                 else {
                     Intent intent = new Intent(getContext(), BidActivity.class);
                     intent.putExtra(MyUtils.bidAction,"new");
-                    intent.putExtra("user_type", "partner");
+                    intent.putExtra(MyUtils.USER_TYPE, MyUtils.NOTICE_RECEIVER_PARTNER);
                     intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
                     intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
                     intent.putExtra(MyUtils.subCategoryId, clickedSubCategoryId);
@@ -171,8 +171,6 @@ public class BidAllOrderFragment extends Fragment {
     }
 
 
-
-
     @SuppressLint("SetTextI18n")
     private void showAlertDialog(int position) {
 
@@ -194,7 +192,7 @@ public class BidAllOrderFragment extends Fragment {
         ImageView closeBtn = view.findViewById(R.id.closeBtn);
 
         //setData
-        subCategoryNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+        subCategoryNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
         descriptionTv.setText("অ্যাপে, আপনার কোনো "+ subCategoryNameTv.getText().toString() +" যোগ করা নেই। \n সার্ভিস যোগ করে বিড করুন।");
         addServiceBtn.setText(subCategoryNameTv.getText().toString()+ " যোগ করুন");
 

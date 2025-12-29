@@ -24,9 +24,9 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidByCategoryOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.myUtils.CommonClass;
-import com.krishibarirangpur.bdhelper.myUtils.MyToast;
-import com.krishibarirangpur.bdhelper.myUtils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.AddServiceActivity;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -187,7 +187,7 @@ public class BidByCategoryOrderFragment extends Fragment {
         ImageView closeBtn = view.findViewById(R.id.closeBtn);
 
         //setData
-        subCategoryNameTv.setText(CommonClass.getSubCategoryName(subCategoryId));
+        subCategoryNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
         descriptionTv.setText("অ্যাপে, আপনার কোনো "+ subCategoryNameTv.getText().toString() +" যোগ করা নেই। \n সার্ভিস যোগ করে বিড করুন।");
         addServiceBtn.setText(subCategoryNameTv.getText().toString()+ " যোগ করুন");
 
