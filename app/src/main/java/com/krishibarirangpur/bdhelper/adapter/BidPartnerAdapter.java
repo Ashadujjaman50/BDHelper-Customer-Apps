@@ -2,14 +2,17 @@ package com.krishibarirangpur.bdhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.R;
@@ -24,6 +27,15 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
 
     Context context;
     ArrayList<BidModel> bidModelArrayList;
+    private BidPartnerListener listener;
+
+    public interface BidPartnerListener {
+        void onDeleteClicked(String bidId, String orderId);
+    }
+
+    public void setListener(BidPartnerListener listener) {
+        this.listener = listener;
+    }
 
     public BidPartnerAdapter(Context context, ArrayList<BidModel> bidModelArrayList) {
         this.context = context;
@@ -76,6 +88,14 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
                 subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) || subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
         }
+        else if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID) || subCategoryId.equals(MyUtils.SUB_PLUMBER_ID) ||
+                subCategoryId.equals(MyUtils.SUB_ELECTRICIAN_ID) || subCategoryId.equals(MyUtils.SUB_STOVE_TECHNICIAN_ID) ||
+                subCategoryId.equals(MyUtils.SUB_MECHANIC_ID)){
+            holder.serviceNameTv.setText(R.string.work_type_dot);
+            holder.modelAndTypeTv.setText(R.string.work_area_dot);
+            holder.vehicleRegNoTv.setText(vehicleRegNo);
+            holder.modelAndTypeTv.setText(vehicleCatAndYear);
+        }
         else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
             holder.vehicleRegNoTv.setText(vehicleModel);
             holder.serviceNameTv.setText(R.string.tractor_brand_dot);
@@ -108,6 +128,25 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             holder.infoMessageTv.setVisibility(View.GONE);
         }
 
+
+        holder.moreBtn.setOnClickListener(v -> {
+            if (bidModel.getBidInfo().getStatus().equals("pending")){
+                PopupMenu popupMenu = new PopupMenu(context, holder.moreBtn, Gravity.BOTTOM);
+                popupMenu.getMenu().add(0,1, 1,"Delete");
+
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int id =item.getItemId();
+                    if (id==1){
+                        if (listener != null) {
+                            listener.onDeleteClicked(bidId, orderId);
+                        }
+                    }
+                    return false;
+                });
+                popupMenu.show();
+            }
+        });
+
     }
 
     @Override
@@ -119,7 +158,8 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
     static class HolderViewBid extends RecyclerView.ViewHolder {
         TextView serviceNameTv, postNameTv, bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
                 vehicleRegNoTv,modelAndTypeTv, vehicleModel, vehicleCatAndYearTv, rentTimeTv;
-        ImageView call, moreBtn;
+        ImageView call;
+        ImageButton moreBtn;
         LinearLayout vehicleRegisterLL, modelYearLL;
         public HolderViewBid(@NonNull View itemView) {
             super(itemView);

@@ -593,6 +593,10 @@
     <string name="add_payment_account">Add payment account</string>
     <string name="no_payment_history">No payment history</string>
     <string name="withdraw_request">Withdraw balance</string>
+    <string name="settlement_of_dues">Settlement of Dues</string>
+
+    <string name="withdraw">Withdraw</string>
+    <string name="paid_to_company">Paid to Company</string>
 
     <string name="are_you_sure_alert_title">Service is complete?</string>
     <string name="are_you_sure_alert_msg">Are you sure?\nYou can’t cancel after confirming the</string>
@@ -604,11 +608,12 @@
     <string name="use_as_primary_payment_account">Set default payment account</string>
     <string name="primary_payment_account">Default payment account</string>
     <string name="withdraw_amount">Withdraw amount</string>
-    <string name="i_confirm_this_withdrawa">I confirm this withdrawa</string>
+    <string name="i_confirm_this_withdraw">I confirm this withdraw</string>
     <string name="bKash">bKash</string>
     <string name="nagad">Nagad</string>
     <string name="rocket">Rocket</string>
     <string name="uPay">uPay</string>
+    <string name="payment_account_number">Payment Account Number</string>
 
     <!--All Rent Service-->
     <string name="rent_service_verification_pending">Your service will be reviewed and verified soon.</string>
@@ -617,6 +622,8 @@
         Contact BD Helper to change it</string>
     <string name="rent_service_verified_warning">Submit required documents for verification.</string>
 
+    <string name="bkash_marchent">Please complete the payment to our bKash merchant number <b>(01701078233)</b> and submit along with the Transaction ID.</string>
+    <string name="transaction_id">Transaction ID (TrxID)</string>
 
     <!--Bid-->
     <string name="bid">Bid Now</string>

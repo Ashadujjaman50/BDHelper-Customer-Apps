@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BidTransportFragment extends Fragment implements BidCustomerAdapter.OnBidActionListener {
+public class BidTransportFragment extends Fragment implements BidCustomerAdapter.OnBidActionListener, BidPartnerAdapter.BidPartnerListener {
 
    private FragmentBidTransportBinding binding;
 
@@ -286,6 +286,28 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
             Log.e("DateCheck", "Error parsing rentTime: " + e.getMessage());
         }
     }
+    
+    @Override
+    public void onDeleteClicked(String bidId, String orderId) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Bid")
+                .setMessage("Are you sure you want to delete this bid?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    loadingDialog.show();
+                    db.collection("bidForOrder").document(bidId).delete()
+                            .addOnSuccessListener(aVoid -> {
+                                loadingDialog.dismiss();
+                                MyToast.showShort(getContext(), "Bid deleted successfully.");
+                                // Snapshot listener will handle UI update
+                            })
+                            .addOnFailureListener(e -> {
+                                loadingDialog.dismiss();
+                                MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
+                            });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
 
 
     private void getCurrentOrderInfo() {
@@ -332,7 +354,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                             if ("customer".equals(user_type) &&
                                     (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete"))) {
 
-                                // 🔹 রিভিউ ফর্ম লোড করো
+                                // 🔹রিভিউ ফর্ম লোড করো
                                 loadPartnerReview();
                             }
 
@@ -486,29 +508,28 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     //Partner Part
     @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentPartnerBid() {
-
         bidModelArrayList = new ArrayList<>();
         bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList);
-
-        // ✅ অবশ্যই LayoutManager সেট করতে হবে
+        bidPartnerAdapter.setListener(this); // Set listener!
         binding.bidRV.setAdapter(bidPartnerAdapter);
 
         db.collection("bidForOrder")
-                .whereEqualTo("orderInfo.orderId", orderId)        // Filter by orderId
-                .whereEqualTo("bidInfo.vendorId", currentUserId)   // Filter by current vendor
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .whereEqualTo("orderInfo.orderId", orderId)
+                .whereEqualTo("bidInfo.vendorId", currentUserId)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Log.e("BidLoad", "❌ Error loading bid: " + error.getMessage());
+                        return;
+                    }
 
-                    bidModelArrayList.clear(); // clear before adding
-
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    bidModelArrayList.clear();
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        for (DocumentSnapshot doc : querySnapshot) {
                             BidModel bidModel = doc.toObject(BidModel.class);
                             if (bidModel != null) {
                                 bidModelArrayList.add(bidModel);
                             }
                         }
-
                         bidPartnerAdapter.notifyDataSetChanged();
 
                         // 🔹 RecyclerView visible, hide "bottomPart" (bid input section)
@@ -520,12 +541,6 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                         binding.bidRV.setVisibility(View.GONE);
                         binding.bottomPart.setVisibility(View.VISIBLE);
                     }
-
-                })
-                .addOnFailureListener(e -> {
-                    binding.bidRV.setVisibility(View.GONE);
-                    binding.bottomPart.setVisibility(View.VISIBLE);
-                    Log.e("BidLoad", "❌ Error loading bid: " + e.getMessage());
                 });
     }
 

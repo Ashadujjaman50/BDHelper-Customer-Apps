@@ -81,6 +81,15 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
             holder.modelAndYear.setText(Replacement.ReplacementNumberInLocal(context, vehicleCatAndYear));
         }
+
+        else if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID) || subCategoryId.equals(MyUtils.SUB_PLUMBER_ID) ||
+                subCategoryId.equals(MyUtils.SUB_ELECTRICIAN_ID) || subCategoryId.equals(MyUtils.SUB_STOVE_TECHNICIAN_ID) ||
+                subCategoryId.equals(MyUtils.SUB_MECHANIC_ID)){
+            holder.registerNameTv.setText(R.string.work_type_dot);
+            holder.modelAndTypeTv.setText(R.string.work_area_dot);
+            holder.vehicleRegNoTv.setText(vehicleRegNo);
+            holder.modelAndYear.setText(vehicleCatAndYear);
+        }
         else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
             holder.registerNameTv.setText(R.string.work_type_dot);
             holder.modelAndTypeTv.setText(R.string.work_area_dot);

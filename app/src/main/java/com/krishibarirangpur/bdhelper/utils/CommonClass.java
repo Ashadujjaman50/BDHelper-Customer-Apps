@@ -325,7 +325,6 @@ public class CommonClass {
         }
     }
 
-
     public static long parseDateStringToMillis(String dateStr) {
         if (dateStr == null) return 0L;
         String s = dateStr.trim();
@@ -379,6 +378,7 @@ public class CommonClass {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTimeInMillis();
     }
+
 
     //Partner App Helper
     public static String millisToTimeWithLocal(Context context, String millis) {

@@ -178,9 +178,10 @@ public class CustomerRegisterFragment extends Fragment {
             userMap.put("userDob", "");
             userMap.put("district", selectDistrict);
             userMap.put("location", location);
-            userMap.put("businessName", "");    // only for partner
-            userMap.put("verifyStatus", "");    // only for partner
-            userMap.put("rentService", "");     // only for partner
+            userMap.put("businessName", "");        // only for partner
+            userMap.put("rentService", "");         // only for partner
+            userMap.put("paymentReceiver", "");     // only for partner
+            userMap.put("verifyStatus", "pending");
             userMap.put("device_token", device_token);
             userMap.put("userSignWith", userSignWith);
             userMap.put("userJoinTime", timestamp);

@@ -10,170 +10,144 @@
         style="@style/fontStyle"
         tools:context=".partnerFragment.PaymentHistoryFragment">
 
-        <!-- Add New Button -->
+        <!-- Income Section -->
         <LinearLayout
+            android:id="@+id/incomeSectionLl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bg_color"
-            android:orientation="vertical"
-            android:paddingHorizontal="2dp">
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_card_clickable"
+            android:elevation="4dp"
+            android:orientation="horizontal">
 
-            <!-- Income Section -->
+            <!-- Total Income -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_card_clickable"
-                android:elevation="4dp"
-                android:orientation="horizontal">
+                android:background="@color/transparent"
+                android:orientation="vertical"
+                android:gravity="center">
 
-                <!-- Total Income -->
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/totalAmount"
+                    android:text="০"
+                    android:textSize="20sp"
+                    android:textColor="@color/primaryColor"
                     android:background="@color/transparent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/totalAmount"
-                        android:text="০"
-                        android:textSize="20sp"
-                        android:textColor="@color/primaryColor"
-                        android:background="@color/transparent"
-                        android:textStyle="bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:drawableStartCompat="@drawable/ic_taka_symbol"
-                        app:drawableTint="@color/primaryColor"
-                        android:drawablePadding="4dp" />
-
-                    <TextView
-                        android:text="@string/total_income"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary"
-                        android:background="@color/transparent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/card_divider_color"
-                    android:layout_marginVertical="4dp"/>
-
-                <!-- Commission -->
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_taka_symbol"
+                    app:drawableTint="@color/primaryColor"
+                    android:drawablePadding="4dp" />
+
+                <TextView
+                    android:text="@string/total_income"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
                     android:background="@color/transparent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/partnerEarnTv"
-                        android:text="০"
-                        android:textSize="20sp"
-                        android:textColor="@color/primaryColor"
-                        android:background="@color/transparent"
-                        android:textStyle="bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:drawableStartCompat="@drawable/ic_taka_symbol"
-                        app:drawableTint="@color/primaryColor"
-                        android:drawablePadding="4dp"/>
-
-                    <TextView
-                        android:text="@string/partner_commission"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary"
-                        android:background="@color/transparent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/card_divider_color"
-                    android:layout_marginVertical="4dp"/>
-
-                <!-- Company Income -->
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/companyEarnTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/transparent"
-                        android:text="০"
-                        android:textColor="@color/primaryColor"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_taka_symbol"
-                        app:drawableTint="@color/primaryColor"
-                        android:drawablePadding="4dp" />
-
-                    <TextView
-                        android:text="@string/company_commission"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary"
-                        android:background="@color/transparent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/noPaymentAccountFound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/solaimanlipi"
-                android:text="@string/no_payment_history"
-                android:textColor="@color/text_secondary"
-                android:textSize="22sp"
-                android:visibility="gone" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/card_divider_color"
+                android:layout_marginVertical="4dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/paymentAccountRv"
-                android:layout_width="match_parent"
+            <!-- Commission -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_withdraw_request" />
+                android:background="@color/transparent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/partnerEarnTv"
+                    android:text="০"
+                    android:textSize="20sp"
+                    android:textColor="@color/primaryColor"
+                    android:background="@color/transparent"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="@drawable/ic_taka_symbol"
+                    app:drawableTint="@color/primaryColor"
+                    android:drawablePadding="4dp"/>
+
+                <TextView
+                    android:text="@string/partner_commission"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:background="@color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/card_divider_color"
+                android:layout_marginVertical="4dp"/>
+
+            <!-- Company Income -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/companyEarnTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="০"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_taka_symbol"
+                    app:drawableTint="@color/primaryColor"
+                    android:drawablePadding="4dp" />
+
+                <TextView
+                    android:text="@string/company_commission"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    android:background="@color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/withdrawPaymentButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="24dp"
-            android:padding="15dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/custom_button_gradient"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="@string/withdraw_request"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:drawablePadding="12dp"
-            app:drawableStartCompat="@drawable/ic_payment_withdraw"
-            app:drawableTint="@color/white" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/paymentTabLayout"
+            android:layout_below="@+id/incomeSectionLl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabTextColor="@color/tab_unselected_text"
+            app:tabSelectedTextColor="@color/tab_selected_text"
+            app:tabBackground="@drawable/tab_selector" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/paymentViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/paymentTabLayout"
+            android:paddingTop="0dp" />
 
     </RelativeLayout>
 </layout>

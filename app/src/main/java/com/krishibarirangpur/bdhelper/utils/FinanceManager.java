@@ -38,19 +38,25 @@ public class FinanceManager {
 
 
     // 🔹 1️⃣ Create Ledger & Update Partner Balance
-    public void createLedgerAndUpdateBalance(String bidId, String orderId, String vendorId, String bidAmount) {
-        String finalAmount = CommonClass.getRoundedTenPercentValue(bidAmount, 10);
+    public void createLedgerAndUpdateBalance(
+            String bidId,
+            String orderId,
+            String vendorId,
+            String bidAmount,
+            String confirmOrderPrice,
+            String paymentReceiver) {
+
         double partnerEarn = Double.parseDouble(bidAmount);
-        double companyEarn = Double.parseDouble(finalAmount) - partnerEarn;
+        double companyEarn = Double.parseDouble(confirmOrderPrice) - partnerEarn;
 
         Map<String, Object> ledgerData = new HashMap<>();
         ledgerData.put("bidId", bidId);
         ledgerData.put("orderId", orderId);
         ledgerData.put("vendorId", vendorId);
-        ledgerData.put("totalAmount", Double.parseDouble(finalAmount));
+        ledgerData.put("totalAmount", Double.parseDouble(confirmOrderPrice));
         ledgerData.put("companyEarn", companyEarn);
         ledgerData.put("partnerEarn", partnerEarn);
-        ledgerData.put("paymentReceiver", "company"); // default - later change based on who received
+        ledgerData.put("paymentReceiver", paymentReceiver);  //"partner" * "company" -Default later change based on who received
         ledgerData.put("status", "completed");
         ledgerData.put("createdAt", System.currentTimeMillis());
 
@@ -252,10 +258,13 @@ public class FinanceManager {
 
     // 🔹 6️⃣ Calculate Partner Receivable (যেখানে paymentReceiver = company)
     private ListenerRegistration partnerReceivableListener;
+
     public void calculatePartnerReceivable(String vendorId, OnFinanceResult callback) {
+
         partnerReceivableListener = db.collection(COLLECTION_LEDGER)
                 .whereEqualTo("vendorId", vendorId)
                 .addSnapshotListener((querySnapshot, e) -> {
+
                     if (e != null || querySnapshot == null) {
                         Log.e(TAG, "❌ Partner receivable listener failed: " + (e != null ? e.getMessage() : "null"));
                         callback.onResult(0);
@@ -263,16 +272,29 @@ public class FinanceManager {
                     }
 
                     double total = 0;
+
                     for (QueryDocumentSnapshot doc : querySnapshot) {
+
                         String receiver = doc.getString("paymentReceiver");
                         String status = doc.getString("status");
-                        double partnerShare = doc.getDouble("partnerEarn") != null ? doc.getDouble("partnerEarn") : 0;
 
-                        // ✅ Include withdraw entries as negative adjustments; exclude only cancelled
-                        if ("company".equals(receiver)
-                                && status != null
-                                && !status.equalsIgnoreCase("cancelled")) {
-                            total += partnerShare;
+                        double partnerShare = doc.getDouble("partnerEarn") != null
+                                ? doc.getDouble("partnerEarn") : 0;
+
+                        if(status == null || status.equalsIgnoreCase("cancelled"))
+                            continue;
+
+                        if("company".equals(receiver)) {
+
+                            // 🔹 Normal earn -> add
+                            if(!status.equalsIgnoreCase("payment")) {
+                                total += partnerShare;
+                            }
+
+                            // 🔹 Payment approved -> subtract
+                            else {
+                                total -= partnerShare;
+                            }
                         }
                     }
 
@@ -281,12 +303,16 @@ public class FinanceManager {
     }
 
 
+
     // 🔹 7️⃣ Calculate Company Receivable (যেখানে paymentReceiver = partner)
     private ListenerRegistration companyReceivableListener;
+
     public void calculateCompanyReceivable(String vendorId, OnFinanceResult callback) {
+
         companyReceivableListener = db.collection(COLLECTION_LEDGER)
                 .whereEqualTo("vendorId", vendorId)
                 .addSnapshotListener((querySnapshot, e) -> {
+
                     if (e != null || querySnapshot == null) {
                         Log.e(TAG, "❌ Company receivable listener failed: " + (e != null ? e.getMessage() : "null"));
                         callback.onResult(0);
@@ -294,22 +320,36 @@ public class FinanceManager {
                     }
 
                     double total = 0;
+
                     for (QueryDocumentSnapshot doc : querySnapshot) {
+
                         String receiver = doc.getString("paymentReceiver");
                         String status = doc.getString("status");
-                        double companyShare = doc.getDouble("companyEarn") != null ? doc.getDouble("companyEarn") : 0;
 
-                        // ✅ Include withdraw entries as negative adjustments; exclude only cancelled
-                        if ("partner".equals(receiver)
-                                && status != null
-                                && !status.equalsIgnoreCase("cancelled")) {
-                            total += companyShare;
+                        double companyShare = doc.getDouble("companyEarn") != null
+                                ? doc.getDouble("companyEarn") : 0;
+
+                        if(status == null || status.equalsIgnoreCase("cancelled"))
+                            continue;
+
+                        if("partner".equals(receiver)) {
+
+                            // 🔹 Normal earn -> add
+                            if(!status.equalsIgnoreCase("payment")) {
+                                total += companyShare;
+                            }
+
+                            // 🔹 Payment approved -> subtract
+                            else {
+                                total -= companyShare;
+                            }
                         }
                     }
 
                     callback.onResult(total);
                 });
     }
+
 
     // Stop listening (যদি Fragment destroy হয়)
     public void stopListening() {

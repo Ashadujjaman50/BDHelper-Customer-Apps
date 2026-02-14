@@ -593,6 +593,10 @@
     <string name="add_payment_account">একাউন্ট যোগ করুন</string>
     <string name="no_payment_history">কোন পেমেন্ট নেই</string>
     <string name="withdraw_request">ব্যালেন্স উত্তোলন করুন</string>
+    <string name="settlement_of_dues">বকেয়া পরিশোধ করুন</string>
+
+    <string name="withdraw">উত্তোলন করুন</string>
+    <string name="paid_to_company">কোম্পানিকে পেমেন্ট</string>
 
     <string name="select_payment_method">পেমেন্ট মেথড সিলেক্ট করুন</string>
     <string name="account_no">একাউন্ট নাম্বার দিন</string>
@@ -600,11 +604,13 @@
     <string name="use_as_primary_payment_account">প্রাথমিক পেমেন্ট অ্যাকাউন্ট সেট করুন</string>
     <string name="primary_payment_account">প্রাথমিক পেমেন্ট অ্যাকাউন্ট</string>
     <string name="withdraw_amount">উত্তোলনের পরিমাণ</string>
-    <string name="i_confirm_this_withdrawa">আমি নিশ্চিত করছি যে, উল্লিখিত তথ্য অনুযায়ী পেমেন্ট উত্তোলন করতে চাই।</string>
+    <string name="i_confirm_this_withdraw">আমি নিশ্চিত করছি যে, উল্লিখিত তথ্য অনুযায়ী পেমেন্ট উত্তোলন করতে চাই।</string>
     <string name="bKash">বিকাশ</string>
     <string name="nagad">নগদ</string>
     <string name="rocket">রকেট</string>
     <string name="uPay">উপায়</string>
+
+    <string name="payment_account_number">যে নাম্বার থেকে পেমেন্ট করেছেন</string>
 
     <string name="are_you_sure_alert_title">সার্ভিসটি সম্পূর্ণ হয়েছে?</string>
     <string name="are_you_sure_alert_msg">আপনি কি নিশ্চিত?\nঅর্ডার নিশ্চিত করার পর আর বাতিল করা যাবে না!</string>
@@ -617,6 +623,9 @@
         ক্যাটাগরি চেঞ্জ করতে বিডি হেল্পার এর সাথে যোগাযোগ করুন</string>
     <string name="rent_service_verified_warning">সার্ভিসটি ভেরিফাই করার জন্য প্রয়োজনীয় ডকুমেন্টের ছবি জমা দিন</string>
 
+
+    <string name="bkash_marchent">অনুগ্রহ করে আমাদের বিকাশ মার্চেন্ট নম্বর <b>(01701078233)</b>-এ পেমেন্ট সম্পন্ন করে, ট্রানজেকশন আইডি (Transaction ID) সহ সাবমিট করুন।</string>
+    <string name="transaction_id">ট্রানজেকশন আইডি (TrxID)</string>
 
     <!--Bid-->
     <string name="bid">বিড করুন</string>
@@ -1991,6 +2000,7 @@
     <string name="lakhai">লাখাই</string>
     <string name="shaistaganj">শায়েস্তাগঞ্জ</string>
     <string name="habiganj_sadar">হবিগঞ্জ সদর</string>
+    <string name="alert_icon">Alert Icon</string>
     <string name="vendor_profile">Vendor profile</string>
 
 </resources>

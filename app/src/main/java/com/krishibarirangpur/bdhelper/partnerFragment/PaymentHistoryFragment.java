@@ -13,11 +13,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
+import com.google.android.material.tabs.TabLayout;
 import com.krishibarirangpur.bdhelper.R;
+import com.krishibarirangpur.bdhelper.adapter.ViewPagerPaymentAdapter;
+import com.krishibarirangpur.bdhelper.adapter.ViewPagerServiceAdapter;
 import com.krishibarirangpur.bdhelper.adapter.WithdrawAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentHistoryBinding;
 import com.krishibarirangpur.bdhelper.model.WithdrawRequest;
@@ -37,20 +43,16 @@ import java.util.Map;
 
 
 public class PaymentHistoryFragment extends Fragment {
+    private FragmentPaymentHistoryBinding binding;
+    private FirebaseFirestore db;
+    private String userId;
+    private FinanceManager financeManager;
+    double partnerEarn;
+
 
     public PaymentHistoryFragment() {
         // Required empty public constructor
     }
-
-    private FragmentPaymentHistoryBinding binding;
-    private PreloadingDialog preloadingDialog;
-    private LoadingDialog loadingDialog;
-    private FirebaseFirestore db;
-    private String userId, accountName, accountNumber;
-    private WithdrawAdapter withdrawAdapter;
-    private ArrayList<WithdrawRequest> withdrawRequestArrayList;
-    private FinanceManager financeManager;
-    double partnerEarn;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -64,26 +66,67 @@ public class PaymentHistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        preloadingDialog = new PreloadingDialog(requireContext());
-        loadingDialog = new LoadingDialog(requireContext());
+        //init views
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getUid();
         financeManager = new FinanceManager();
 
-        // 🔹 फाइनेंसियल Cache থেকে ডেটা দেখাও, যদি থাকে
+        // 🔹 Cache থেকে ডেটা দেখাও, যদি থাকে
         partnerFinanceSummaryLoad();
 
-        // Default Payment Account Load
-        loadDefaultAccountData();
+        FragmentManager fm = getChildFragmentManager();
+        ViewPagerPaymentAdapter paymentAdapter = new ViewPagerPaymentAdapter(fm, getLifecycle());
+        binding.paymentViewPager.setAdapter(paymentAdapter);
+        binding.paymentTabLayout.addTab(binding.paymentTabLayout.newTab().setText(getString(R.string.paid_to_company)));
+        binding.paymentTabLayout.addTab(binding.paymentTabLayout.newTab().setText(getString(R.string.withdraw)));
+        binding.paymentViewPager.setUserInputEnabled(true);
+        binding.paymentViewPager.setSaveEnabled(false);
 
-        //Load Withdraw History
-        loadWithdrawRequests();
+        binding.paymentTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                View tabView = tab.view;
+                tabView.animate()
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start();
 
-        binding.withdrawPaymentButton.setOnClickListener(v -> {
-            //show Bottom Dialog in Add Payment Method
-            showBottomDialogAddPaymentAccount();
+                setPagerFragment(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View tabView = tab.view;
+                tabView.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .alpha(0.8f)
+                        .setDuration(200)
+                        .start();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
+
+        binding.paymentViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                binding.paymentTabLayout.selectTab(binding.paymentTabLayout.getTabAt(position));
+            }
+        });
+
     }
+
+    private void setPagerFragment(int a) {
+        binding.paymentViewPager.setCurrentItem(a);
+    }
+
 
     private void partnerFinanceSummaryLoad() {
 
@@ -112,6 +155,8 @@ public class PaymentHistoryFragment extends Fragment {
                 binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), String.valueOf(netAmount)));
                 binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
                 partnerEarn = 0;
+
+
             } else {
                 binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
                 binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
@@ -138,6 +183,7 @@ public class PaymentHistoryFragment extends Fragment {
                     binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), String.valueOf(netAmount)));
                     binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
                     partnerEarn = 0;
+
                 } else {
                     binding.partnerEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
                     binding.companyEarnTv.setText(Replacement.ReplacementNumberInLocal(requireContext(), "0"));
@@ -154,219 +200,4 @@ public class PaymentHistoryFragment extends Fragment {
         if (financeManager != null) financeManager.stopListening(); // 🔹 Stop realtime listener
     }
 
-    private void loadDefaultAccountData() {
-        db.collection("users")
-                .document(userId)
-                .collection("accounts")
-                .whereEqualTo("isPrimary", "Default") // ✅ শুধুমাত্র Default account আনবে
-                .limit(1) // নিরাপত্তার জন্য ১টা result নেবে
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-
-                        // 🔹 Account Data Load করো
-                        accountName = doc.getString("accountName");
-                        accountNumber = doc.getString("accountNumber");
-
-                        Log.d("AccountDebug", "✅ Default account loaded: " + accountName);
-                    }
-                    else {
-                        MyToast.showShort(requireContext(), "⚠️ No default payment account found.");
-                        Log.d("AccountDebug",  "⚠️ No default account found.");
-                    }
-                })
-                .addOnFailureListener(e ->
-                        MyToast.showShort(requireContext(), "❌ Failed to load accounts: " + e.getMessage()));
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void loadWithdrawRequests() {
-        withdrawRequestArrayList = new ArrayList<>();
-        withdrawAdapter = new WithdrawAdapter(requireContext(), withdrawRequestArrayList);
-        binding.paymentAccountRv.setAdapter(withdrawAdapter);
-
-        preloadingDialog.show();
-
-        db.collection("withdrawRequests")
-                .whereEqualTo("vendorId", userId)
-                .orderBy("requestedAt", Query.Direction.DESCENDING)
-                .addSnapshotListener((querySnapshot, error) -> {
-                    preloadingDialog.dismiss();
-                    if (error != null) {
-                        Log.e("Withdraw Request", "❌ loadWithdrawRequests: " + error.getMessage(), error);
-                        MyToast.showShort(requireContext(), "Failed to load withdraw requests: " + error.getMessage());
-                        return;
-                    }
-
-                    if (querySnapshot != null) {
-                        withdrawRequestArrayList.clear();
-                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            WithdrawRequest request = doc.toObject(WithdrawRequest.class);
-                            if (request != null) {
-                                request.setId(doc.getId()); // 🔹 ডকুমেন্ট আইডি সেট করো
-                                withdrawRequestArrayList.add(request);
-                            }
-                        }
-
-                        // ✅ Empty view handle
-                        if (withdrawRequestArrayList.isEmpty()) {
-                            binding.noPaymentAccountFound.setVisibility(View.VISIBLE);
-                        } else {
-                            binding.noPaymentAccountFound.setVisibility(View.GONE);
-                        }
-
-                        withdrawAdapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
-
-
-    private void showBottomDialogAddPaymentAccount() {
-        // ✅ First, check if a default account has been loaded.
-        if (accountName == null || accountNumber == null) {
-            MyToast.showShort(requireContext(), "Please set a default payment account first.");
-            return; // Stop execution if no account is set.
-        }
-
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_withdraw_payment_request);
-
-
-        TextView accountNumberEt = bottomSheetDialog.findViewById(R.id.accountNumberEt);
-        EditText withdrawAmountEt = bottomSheetDialog.findViewById(R.id.withdrawAmountEt);
-        CheckBox withdrawConfirmCheckbox = bottomSheetDialog.findViewById(R.id.withdrawConfirmCheckbox);
-
-
-        TextView primaryText = bottomSheetDialog.findViewById(R.id.primaryText); // TextView এর id দিন
-        TextView submitBtn = bottomSheetDialog.findViewById(R.id.submitBtn);
-
-        if (primaryText != null) {
-            primaryText.setOnClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                builder.setTitle("Withdrawal Terms & Conditions");
-
-                builder.setMessage("""
-                    Before confirming withdrawal, please note:
-
-                    1️⃣ Payment will be processed within 2-3 working days.
-                    2️⃣ Ensure your primary account information is correct.
-                    3️⃣ Once submitted, withdrawal requests cannot be cancelled.
-                    4️⃣ The company reserves the right to review and verify all transactions.
-
-                    ✅ By confirming, you agree to these terms and conditions.""");
-
-                builder.setPositiveButton("Got it", (dialog, which) -> dialog.dismiss());
-                builder.show();
-            });
-        }
-
-        if (accountNumberEt != null) {
-            accountNumberEt.setText(accountNumber);
-            switch (accountName) {
-                case "bKash":
-                    accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_bkash, 0, 0, 0);
-                    break;
-                case "Rocket":
-                    accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_rocket, 0, 0, 0);
-                    break;
-                case "Nagad":
-                    accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_nagad, 0, 0, 0);
-                    break;
-                case "Upay":
-                    accountNumberEt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_upay, 0, 0, 0);
-                    break;
-            }
-        }
-
-        if (submitBtn != null) {
-            submitBtn.setOnClickListener(v -> {
-                loadingDialog.setMessage("আপনার রিকুয়েস্ট সাবমিট হচ্ছে");
-
-                String accountNumber = accountNumberEt.getText().toString().trim();
-                String withdrawAmountStr = withdrawAmountEt.getText().toString().trim();
-
-                if (accountNumber.isEmpty()) {
-                    accountNumberEt.setError("একাউন্ট নাম্বার দিন");
-                    accountNumberEt.requestFocus();
-                    return;
-                } else if (withdrawAmountStr.isEmpty()) {
-                    withdrawAmountEt.setError("এমাউন্ট দিন");
-                    withdrawAmountEt.requestFocus();
-                    return;
-                }
-
-                double withdrawAmount;
-                try {
-                    withdrawAmount = Double.parseDouble(withdrawAmountStr);
-                } catch (NumberFormatException e) {
-                    withdrawAmountEt.setError("সঠিক এমাউন্ট দিন");
-                    withdrawAmountEt.requestFocus();
-                    return;
-                }
-
-                if (withdrawAmount > partnerEarn) {
-                    withdrawAmountEt.setError("আপনার পাওনার চেয়ে বেশি উত্তোলন করা যাবে না");
-                    withdrawAmountEt.requestFocus();
-                    return;
-                } else if (withdrawAmount <= 0) {
-                    withdrawAmountEt.setError("সঠিক এমাউন্ট দিন");
-                    withdrawAmountEt.requestFocus();
-                    return;
-                } else if (!withdrawConfirmCheckbox.isChecked()) {
-                    withdrawConfirmCheckbox.setError("আপনার উত্তোলন নিশ্চিত করুন");
-                    MyToast.showShort(requireContext(), "আপনার উত্তোলন নিশ্চিত করুন");
-                    return;
-                }
-
-                // ✅ প্রথমে চেক করবে কোনো Pending request আছে কি না
-                loadingDialog.show();
-                db.collection("withdrawRequests")
-                        .whereEqualTo("vendorId", userId)
-                        .whereEqualTo("status", "pending")
-                        .get()
-                        .addOnSuccessListener(querySnapshot -> {
-                            if (!querySnapshot.isEmpty()) {
-                                // ⚠️ Pending request already exists
-                                loadingDialog.dismiss();
-                                MyToast.showShort(requireContext(), "আপনার একটি Pending রিকুয়েস্ট আছে,\nসেটি সম্পন্ন হওয়ার পর নতুন রিকুয়েস্ট দিতে পারবেন।");
-                            }
-                            else {
-                                // ✅ কোনো Pending request নেই → এখন নতুন request সাবমিট করবে
-                                financeManager.requestWithdraw(userId, withdrawAmount, accountName, accountNumber, new FinanceManager.OnWithdrawResult() {
-                                    @Override
-                                    public void onSuccess(String docId) {
-                                        withdrawAmountEt.setText("");
-                                        MyToast.showShort(requireContext(), "✅ রিকুয়েস্ট সফলভাবে সাবমিট হয়েছে!");
-                                        bottomSheetDialog.dismiss();
-                                        loadingDialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onFailure(Exception e) {
-                                        MyToast.showShort(requireContext(), "❌ রিকুয়েস্ট সাবমিট ব্যর্থ: " + e.getMessage());
-                                        bottomSheetDialog.dismiss();
-                                        loadingDialog.dismiss();
-                                    }
-                                });
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            loadingDialog.dismiss();
-                            MyToast.showShort(requireContext(), "Error checking pending request: " + e.getMessage());
-                        });
-            });
-        }
-
-
-        bottomSheetDialog.show();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        partnerFinanceSummaryLoad();
-    }
 }

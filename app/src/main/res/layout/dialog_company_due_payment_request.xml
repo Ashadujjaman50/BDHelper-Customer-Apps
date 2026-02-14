@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/withdraw_request"
+            android:text="@string/settlement_of_dues"
             android:textAlignment="center"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
@@ -32,6 +32,25 @@
             android:layout_marginBottom="15dp"
             android:background="@color/divider_color" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bkash_marchent"
+            android:textAlignment="center"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="10dp"
+            android:drawablePadding="8dp"
+            android:text="Make Payment: 01701078233"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_mfs_bkash" />
+
         <LinearLayout
             android:id="@+id/nameLl"
             android:layout_width="match_parent"
@@ -43,9 +62,9 @@
                 android:id="@+id/mobileTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/primary_payment_account" />
+                android:text="@string/payment_account_number" />
 
-            <TextView
+            <EditText
                 android:id="@+id/accountNumberEt"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -67,58 +86,62 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/transaction_id" />
+
+            <EditText
+                android:id="@+id/transactionIdEt"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_edit_text"
+                android:textSize="16sp"
+                android:hint="@string/transaction_id"
+                android:inputType="text"
+                android:autofillHints="transactionId"
+                android:paddingStart="12dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                app:drawableStartCompat="@drawable/ic_payment_receipt"
+                android:drawablePadding="12dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/withdraw_amount" />
+                android:text="Paid Amount" />
 
-            <EditText
+            <TextView
                 android:id="@+id/withdrawAmountEt"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/bg_edit_text"
-                android:drawableStart="@drawable/ic_taka_symbol"
-                android:drawableTint="@color/icon_color"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:hint="@string/withdraw_amount"
-                android:inputType="numberDecimal"
+                android:hint="Paid Amount (Tk)"
                 android:paddingStart="12dp"
                 android:paddingEnd="0dp"
+                android:textSize="16sp"
                 android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary" />
+                android:textColorHint="@color/text_secondary"
+                app:drawableStartCompat="@drawable/ic_taka_symbol"
+                app:drawableTint="@color/icon_color" />
 
-        </LinearLayout>
-
-        <!-- ✅ Checkbox for confirming withdrawal -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <CheckBox
-                android:id="@+id/withdrawConfirmCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="0dp"
-                android:paddingEnd="15dp"/>
-
-            <TextView
-                android:id="@+id/primaryText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/i_confirm_this_withdraw"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:paddingStart="6dp" />
         </LinearLayout>
 
         <TextView

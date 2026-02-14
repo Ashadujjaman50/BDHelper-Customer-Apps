@@ -39,6 +39,7 @@
         android:windowSoftInputMode="adjustPan|adjustResize"
         tools:replace="android:allowBackup"
         tools:targetApi="33">
+
         <activity
             android:name=".partner.BidActivity"
             android:exported="false" />
@@ -147,7 +148,8 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity" /> <!-- Firebase Messaging Service -->
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <!-- Firebase Messaging Service -->
         <service
             android:name=".FirebaseMessaging.MyFirebaseMessagingService"
             android:exported="false">

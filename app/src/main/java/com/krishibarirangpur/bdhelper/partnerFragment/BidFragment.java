@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
-import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.AdapterBidDetail;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidBinding;
@@ -44,11 +43,11 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class BidFragment extends Fragment {
+public class BidFragment extends Fragment implements AdapterBidDetail.OnBidDetailActionListener{
 
     private FragmentBidBinding binding;
 
-    String bidAction, currentUserId, user_type;
+    String bidAction, currentUserId, user_type, paymentReceiver = "";
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
 
@@ -61,8 +60,6 @@ public class BidFragment extends Fragment {
 
     //Financial Leger Assign
     FinanceManager fm;
-
-    private boolean isDialogShowing = false;
 
     public BidFragment() {
         // Required empty public constructor
@@ -107,37 +104,54 @@ public class BidFragment extends Fragment {
         preloadingDialog = new PreloadingDialog(requireContext());
         preloadingDialog.show();
 
+
+        bidModelArrayList = new ArrayList<>();
+        adapterBidDetail = new AdapterBidDetail(getContext(), bidModelArrayList, this);
+        binding.bidRV.setAdapter(adapterBidDetail);
+
+        //get Current Partner paymentReceiver Data
+        getPaymentReceiver();
+
+
         //get all success bid
         getAllCurrentVendorBid();
 
-        adapterBidDetail.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if ("confirmed".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
-                    if (!isDialogShowing) { // check flag
-                        isDialogShowing = true;
-                        showAlertDialog(position, () -> {
-                            isDialogShowing = false; // reset flag when dialog dismissed
-                        });
-                    }
-                }
-
-            }
-
-            @Override
-            public void onShowItemClick(int position) { }
-
-            @Override
-            public void onDeleteItemClick(int position) { }
-        });
 
     }
 
-    private void showAlertDialog(int position, DialogDismissListener listener){
+    private void getPaymentReceiver() {
+        db.collection("users")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    paymentReceiver = doc.exists()
+                            ? doc.getString("paymentReceiver")
+                            : null;
+
+                    if (paymentReceiver == null || paymentReceiver.isEmpty()) {
+                        paymentReceiver = "partner";
+                    }
+                    Log.d("PaymentReceiver", "Payment Receiver: " + paymentReceiver);
+                })
+                .addOnFailureListener(e ->
+                        Log.e("PaymentReceiver", "Failed to get paymentReceiver", e)
+                );
+    }
+
+
+
+    @Override
+    public void onItemClick(int position, int confirmOrderPrice, int bidValue) {
+        if ("confirmed".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
+            showAlertDialog(position, confirmOrderPrice+"",bidValue);
+        }
+    }
+
+    private void showAlertDialog(int position, String confirmOrderPrice, int bidValue){
 
         String bidId = bidModelArrayList.get(position).getBidInfo().getBidId();
         String orderId = bidModelArrayList.get(position).getOrderInfo().getOrderId();
-        String bidAmount = bidModelArrayList.get(position).getBidInfo().getBidAmount();
+        String bidAmount = String.valueOf(bidValue);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
@@ -157,10 +171,6 @@ public class BidFragment extends Fragment {
         messageText.setText(R.string.are_you_sure_alert_msg);
         btnConfirm.setText(R.string.yes);
 
-        dialog.setOnDismissListener(d -> {
-            if (listener != null) listener.onDismiss();
-        });
-
         iconImage.setImageResource(CommonClass.getIconForSubCategory(bidModelArrayList.get(position).getOrderInfo().getSubCategoryId()));
         // 🔹 Tint set
         iconImage.setColorFilter(ContextCompat.getColor(requireContext(), R.color.icon_color), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -171,7 +181,6 @@ public class BidFragment extends Fragment {
             dialog.dismiss();
             loadingDialog.setMessage("আপডেট হচ্ছে ...");
             loadingDialog.show();
-            if (listener != null) listener.onDismiss();
 
             // ✅ 1️⃣ bidForOrder -> status update
             db.collection("bidForOrder")
@@ -191,7 +200,7 @@ public class BidFragment extends Fragment {
                                         getAllCurrentVendorBid();
 
                                         //Update Financial Ledger in Partner
-                                        fm.createLedgerAndUpdateBalance(bidId, orderId, currentUserId, bidAmount); // 10% compan
+                                        fm.createLedgerAndUpdateBalance(bidId, orderId, currentUserId, bidAmount,confirmOrderPrice, paymentReceiver); // 10% company
                                     })
                                     .addOnFailureListener(e -> {
                                         loadingDialog.dismiss();
@@ -215,16 +224,9 @@ public class BidFragment extends Fragment {
     }
 
 
-    // Callback interface
-    interface DialogDismissListener {
-        void onDismiss();
-    }
 
 
    private void getAllCurrentVendorBid() {
-        bidModelArrayList = new ArrayList<>();
-        adapterBidDetail = new AdapterBidDetail(getContext(), bidModelArrayList);
-        binding.bidRV.setAdapter(adapterBidDetail);
 
         // ✅ bidAction অনুযায়ী আলাদা method কল হবে
         if ("pending".equals(bidAction)) {

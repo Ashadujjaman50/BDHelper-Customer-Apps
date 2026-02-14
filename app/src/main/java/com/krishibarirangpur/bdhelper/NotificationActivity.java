@@ -74,7 +74,7 @@ public class NotificationActivity extends BaseActivity {
         //get Current User All Notice Load
         loadAllNotice();
 
-
+        //Click Post And Bid Notice to Goto Target Location
         adapterNotice.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -117,7 +117,7 @@ public class NotificationActivity extends BaseActivity {
             public void onDeleteItemClick(int position) {}
         });
 
-
+        //Clear Notice In Individual User
         ItemTouchHelper.SimpleCallback simpleCallback =
                 new ItemTouchHelper.SimpleCallback(0,
                         ItemTouchHelper.LEFT ) {
@@ -141,8 +141,7 @@ public class NotificationActivity extends BaseActivity {
 
                         // 🔹 Partner logic → swipe allow
                         if (MyUtils.NOTICE_RECEIVER_PARTNER.equals(user_type)) {
-                            if (MyUtils.NOTICE_TYPE_POST.equals(noticeType) ||
-                                    MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
+                            if (MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
                                 return super.getSwipeDirs(recyclerView, viewHolder);
                             }
                         }

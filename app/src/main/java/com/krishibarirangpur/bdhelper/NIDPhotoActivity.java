@@ -144,7 +144,6 @@ public class NIDPhotoActivity extends BaseActivity {
 
 
 
-
     private void showBottomPopupImagePicker() {
         BottomSheetDialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(R.layout.dialog_image_picker);

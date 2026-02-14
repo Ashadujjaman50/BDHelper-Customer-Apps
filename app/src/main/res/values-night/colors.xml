@@ -51,5 +51,8 @@
     <color name="button_bg_primary_color">#1E1E1E</color> <!-- light gray -->
     <color name="bg_row_light">#1F1F1F</color> <!-- darker border -->
 
+    <color name="app_background">#131A29</color>
+    <color name="card_background">#1A222C</color>
+
 
 </resources>

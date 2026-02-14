@@ -179,8 +179,9 @@ public class PartnerRegisterFragment extends Fragment {
             userMap.put("district", selectDistrict);
             userMap.put("location", location);
             userMap.put("businessName", businessName);  // only for partner
-            userMap.put("verifyStatus", "pending");     // only for partner
             userMap.put("rentService", "");             // only for partner
+            userMap.put("paymentReceiver", "partner");  // only for partner
+            userMap.put("verifyStatus", "pending");
             userMap.put("device_token", device_token);
             userMap.put("userSignWith", userSignWith);
             userMap.put("userJoinTime", timestamp);

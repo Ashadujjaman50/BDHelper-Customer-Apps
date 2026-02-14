@@ -242,7 +242,7 @@ public class EditPartnerProfileFragment extends Fragment {
                         binding.userEmailEt.setEnabled(false);
 
                         // 🔁 ভাষা চেক করে District নাম বাংলা দেখাও
-                        String shownDistrict = Replacement.getLocalizedDistrict(requireActivity(), selectDistrict);
+                        String shownDistrict = Replacement.getLocalizedDistrict(getActivity(), selectDistrict);
                         binding.userDistrictEt.setText(shownDistrict);
                     }
                 })

@@ -95,4 +95,19 @@
     <color name="bg_row_light">#FFFFFF</color> <!-- darker border -->
 
 
+    <!--Status Color-->
+    <color name="status_approved_bg">#E8FBEB</color>
+    <color name="status_approved_text">#18A44B</color>
+    <color name="status_pending_bg">#FFF0BE</color>
+    <color name="status_pending_text">#F97418</color>
+    <color name="status_process_bg">#E8F2FF</color>
+    <color name="status_process_text">#1E6FD9</color>
+    <color name="status_rejected_bg">#FFEBEE</color>
+    <color name="status_rejected_text">#D32F2F</color>
+
+
+    <color name="app_background">#F8F9FA</color>
+    <color name="card_background">#FFFFFF</color>
+
+
 </resources>

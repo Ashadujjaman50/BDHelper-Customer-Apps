@@ -5,7 +5,7 @@ public class MyUtils {
 
     //Change able String
     public static final String HOTLINE_NUMBER = "01789999303";
-    public static final String CHAT_ADMIN_ID = "LEzwFazC1HTu0n0MvJ0uGg3XOkH3";
+    public static final String CHAT_ADMIN_ID = "wxmMpPjD1gMXV5Gej4GpLm7swly2";
 
 
     //Privacy Policy And Trems Conditions Url
@@ -38,14 +38,12 @@ public class MyUtils {
     public static final String NOTICE_RECEIVER_ALL = "all";
     public static final String NOTICE_RECEIVER_ADMIN = "admin";
 
-    //USer Type
+    //User Type
     public static final String USER_TYPE = "user_type";
-
 
 
     //Admin Photo Url
     public static final String admin_profile_photo_url = "https://firebasestorage.googleapis.com/v0/b/bd-helper.firebasestorage.app/o/Asset%2Fbdhelper%20logo.png?alt=media&token=a6996c25-026c-4148-b16a-b5ad0903f2af";
-
 
 
     public static String barikoi_api_key = "bkoi_b716efe2a16aa7829680e734e100b40d6db5b1efbe316366aa91d0c7ed9aa0e1";
@@ -295,7 +293,7 @@ public class MyUtils {
             "Nilfamari",
             "Gaibandha",
 
-            "Bagura",
+            "Bogura",
             "Joypurhat",
             "Pabna",
             "Nouga",
@@ -457,7 +455,7 @@ public class MyUtils {
             "Nilfamari",
             "Gaibandha",
 
-            "Bagura",
+            "Bogura",
             "Joypurhat",
             "Pabna",
             "Nouga",

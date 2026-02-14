@@ -5,9 +5,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
@@ -76,16 +78,16 @@ public class WithdrawAdapter extends RecyclerView.Adapter<WithdrawAdapter.ViewHo
 
         switch (paymentMethod) {
             case "bKash":
-                holder.accountNumberTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_bkash, 0, 0, 0);
+                holder.accountIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mfs_bkash));
                 break;
             case "Rocket":
-                holder.accountNumberTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_rocket, 0, 0, 0);
+                holder.accountIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_mfs_rocket));
                 break;
             case "Nagad":
-                holder.accountNumberTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_nagad, 0, 0, 0);
+                holder.accountIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_mfs_nagad));
                 break;
-            case "Upay":
-                holder.accountNumberTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mfs_upay, 0, 0, 0);
+            case "uPay":
+                holder.accountIcon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_mfs_upay));
                 break;
         }
 
@@ -100,6 +102,7 @@ public class WithdrawAdapter extends RecyclerView.Adapter<WithdrawAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView amountTv, statusTv, accountNumberTv, dateTv;
+        ImageView accountIcon;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -107,6 +110,7 @@ public class WithdrawAdapter extends RecyclerView.Adapter<WithdrawAdapter.ViewHo
             statusTv = itemView.findViewById(R.id.statusTv);
             accountNumberTv = itemView.findViewById(R.id.accountNumberTv);
             dateTv = itemView.findViewById(R.id.dateTv);
+            accountIcon = itemView.findViewById(R.id.accountIcon);
 
 
             itemView.setOnClickListener(v -> {

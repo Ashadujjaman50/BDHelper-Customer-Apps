@@ -290,12 +290,13 @@
 
             </LinearLayout>
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/moreBtn"
                 android:layout_margin="5dp"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:padding="5dp"
                 app:srcCompat="@drawable/ic_more_vert_24"
                 android:contentDescription="@string/app_name"

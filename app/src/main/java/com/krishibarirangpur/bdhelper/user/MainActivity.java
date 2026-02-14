@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity {
 
 
 
-
         binding.customBottomBar.inflateMenu(R.menu.nav_bottom_menu);
         binding.customBottomBar.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

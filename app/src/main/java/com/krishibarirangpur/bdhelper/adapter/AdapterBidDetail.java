@@ -16,8 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
@@ -37,11 +35,12 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
     Context context;
     ArrayList<BidModel> bidModelArrayList;
 
-    private OnItemClickListener mListener;
+    private OnBidDetailActionListener listener;
 
-    public AdapterBidDetail(Context context, ArrayList<BidModel> bidModelArrayList) {
+    public AdapterBidDetail(Context context, ArrayList<BidModel> bidModelArrayList,OnBidDetailActionListener listener) {
         this.context = context;
         this.bidModelArrayList = bidModelArrayList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -60,12 +59,12 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         else {
             view = LayoutInflater.from(context).inflate(R.layout.row_bid_detail_skilled_labour, parent, false);
         }
-        return new HolderViewBidDetail(view, mListener);
+        return new HolderViewBidDetail(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull HolderViewBidDetail holder, int position) {
+    public void onBindViewHolder(@NonNull HolderViewBidDetail holder, @SuppressLint("RecyclerView") int position) {
         //get data
         BidModel bidModel = bidModelArrayList.get(position);
 
@@ -203,6 +202,10 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                     }
 
 
+                    // ============ Handle SubCategory Specific ============
+                    setServiceInfo(holder, subCategoryId, types, quantity, capacity);
+
+
 
                     holder.callBtn.setOnClickListener(v -> {
                         String phone = order.getUserInfo().getUserPhone();
@@ -211,8 +214,9 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                         context.startActivity(intent);
                     });
 
-                    // ============ Handle SubCategory Specific ============
-                    setServiceInfo(holder, subCategoryId, types, quantity, capacity);
+                    holder.itemView.setOnClickListener(v -> {
+                        listener.onItemClick(position, vendorPrice, bidValue);
+                    });
 
                 }
             }
@@ -311,7 +315,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
         CardView cardView;
 
-        public HolderViewBidDetail(@NonNull View itemView, OnItemClickListener listener) {
+        public HolderViewBidDetail(@NonNull View itemView) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.cardView);
@@ -347,23 +351,14 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
             bidStatusTv = itemView.findViewById(R.id.bidStatusTv);
 
-
-            itemView.setOnClickListener(v -> {
-                if (listener != null){
-                    int position  = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(v, position);
-                    }
-                    }
-            });
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mListener = listener;
-        notifyDataSetChanged();
-    }
 
+    //Interface for handling actions from activity
+    public interface OnBidDetailActionListener {
+        void onItemClick(int position, int confirmOrderPrice, int bidAmount);
+
+    }
 
 }
