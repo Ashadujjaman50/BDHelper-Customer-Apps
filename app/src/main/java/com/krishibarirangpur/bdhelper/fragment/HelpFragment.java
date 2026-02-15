@@ -9,26 +9,19 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.ListenerRegistration;
 import com.krishibarirangpur.bdhelper.ChatActivity;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.adapter.SliderAdapterAuto;
-import com.krishibarirangpur.bdhelper.model.SlideImage;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.user.ServiceRequestActivity;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHelpBinding;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.smarteist.autoimageslider.SliderAnimations;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.BannerSliderManager;
 import com.smarteist.autoimageslider.SliderView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class HelpFragment extends Fragment {
 
@@ -36,9 +29,7 @@ public class HelpFragment extends Fragment {
 
     String userType;
 
-    ArrayList<SlideImage> slideImageArrayList;
-
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ListenerRegistration registration;
 
     public HelpFragment() {
         // Required empty public constructor
@@ -70,6 +61,12 @@ public class HelpFragment extends Fragment {
         }
 
         //Slider Image Load and View
+        if (userType.equals("partner")){
+            fetchSlides(view, "Partner");
+        }
+        else {
+            fetchSlides(view, "Customer");
+        }
 
 
         binding.chatLl.setOnClickListener(v -> {
@@ -96,59 +93,26 @@ public class HelpFragment extends Fragment {
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
-        if (userType.equals("partner")){
-            fetchSlides(view, "partnerHelp");
-        }
-        else {
-            fetchSlides(view, "customerHelp");
-        }
-
 
     }
 
 
-    private void fetchSlides(View view, String slideType) {
-
-        slideImageArrayList = new ArrayList<>();
-        //SliderView
-        SliderView sliderView;
-        sliderView = view.findViewById(R.id.imageSlider);
-
-        //SliderView
-        SliderAdapterAuto sliderAdapter = new SliderAdapterAuto(getContext(), slideImageArrayList);
-        sliderView.setSliderAdapter(sliderAdapter);
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        sliderView.setIndicatorVisibility(false);
-        sliderView.setScrollTimeInSec(3);
-        sliderView.setSliderAnimationDuration(1000);
-        sliderView.setIndicatorEnabled(false);
-        sliderView.startAutoCycle();
-        sliderView.setAutoCycle(true);
-
-        db.collection("slides")
-                .orderBy("timestamp", Query.Direction.ASCENDING)
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                    if (e != null) {
-                        Log.e("Firestore", "Error fetching slides", e);
-                        return;
-                    }
-
-                    if (queryDocumentSnapshots != null) {
-                        List<SlideImage> newList = new ArrayList<>();
-                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            SlideImage slide = doc.toObject(SlideImage.class);
-                            if (slide != null && slide.getSlideType().equals(slideType)) {
-                                newList.add(slide);
-                            }
-                        }
-
-                        // Adapter update করা হচ্ছে, নতুন instance না নেয়া
-                        sliderAdapter.updateList(newList);
-                    }
-                });
+    private void fetchSlides(View view, String audienceType) {
+        SliderView sliderView = view.findViewById(R.id.imageSlider);
+        BannerSliderManager manager = new BannerSliderManager();
+        registration = manager.loadAutoSlider(
+                getContext(),
+                sliderView,
+                audienceType,
+                "Help");
 
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        if (registration != null) {
+            registration.remove(); // 🔹 Firestore Listener remove করতে হবে
+        }
+    }
 
 }

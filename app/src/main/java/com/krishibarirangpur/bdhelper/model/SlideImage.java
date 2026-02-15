@@ -1,60 +1,94 @@
 package com.krishibarirangpur.bdhelper.model;
 
 public class SlideImage {
-    private String slideId;
-    private String slideDescription;
-    private String slideImage;
-    private String slideType;
-    private String timestamp;
+    private String bannerId;
+    private String title;
+    private String imageUrl;
+    private String audience;
+    private String placement;
+    private int order;
+    private boolean active;
+    private long timestamp;
 
     // Empty constructor (Firestore এর জন্য দরকার)
     public SlideImage() {}
 
-    public SlideImage(String slideId, String slideDescription, String slideImage, String slideType, String timestamp) {
-        this.slideId = slideId;
-        this.slideDescription = slideDescription;
-        this.slideImage = slideImage;
-        this.slideType = slideType;
+    public SlideImage(String bannerId, String title, String imageUrl,
+                      String audience, String placement,
+                      int order, boolean active, long timestamp) {
+        this.bannerId = bannerId;
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.audience = audience;
+        this.placement = placement;
+        this.order = order;
+        this.active = active;
         this.timestamp = timestamp;
     }
 
-    public String getSlideId() {
-        return slideId;
+    // 🔹 Getter & Setter
+
+    public String getBannerId() {
+        return bannerId;
     }
 
-    public void setSlideId(String slideId) {
-        this.slideId = slideId;
+    public void setBannerId(String bannerId) {
+        this.bannerId = bannerId;
     }
 
-    public String getSlideDescription() {
-        return slideDescription;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSlideDescription(String slideDescription) {
-        this.slideDescription = slideDescription;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getSlideImage() {
-        return slideImage;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setSlideImage(String slideImage) {
-        this.slideImage = slideImage;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getSlideType() {
-        return slideType;
+    public String getAudience() {
+        return audience;
     }
 
-    public void setSlideType(String slideType) {
-        this.slideType = slideType;
+    public void setAudience(String audience) {
+        this.audience = audience;
     }
 
-    public String getTimestamp() {
+    public String getPlacement() {
+        return placement;
+    }
+
+    public void setPlacement(String placement) {
+        this.placement = placement;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 }

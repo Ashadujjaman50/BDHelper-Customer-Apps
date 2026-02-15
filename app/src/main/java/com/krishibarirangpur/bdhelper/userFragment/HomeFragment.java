@@ -14,15 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.krishibarirangpur.bdhelper.ChatActivity;
 import com.krishibarirangpur.bdhelper.NotificationActivity;
 import com.krishibarirangpur.bdhelper.PromoActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHomeBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
-import com.krishibarirangpur.bdhelper.model.SlideImage;
 import com.krishibarirangpur.bdhelper.utils.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.user.AddressActivity;
@@ -37,10 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.BannerSliderManager;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -49,9 +45,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     //notification
     private ArrayList<ModelNotice> noticeArrayList;
-    ArrayList<SlideImage> slideImageArrayList;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,6 +65,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //init views
+        fetchSlides(view);
 
         // load new Notification Count
         loadNotificationCount();
@@ -162,8 +157,6 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
-
-        fetchSlides(view);
 
     }
 
@@ -272,40 +265,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchSlides(View view) {
-        ImageSlider imageSlider;
-        imageSlider = view.findViewById(R.id.image_slider);
-        slideImageArrayList = new ArrayList<>();
-        List<SlideModel> imageList = new ArrayList<>();
-
-
-        db.collection("slides")
-                .orderBy("timestamp", Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    slideImageArrayList.clear();
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        SlideImage slide = doc.toObject(SlideImage.class);
-                        if (slide != null && slide.getSlideType().equals("customerHome")) {
-                            slideImageArrayList.add(slide);
-                        }
-                    }
-
-                    // slideList এখন Firestore এর সব slide রাখছে
-                    Log.d("Firestore", "Total slides: " + imageList.size());
-                    for (SlideImage s : slideImageArrayList) {
-                        imageList.add(new SlideModel(s.getSlideImage(), ScaleTypes.FIT));
-                        Log.d("Firestore", "Slide: " + s.getSlideDescription() + " | " + s.getSlideImage());
-                    }
-                    imageSlider.startSliding(2000);
-                    imageSlider.setImageList(imageList);
-
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error fetching slides", e);
-                });
-
-
-
+        ImageSlider imageSlider = view.findViewById(R.id.image_slider);
+        BannerSliderManager manager = new BannerSliderManager();
+        manager.loadImageSlider(imageSlider, "Customer", "Home");
     }
 
 

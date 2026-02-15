@@ -37,11 +37,11 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
     public void onBindViewHolder(SliderAdapterVH holder, int position) {
         SlideImage slideImage = slideImageArrayList.get(position);
 
-        holder.textViewDescription.setText(slideImage.getSlideDescription());
+        holder.textViewDescription.setText(slideImage.getTitle());
 
-        if (slideImage.getSlideImage() != null && !slideImage.getSlideImage().isEmpty()) {
+        if (slideImage.getImageUrl() != null && !slideImage.getImageUrl().isEmpty()) {
             Picasso.get()
-                    .load(slideImage.getSlideImage())
+                    .load(slideImage.getImageUrl())
                     .placeholder(R.drawable.demo_help_slide1)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(holder.imageViewBackground, new Callback() {
@@ -51,7 +51,7 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(slideImage.getSlideImage()).into(holder.imageViewBackground);
+                            Picasso.get().load(slideImage.getImageUrl()).into(holder.imageViewBackground);
                         }
                     });
         }

@@ -16,10 +16,16 @@ import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.FinanceCache;
+import com.krishibarirangpur.bdhelper.utils.FinanceManager;
+import com.krishibarirangpur.bdhelper.utils.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapter.HolderViewOrderPartner> {
     private static final int TRANSPORT = 0;
@@ -27,7 +33,8 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
     private static final int HOME_SHIFTING = 2;
     private static final int SKILLED_LABOUR = 3;
 
-    Context context;
+    @SuppressLint("StaticFieldLeak")
+    static Context context;
     ArrayList<OrderModel> orderModelArrayList;
 
     private OnItemClickListener mListener;
@@ -213,10 +220,29 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
             unLoadArea = itemView.findViewById(R.id.unLoadArea);
 
             itemView.setOnClickListener(v -> {
-                if (listener != null){
-                    int position  = getBindingAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(v, position);
+                double partnerReceivable = FinanceCache.partnerReceivable;
+                double companyReceivable = FinanceCache.companyReceivable;
+                Map<String, Double> result = FinanceManager.getNetReceivable(partnerReceivable, companyReceivable);
+                double netAmount = result.get("netAmount");
+                double owedTo = result.get("owedTo");
+                double currentDue = 0;
+
+                if (owedTo == 2.0){
+                    currentDue = netAmount;
+                }
+
+                double limit = PartnerUtils.PARTNER_DUE_LIMIT;
+
+                if (currentDue >= limit){
+                    String message ="আপনার বকেয়া "+currentDue+" টাকা রয়েছে। অনুগ্রহ করে প্রথমে বকেয়া পরিশোধ করুন, তারপর বিড করতে পারবেন।";
+                    DialogAlert.dueAlert(context,"",Replacement.ReplacementNumberInLocal(context,message));
+                }
+                else {
+                    if (listener != null){
+                        int position  = getBindingAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(v, position);
+                        }
                     }
                 }
             });
