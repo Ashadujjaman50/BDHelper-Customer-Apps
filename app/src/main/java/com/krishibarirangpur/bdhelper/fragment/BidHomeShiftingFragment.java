@@ -42,6 +42,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +69,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     LoadingDialog loadingDialog;
 
     PreloadingDialog preloadingDialog;
+    private PartnerBidEdit partnerBidEdit;
 
     public BidHomeShiftingFragment() {
         // Required empty public constructor
@@ -102,6 +106,8 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
         loadingDialog.setCancelable(false);
 
         preloadingDialog = new PreloadingDialog(requireContext());
+
+        partnerBidEdit = new PartnerBidEdit(requireContext(), db, loadingDialog);
 
 
         //get current Order info
@@ -228,7 +234,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_HOME_SHIFTING);
 
                     // ✅ 1️⃣ bidForOrder -> status update
                     db.collection("bidForOrder")
@@ -293,26 +299,27 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     }
 
 
+    public void onEditClicked(String bidId, String orderId) {
+        partnerBidEdit.startEditProcess(bidId, orderId);
+    }
+
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Delete Bid")
-                .setMessage("Are you sure you want to delete this bid?")
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    loadingDialog.show();
-                    db.collection("bidForOrder").document(bidId).delete()
-                            .addOnSuccessListener(aVoid -> {
-                                loadingDialog.dismiss();
-                                MyToast.showShort(getContext(), "Bid deleted successfully.");
-                                // Snapshot listener will handle UI update
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
-                            });
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        DialogAlert.showDeleteBidDialog(requireContext(),()->{
+            loadingDialog.show();
+            db.collection("bidForOrder")
+                    .document(bidId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        loadingDialog.dismiss();
+                        MyToast.showShort(getContext(), "Bid deleted successfully.");
+                        // Snapshot listener will handle UI update
+                    })
+                    .addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
+                        MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
+                    });
+        });
     }
     @SuppressLint("SetTextI18n")
     private void getCurrentOrderInfo() {
@@ -663,7 +670,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                     binding.bottomPart.setVisibility(View.GONE);
 
                     //Custome Notice Send
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, 10);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerUtils.COMMISSION_HOME_SHIFTING);
                     sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
 
                     loadCurrentPartnerBid();

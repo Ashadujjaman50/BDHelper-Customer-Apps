@@ -125,7 +125,7 @@
                             android:id="@+id/locationArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="মিরপুর, ঢাকা সিটি"
+                            android:hint=""
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>

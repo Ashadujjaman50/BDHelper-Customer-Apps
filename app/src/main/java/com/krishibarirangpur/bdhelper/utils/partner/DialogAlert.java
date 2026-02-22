@@ -48,4 +48,38 @@ public class DialogAlert {
         dialog.getWindow().setGravity(Gravity.CENTER);
 
     }
+
+    public interface OnConfirmListener {
+        void onConfirm();
+    }
+
+    public static void showDeleteBidDialog(Context context, OnConfirmListener listener) {
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Bid")
+                .setMessage("Are you sure you want to delete this bid?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    if (listener != null) {
+                        listener.onConfirm();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .setCancelable(true)
+                .show();
+    }
+
+    public static void showBidEditDialog(Context context, OnConfirmListener listener) {
+        new AlertDialog.Builder(context)
+                .setTitle("Bid Edit")
+                .setMessage("You are allowed to edit this bid only one time.")
+                .setPositiveButton("Edit", (dialog, which) -> {
+                    if (listener != null) {
+                        listener.onConfirm();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .setCancelable(true)
+                .show();
+    }
+
+
 }

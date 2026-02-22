@@ -319,7 +319,8 @@ public class BidFragment extends Fragment implements AdapterBidDetail.OnBidDetai
 
                             long rentA = Long.parseLong(a.getOrderInfo().getRentTime());
                             long rentB = Long.parseLong(b.getOrderInfo().getRentTime());
-                            return Long.compare(rentA, rentB);
+                            // 🔥 Descending (LIFO)
+                            return Long.compare(rentB, rentA);
                         });
 
                         bidModelArrayList.addAll(tempList);

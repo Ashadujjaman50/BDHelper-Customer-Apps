@@ -309,8 +309,7 @@
                     android:focusable="true"
                     android:text="@string/document"
                     android:textAlignment="center"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="@font/solaimanlipi" />
+                    android:textColor="@color/text_primary" />
 
                 <TextView
                     android:id="@+id/editBtn"
@@ -322,8 +321,7 @@
                     android:focusable="true"
                     android:text="@string/edit_profile"
                     android:textAlignment="center"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="@font/solaimanlipi" />
+                    android:textColor="@color/text_primary" />
 
             </LinearLayout>
 

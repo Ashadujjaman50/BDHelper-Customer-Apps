@@ -41,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.AlphanumericKeyListener;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -103,22 +104,13 @@ public class PartnerRegisterFragment extends Fragment {
             device_token = token;
         });
 
-        // শুধু uppercase letter এবং digit allow করব
-        InputFilter filter = (source, start, end, dest, dstart, dend) -> {
-            StringBuilder filtered = new StringBuilder();
-            for (int i = start; i < end; i++) {
-                char c = source.charAt(i);
-                if (Character.isLetter(c)) {
-                    filtered.append(Character.toUpperCase(c)); // letter হলে uppercase করে দেবে
-                } else if (Character.isDigit(c)) {
-                    filtered.append(c); // digit হলে 그대로 রাখবে
-                }
-            }
-            return filtered.toString();
-        };
+        // KeyListener set করুন
+        binding.referCodeEt.setKeyListener(AlphanumericKeyListener.getInstance());
 
-        // filters সেট করা
-        binding.referCodeEt.setFilters(new InputFilter[]{filter, new InputFilter.LengthFilter(10)});
+        // শুধু length filter রাখুন
+        binding.referCodeEt.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(8)
+        });
 
         //Show Bottom Popup Menu With District List
         showBottomPopUpDistrictList();
@@ -135,7 +127,7 @@ public class PartnerRegisterFragment extends Fragment {
         String businessName = binding.businessNameET.getText().toString().trim();
         String location = binding.locationET.getText().toString().trim();
         String district = binding.districtET.getText().toString().trim();
-        String inputReferralCode = binding.referCodeEt.getText().toString().trim();
+        String inputReferralCode = binding.referCodeEt.getText().toString().toUpperCase().trim();
 
         if (TextUtils.isEmpty(name)) {
             setErrorWatcher(binding.nameET, true);

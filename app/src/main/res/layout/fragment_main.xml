@@ -129,8 +129,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/rent_service"
                     android:textSize="20sp"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="@font/solaimanlipi" />
+                    android:textColor="@color/text_primary" />
 
                 <!-- Rent Service Cards -->
                 <LinearLayout
@@ -245,8 +244,7 @@
                     android:layout_marginStart="5dp"
                     android:text="@string/product_or_service"
                     android:textSize="20sp"
-                    android:textColor="@color/text_primary"
-                    android:fontFamily="@font/solaimanlipi" />
+                    android:textColor="@color/text_primary" />
 
                 <!-- Product Cards -->
                 <LinearLayout
@@ -343,8 +341,7 @@
                         android:layout_marginTop="6dp"
                         android:text="নিয়োগ / বিজ্ঞপ্তি"
                         android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/solaimanlipi" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <!-- Help Section -->

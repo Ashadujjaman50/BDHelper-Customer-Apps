@@ -585,6 +585,7 @@
     <string name="cancel_bid">বাতিল বিড</string>
     <string name="total_bid">মোট বিড</string>
     <string name="referral_code">রেফারেল কোড</string>
+    <string name="referral_code_optional">রেফারেল কোড (অপশনাল)</string>
     <string name="refer_a_friend">রেফার করুন এবং ডিসকাউন্ট পান</string>
     <string name="payment_history">পেমেন্ট তালিকা</string>
     <string name="payment_account">পেমেন্ট একাউন্ট</string>

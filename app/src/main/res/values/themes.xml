@@ -19,8 +19,8 @@
 
     <style name="Theme.BDHelper" parent="Base.Theme.BDHelper">
         <!-- Set global font directly -->
-        <item name="android:fontFamily">@font/solaimanlipi</item> <!-- ✅ for most Views -->
-        <item name="fontFamily">@font/solaimanlipi</item> <!-- ✅ for some components -->
+        <item name="android:fontFamily">@font/solaiman_lipi</item> <!-- ✅ for most Views -->
+        <item name="fontFamily">@font/solaiman_lipi</item> <!-- ✅ for some components -->
 
         <item name="android:background">@color/transparent</item>
         <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
@@ -28,8 +28,8 @@
 
     <!--Home Navigation BottomBar-->
     <style name="fontStyle">
-        <item name="android:fontFamily">@font/solaimanlipi</item>
-        <item name="fontFamily">@font/solaimanlipi</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:fontFamily">@font/solaiman_lipi</item>
+        <item name="fontFamily">@font/solaiman_lipi</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
     </style>
 
     <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">

@@ -18,6 +18,7 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
 
 import java.util.ArrayList;
 
@@ -118,15 +119,22 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         }
 
         // 🔹 এখন local format এ দেখাও
-        String finalBidAmount;
-        if (categoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
-            // HARVESTER_MACHINE_ID হলে: 1000 + 1%
-            String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 1);
-            double calculatedAmount = 1000 + Double.parseDouble(HarvesterAmount);
-            finalBidAmount = String.valueOf(calculatedAmount);
-        }
-        else {
-            finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), 10);
+        String finalBidAmount = "";
+        switch (categoryId) {
+            case MyUtils.HARVESTER_MACHINE_ID -> {
+                // HARVESTER_MACHINE_ID হলে: 1000 + 1%
+                String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_HARVESTER);
+                double calculatedAmount = PartnerUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
+                finalBidAmount = String.valueOf(calculatedAmount);
+            }
+            case MyUtils.EQUIPMENT_ID ->
+                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_EQUIPMENT);
+            case MyUtils.ROAD_TRANSPORT_ID, MyUtils.RENT_A_CAR_ID ->
+                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_TRANSPORT);
+            case MyUtils.SKILLED_LABOR_ID ->
+                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_SKILLED_LABOUR);
+            case MyUtils.HOME_SHIFTING_ID ->
+                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_HOME_SHIFTING);
         }
         holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(finalBidAmount)));
 

@@ -126,7 +126,6 @@
                         android:layout_toEndOf="@+id/icon1"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/solaimanlipi"
                         android:text="@string/lets_chat"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp" />
@@ -169,7 +168,6 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/icon2"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/solaimanlipi"
                         android:layout_marginStart="10dp"
                         android:text="@string/lets_talk"
                         android:textColor="@color/text_primary"
@@ -215,7 +213,6 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/icon3"
                         android:layout_centerVertical="true"
-                        android:fontFamily="@font/solaimanlipi"
                         android:layout_marginStart="10dp"
                         android:text="@string/request_service"
                         android:textColor="@color/text_primary"

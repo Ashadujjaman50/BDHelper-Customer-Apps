@@ -81,7 +81,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="5dp"
                             android:layout_marginHorizontal="10dp"
-                            android:fontFamily="@font/solaimanlipi"
                             android:hint="Username"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp" />
@@ -310,7 +309,6 @@
                                 android:textColor="@color/primaryColor"
                                 android:background="@color/transparent"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -319,7 +317,6 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/text_secondary"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -347,7 +344,6 @@
                                 android:textColor="@color/primaryColor"
                                 android:background="@color/transparent"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -356,7 +352,6 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/text_secondary"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -385,7 +380,6 @@
                                 android:textColor="@color/primaryColor"
                                 android:background="@color/transparent"
                                 android:layout_marginTop="4dp"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -394,7 +388,6 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/text_secondary"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/solaimanlipi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
@@ -640,7 +633,6 @@
                         android:text="@string/refer_a_friend"
                         android:textColor="@color/primaryColor"
                         android:textSize="16sp"
-                        android:fontFamily="@font/solaimanlipi"
                         android:textStyle="bold" />
                 </LinearLayout>
 

@@ -132,7 +132,7 @@
                             android:id="@+id/loadArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="মিরপুর, ঢাকা সিটি"
+                            android:hint=""
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -173,7 +173,7 @@
                             android:id="@+id/unLoadArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="বনগাঁও, সাভার"
+                            android:hint=""
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
                     </LinearLayout>

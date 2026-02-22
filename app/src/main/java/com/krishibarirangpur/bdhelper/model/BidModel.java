@@ -69,16 +69,18 @@ public class BidModel {
         private String userId;
         private String vendorId;
         private String timestamp;
+        private int editCount = 0;
 
         public BidInfo() {}
 
-        public BidInfo(String bidId, String status, String bidAmount, String userId, String vendorId, String timestamp) {
+        public BidInfo(String bidId, String status, String bidAmount, String userId, String vendorId, String timestamp, int editCount) {
             this.bidId = bidId;
             this.status = status;
             this.bidAmount = bidAmount;
             this.userId = userId;
             this.vendorId = vendorId;
             this.timestamp = timestamp;
+            this.editCount = editCount;
         }
 
         public String getBidId() { return bidId; }
@@ -87,6 +89,7 @@ public class BidModel {
         public String getUserId() { return userId; }
         public String getVendorId() { return vendorId; }
         public String getTimestamp() { return timestamp; }
+        public int getEditCount() { return editCount; }
 
         public void setBidId(String bidId) { this.bidId = bidId; }
         public void setStatus(String status) { this.status = status; }
@@ -94,6 +97,7 @@ public class BidModel {
         public void setUserId(String userId) { this.userId = userId; }
         public void setVendorId(String vendorId) { this.vendorId = vendorId; }
         public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
+        public void setEditCount(int editCount) { this.editCount = editCount; }
     }
 
     public static class OrderInfo {
@@ -122,4 +126,3 @@ public class BidModel {
         public void setSubCategoryId(String subCategoryId) { this.subCategoryId = subCategoryId; }
     }
 }
-

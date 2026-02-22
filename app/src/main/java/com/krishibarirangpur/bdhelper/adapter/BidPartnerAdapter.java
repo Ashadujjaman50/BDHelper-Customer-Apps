@@ -30,6 +30,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
     private BidPartnerListener listener;
 
     public interface BidPartnerListener {
+        void onEditClicked(String bidId, String orderId);
         void onDeleteClicked(String bidId, String orderId);
     }
 
@@ -132,15 +133,21 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         holder.moreBtn.setOnClickListener(v -> {
             if (bidModel.getBidInfo().getStatus().equals("pending")){
                 PopupMenu popupMenu = new PopupMenu(context, holder.moreBtn, Gravity.BOTTOM);
-                popupMenu.getMenu().add(0,1, 1,"Delete");
+                popupMenu.getMenu().add(0,1, 1,"Edit");
+                //popupMenu.getMenu().add(0,2, 1,"Delete");
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     int id =item.getItemId();
                     if (id==1){
                         if (listener != null) {
-                            listener.onDeleteClicked(bidId, orderId);
+                            listener.onEditClicked(bidId, orderId);
                         }
                     }
+//                    else if (id==2){
+//                        if (listener != null) {
+//                            listener.onDeleteClicked(bidId, orderId);
+//                        }
+//                    }
                     return false;
                 });
                 popupMenu.show();

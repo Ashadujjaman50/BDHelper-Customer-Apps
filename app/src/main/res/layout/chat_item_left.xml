@@ -38,7 +38,6 @@
                 android:paddingVertical="5dp"
                 android:textIsSelectable="true"
                 android:autoLink="all"
-                android:fontFamily="@font/solaimanlipi"
                 android:textColorLink="@color/colorPrimaryDark"
                 android:linksClickable="true"
                 android:text="His message"

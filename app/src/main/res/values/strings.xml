@@ -585,6 +585,7 @@
     <string name="cancel_bid">Cancel bid</string>
     <string name="total_bid">Total bid</string>
     <string name="referral_code">Referral Code</string>
+    <string name="referral_code_optional">Referral Code (optional)</string>
     <string name="refer_a_friend">Refer &amp; Get Discount</string>
     <string name="payment_history">Payment history</string>
     <string name="payment_account">Payment account</string>

@@ -11,22 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.PaymentModel;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder> {
 
-    private Context context;
-    private List<PaymentModel> paymentList;
+    private final Context context;
+    private final List<PaymentModel> paymentList;
 
     public PaymentAdapter(Context context, List<PaymentModel> paymentList) {
         this.context = context;
@@ -36,7 +31,6 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     @NonNull
     @Override
     public PaymentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // এখানে আপনার কার্ড ডিজাইনের XML ফাইলটির নাম দিন (ধরিলাম: item_payment_card.xml)
         View view = LayoutInflater.from(context).inflate(R.layout.row_partner_payment, parent, false);
         return new PaymentViewHolder(view);
     }

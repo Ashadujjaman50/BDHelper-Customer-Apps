@@ -321,8 +321,7 @@
                         android:focusable="true"
                         android:text="@string/save"
                         android:textAlignment="center"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/solaimanlipi" />
+                        android:textColor="@color/text_primary"/>
 
                 </LinearLayout>
 

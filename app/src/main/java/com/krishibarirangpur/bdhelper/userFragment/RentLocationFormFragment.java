@@ -104,7 +104,7 @@ public class RentLocationFormFragment extends Fragment {
 
 
         //Typeface
-        typeface1 = ResourcesCompat.getFont(requireContext(), R.font.solaimanlipi);
+        typeface1 = ResourcesCompat.getFont(requireContext(), R.font.solaiman_lipi);
         typeface2 = ResourcesCompat.getFont(requireContext(), R.font.open_sans_regular);
 
         loadingDialog = new LoadingDialog(requireContext());
