@@ -74,7 +74,7 @@ dependencies {
     //Swipe Decorator
     implementation(libs.swipe.decorator)
 
-    //Google maps activity
+    //Google Maps activity
     implementation (libs.google.play.services.maps)
     implementation (libs.google.play.services.location)
     implementation (libs.material.searchbar)
@@ -98,6 +98,9 @@ dependencies {
 
     //Loading Dialog
     implementation(libs.loading.dialog)
+
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
 
 
     testImplementation(libs.junit)

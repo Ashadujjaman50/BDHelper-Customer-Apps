@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.krishibarirangpur.bdhelper.databinding.ActivityReferenceBinding;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

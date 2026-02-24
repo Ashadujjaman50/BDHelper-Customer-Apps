@@ -31,7 +31,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.DistrictAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAddServiceFormBinding;
 import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.ServiceDocumentActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;

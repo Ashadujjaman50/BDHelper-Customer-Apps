@@ -22,7 +22,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityServiceDocumentBinding;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.FileUploadHelper;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.krishibarirangpur.bdhelper.utils.UploadManager;

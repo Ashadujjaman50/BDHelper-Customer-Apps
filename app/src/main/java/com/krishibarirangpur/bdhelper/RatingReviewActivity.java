@@ -10,7 +10,7 @@ import com.krishibarirangpur.bdhelper.adapter.ReviewAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityRatingReviewBinding;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

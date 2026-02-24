@@ -18,7 +18,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.ServiceAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAllServiceBinding;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.ServiceDocumentActivity;
 import com.google.firebase.auth.FirebaseAuth;

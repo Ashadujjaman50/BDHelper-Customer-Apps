@@ -20,7 +20,7 @@ import com.krishibarirangpur.bdhelper.model.ModelNotice;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;

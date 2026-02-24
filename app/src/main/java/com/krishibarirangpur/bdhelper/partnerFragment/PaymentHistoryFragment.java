@@ -1,44 +1,27 @@
 package com.krishibarirangpur.bdhelper.partnerFragment;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.ViewPagerPaymentAdapter;
-import com.krishibarirangpur.bdhelper.adapter.ViewPagerServiceAdapter;
-import com.krishibarirangpur.bdhelper.adapter.WithdrawAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentHistoryBinding;
-import com.krishibarirangpur.bdhelper.model.WithdrawRequest;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 

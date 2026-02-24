@@ -19,7 +19,7 @@ import com.krishibarirangpur.bdhelper.NotificationActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentMainBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;
 import com.krishibarirangpur.bdhelper.partner.OrderRentActivity;

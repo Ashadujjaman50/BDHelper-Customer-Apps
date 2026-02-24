@@ -20,7 +20,7 @@ import com.krishibarirangpur.bdhelper.PromoActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHomeBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.user.AddressActivity;
 import com.krishibarirangpur.bdhelper.user.SubCategoryActivity;

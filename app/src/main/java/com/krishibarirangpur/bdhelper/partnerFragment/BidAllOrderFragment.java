@@ -25,7 +25,7 @@ import com.krishibarirangpur.bdhelper.adapter.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidAllOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.krishibarirangpur.bdhelper.partner.AddServiceActivity;
 import com.krishibarirangpur.bdhelper.partner.BidActivity;

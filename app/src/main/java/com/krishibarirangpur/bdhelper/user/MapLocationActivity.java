@@ -50,8 +50,8 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceTypes;
 import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
@@ -144,13 +144,13 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 FindAutocompletePredictionsRequest predictionsRequest =
                         FindAutocompletePredictionsRequest.builder()
-                        .setCountry("BD")
-                        .setTypeFilter(TypeFilter.ADDRESS)
-                        .setSessionToken(token)
-                        .setQuery(s.toString())
-                        .setLocationBias(mMap != null ? RectangularBounds.newInstance(
-                                mMap.getProjection().getVisibleRegion().latLngBounds) : null)
-                        .build();
+                                .setCountries(Arrays.asList("BD"))
+                                .setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS))
+                                .setSessionToken(token)
+                                .setQuery(s.toString())
+                                .setLocationBias(mMap != null ? RectangularBounds.newInstance(
+                                        mMap.getProjection().getVisibleRegion().latLngBounds) : null)
+                                .build();
 
                 placesClient.findAutocompletePredictions(predictionsRequest)
                         .addOnCompleteListener(task -> {
@@ -172,7 +172,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                                 Log.e("PlacesAPI", "Prediction fetching failed: " + task.getException());
                                 Toast.makeText(MapLocationActivity.this, "Failed to fetch suggestions", Toast.LENGTH_SHORT).show();
                             }
-                });
+                        });
             }
 
             @Override
@@ -421,7 +421,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                             Log.e("API", "Response body or place is null");
                         }
                     } else {
-                        Log.e("API Error", "Error code: " + response.code());
+                        Log.e("API Error", "Error code: " + response.code() );
                     }
                 }
                 catch (Exception e) {
@@ -482,4 +482,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         drawable.draw(canvas);
         return bitmap;
     }
+
+
+
 }

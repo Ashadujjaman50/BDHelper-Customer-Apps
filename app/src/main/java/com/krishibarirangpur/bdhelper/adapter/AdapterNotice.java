@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
-import com.krishibarirangpur.bdhelper.utils.MyToast;
 import com.krishibarirangpur.bdhelper.utils.MyUtils;
 import com.squareup.picasso.Picasso;
 

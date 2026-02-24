@@ -1,5 +1,6 @@
 [versions]
 agp = "9.0.1"
+appUpdate = "2.1.0"
 autoimagesliderVer = "1.4.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -21,7 +22,7 @@ firebaseDatabase = "22.0.1"
 firebaseStorage = "22.0.1"
 imageSlider = "0.1.2"
 
-google-play-services-maps = "19.2.0"
+google-play-services-maps = "20.0.0"
 google-play-services-location = "21.3.0"
 material-searchbar = "0.8.5"
 google-places = "4.4.1"
@@ -33,10 +34,13 @@ retrofit = "2.9.0"
 gson-converter = "2.9.0"
 okhttp-logging-interceptor = "5.0.0-alpha.11"
 uCrop = "2.2.10"
-firebaseFirestore = "26.0.2"
-playServicesAuth = "21.4.0"
+firebaseFirestore = "26.1.0"
+playServicesAuth = "21.5.1"
+
 
 [libraries]
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -74,6 +78,7 @@ gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-logging-interceptor" }
 ucrop-imagecropper ={ group = "com.github.yalantis", name = "ucrop", version.ref = "uCrop" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+
 
 
 

@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.bothWidget;
 
 import android.content.Context;
 import android.view.View;
