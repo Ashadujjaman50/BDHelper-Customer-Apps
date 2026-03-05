@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.partner.PaymentActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.PaymentActivity;
 
 public class DialogAlert {
 

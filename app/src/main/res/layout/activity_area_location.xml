@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/fontStyle"
-        tools:context=".user.AreaLocationActivity">
+        tools:context=".userActivity.customer.AreaLocationActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"

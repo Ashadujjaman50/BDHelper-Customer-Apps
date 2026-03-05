@@ -1,0 +1,376 @@
+package com.krishibarirangpur.bdhelper.userFragment.partner.authFragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ashadujjaman.loadingdialog.LoadingDialog;
+import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
+import com.krishibarirangpur.bdhelper.adapter.customer.DistrictAdapter;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.NoticeSend;
+import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
+import com.krishibarirangpur.bdhelper.R;
+import com.krishibarirangpur.bdhelper.databinding.FragmentPartnerRegisterBinding;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.AlphanumericKeyListener;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class PartnerRegisterFragment extends Fragment {
+
+    private FragmentPartnerRegisterBinding binding;
+    private String userSignWith;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
+    FirebaseFirestore db;
+
+    private LoadingDialog loadingDialog;
+    SharedPrefHelper prefHelper;
+
+    String device_token;
+    String selectDistrict;
+
+    public PartnerRegisterFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            userSignWith = getArguments().getString("userSignWith");
+            // এখন এই ভ্যালু তুমি fragment-এ ব্যবহার করতে পারো
+            //MyToast.showShort(requireActivity(), userSignWith);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_partner_register, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //init views
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+
+        loadingDialog = new LoadingDialog(requireActivity());
+        loadingDialog.setCanceledOnTouchOutside(false);
+        loadingDialog.setCancelable(false);
+
+        prefHelper = new SharedPrefHelper(requireActivity());
+
+        FCMTokenManager.getToken(token -> {
+            Log.d("FCMTokenManager", "Token: " + token);
+            device_token = token;
+        });
+
+        // KeyListener set করুন
+        binding.referCodeEt.setKeyListener(AlphanumericKeyListener.getInstance());
+
+        // শুধু length filter রাখুন
+        binding.referCodeEt.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(8)
+        });
+
+        //Show Bottom Popup Menu With District List
+        showBottomPopUpDistrictList();
+
+        binding.submitBtn.setOnClickListener(v -> {
+            registrationPartnerInfo();
+        });
+
+    }
+
+    private void registrationPartnerInfo() {
+        String name = binding.nameET.getText().toString().trim();
+        String mobile = binding.mobileET.getText().toString().trim();
+        String businessName = binding.businessNameET.getText().toString().trim();
+        String location = binding.locationET.getText().toString().trim();
+        String district = binding.districtET.getText().toString().trim();
+        String inputReferralCode = binding.referCodeEt.getText().toString().toUpperCase().trim();
+
+        if (TextUtils.isEmpty(name)) {
+            setErrorWatcher(binding.nameET, true);
+            Toast.makeText(requireActivity(), "আপনার নাম লিখুন", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(mobile) ||  mobile.length() < 11) {
+            setErrorWatcher(binding.mobileET, true);
+            Toast.makeText(requireActivity(), "আপনার ১১ ডিজিট এর মোবাইল নাম্বার দিন", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(businessName)) {
+            setErrorWatcher(binding.businessNameET, true);
+            Toast.makeText(requireActivity(), "আপনার ব্যবসা/পেশা লিখুন", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(location)) {
+            setErrorWatcher(binding.locationET, true);
+            Toast.makeText(requireActivity(), "আপনার ঠিকানা লিখুন", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(district)) {
+            binding.districtET.setBackgroundResource(R.drawable.bg_edit_text_error);
+            Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
+            loadingDialog.show();
+
+            //String to set Time stamp
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            String userId = firebaseUser.getUid();
+            String email = firebaseUser.getEmail();
+            double rating = 5.0;
+
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("userId", userId);
+            userMap.put("userType", "partner"); // "customer" or "partner"
+            userMap.put("name", name);
+            userMap.put("email", email);
+            userMap.put("phone", mobile);
+            userMap.put("nidNo", "");
+            userMap.put("nidVerify", "false");
+            userMap.put("userDob", "");
+            userMap.put("district", selectDistrict);
+            userMap.put("location", location);
+            userMap.put("businessName", businessName);  // only for partner
+            userMap.put("rentService", "");             // only for partner
+            userMap.put("paymentReceiver", "partner");  // only for partner
+            userMap.put("verifyStatus", "pending");
+            userMap.put("device_token", device_token);
+            userMap.put("userSignWith", userSignWith);
+            userMap.put("userJoinTime", timestamp);
+            userMap.put("userLastLogin", timestamp);
+            userMap.put("rating", rating);
+
+            // Referral system fields
+            userMap.put("referralCode", CommonClass.generateReferralCode());  // Your unique refer code
+            userMap.put("referredBy", "");                        // set later if used
+            userMap.put("bonusBalance", 0);                       // initial bonus
+
+            // Ensure unique referral code before saving
+            ensureUniqueReferralCode(userId, userMap, inputReferralCode);
+
+
+        }
+
+    }
+
+    private void ensureUniqueReferralCode(String userId, Map<String, Object> userMap, String inputReferralCode) {
+        String code = (String) userMap.get("referralCode");
+        db.collection("users").whereEqualTo("referralCode", code)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().isEmpty()) {
+                        // Unique code, save user
+                        saveUserWithReferral(userId, userMap, inputReferralCode);
+                    } else {
+                        // Not unique, generate new code and retry
+                        userMap.put("referralCode", CommonClass.generateReferralCode());
+                        ensureUniqueReferralCode(userId, userMap, inputReferralCode);
+                    }
+                });
+    }
+
+    private void saveUserWithReferral(String newUserId, Map<String, Object> userMap, String inputReferralCode) {
+        db.collection("users").document(newUserId)
+                .set(userMap)
+                .addOnSuccessListener(unused -> {
+
+                    // Handle referral code if user entered someone else's code
+                    if (!TextUtils.isEmpty(inputReferralCode)) {
+                        db.collection("users").whereEqualTo("referralCode", inputReferralCode)
+                                .get()
+                                .addOnSuccessListener(query -> {
+                                    if (!query.isEmpty()) {
+                                        DocumentSnapshot referrer = query.getDocuments().get(0);
+                                        String referrerId = referrer.getId();
+
+                                        // Update new user's referredBy and bonus
+                                        db.collection("users").document(newUserId)
+                                                .update("referredBy", inputReferralCode,
+                                                        "bonusBalance", 10); // new user bonus
+
+                                        // Update referrer's bonus
+                                        double referrerBonus = referrer.getDouble("bonusBalance") + 10;
+                                        db.collection("users").document(referrerId)
+                                                .update("bonusBalance", referrerBonus);
+
+                                        // Save referral record
+                                        Map<String, Object> referralMap = new HashMap<>();
+                                        referralMap.put("referrerId", referrerId);
+                                        referralMap.put("refereeId", newUserId);
+                                        referralMap.put("bonusGiven", 10);
+                                        referralMap.put("createdAt", FieldValue.serverTimestamp());
+
+                                        db.collection("referrals").add(referralMap);
+                                        customNoticeSend(false, referrerId, inputReferralCode);
+                                    }
+                                });
+                    }
+
+                    prefHelper.remove("userSignWith");
+                    loadingDialog.dismiss();
+                    customNoticeSend(true, newUserId,  userMap.get("district"));
+                    gotoNextActivity();
+
+                })
+                .addOnFailureListener(e -> {
+                    loadingDialog.dismiss();
+                    Toast.makeText(requireActivity(), "তথ্য আপডেট করতে সমস্যা হয়েছে", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
+
+
+    private void gotoNextActivity(){
+        Intent intent = new Intent(requireActivity(), DashboardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        requireActivity().startActivity(intent);
+        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        requireActivity().finish();
+    }
+
+    private void setErrorWatcher(EditText editText, boolean hasError) {
+        if (hasError) {
+            editText.setBackgroundResource(R.drawable.bg_edit_text_error);
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    editText.setBackgroundResource(R.drawable.bg_edit_text);
+                }
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override public void afterTextChanged(Editable s) {}
+            });
+        }
+    }
+
+    private void showBottomPopUpDistrictList() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_dialog_recycleview,
+                        bottomSheetDialog.getDelegate().findViewById(com.google.android.material.R.id.design_bottom_sheet),
+                        false);
+        bottomSheetDialog.setContentView(view);
+
+        TextView titleTv = view.findViewById(R.id.titleTv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
+        titleTv.setText("Select District");
+
+        // ভাষা অনুযায়ী display list, কিন্তু ইংরেজি লিস্ট সবসময় দরকার হবে Database-এর জন্য
+        String[] districtListEng = MyUtils.DISTRICT_ENG;
+        String[] districtListBan = MyUtils.DISTRICT_BAN;
+
+        // কোন ভাষা চালু আছে
+        boolean isBangla = LocaleHelper.getLanguage(requireActivity()).equals("bn");
+
+        // UI-তে যেটা দেখাবে
+        String[] displayList = isBangla ? districtListBan : districtListEng;
+
+
+        // Adapter
+        DistrictAdapter adapter = new DistrictAdapter(Arrays.asList(displayList), (item, position) -> {
+            binding.districtET.setText(item); // UI text (localised)
+            selectDistrict = isBangla ? districtListEng[position] : item; // DB-র জন্য always ইংরেজি
+            bottomSheetDialog.dismiss();
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        // Important: modify bottom-sheet AFTER it is shown -> use onShowListener
+        bottomSheetDialog.setOnShowListener(dialog -> {
+            FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                int heightPx = dpToPx(400); // fixed 400dp height
+
+                // Force the bottomSheet container height to 400dp
+                bottomSheet.getLayoutParams().height = heightPx;
+                bottomSheet.requestLayout();
+
+                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setPeekHeight(heightPx);           // peek at 400dp
+                behavior.setDraggable(true);               // allow dragging / scrolling
+                behavior.setHideable(true);                // optional
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED); // show at peekHeight
+            }
+        });
+
+        binding.districtET.setOnClickListener(v -> bottomSheetDialog.show());
+    }
+
+    // helper
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    private void customNoticeSend(boolean firstLogin, String userId, Object referCode) {
+        //When Successfully rent post submit then Notice Vendor apps
+
+        String noticeType, msg;
+        if (firstLogin){
+            msg = "অ্যাপ এ রেজিস্ট্রেশন করে যুক্ত হওয়ায় আপনাকে স্বাগতম";
+            noticeType = MyUtils.NOTICE_TYPE_WELCOME;
+        }
+        else {
+            msg = "আপনার রেফারেল কোড "+referCode+ " ব্যবহার করে একজন রেজিস্ট্রেশন করেছে।";
+            noticeType = MyUtils.NOTICE_TYPE_REFERRAL;
+        }
+
+        NoticeSend.sendNotice(
+                MyUtils.NOTICE_SENDER_ADMIN,
+                noticeType,
+                "",
+                userId,
+                "",
+                msg
+        );
+
+    }
+
+
+
+    //BDH4P1QA
+
+
+}

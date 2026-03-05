@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/fontStyle"
-        tools:context=".userFragment.ProfileFragment">
+        tools:context=".userFragment.customer.navBarFragment.ProfileFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

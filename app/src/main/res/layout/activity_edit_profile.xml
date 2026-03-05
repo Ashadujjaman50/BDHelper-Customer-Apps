@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/fontStyle"
-        tools:context=".EditProfileActivity">
+        tools:context=".sharedActivity.EditProfileActivity">
 
         <RelativeLayout
             android:background="@color/bg_color"

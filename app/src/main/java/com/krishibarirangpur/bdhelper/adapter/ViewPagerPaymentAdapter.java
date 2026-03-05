@@ -7,10 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.krishibarirangpur.bdhelper.partnerFragment.AllServiceFragment;
-import com.krishibarirangpur.bdhelper.partnerFragment.NeedDocumentFragment;
-import com.krishibarirangpur.bdhelper.partnerFragment.PaymentPaidToCompanyFragment;
-import com.krishibarirangpur.bdhelper.partnerFragment.PaymentWithdrawFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.paymentFragment.PaymentPaidToCompanyFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.paymentFragment.PaymentWithdrawFragment;
 
 public class ViewPagerPaymentAdapter extends FragmentStateAdapter {
     public ViewPagerPaymentAdapter(@NonNull FragmentActivity fragmentActivity) {

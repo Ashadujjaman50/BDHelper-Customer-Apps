@@ -41,82 +41,82 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".partner.BidActivity"
+            android:name=".userActivity.partner.BidActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.OrderRentActivity"
+            android:name=".userActivity.partner.OrderRentActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.ProductActivity"
+            android:name=".userActivity.partner.ProductActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.ServiceDocumentActivity"
+            android:name=".userActivity.partner.ServiceDocumentActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.AddServiceActivity"
+            android:name=".userActivity.partner.AddServiceActivity"
             android:exported="false" /> <!-- Activities -->
         <activity
-            android:name=".user.AddressBookActivity"
+            android:name=".userActivity.customer.AddressBookActivity"
             android:exported="false" />
         <activity
-            android:name=".RatingReviewActivity"
+            android:name=".sharedActivity.RatingReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".NotificationActivity"
+            android:name=".sharedActivity.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".sharedActivity.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".user.ServiceRequestActivity"
+            android:name=".userActivity.customer.ServiceRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".user.TrendingCategoryActivity"
+            android:name=".userActivity.customer.TrendingCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".PromoActivity"
+            android:name=".sharedActivity.PromoActivity"
             android:exported="false" />
         <activity
-            android:name=".ReferenceActivity"
+            android:name=".sharedActivity.ReferenceActivity"
             android:exported="false" />
         <activity
-            android:name=".user.RentFormActivity"
+            android:name=".userActivity.customer.RentFormActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.PaymentActivity"
+            android:name=".userActivity.partner.PaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".user.SubCategoryActivity"
+            android:name=".userActivity.customer.SubCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".user.MapLocationActivity"
+            android:name=".userActivity.customer.MapLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".user.AreaLocationActivity"
+            android:name=".userActivity.customer.AreaLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".user.AddressActivity"
+            android:name=".userActivity.customer.AddressActivity"
             android:exported="false" />
         <activity
-            android:name=".PermissionActivity"
+            android:name=".sharedActivity.PermissionActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.SettingActivity"
+            android:name=".userActivity.partner.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.DashboardActivity"
+            android:name=".userActivity.partner.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".NIDPhotoActivity"
+            android:name=".sharedActivity.NIDPhotoActivity"
             android:exported="false" />
         <activity
             android:name=".introScreen.IntroActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".sharedActivity.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".sharedActivity.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.UserTypeSelectionActivity"
@@ -131,10 +131,10 @@
             android:name=".authentication.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".user.MainActivity"
+            android:name=".userActivity.customer.MainActivity"
             android:exported="false" /> <!-- Launcher Activity -->
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".sharedActivity.SplashScreenActivity"
             android:exported="true"
             tools:ignore="CustomSplashScreen">
             <intent-filter>

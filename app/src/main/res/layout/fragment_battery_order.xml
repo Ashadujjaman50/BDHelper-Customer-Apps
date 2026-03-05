@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/bg_color"
-        tools:context=".partnerFragment.BatteryOrderFragment">
+        tools:context=".userFragment.partner.productFragment.BatteryOrderFragment">
 
         <ScrollView
             android:layout_width="match_parent"

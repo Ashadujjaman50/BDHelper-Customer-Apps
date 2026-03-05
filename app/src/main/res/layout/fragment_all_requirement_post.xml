@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/fontStyle"
-        tools:context=".userFragment.AllRequirementPostFragment">
+        tools:context=".userFragment.customer.AllRequirementPostFragment">
 
         <ProgressBar
             android:id="@+id/loading"

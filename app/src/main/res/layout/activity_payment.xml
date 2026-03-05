@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         style="@style/fontStyle"
-        tools:context=".partner.PaymentActivity">
+        tools:context=".userActivity.partner.PaymentActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

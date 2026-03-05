@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:background="@color/bg_color"
         style="@style/fontStyle"
-        tools:context=".partnerFragment.RentFragment">
+        tools:context=".userFragment.partner.navBarFragment.RentFragment">
 
         <!--Toolbar-->
         <androidx.appcompat.widget.Toolbar

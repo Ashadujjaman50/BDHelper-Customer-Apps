@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.krishibarirangpur.bdhelper.userFragment.AllRequirementPostFragment;
-import com.krishibarirangpur.bdhelper.userFragment.CurrentRequirementPostFragment;
+import com.krishibarirangpur.bdhelper.userFragment.customer.AllRequirementPostFragment;
+import com.krishibarirangpur.bdhelper.userFragment.customer.CurrentRequirementPostFragment;
 
 public class ViewPagerRequirementAdapter extends FragmentStateAdapter {
     public ViewPagerRequirementAdapter(@NonNull FragmentActivity fragmentActivity) {

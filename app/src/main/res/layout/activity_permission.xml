@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         style="@style/fontStyle"
-        tools:context=".PermissionActivity">
+        tools:context=".sharedActivity.PermissionActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"

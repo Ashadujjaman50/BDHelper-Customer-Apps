@@ -1,0 +1,118 @@
+package com.krishibarirangpur.bdhelper.adapter.customer;
+
+import android.annotation.SuppressLint;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
+import com.krishibarirangpur.bdhelper.R;
+import com.krishibarirangpur.bdhelper.model.SubArea;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleViewHolder> implements Filterable {
+    private List<SubArea> subAreaList;
+    private List<SubArea> subAreaListFull;
+    private OnItemClickListener mListener;
+
+    class ExampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView cityName;
+
+
+        ExampleViewHolder(View itemView) {
+            super(itemView);
+
+            cityName = itemView.findViewById(R.id.text_view1);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    mListener.onItemClick(v, position);
+                }
+            }
+
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mListener = onItemClickListener;
+    }
+
+    public SubAreaAdapter(List<SubArea> subAreaList) {
+        this.subAreaList = subAreaList;
+        subAreaListFull = new ArrayList<>(subAreaList);
+    }
+
+    @NonNull
+    @Override
+    public ExampleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_location_item_layout,
+                parent, false);
+        return new ExampleViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
+
+        SubArea currentSubArea = subAreaList.get(position);
+        holder.cityName.setText(currentSubArea.getSubAreaName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return subAreaList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<SubArea> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(subAreaListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
+
+                for (SubArea item : subAreaListFull) {
+                    if (item.getAreaId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            subAreaList.clear();
+            subAreaList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+}

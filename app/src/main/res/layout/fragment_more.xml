@@ -13,7 +13,7 @@
             android:orientation="vertical"
             android:background="@color/bg_color"
             style="@style/fontStyle"
-            tools:context=".partnerFragment.MoreFragment">
+            tools:context=".userFragment.partner.navBarFragment.MoreFragment">
 
             <LinearLayout
                 android:id="@+id/topPartLl"

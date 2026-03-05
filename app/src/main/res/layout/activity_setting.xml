@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         style="@style/fontStyle"
-        tools:context=".partner.SettingActivity">
+        tools:context=".userActivity.partner.SettingActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

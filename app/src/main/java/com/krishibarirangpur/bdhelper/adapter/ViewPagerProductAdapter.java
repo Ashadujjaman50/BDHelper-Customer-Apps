@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.krishibarirangpur.bdhelper.partnerFragment.BatteryOrderFragment;
-import com.krishibarirangpur.bdhelper.partnerFragment.MyBatteryOrderFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.productFragment.BatteryOrderFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.productFragment.MyBatteryOrderFragment;
 
 public class ViewPagerProductAdapter extends FragmentStateAdapter {
     public ViewPagerProductAdapter(@NonNull FragmentManager  fragmentManager, Lifecycle lifecycle) {

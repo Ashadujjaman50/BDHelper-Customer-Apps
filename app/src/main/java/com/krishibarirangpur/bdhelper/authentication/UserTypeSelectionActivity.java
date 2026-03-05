@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityUserTypeSelectionBinding;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 

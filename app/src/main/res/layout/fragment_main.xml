@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:background="@color/bg_color"
         style="@style/fontStyle"
-        tools:context=".partnerFragment.MainFragment">
+        tools:context=".userFragment.partner.navBarFragment.MainFragment">
 
 
         <!--Toolbar-->

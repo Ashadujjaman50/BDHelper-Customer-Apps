@@ -9,7 +9,7 @@
         android:background="@color/bg_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".user.SubCategoryActivity">
+        tools:context=".userActivity.customer.SubCategoryActivity">
 
         <RelativeLayout
             android:background="@color/bg_color"

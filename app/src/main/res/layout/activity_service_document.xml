@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".partner.ServiceDocumentActivity">
+        tools:context=".userActivity.partner.ServiceDocumentActivity">
 
         <RelativeLayout
             android:background="@color/bg_color"

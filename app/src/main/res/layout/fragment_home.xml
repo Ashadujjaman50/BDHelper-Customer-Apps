@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:background="@color/bg_color"
         style="@style/fontStyle"
-        tools:context=".userFragment.HomeFragment">
+        tools:context=".userFragment.customer.navBarFragment.HomeFragment">
 
         <!--Toolbar-->
         <androidx.appcompat.widget.Toolbar

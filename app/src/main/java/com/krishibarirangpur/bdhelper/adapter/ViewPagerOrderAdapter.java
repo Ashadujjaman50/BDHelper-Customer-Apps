@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.krishibarirangpur.bdhelper.partnerFragment.BidAllOrderFragment;
-import com.krishibarirangpur.bdhelper.partnerFragment.BidByCategoryOrderFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.BidAllOrderFragment;
+import com.krishibarirangpur.bdhelper.userFragment.partner.BidByCategoryOrderFragment;
 
 import java.util.ArrayList;
 import java.util.List;
