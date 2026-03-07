@@ -147,6 +147,14 @@ public class LoadUnloadFormFragment extends Fragment{
                 binding.vehicleNameTV.setText(subCategoryName);
                 binding.productTypeTV.setHint(R.string.which_types);
                 break;
+            case "ট্রেইলর":
+            case "Trailer":
+                binding.productTypeTV.setHint(R.string.container);
+                break;
+            case "লো বেড":
+            case "Lo bet":
+                binding.productTypeTV.setHint(R.string.harvester);
+                break;
             case "চার্জার ভ্যান":
             case "Charger van":
                 binding.vehicleNameTV.setText(getString(R.string.transport));
@@ -359,8 +367,14 @@ public class LoadUnloadFormFragment extends Fragment{
                     break;
                 case "ট্রেইলর":
                 case "Trailer":
+                    array_list.add(getString(R.string.container));
+                    array_list.add(getString(R.string.others));
+                    break;
                 case "লো বেড":
                 case "Lo bet":
+                    array_list.add(getString(R.string.harvester));
+                    array_list.add(getString(R.string.excavator));
+                    array_list.add(getString(R.string.tractor));
                     array_list.add(getString(R.string.container));
                     array_list.add(getString(R.string.others));
                     break;

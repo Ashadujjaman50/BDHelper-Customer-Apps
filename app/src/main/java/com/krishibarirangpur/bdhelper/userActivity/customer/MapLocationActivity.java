@@ -30,6 +30,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.api.BarikoiApiService;
+import com.krishibarirangpur.bdhelper.api.BarikoiCacheHelper;
 import com.krishibarirangpur.bdhelper.api.BarikoiClient;
 import com.krishibarirangpur.bdhelper.api.BarikoiResponse;
 import com.krishibarirangpur.bdhelper.databinding.ActivityMapLocationBinding;
@@ -301,6 +302,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
             LatLng pickerLatLng = mMap.getCameraPosition().target;
             if (pickerLatLng.latitude != 0 && pickerLatLng.longitude != 0) {
                 loadDataList(pickerLatLng.latitude, pickerLatLng.longitude);
+                loadDataWithBarikoy(pickerLatLng.latitude, pickerLatLng.longitude);
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions()
                         .position(pickerLatLng)
@@ -330,6 +332,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM));
 
                 loadDataList(location.getLatitude(), location.getLongitude());
+                loadDataWithBarikoy(location.getLatitude(), location.getLongitude());
 
                 mMap.addMarker(new MarkerOptions()
                         .position(currentLatLng)
@@ -343,6 +346,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     String address, area, city,subDistrict, district;
+
     private void loadDataList(double lat, double lng) {
 
         Call<BarikoiResponse> call = apiInterface.getPlaceInfo(MyUtils.barikoi_api_key, lng, lat,
@@ -417,7 +421,8 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
 
                             String cleanString = Replacement.checkString(finalAddress);
                             binding.rentLocationTv.setText(Replacement.removeDuplicateAddressParts(cleanString));
-                        } else {
+                        }
+                        else {
                             Log.e("API", "Response body or place is null");
                         }
                     } else {
@@ -438,6 +443,30 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
             }
         });
 
+    }
+
+
+    //Only Save this Data in database
+    private void loadDataWithBarikoy(double lat, double lng) {
+        BarikoiCacheHelper helper = new BarikoiCacheHelper();
+
+        helper.getLocation(lat, lng, new BarikoiCacheHelper.LocationCallback() {
+            @Override
+            public void onSuccess(BarikoiResponse.Place place) {
+
+                String address = place.getAddress_bn();
+
+                Log.d("ADDRESS", address);
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+                Log.e("ERROR", error);
+
+            }
+        });
     }
 
     private void hideKeyboard(Activity activity) {
