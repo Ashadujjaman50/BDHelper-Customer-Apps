@@ -76,9 +76,9 @@
                         android:inputType="textPassword"
                         android:padding="10dp" />
 
-                    <!-- Login Button -->
+                    <!-- Signup Button -->
                     <TextView
-                        android:id="@+id/logInBtn"
+                        android:id="@+id/signUpBtn"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="25dp"

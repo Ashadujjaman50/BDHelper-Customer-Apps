@@ -9,10 +9,14 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivitySignUpBinding;
 import com.krishibarirangpur.bdhelper.utils.BaseActivity;
@@ -24,12 +28,19 @@ import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
+import java.util.List;
+
 public class SignUpActivity extends BaseActivity {
 
     private ActivitySignUpBinding binding;
 
     FirebaseAuth firebaseAuth;
     private LoadingDialog loadingDialog;
+    private GoogleSignInHelper googleSignInHelper;
+
+    // 🔥 global variable for linking
+    private String tempEmail = null;
+    private String tempPassword = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +62,27 @@ public class SignUpActivity extends BaseActivity {
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setCancelable(false);
 
+        // Google Sign In Helper setup
+        googleSignInHelper = new GoogleSignInHelper(this, new GoogleSignInHelper.OnGoogleSignInSuccessListener() {
+            @Override
+            public void onSignInSuccess(FirebaseUser user) {
+                if (tempEmail != null && tempPassword != null) {
+                    // যদি Email Sign up থেকে এসে থাকে, তবে link করো
+                    linkEmailAccount(user);
+                } else {
+                    gotoNextActivity();
+                }
+            }
+
+            @Override
+            public void onSignInFailure(String errorMessage) {
+                MyToast.showShort(SignUpActivity.this, errorMessage);
+            }
+        });
+
         binding.signInTV.setOnClickListener(v -> finishOnBack());
 
-        binding.logInBtn.setOnClickListener(v -> {
+        binding.signUpBtn.setOnClickListener(v -> {
             String email = binding.emailET.getText().toString().trim();
             String password = binding.passwordET.getText().toString().trim();
             String confirmPass = binding.confirmPasswordET.getText().toString().trim();
@@ -78,33 +107,85 @@ public class SignUpActivity extends BaseActivity {
     }
 
     private void createNewAccount(String email, String password) {
-        //progress dialog show
         loadingDialog.setMessage("Create account...");
-        loadingDialog.show(); // প্রথমেই progress শুরু
+        loadingDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    loadingDialog.dismiss();
                     if (task.isSuccessful()) {
-                        // ✅ নতুন অ্যাকাউন্ট তৈরি হয়েছে
+                        loadingDialog.dismiss();
                         MyToast.showShort(this, "Account created successfully!");
                         gotoNextActivity();
                     } else {
                         Exception e = task.getException();
                         if (e instanceof FirebaseAuthUserCollisionException) {
-                            // ইমেইল আগে থেকেই ইউজড, একাউন্ট তৈরি হয়নি
-                            MyToast.showShort(this, "এই ইমেইল দিয়ে ইতিমধ্যে একাউন্ট তৈরি হয়েছে। দয়া করে লগইন করুন।");
+                            checkSignInMethods(email, password);
                         } else {
-                            // অন্যান্য ব্যর্থতা (e.g. network, invalid email, etc)
-                            MyToast.showShort(this, "Signup Failed: " + e.getMessage());
+                            loadingDialog.dismiss();
+                            MyToast.showShort(this, "Signup Failed: " + (e != null ? e.getMessage() : "Unknown error"));
                         }
                     }
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    Log.d("Create", "Error: " + e.getMessage());
                 });
+    }
 
+    private void checkSignInMethods(String email, String password) {
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+                .addOnSuccessListener(result -> {
+                    loadingDialog.dismiss();
+                    List<String> methods = result.getSignInMethods();
+                    
+                    if (methods != null && !methods.isEmpty()) {
+                        if (methods.contains(GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD)) {
+                            MyToast.showShort(this, "এই ইমেইল Google দিয়ে তৈরি। Linking হচ্ছে...");
+                            tempEmail = email;
+                            tempPassword = password;
+                            startGoogleSignIn();
+                        } else if (methods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                            MyToast.showShort(this, "এই ইমেইল দিয়ে একাউন্ট আছে, লগইন করুন।");
+                        } else {
+                            MyToast.showShort(this, "এই ইমেইলটি অন্য মাধ্যমে ব্যবহৃত হচ্ছে।");
+                        }
+                    } else {
+                        // যদি Enumeration Protection চালু থাকে তবে এখানে আসবে
+                        MyToast.showShort(this, "ইমেইলটি ইতিমধ্যেই ব্যবহৃত। সরাসরি লগইন করার চেষ্টা করুন।");
+                    }
+                })
+                .addOnFailureListener(err -> {
+                    loadingDialog.dismiss();
+                    MyToast.showShort(this, "Error: " + err.getMessage());
+                });
+    }
+
+    private void startGoogleSignIn() {
+        googleSignInHelper.startGoogleSignIn();
+    }
+
+    private void linkEmailAccount(FirebaseUser user) {
+        if (tempEmail == null || tempPassword == null) return;
+
+        loadingDialog.setMessage("Linking account...");
+        loadingDialog.show();
+
+        AuthCredential credential = EmailAuthProvider.getCredential(tempEmail, tempPassword);
+        user.linkWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    loadingDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        MyToast.showShort(this, "Account linked successfully!");
+                        // Clear temp data
+                        tempEmail = null;
+                        tempPassword = null;
+                        gotoNextActivity();
+                    } else {
+                        MyToast.showShort(this, "Link failed: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        googleSignInHelper.handleActivityResult(requestCode, resultCode, data);
     }
 
     private void setErrorWatcher(EditText editText, boolean hasError) {
@@ -120,7 +201,6 @@ public class SignUpActivity extends BaseActivity {
         }
     }
 
-
     private void gotoNextActivity() {
         Intent intent = new Intent(SignUpActivity.this, UserTypeSelectionActivity.class);
         intent.putExtra(MyUtils.USER_SIGN_IN_WITH, MyUtils.USER_TYPE_EMAIL);
@@ -128,6 +208,4 @@ public class SignUpActivity extends BaseActivity {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
-
-
 }
