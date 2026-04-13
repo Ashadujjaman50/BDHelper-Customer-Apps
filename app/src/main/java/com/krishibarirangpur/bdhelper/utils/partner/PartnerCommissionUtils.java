@@ -1,6 +1,6 @@
 package com.krishibarirangpur.bdhelper.utils.partner;
 
-public class PartnerUtils {
+public class PartnerCommissionUtils {
 
 
     public static final double PARTNER_DUE_LIMIT = 500;                //At change able

@@ -28,7 +28,7 @@ import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentProfileBinding;
 import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

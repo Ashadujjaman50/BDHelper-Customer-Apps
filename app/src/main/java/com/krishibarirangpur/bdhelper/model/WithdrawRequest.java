@@ -9,7 +9,7 @@ public class WithdrawRequest {
     private String accountNumber;
     private String id;
 
-    public WithdrawRequest() {} // Firestore জন্য default constructor
+    public WithdrawRequest() {}
 
     public WithdrawRequest(String vendorId, double requestedAmount, String status, long requestedAt, String paymentMethod, String accountNumber, String id) {
         this.vendorId = vendorId;

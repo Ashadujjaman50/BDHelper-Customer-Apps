@@ -1,10 +1,12 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.core;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
 
 public class BaseActivity extends AppCompatActivity {
 

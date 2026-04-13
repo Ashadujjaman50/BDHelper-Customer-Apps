@@ -35,7 +35,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,7 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
-import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,7 +236,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_TRANSPORT);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_TRANSPORT);
 
 
 
@@ -672,7 +672,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
 
                     //Custome Notice Send
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerUtils.COMMISSION_TRANSPORT);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_TRANSPORT);
                     sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
 
                     loadCurrentPartnerBid();

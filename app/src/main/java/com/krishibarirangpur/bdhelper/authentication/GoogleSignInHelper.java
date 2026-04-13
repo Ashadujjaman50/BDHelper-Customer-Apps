@@ -1,92 +1,104 @@
 package com.krishibarirangpur.bdhelper.authentication;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.IntentSender;
+import android.content.Context;
+import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.credentials.Credential;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CustomCredential;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
 
-import com.krishibarirangpur.bdhelper.R;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.Identity;
-import com.google.android.gms.auth.api.identity.SignInClient;
-import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.krishibarirangpur.bdhelper.R;
 
 public class GoogleSignInHelper {
 
-    private final Activity activity;
+    private final Context context;
     private final FirebaseAuth firebaseAuth;
-    private final SignInClient signInClient;
-    private final BeginSignInRequest signInRequest;
-    public static final int RC_GOOGLE_SIGN_IN = 1001;
+    private final CredentialManager credentialManager;
     private final OnGoogleSignInSuccessListener listener;
 
     public interface OnGoogleSignInSuccessListener {
         void onSignInSuccess(FirebaseUser user);
-        void onSignInFailure(String errorMessage);
+        void onSignInFailure(String errorMessage, Exception exception);
     }
 
-    public GoogleSignInHelper(Activity activity, OnGoogleSignInSuccessListener listener) {
-        this.activity = activity;
+    public GoogleSignInHelper(Context context, OnGoogleSignInSuccessListener listener) {
+        this.context = context;
         this.listener = listener;
-        firebaseAuth = FirebaseAuth.getInstance();
-        signInClient = Identity.getSignInClient(activity);
-
-        signInRequest = new BeginSignInRequest.Builder()
-                .setGoogleIdTokenRequestOptions(
-                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                                .setSupported(true)
-                                .setServerClientId(activity.getString(R.string.default_web_client_id))  // put client_id in strings.xml
-                                .setFilterByAuthorizedAccounts(false)
-                                .build()
-                )
-                .build();
+        this.firebaseAuth = FirebaseAuth.getInstance();
+        this.credentialManager = CredentialManager.create(context);
     }
 
     public void startGoogleSignIn() {
-        signInClient.beginSignIn(signInRequest)
-                .addOnSuccessListener(result -> {
-                    try {
-                        activity.startIntentSenderForResult(
-                                result.getPendingIntent().getIntentSender(),
-                                RC_GOOGLE_SIGN_IN,
-                                null, 0, 0, 0
-                        );
-                    } catch (IntentSender.SendIntentException e) {
-                        listener.onSignInFailure("IntentSender error: " + e.getMessage());
+        // ১. Google ID Token রিকোয়েস্ট তৈরি করা
+        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(context.getString(R.string.default_web_client_id))
+                .setAutoSelectEnabled(true)
+                .build();
+
+        // ২. সব অপশনকে একটি রিকোয়েস্টে যুক্ত করা
+        GetCredentialRequest request = new GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build();
+
+        // ৩. ক্রেডেনশিয়াল ম্যানেজার কল করা
+        credentialManager.getCredentialAsync(
+                context,
+                request,
+                null,
+                context.getMainExecutor(),
+                new androidx.credentials.CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                    @Override
+                    public void onResult(GetCredentialResponse result) {
+                        handleSignInResult(result);
                     }
-                })
-                .addOnFailureListener(e -> {
-                    listener.onSignInFailure("Google Sign-In failed: " + e.getMessage());
-                });
+
+                    @Override
+                    public void onError(@NonNull GetCredentialException e) {
+                        listener.onSignInFailure("Credential Error: " + e.getMessage(), e);
+                    }
+                }
+        );
     }
 
-    public void handleActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode != RC_GOOGLE_SIGN_IN || data == null) return;
-
+    private void handleSignInResult(GetCredentialResponse result) {
         try {
-            SignInCredential credential = signInClient.getSignInCredentialFromIntent(data);
-            String idToken = credential.getGoogleIdToken();
-            if (idToken != null) {
-                AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
-                firebaseAuth.signInWithCredential(firebaseCredential)
-                        .addOnCompleteListener(activity, task -> {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = firebaseAuth.getCurrentUser();
-                                listener.onSignInSuccess(user);
-                            } else {
-                                listener.onSignInFailure("Firebase sign-in failed.");
-                            }
-                        });
+            Credential credential = result.getCredential();
+
+            if (credential instanceof CustomCredential && 
+                credential.getType().equals(GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
+
+                GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.getData());
+                String idToken = googleIdTokenCredential.getIdToken();
+
+                if (idToken != null) {
+                    AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                    firebaseAuth.signInWithCredential(firebaseCredential)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    listener.onSignInSuccess(firebaseAuth.getCurrentUser());
+                                } else {
+                                    listener.onSignInFailure("Firebase Auth failed", task.getException());
+                                }
+                            });
+                } else {
+                    listener.onSignInFailure("ID Token is null.", null);
+                }
             } else {
-                listener.onSignInFailure("ID Token is null.");
+                listener.onSignInFailure("Unexpected credential type: " + credential.getType(), null);
             }
         } catch (Exception e) {
-            listener.onSignInFailure("Sign-in exception: " + e.getMessage());
+            listener.onSignInFailure("Error: " + e.getLocalizedMessage(), e);
         }
     }
 }

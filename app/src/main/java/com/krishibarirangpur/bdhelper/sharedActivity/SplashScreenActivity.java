@@ -2,7 +2,6 @@ package com.krishibarirangpur.bdhelper.sharedActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,12 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,8 +25,9 @@ import com.krishibarirangpur.bdhelper.introScreen.IntroActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
+import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
@@ -41,9 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private ActivitySplashScreenBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
-    private AppUpdateManager appUpdateManager;
-    private static final int IMMEDIATE_APP_UPDATE_REQ_CODE = 124;
+    private AppUpdateChecker appUpdateChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,61 +54,26 @@ public class SplashScreenActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         textView.setTypeface(customFont);
 
-        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
-        checkInAppUpdate();
-    }
-
-    private void checkInAppUpdate() {
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                // An immediate update is available and allowed.
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo,
-                            AppUpdateType.IMMEDIATE,
-                            this,
-                            IMMEDIATE_APP_UPDATE_REQ_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    e.printStackTrace();
-                    // If the update flow fails, proceed to the app.
-                    proceedToNextScreen();
-                }
-            } else {
-                // No update is available or an immediate update is not allowed.
-                proceedToNextScreen();
-            }
-        }).addOnFailureListener(e -> {
-            e.printStackTrace();
-            // If checking for update fails, proceed to the app.
-            proceedToNextScreen();
-        });
+        // অ্যাপ আপডেট চেক করা হচ্ছে
+        appUpdateChecker = new AppUpdateChecker(this);
+        appUpdateChecker.checkForUpdate(this::proceedToNextScreen);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMMEDIATE_APP_UPDATE_REQ_CODE) {
+        if (requestCode == AppUpdateChecker.REQUEST_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                // The user has canceled the update. Since this is a forced update,
-                // we can show a message and close the app.
                 MyToast.showShort(this, "You must update the app to continue using it.");
                 finish();
             } else if (resultCode != RESULT_OK) {
-                // The update failed or was otherwise interrupted.
-                // We can try to request the update again or let the user proceed.
-                // For a forced update, it's better to try again or close.
-                checkInAppUpdate();
+                // আপডেট ব্যর্থ হলে আবার চেক করো
+                appUpdateChecker.checkForUpdate(this::proceedToNextScreen);
             }
-            // If resultCode is RESULT_OK, the app will be restarted by the Play Store.
-            // No need to call proceedToNextScreen().
         }
     }
 
     private void proceedToNextScreen() {
-        // ✅ Already logged-in user check
         if (mAuth.getCurrentUser() != null) {
             new Handler().postDelayed(this::gotoNextActivity, 2500);
         } else {
@@ -140,7 +97,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void gotoNextActivity() {
         if (mAuth.getCurrentUser() == null) {
-            // কোনো কারণে null হলে Login-এ পাঠিয়ে দিন
             goToLoginWithError("লগইন অবস্থা পাওয়া যায়নি!");
             return;
         }

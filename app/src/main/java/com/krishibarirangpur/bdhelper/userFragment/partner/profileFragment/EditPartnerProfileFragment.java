@@ -39,7 +39,7 @@ import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.customer.DistrictAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentEditPartnerProfileBinding;
-import com.krishibarirangpur.bdhelper.utils.uploadContrlar.FileUploadHelper;
+import com.krishibarirangpur.bdhelper.utils.uploadController.FileUploadHelper;
 import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;

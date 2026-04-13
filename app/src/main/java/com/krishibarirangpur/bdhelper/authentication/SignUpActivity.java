@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.databinding.DataBindingUtil;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
@@ -19,12 +20,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivitySignUpBinding;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
@@ -75,8 +76,13 @@ public class SignUpActivity extends BaseActivity {
             }
 
             @Override
-            public void onSignInFailure(String errorMessage) {
-                MyToast.showShort(SignUpActivity.this, errorMessage);
+            public void onSignInFailure(String errorMessage, Exception exception) {
+                loadingDialog.dismiss();
+                if (exception instanceof GetCredentialCancellationException) {
+                    Log.d("GoogleSignIn", "Sign-up cancelled by user");
+                } else {
+                    MyToast.showShort(SignUpActivity.this, errorMessage);
+                }
             }
         });
 
@@ -89,15 +95,15 @@ public class SignUpActivity extends BaseActivity {
 
             if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 setErrorWatcher(binding.emailET, true);
-                Toast.makeText(this, "সঠিক ইমেইল অ্যাড্রেস দিন", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(this, "সঠিক ইমেইল অ্যাড্রেস দিন");
             }
             else if (TextUtils.isEmpty(password) || password.length() < 6) {
                 setErrorWatcher(binding.passwordET, true);
-                Toast.makeText(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
             }
             else if (!confirmPass.equals(password)) {
                 setErrorWatcher(binding.confirmPasswordET, true);
-                Toast.makeText(this, "পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড মেলে না", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(this, "পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড মেলে না");
             }
             else {
                 createNewAccount(email, password);
@@ -180,12 +186,6 @@ public class SignUpActivity extends BaseActivity {
                         MyToast.showShort(this, "Link failed: " + task.getException().getMessage());
                     }
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        googleSignInHelper.handleActivityResult(requestCode, resultCode, data);
     }
 
     private void setErrorWatcher(EditText editText, boolean hasError) {

@@ -9,8 +9,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityRegistrationBinding;
 import com.krishibarirangpur.bdhelper.userFragment.customer.authFragment.CustomerRegisterFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.authFragment.PartnerRegisterFragment;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
 public class RegistrationActivity extends BaseActivity {
 

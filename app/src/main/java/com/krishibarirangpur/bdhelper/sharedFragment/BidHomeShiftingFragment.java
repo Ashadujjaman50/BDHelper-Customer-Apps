@@ -35,7 +35,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,7 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
-import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,7 +234,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String bidId = bidModel.getBidInfo().getBidId();
                     String orderId = bidModel.getOrderInfo().getOrderId();
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_HOME_SHIFTING);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
 
                     // ✅ 1️⃣ bidForOrder -> status update
                     db.collection("bidForOrder")
@@ -670,7 +670,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                     binding.bottomPart.setVisibility(View.GONE);
 
                     //Custome Notice Send
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerUtils.COMMISSION_HOME_SHIFTING);
+                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
                     sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
 
                     loadCurrentPartnerBid();

@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.network;
 
 import android.Manifest;
 import android.app.Activity;

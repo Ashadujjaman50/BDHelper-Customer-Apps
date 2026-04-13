@@ -13,9 +13,9 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.shared.AdapterSubCategory;
 import com.krishibarirangpur.bdhelper.databinding.ActivitySubCategoryBinding;
 import com.krishibarirangpur.bdhelper.model.ModelSubCategory;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -255,7 +255,7 @@ public class CommonClass {
         return false; // valid
     }
 
-    //Helper subCategory Id to String subCategory Name
+    //Helper subCategory id to String subCategory Name
     public static String getSubCategoryName(Context context, String subCategoryId) {
         int resId;
 

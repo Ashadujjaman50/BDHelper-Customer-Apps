@@ -30,7 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentCustomerRegisterBinding;

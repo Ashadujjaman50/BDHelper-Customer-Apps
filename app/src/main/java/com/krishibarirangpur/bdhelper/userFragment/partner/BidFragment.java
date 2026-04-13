@@ -30,7 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;

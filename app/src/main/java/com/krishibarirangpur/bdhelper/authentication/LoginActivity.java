@@ -7,20 +7,20 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
-
 
 import androidx.annotation.Nullable;
+import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.databinding.DataBindingUtil;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityLoginBinding;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.NotificationPermissionHelper;
-import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
+import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,8 +72,14 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onSignInFailure(String errorMessage) {
-                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            public void onSignInFailure(String errorMessage, Exception exception) {
+                loadingDialog.dismiss();
+                if (exception instanceof GetCredentialCancellationException) {
+                    // User closed the Google Sign-In prompt, do nothing
+                    Log.d("GoogleSignIn", "Sign-in cancelled by user");
+                } else {
+                    MyToast.showShort(LoginActivity.this, errorMessage);
+                }
             }
         });
 
@@ -100,11 +106,11 @@ public class LoginActivity extends BaseActivity {
 
             if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 setErrorWatcher(binding.emailET, true);
-                Toast.makeText(this, "সঠিক ইমেইল অ্যাড্রেস দিন", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(this, "সঠিক ইমেইল অ্যাড্রেস দিন");
             }
             else if (TextUtils.isEmpty(password) || password.length() < 6) {
                 setErrorWatcher(binding.passwordET, true);
-                Toast.makeText(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
             }
             else {
                 loginUserAccount(email, password);
@@ -126,12 +132,11 @@ public class LoginActivity extends BaseActivity {
                 .addOnSuccessListener(authResult -> {
                     // Login successful, check if user exists in Firestore
                     gotoNextActivity(MyUtils.USER_TYPE_EMAIL);
-
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
                     // Login failed
-                    Toast.makeText(this, "লগইন ব্যর্থ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    MyToast.showShort(this, "লগইন ব্যর্থ: " + e.getMessage());
                 });
     }
 
@@ -149,20 +154,17 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void gotoNextActivity(String userSignInWith) {
-        Log.d("GoogleLog", "Google: "+userSignInWith);
         String userId = mAuth.getCurrentUser().getUid();
         db.collection("users")
                 .document(userId)
                 .get()
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         Intent intent = null;
                         if (document.exists()) {
                             // User exists in "users" table, go to MainActivity or Dashboard
                             String userType = document.getString("userType");
-
                             if ("customer".equals(userType)) {
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
                             }
@@ -174,21 +176,17 @@ public class LoginActivity extends BaseActivity {
                             intent = new Intent(LoginActivity.this, UserTypeSelectionActivity.class);
                             intent.putExtra(MyUtils.USER_SIGN_IN_WITH, userSignInWith);
                         }
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        loadingDialog.dismiss();
-                        startActivity(intent);
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        finish(); // Close LoginActivity to prevent going back
+                        if (intent != null) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            loadingDialog.dismiss();
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+                        }
                     } else {
                         loadingDialog.dismiss();
-                        Toast.makeText(this, "ইউজার তথ্য চেক করতে ব্যর্থ: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        MyToast.showShort(this, "ইউজার তথ্য চেক করতে ব্যর্থ: " + task.getException().getMessage());
                     }
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        googleSignInHelper.handleActivityResult(requestCode, resultCode, data);
     }
 }

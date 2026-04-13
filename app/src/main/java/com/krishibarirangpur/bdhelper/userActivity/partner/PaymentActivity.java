@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityPaymentBinding;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.krishibarirangpur.bdhelper.userFragment.partner.paymentFragment.PaymentAccountFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.paymentFragment.PaymentHistoryFragment;
 

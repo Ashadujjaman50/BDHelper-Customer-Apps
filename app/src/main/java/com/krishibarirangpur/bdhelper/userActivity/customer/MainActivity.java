@@ -15,15 +15,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityMainBinding;
 import com.krishibarirangpur.bdhelper.sharedFragment.HelpFragment;
-import com.krishibarirangpur.bdhelper.utils.NotificationPermissionHelper;
-import com.krishibarirangpur.bdhelper.utils.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
+import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.userFragment.customer.navBarFragment.HomeFragment;
 import com.krishibarirangpur.bdhelper.userFragment.customer.navBarFragment.PastPostFragment;
 import com.krishibarirangpur.bdhelper.userFragment.customer.navBarFragment.ProfileFragment;
-import com.krishibarirangpur.bdhelper.utils.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
-import com.krishibarirangpur.bdhelper.utils.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
 public class MainActivity extends BaseActivity {
 

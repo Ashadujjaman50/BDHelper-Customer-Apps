@@ -58,9 +58,11 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)

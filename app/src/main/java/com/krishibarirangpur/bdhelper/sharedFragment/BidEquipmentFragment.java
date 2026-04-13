@@ -35,7 +35,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,7 +44,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
-import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -243,12 +243,12 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                     String finalBidAmount;
                     if (categoryID.equals(MyUtils.HARVESTER_MACHINE_ID)){
                         // HARVESTER_MACHINE_ID হলে: 1000 + 1%
-                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_HARVESTER);
-                        double calculatedAmount = PartnerUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
+                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HARVESTER);
+                        double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
                         finalBidAmount = String.valueOf(calculatedAmount);
                     }
                     else {
-                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerUtils.COMMISSION_EQUIPMENT);
+                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_EQUIPMENT);
                     }
 
                     // ✅ 1️⃣ bidForOrder -> status update
@@ -686,12 +686,12 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                     String finalBidAmount;
                     if (categoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
                         // HARVESTER_MACHINE_ID হলে: 1000 + 1%
-                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerUtils.COMMISSION_HARVESTER);
-                        double calculatedAmount = PartnerUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
+                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_HARVESTER);
+                        double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
                         finalBidAmount = String.valueOf(calculatedAmount);
                     }
                     else {
-                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerUtils.COMMISSION_EQUIPMENT);
+                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
                     }
                     sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
 

@@ -19,7 +19,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentSettingBinding;
 import com.krishibarirangpur.bdhelper.utils.LogoutHelper;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.NotificationPermissionHelper;
+import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 
 public class SettingFragment extends Fragment {
 

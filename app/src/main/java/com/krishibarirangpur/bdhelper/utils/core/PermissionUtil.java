@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.core;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -27,7 +27,7 @@ import com.krishibarirangpur.bdhelper.adapter.partner.AccountAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentAccountBinding;
 import com.krishibarirangpur.bdhelper.model.AccountModel;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.PreloadingDialog;
+import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;

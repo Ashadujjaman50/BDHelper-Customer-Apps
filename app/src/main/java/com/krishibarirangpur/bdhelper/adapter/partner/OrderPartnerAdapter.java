@@ -21,7 +21,7 @@ import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
-import com.krishibarirangpur.bdhelper.utils.partner.PartnerUtils;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -230,7 +230,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
                     currentDue = netAmount;
                 }
 
-                double limit = PartnerUtils.PARTNER_DUE_LIMIT;
+                double limit = PartnerCommissionUtils.PARTNER_DUE_LIMIT;
 
                 if (currentDue >= limit){
                     String message ="আপনার বকেয়া "+currentDue+" টাকা রয়েছে। অনুগ্রহ করে প্রথমে বকেয়া পরিশোধ করুন, তারপর বিড করতে পারবেন।";

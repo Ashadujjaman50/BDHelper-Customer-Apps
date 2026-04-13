@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils.uploadContrlar;
+package com.krishibarirangpur.bdhelper.utils.uploadController;
 
 import android.Manifest;
 import android.content.Context;
