@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.credentials.exceptions.GetCredentialCancellationException;
@@ -18,8 +17,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivitySignUpBinding;
+import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
@@ -38,6 +41,7 @@ public class SignUpActivity extends BaseActivity {
     FirebaseAuth firebaseAuth;
     private LoadingDialog loadingDialog;
     private GoogleSignInHelper googleSignInHelper;
+    private FirebaseFirestore db;
 
     // 🔥 global variable for linking
     private String tempEmail = null;
@@ -58,6 +62,7 @@ public class SignUpActivity extends BaseActivity {
         }
 
         firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         loadingDialog = new LoadingDialog(this);
         loadingDialog.setCanceledOnTouchOutside(false);
@@ -71,7 +76,7 @@ public class SignUpActivity extends BaseActivity {
                     // যদি Email Sign up থেকে এসে থাকে, তবে link করো
                     linkEmailAccount(user);
                 } else {
-                    gotoNextActivity();
+                    gotoHomeActivity(user, MyUtils.USER_TYPE_GOOGLE);
                 }
             }
 
@@ -121,7 +126,7 @@ public class SignUpActivity extends BaseActivity {
                     if (task.isSuccessful()) {
                         loadingDialog.dismiss();
                         MyToast.showShort(this, "Account created successfully!");
-                        gotoNextActivity();
+                        gotoNextActivity(MyUtils.USER_TYPE_EMAIL);
                     } else {
                         Exception e = task.getException();
                         if (e instanceof FirebaseAuthUserCollisionException) {
@@ -175,19 +180,64 @@ public class SignUpActivity extends BaseActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(tempEmail, tempPassword);
         user.linkWithCredential(credential)
                 .addOnCompleteListener(task -> {
-                    loadingDialog.dismiss();
                     if (task.isSuccessful()) {
                         MyToast.showShort(this, "Account linked successfully!");
                         // Clear temp data
                         tempEmail = null;
                         tempPassword = null;
-                        gotoNextActivity();
+                        gotoHomeActivity(user, MyUtils.USER_TYPE_EMAIL);
                     } else {
+                        loadingDialog.dismiss();
                         MyToast.showShort(this, "Link failed: " + task.getException().getMessage());
                     }
                 });
     }
 
+    private void gotoHomeActivity(FirebaseUser user, String userSignInWith) {
+        if (user == null) return;
+        
+        loadingDialog.setMessage("ইউজার তথ্য চেক করা হচ্ছে...");
+        //if (!loadingDialog.show()) loadingDialog.show();
+
+        db.collection("users").document(user.getUid()).get()
+                .addOnCompleteListener(task -> {
+                    loadingDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            String userType = document.getString("userType");
+                            Intent intent;
+                            if ("customer".equals(userType)) {
+                                intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            } else if ("partner".equals(userType)) {
+                                intent = new Intent(SignUpActivity.this, DashboardActivity.class);
+                            } else {
+                                MyToast.showShort(SignUpActivity.this, "অন্য email দিয়ে চেষ্টা করুন");
+                                FirebaseAuth.getInstance().signOut();
+                                intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            }
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // Firestore এ ডাটা নেই, তাই টাইপ সিলেক্ট করতে হবে
+                            gotoNextActivity(userSignInWith);
+                        }
+                    } else {
+                        MyToast.showShort(this, "Error: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+
+    private void gotoNextActivity(String userSignInWith) {
+        Intent intent = new Intent(SignUpActivity.this, UserTypeSelectionActivity.class);
+        intent.putExtra(MyUtils.USER_SIGN_IN_WITH, userSignInWith);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    
     private void setErrorWatcher(EditText editText, boolean hasError) {
         if (hasError) {
             editText.setBackgroundResource(R.drawable.bg_edit_text_error);
@@ -199,13 +249,5 @@ public class SignUpActivity extends BaseActivity {
                 @Override public void afterTextChanged(Editable s) {}
             });
         }
-    }
-
-    private void gotoNextActivity() {
-        Intent intent = new Intent(SignUpActivity.this, UserTypeSelectionActivity.class);
-        intent.putExtra(MyUtils.USER_SIGN_IN_WITH, MyUtils.USER_TYPE_EMAIL);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

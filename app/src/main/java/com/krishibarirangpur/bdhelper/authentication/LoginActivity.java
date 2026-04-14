@@ -171,6 +171,11 @@ public class LoginActivity extends BaseActivity {
                             else if ("partner".equals(userType)) {
                                 intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             }
+                            else {
+                                loadingDialog.dismiss();
+                                MyToast.showShort(LoginActivity.this, "⚠\uFE0F এই ইমেইলটি অনুমোদিত নয়। অন্য ইমেইল ব্যবহার করুন।");
+                                FirebaseAuth.getInstance().signOut();
+                            }
                         } else {
                             // User does not exist in "users" table, go to UserTypeSelectionActivity
                             intent = new Intent(LoginActivity.this, UserTypeSelectionActivity.class);

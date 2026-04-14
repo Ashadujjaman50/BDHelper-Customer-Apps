@@ -15,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.R;
@@ -87,59 +88,52 @@ public class SplashScreenActivity extends AppCompatActivity {
                 } else {
                     intent = new Intent(this, LoginActivity.class);
                 }
-
-                startActivity(intent);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startNextActivity(intent);
             }, 3000);
         }
     }
 
     private void gotoNextActivity() {
-        if (mAuth.getCurrentUser() == null) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
             goToLoginWithError("লগইন অবস্থা পাওয়া যায়নি!");
             return;
         }
 
-        String userId = mAuth.getCurrentUser().getUid();
-        db.collection("users")
-                .document(userId)
-                .get()
+        db.collection("users").document(currentUser.getUid()).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        Intent intent = null;
-
-                        if (document.exists()) {
+                        if (document != null && document.exists()) {
                             String userType = document.getString("userType");
+                            Class<?> targetClass;
 
                             if ("customer".equals(userType)) {
-                                intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                targetClass = MainActivity.class;
                             } else if ("partner".equals(userType)) {
-                                intent = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                                targetClass = DashboardActivity.class;
+                            } else {
+                                mAuth.signOut();
+                                goToLoginWithError("অন্য email দিয়ে চেষ্টা করুন");
+                                return;
                             }
-
+                            startNextActivity(new Intent(this, targetClass));
                         } else {
-                            intent = new Intent(SplashScreenActivity.this, UserTypeSelectionActivity.class);
+                            startNextActivity(new Intent(this, UserTypeSelectionActivity.class));
                         }
-
-                        if (intent != null) {
-                            startActivity(intent);
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            finish();
-                        } else {
-                            MyToast.showShort(this, "ইউজারের ধরণ নির্ধারণ করা যায়নি!");
-                        }
-
                     } else {
-                        MyToast.showShort(this, "ইউজার তথ্য চেক করতে ব্যর্থ: " + task.getException().getMessage());
+                        String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                        MyToast.showShort(this, "ইউজার তথ্য চেক করতে ব্যর্থ: " + error);
                     }
                 });
     }
 
     private void goToLoginWithError(String errorMessage) {
-        MyToast.showShort(this, errorMessage);
-        Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+        if (errorMessage != null) MyToast.showShort(this, errorMessage);
+        startNextActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void startNextActivity(Intent intent) {
         startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
