@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -56,7 +59,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
     private FragmentBidEquipmentBinding binding;
 
-    private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, orderStatus, vendorId;
+    private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, landArea, orderStatus, vendorId;
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
@@ -126,11 +129,18 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             // Setup vehicle picker dialog
             setupServicePicker();
 
+
             // ✅ submit button click
             binding.bidSubmitBtn.setOnClickListener(v -> {
+
                 if (ValidationClass.validateField(binding.selectVehicleNameTv)) return;
+                // 👉 Harvester / Tractor হলে শুধু inputAmount check হবে
+                if ((subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)
+                        || subCategoryId.equals(MyUtils.SUB_TRACTOR_ID))&& ValidationClass.validateField(binding.inputAmountEt)) return;
                 else if (ValidationClass.validateField(binding.amountEt)) return;
-                else dataUploadInDatabase(selectedServiceModel);
+
+                // সব ঠিক থাকলে submit
+                bidDataSubmitInDatabase(selectedServiceModel);
             });
         }
         else if (user_type.equals("customer")) {
@@ -376,7 +386,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                             String quantity = order.getSpecInfo().getQuantity();
                             String capacity = order.getSpecInfo().getCapacity();
                             String duration = order.getSpecInfo().getDuration();
-                            String landArea = order.getSpecInfo().getLandArea();
+                            landArea = order.getSpecInfo().getLandArea();
                             String types = order.getSpecInfo().getTypes();
                             String postDescription = order.getSpecInfo().getDesc();
                             rentTime = order.getRouteInfo().getRentTime();
@@ -390,8 +400,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                             }
 
                             //only  tractor and Harvester
+                            String landAreaConvert = landArea != null ? Replacement.ReplacementNumberInLocal(getContext(), landArea) : getContext().getString(R.string.zero);
                             if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID) || subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
-                                String landAreaConvert = landArea != null ? Replacement.ReplacementNumberInLocal(getContext(), landArea) : getContext().getString(R.string.zero);
                                 binding.landAreaLL.setVisibility(View.VISIBLE);
                                 binding.dividerOne.setVisibility(View.VISIBLE);
                                 binding.landAreaTv.setText(landAreaConvert + " " + getContext().getString(R.string.acres));
@@ -423,6 +433,106 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                             binding.typesTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tags,0,0);
                             binding.typesTv.setText(types);
                             binding.capacityTv.setText(capacity);
+
+
+                            /// only Harvester And Tractor
+                            if (subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)
+                                    || subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
+
+                                binding.warningTv.setVisibility(View.VISIBLE);
+                                binding.landAreaCalLL.setVisibility(View.VISIBLE);
+                                binding.landAreaCalLL.setVisibility(View.VISIBLE);
+                                binding.amountEt.setHint(getString(R.string.total_price));
+
+                                binding.landAreaCalTv.setText(landAreaConvert + " " + getContext().getString(R.string.acres));
+
+                                // ❌ amountEt editable বন্ধ করা
+                                binding.amountEt.setEnabled(false);
+
+                                // inputAmount change হলে auto হিসাব হবে
+                                binding.inputAmountEt.addTextChangedListener(new TextWatcher() {
+                                    boolean isEditing;
+
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        if (isEditing) return;
+
+                                        isEditing = true;
+
+                                        String original = s.toString();
+
+                                        // 👉 English number এ convert (calculation এর জন্য safe রাখা)
+                                        //String englishNumber = Replacement.getEnglishNumber(original);
+
+                                        // 👉 আবার Local এ convert (display এর জন্য)
+                                        String localNumber = Replacement.ReplacementNumberInLocal(getContext(), original);
+
+                                        binding.inputAmountEt.setText(localNumber);
+                                        binding.inputAmountEt.setSelection(localNumber.length());
+
+                                        isEditing = false;
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
+                                        String inputStr = s.toString().trim();
+
+                                        if (!inputStr.isEmpty()) {
+                                            try {
+                                                // 👉 Local → English convert করে parse করতে হবে
+                                                String englishInput = Replacement.ReplacementNumberBnToEn(inputStr);
+
+                                                double inputAmount = Double.parseDouble(englishInput);
+                                                double conVerArea = Double.parseDouble(landArea);
+
+                                                double total = inputAmount * conVerArea;
+
+                                                // চাইলে এটাও Local এ দেখাতে পারো
+                                                String totalStr = String.valueOf(total);
+                                                String localTotal = Replacement.ReplacementNumberInLocal(getContext(), totalStr);
+
+                                                binding.amountEt.setText(localTotal);
+
+                                            } catch (Exception e) {
+                                                binding.amountEt.setText("");
+                                            }
+                                        } else {
+                                            binding.amountEt.setText("");
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                binding.amountEt.addTextChangedListener(new TextWatcher() {
+                                    boolean isEditing;
+
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        if (isEditing) return;
+
+                                        isEditing = true;
+
+                                        String original = s.toString();
+                                        String converted = Replacement.ReplacementNumberInLocal(getContext(), original);
+
+                                        binding.amountEt.setText(converted);
+                                        binding.amountEt.setSelection(converted.length());
+
+                                        isEditing = false;
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
+
+                                    }
+                                });
+                            }
 
                         }
                     }
@@ -640,13 +750,27 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         });
     }
 
-    private void dataUploadInDatabase(ServiceModel model) {
+    private void bidDataSubmitInDatabase(ServiceModel model) {
         loadingDialog.setMessage("বিড সাবমিট হচ্ছে...");
         loadingDialog.show();
 
+        String getBidAmount = binding.amountEt.getText().toString().trim();
+        String bidAmount = Replacement.ReplacementNumberBnToEn(getBidAmount);
+        String timestamp = String.valueOf(System.currentTimeMillis());
 
-        String bidAmount = binding.amountEt.getText().toString().trim();
-        String modelName = model.getServiceModelNumber();
+        Map<String, Object> bid = BidMapBuilder.createBidMap(
+                model,
+                timestamp,
+                bidAmount,
+                userId,
+                currentUserId,
+                orderId,
+                rentTime,
+                categoryId,
+                subCategoryId
+        );
+
+        /*String modelName = model.getServiceModelNumber();
         String licenceNumber = model.getServiceRegistrationNumber();
         String modelYear = model.getServiceCategoryAndYear();
 
@@ -678,7 +802,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
         bid.put("serviceInfo", serviceInfo);
         bid.put("bidInfo", bidInfo);
-        bid.put("orderInfo", orderInfo);
+        bid.put("orderInfo", orderInfo);*/
 
         db.collection("bidForOrder")
                 .document(timestamp)

@@ -148,6 +148,8 @@
     <string name="you_didnot_any_post">আপনি কোনো পোস্ট করেন নি!</string>
     <string name="no_one_bid_yet">এখনো কেউ বিড করেনি</string>
 
+    <string name="bid_warning_notice">⚠️ উল্লেখিত জমির পরিমাণ অনুযায়ী প্রতি একর হিসেবে আপনার বিডের মূল্য লিখুন। সিস্টেম স্বয়ংক্রিয়ভাবে মোট জমির জন্য মোট খরচ হিসাব করে দেখাবে।</string>
+
     <!--Help Fragment-->
     <string name="enter_your_message">টাইপ করুন</string>
     <string name="have_queries">কোন প্রশ্ন আছে?</string>
@@ -187,6 +189,7 @@
     <string name="time">সময়</string>
 
     <!--Row Post/modelBid/review-->
+    <string name="total_price">মোট প্রাইস</string>
     <string name="see_bid_rental">বিডের ভাড়া দেখুন</string>
     <string name="review">রিভিউ লিখুন</string>
     <string name="post">পোস্টঃ</string>

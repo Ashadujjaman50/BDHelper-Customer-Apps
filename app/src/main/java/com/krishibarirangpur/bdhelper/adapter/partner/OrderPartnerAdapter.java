@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,6 +85,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
         String capacity = post.getSpecInfo().getCapacity();
         String duration = post.getSpecInfo().getDuration();
         String types = post.getSpecInfo().getTypes();
+        String landArea = post.getSpecInfo().getLandArea();
         String postDescription = post.getSpecInfo().getDesc();
 
         // ============ Time Formatting ============
@@ -115,13 +117,13 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
         holder.postImage.setImageDrawable(ContextCompat.getDrawable(context, iconRes));
 
         // ============ Handle SubCategory Specific ============
-        setServiceInfo(holder, subCategoryId, types, quantity, capacity);
+        setServiceInfo(holder, subCategoryId, types, quantity, capacity, landArea);
 
     }
 
     // 🔹 Service Info based on subCategory
     @SuppressLint("SetTextI18n")
-    private void setServiceInfo(HolderViewOrderPartner holder, String subCategoryId, String types, String quantity, String capacity) {
+    private void setServiceInfo(HolderViewOrderPartner holder, String subCategoryId, String types, String quantity, String capacity, String landArea) {
         switch (subCategoryId) {
             case MyUtils.SUB_MICROBUS_ID:
             case MyUtils.SUB_AMBULANCE_ID:
@@ -161,6 +163,11 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
                 holder.typesIv.setImageResource(R.drawable.ic_service);
                 holder.quantityTv.setText(Replacement.ReplacementPersonInLocal(context, quantity));
                 break;
+            case MyUtils.HARVESTER_MACHINE_ID:
+            case MyUtils.SUB_TRACTOR_ID:
+                holder.landAreaLL.setVisibility(View.VISIBLE);
+                holder.landAreaTv.setText(Replacement.ReplacementNumberInLocal(context, landArea) +" "+context.getString(R.string.acres));
+                break;
             default:
                 holder.postNameTv.setVisibility(View.VISIBLE);
                 holder.capacityTv.setText(capacity+", ");
@@ -196,8 +203,10 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
 
     static class HolderViewOrderPartner extends RecyclerView.ViewHolder{
         TextView postNameTv, quantityTv, loadLocation, unLoadLocation, rentTimeTv, typesTv,
-                postDescription,locationNameTv, locationArea, capacityTv, orderIdTv, loadArea,unLoadArea;
+                postDescription,locationNameTv, locationArea, capacityTv, orderIdTv,
+                loadArea,unLoadArea, landAreaTv;
         ImageView postImage, typesIv;
+        LinearLayout landAreaLL;
         public HolderViewOrderPartner(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             //init views
@@ -217,6 +226,9 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
 
             loadArea = itemView.findViewById(R.id.loadArea);
             unLoadArea = itemView.findViewById(R.id.unLoadArea);
+
+            landAreaLL = itemView.findViewById(R.id.landAreaLL);
+            landAreaTv = itemView.findViewById(R.id.landAreaTv);
 
             itemView.setOnClickListener(v -> {
                 double partnerReceivable = FinanceCache.partnerReceivable;

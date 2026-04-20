@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -123,11 +126,38 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
             // Setup vehicle picker dialog
             setupServicePicker();
 
+            binding.amountEt.addTextChangedListener(new TextWatcher() {
+                boolean isEditing;
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (isEditing) return;
+
+                    isEditing = true;
+
+                    String original = s.toString();
+                    String converted = Replacement.ReplacementNumberInLocal(getContext(), original);
+
+                    binding.amountEt.setText(converted);
+                    binding.amountEt.setSelection(converted.length());
+
+                    isEditing = false;
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
             // ✅ submit button click
             binding.bidSubmitBtn.setOnClickListener(v -> {
                 if (ValidationClass.validateField(binding.selectVehicleNameTv)) return;
                 else if (ValidationClass.validateField(binding.amountEt)) return;
-                else dataUploadInDatabase(selectedServiceModel);
+                else bidDataSubmitInDatabase(selectedServiceModel);
             });
         }
         else if (user_type.equals("customer")) {
@@ -592,6 +622,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                 });
     }
 
+    @SuppressLint("InflateParams")
     private void setupServicePicker() {
         binding.selectVehicleNameTv.setOnClickListener(v -> {
             if (serviceModelArrayList.isEmpty()) {
@@ -620,16 +651,30 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         });
     }
 
-    private void dataUploadInDatabase(ServiceModel model) {
+    private void bidDataSubmitInDatabase(ServiceModel model) {
         loadingDialog.setMessage("বিড সাবমিট হচ্ছে...");
         loadingDialog.show();
 
-        String bidAmount = binding.amountEt.getText().toString().trim();
-        String modelName = model.getServiceModelNumber();
+        String getBidAmount = binding.amountEt.getText().toString().trim();
+        String bidAmount = Replacement.ReplacementNumberBnToEn(getBidAmount);
+        String timestamp = String.valueOf(System.currentTimeMillis());
+
+        Map<String, Object> bid = BidMapBuilder.createBidMap(
+                model,
+                timestamp,
+                bidAmount,
+                userId,
+                currentUserId,
+                orderId,
+                rentTime,
+                categoryId,
+                subCategoryId
+        );
+
+       /* String modelName = model.getServiceModelNumber();
         String licenceNumber = model.getServiceRegistrationNumber();
         String modelYear = model.getServiceCategoryAndYear();
 
-        String timestamp = ""+System.currentTimeMillis();
 
         Map<String, Object> bid = new HashMap<>();
 
@@ -657,7 +702,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
         bid.put("serviceInfo", serviceInfo);
         bid.put("bidInfo", bidInfo);
-        bid.put("orderInfo", orderInfo);
+        bid.put("orderInfo", orderInfo);*/
 
         db.collection("bidForOrder")
                 .document(timestamp)

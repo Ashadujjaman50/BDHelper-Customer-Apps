@@ -210,6 +210,35 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/landAreaLL"
+            android:layout_marginTop="3dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:drawablePadding="6dp"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:text="@string/land_area_acres_dot"
+                android:textColor="@color/text_secondary"
+                app:drawableStartCompat="@drawable/ic_select_area" />
+
+            <TextView
+                android:id="@+id/landAreaTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/acres"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
         <!-- Divider -->
         <View
             android:layout_width="match_parent"

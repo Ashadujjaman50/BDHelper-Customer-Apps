@@ -118,7 +118,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
                     // Calculate the company amount
                     int vendorPrice = order.getBidInfo().getVendorPrice();
-                    int bidValue = Integer.parseInt(bidAmount);
+                    int bidValue = (int) Double.parseDouble(bidAmount);
                     int companyAmount = vendorPrice - bidValue;
 
                     // এখন TextView গুলোতে সেট করো
