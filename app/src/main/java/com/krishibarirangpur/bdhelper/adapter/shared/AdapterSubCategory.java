@@ -13,19 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.ModelSubCategory;
+import com.krishibarirangpur.bdhelper.model.SubCategoryModel;
 
 import java.util.List;
 
 public class AdapterSubCategory extends RecyclerView.Adapter<AdapterSubCategory.ViewHolder> {
 
-    List<ModelSubCategory> modelSubCategoryList;
+    List<SubCategoryModel> subCategoryModelList;
     Context context;
 
     private OnItemClickListener mListener;
 
-    public AdapterSubCategory(List<ModelSubCategory> modelSubCategoryList, Context context) {
-        this.modelSubCategoryList = modelSubCategoryList;
+    public AdapterSubCategory(List<SubCategoryModel> subCategoryModelList, Context context) {
+        this.subCategoryModelList = subCategoryModelList;
         this.context = context;
     }
 
@@ -39,11 +39,11 @@ public class AdapterSubCategory extends RecyclerView.Adapter<AdapterSubCategory.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final ModelSubCategory modelSubCategory = modelSubCategoryList.get(position);
-        holder.subCategoryName.setText(modelSubCategory.getSubCategoryName());
+        final SubCategoryModel subCategoryModel = subCategoryModelList.get(position);
+        holder.subCategoryName.setText(subCategoryModel.getSubCategoryName());
 
-        if (modelSubCategory.getIconResId() != 0) {
-            holder.subCategoryImage.setImageResource(modelSubCategory.getIconResId());
+        if (subCategoryModel.getIconResId() != 0) {
+            holder.subCategoryImage.setImageResource(subCategoryModel.getIconResId());
         } else {
             holder.subCategoryImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_transport));
         }
@@ -52,7 +52,7 @@ public class AdapterSubCategory extends RecyclerView.Adapter<AdapterSubCategory.
 
     @Override
     public int getItemCount() {
-        return modelSubCategoryList.size();
+        return subCategoryModelList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -1,13 +1,13 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class City {
+public class CityModel {
     private String cityId;
     private String cityName;
 
-    public City() {
+    public CityModel() {
     }
 
-    public City(String cityId, String cityName) {
+    public CityModel(String cityId, String cityName) {
         this.cityId = cityId;
         this.cityName = cityName;
     }

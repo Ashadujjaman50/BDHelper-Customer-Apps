@@ -32,8 +32,8 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
@@ -42,9 +42,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
+import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,8 +128,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
             // ✅ submit button click
             binding.bidSubmitBtn.setOnClickListener(v -> {
-                if (CommonClass.validateField(binding.selectVehicleNameTv)) return;
-                else if (CommonClass.validateField(binding.amountEt)) return;
+                if (ValidationClass.validateField(binding.selectVehicleNameTv)) return;
+                else if (ValidationClass.validateField(binding.amountEt)) return;
                 else dataUploadInDatabase(selectedServiceModel);
             });
         }
@@ -322,7 +323,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
-        DialogAlert.showDeleteBidDialog(requireContext(),()->{
+        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
             loadingDialog.show();
             db.collection("bidForOrder")
                     .document(bidId)
@@ -339,6 +340,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void getCurrentOrderInfo() {
         if (orderId == null || orderId.isEmpty()) {
             return;
@@ -374,6 +376,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                             String quantity = order.getSpecInfo().getQuantity();
                             String capacity = order.getSpecInfo().getCapacity();
                             String duration = order.getSpecInfo().getDuration();
+                            String landArea = order.getSpecInfo().getLandArea();
                             String types = order.getSpecInfo().getTypes();
                             String postDescription = order.getSpecInfo().getDesc();
                             rentTime = order.getRouteInfo().getRentTime();
@@ -385,6 +388,15 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                                 // 🔹 রিভিউ ফর্ম লোড করো
                                 loadPartnerReview();
                             }
+
+                            //only  tractor and Harvester
+                            if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID) || subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
+                                String landAreaConvert = landArea != null ? Replacement.ReplacementNumberInLocal(getContext(), landArea) : getContext().getString(R.string.zero);
+                                binding.landAreaLL.setVisibility(View.VISIBLE);
+                                binding.dividerOne.setVisibility(View.VISIBLE);
+                                binding.landAreaTv.setText(landAreaConvert + " " + getContext().getString(R.string.acres));
+                            }
+
 
                             // Set icon
                             int iconRes = CommonClass.getIconForSubCategory(subCategoryId);
@@ -515,7 +527,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         });
     }
 
-
     //Partner Part
     @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentPartnerBid() {
@@ -559,7 +570,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
                 });
     }
-
 
 
     private void loadPartnerInfo( ) {

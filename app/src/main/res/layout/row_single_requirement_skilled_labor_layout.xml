@@ -175,8 +175,6 @@
 
         </LinearLayout>
 
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -263,6 +261,7 @@
         </LinearLayout>
 
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -306,6 +305,8 @@
                 android:textColor="@color/primaryDark" />
 
         </RelativeLayout>
+
+
 
         <!--Confirmed Vendor price and Name-->
         <LinearLayout

@@ -3,7 +3,7 @@ package com.krishibarirangpur.bdhelper.utils.partner;
 public class PartnerCommissionUtils {
 
 
-    public static final double PARTNER_DUE_LIMIT = 500;                //At change able
+    public static final double PARTNER_DUE_LIMIT = 2500;                //At change able
 
     public static final double COMMISSION_TRANSPORT = 5;               //Percentage
     public static final double COMMISSION_HOME_SHIFTING = 5;           //Percentage

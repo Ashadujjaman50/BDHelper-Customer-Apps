@@ -7,30 +7,31 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentRentLocationFormBinding;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.CustomDateAndTimePicker;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.OrderCreateHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.OrderMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.userActivity.customer.AddressActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.SubCategoryActivity;
@@ -38,6 +39,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.customer.SubmitPostBottomSheetDialog;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +51,16 @@ public class RentLocationFormFragment extends Fragment {
     private FragmentRentLocationFormBinding binding;
 
     String categoryId, subCategoryId, subCategoryName;
-    String loadLocation = "", unloadLocation="", rentLocation="";
+    String rentLocation="";
     String userId, userName, userPhone, postDistrict, quantity, description, rentDateAndTime;
-    String specificationCapacity, specificationDuration, specificationTypes;
+    String landArea, specificationCapacity, specificationDuration, specificationTypes;
 
     LoadingDialog loadingDialog;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
 
-    final int SHORT_ID_LENGTH = 4;
+    private int REMINING_DAY = 3;
     private static final long SPLASH_TIME_OUT = 5000;
 
     Typeface typeface1, typeface2;
@@ -96,6 +99,7 @@ public class RentLocationFormFragment extends Fragment {
         init();
     }
 
+    @SuppressLint("SetTextI18n")
     private void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -133,10 +137,21 @@ public class RentLocationFormFragment extends Fragment {
                 break;
             case "ট্রাক্টর":
             case "Tractor":
+                REMINING_DAY = 14;
                 binding.vehicleNameTV.setText(subCategoryName);
                 binding.capacitySizeProgramTv.setText(getString(R.string.tractor_brand));
                 binding.capacityTV.setHint(getString(R.string.tractor_brand));
                 binding.productTypeTV.setHint(getString(R.string.tractor)+" "+getString(R.string.which_types));
+                binding.landAreaTypeLL.setVisibility(View.VISIBLE);
+                break;
+            case "হারভেস্টার":
+            case "Harvester":
+                REMINING_DAY = 14;
+                binding.capacitySizeProgramTv.setText(subCategoryName+" "+getString(R.string.types));
+                binding.capacityTV.setHint(R.string.which_types);
+
+                binding.vehicleNameTV.setText(getString(R.string.working));
+                binding.productTypeTV.setHint(getString(R.string.working)+" "+getString(R.string.types));
                 binding.landAreaTypeLL.setVisibility(View.VISIBLE);
                 break;
             default:
@@ -150,8 +165,8 @@ public class RentLocationFormFragment extends Fragment {
 
         //Date and Time picker
         binding.dateTimeTV.setOnClickListener(v -> {
-            CommonClass.showDateTimePicker(requireContext(), 3, (displayText, englishDate, millis) -> {
-                binding.dateTimeTV.setText(displayText); // লোকেল অনুযায়ী UI
+            CustomDateAndTimePicker.showDateTimePicker(requireContext(), REMINING_DAY, (displayText, englishDate, millis) -> {
+                binding.dateTimeTV.setText(displayText);
                 rentDateAndTime = String.valueOf(millis);    // timestamp
             });
         });
@@ -165,8 +180,36 @@ public class RentLocationFormFragment extends Fragment {
 
         ListView lv = bottomSheetDialog.findViewById(R.id.listView);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.titleTv);
+        assert titleTv != null;
         titleTv.setVisibility(View.GONE);
         lv.setAdapter(new ArrayAdapter((requireContext()), R.layout.single_listview_item, R.id.listItem, array_list));
+
+        binding.landAreaEt.addTextChangedListener(new TextWatcher() {
+            boolean isEditing;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isEditing) return;
+
+                isEditing = true;
+
+                String original = s.toString();
+                String converted = Replacement.ReplacementNumberInLocal(getContext(), original);
+
+                binding.landAreaEt.setText(converted);
+                binding.landAreaEt.setSelection(converted.length());
+
+                isEditing = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         binding.capacityTV.setOnClickListener(v -> {
             array_list.clear();
@@ -372,7 +415,6 @@ public class RentLocationFormFragment extends Fragment {
             });
         });
 
-
         binding.continuePostBtn.setOnClickListener(v -> {
             continueToReview();
         });
@@ -410,11 +452,11 @@ public class RentLocationFormFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void continueToReview() {
         // ✅ Validate fields
-        if (CommonClass.validateField(binding.dateTimeTV)) return;
-        if (CommonClass.validateField(binding.capacityTV)) return;
-        if (CommonClass.validateField(binding.durationTV)) return;
-        if (CommonClass.validateField(binding.countTV)) return;
-        if (CommonClass.validateField(binding.productTypeTV)) return;
+        if (ValidationClass.validateField(binding.dateTimeTV)) return;
+        if (ValidationClass.validateField(binding.capacityTV)) return;
+        if (ValidationClass.validateField(binding.durationTV)) return;
+        if (ValidationClass.validateField(binding.countTV)) return;
+        if (ValidationClass.validateField(binding.productTypeTV)) return;
 
         // ✅ Collect values
         specificationCapacity = binding.capacityTV.getText().toString().trim();
@@ -422,135 +464,76 @@ public class RentLocationFormFragment extends Fragment {
         specificationTypes = binding.productTypeTV.getText().toString().trim();
         quantity = binding.countTV.getText().toString().trim();
 
-        if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
-            if (CommonClass.validateField(binding.landAreaEt)) return;
+//        if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
+//            if (ValidationClass.validateField(binding.landAreaEt)) return;
+//
+//            landArea = binding.landAreaEt.getText().toString().trim();
+//            String details = binding.detailsET.getText() != null
+//                    ? binding.detailsET.getText().toString().trim()
+//                    : "";
+//
+//            if (details.isEmpty()) {
+//                description = landArea + " " + getString(R.string.acres);
+//            } else {
+//                description = landArea + " " + getString(R.string.acres) + "\n" + details;
+//            }
+//        }
 
-            String landArea = binding.landAreaEt.getText().toString().trim();
-            String details = binding.detailsET.getText() != null
-                    ? binding.detailsET.getText().toString().trim()
+        if (subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID) || subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)) {
+            // ✅ এখানে validation অবশ্যই হবে
+            if (ValidationClass.validateField(binding.landAreaEt)) return;
+
+            landArea = binding.landAreaEt.getText() != null
+                    ? binding.landAreaEt.getText().toString().trim()
                     : "";
 
-            if (details.isEmpty()) {
-                description = landArea + " " + getString(R.string.acres);
-            } else {
-                description = landArea + " " + getString(R.string.acres) + "\n" + details;
-            }
-        } else {
+            description = binding.detailsET.getText() != null
+                    ? binding.detailsET.getText().toString().trim()
+                    : landArea + " " + getString(R.string.acres);
+
+        }
+        else {
             description = binding.detailsET.getText() != null
                     ? binding.detailsET.getText().toString().trim()
                     : "";
         }
 
 
-
-
         // ✅ Setup BottomSheet
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        dialog.setContentView(R.layout.layout_submit_post);
-
-        ImageView iconView = dialog.findViewById(R.id.iconImageViewSub);
-        TextView size = dialog.findViewById(R.id.sizeCapacityTV);
-        TextView count = dialog.findViewById(R.id.totalCountTV);
-        TextView duration = dialog.findViewById(R.id.popupDurationTV);
-        TextView product = dialog.findViewById(R.id.productTV);
-        TextView sizeDef = dialog.findViewById(R.id.sizeCapacityDefTV);
-        TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
-        TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
-        TextView productDef = dialog.findViewById(R.id.productDefTV);
-        TextView detailsTV = dialog.findViewById(R.id.detailsTV);
-        TextView time = dialog.findViewById(R.id.popupTimeTV);
-        TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
-
-        RelativeLayout loadLocationRl = dialog.findViewById(R.id.loadLocationRl);
-        RelativeLayout unloadLocationRl = dialog.findViewById(R.id.unloadLocationRl);
-        RelativeLayout areaLocationRl = dialog.findViewById(R.id.areaLocationRl);
-
-        TextView locationTv = dialog.findViewById(R.id.locationTv);
-        TextView unloadLocationTv = dialog.findViewById(R.id.unloadLocationTv);
-        TextView areaLocationTv = dialog.findViewById(R.id.areaLocationTv);
-
-        dialog.show();
-
-
-        // ✅ Toggle visibility
-        boolean isEquipment = categoryId.equals(MyUtils.EQUIPMENT_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID);
-        if (loadLocationRl != null && unloadLocationRl != null && areaLocationRl != null) {
-            loadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
-            unloadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
-            areaLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
-        }
-
-        // ✅ Set texts safely
-        if (countDef != null) countDef.setText(subCategoryName);
-        if (count != null) count.setText(Replacement.ReplacementQtyToLocal(getContext(), quantity));
-
-        if (locationTv != null) locationTv.setText(loadLocation);
-        if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
-        if (areaLocationTv != null) areaLocationTv.setText(rentLocation);
-
-        if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
-            if (sizeDef != null) sizeDef.setText(getString(R.string.tractor_brand));
-        }
-        else {
-            if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
-        }
-        if (size != null) size.setText(specificationCapacity);
-
-        if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
-        if (duration != null) duration.setText(specificationDuration);
-
-        if (productDef != null) productDef.setText(subCategoryName+" "+getString(R.string.type_dot));
-        if (product != null) product.setText(specificationTypes);
-
-        if (detailsTV != null) detailsTV.setText(Replacement.ReplacementNumberInLocal(getContext(), description));
-
-        if (time != null) time.setText(binding.dateTimeTV.getText().toString());
-
-        // ✅ Set icon dynamically
-        if (iconView != null) {
-            int iconRes = getIconForSubCategory(subCategoryId);
-            if (iconRes != 0) {
-                iconView.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
-            }
-        }
-
-        // ✅ Submit
-        if (submitBtn != null) {
-            submitBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-                postForRent();
-            });
-        }
-
-
+        //After validation check submit
+        SubmitPostBottomSheetDialog.show(this,
+                categoryId,
+                subCategoryId,
+                subCategoryName,
+                quantity,
+                "",
+                "",
+                rentLocation,
+                specificationCapacity,
+                specificationDuration,
+                specificationTypes,
+                description,
+                landArea,
+                binding.dateTimeTV.getText().toString(),
+                this::postForRent);
     }
 
-    // Helper method to get correct drawable for subCategory
-    private int getIconForSubCategory(String subCatId) {
-        switch (subCatId) {
-            case MyUtils.SUB_EXCAVATOR_ID: return R.drawable.ic_excavator;
-            case MyUtils.SUB_RICE_TRANSPLANTER_ID: return R.drawable.ic_rice_transplanter;
-            case MyUtils.SUB_TRACTOR_ID: return R.drawable.ic_tractor;
-            case MyUtils.HARVESTER_MACHINE_ID: return R.drawable.ic_harvester;
-            default: return 0;
-        }
-    }
 
     private void postForRent() {
         loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
         loadingDialog.show();
 
         // 🔽 CommonClass থেকে OrderId জেনারেট করব
-        CommonClass.generateOrderId(
+        GenerateOrderId.newOrderId(
                 db,
                 "orders",
                 "orderInfo.orderId",
                 "BOL",
                 5,
-                new CommonClass.OrderIdCallback() {
+                new GenerateOrderId.OrderIdCallback() {
             @Override
             public void onSuccess(String orderId) {
-                Map<String, Object> order = OrderCreateHelper.createOrder(
+                Map<String, Object> order = OrderMapBuilder.createOrderMap(
                         orderId,
                         userId,
                         userName,
@@ -560,6 +543,7 @@ public class RentLocationFormFragment extends Fragment {
                         "",
                         "",
                         rentLocation,
+                        landArea,
                         rentDateAndTime,
                         specificationCapacity,
                         specificationDuration,

@@ -452,8 +452,9 @@
     <string name="foton_tractor">Foton</string>
     <string name="force_motors_tractor">Force Motors</string>
 
-    <string name="acres">acres</string>
+    <string name="acres">Acres</string>
     <string name="land_area_acres">Land area (acres)</string>
+    <string name="land_area_acres_dot">Land area:</string>
     <string name="land_area">Land area</string>
 
     <string name="hp_fal_21">21 horsepower, 2 fal</string>

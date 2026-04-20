@@ -17,12 +17,12 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
 import com.krishibarirangpur.bdhelper.databinding.FragmentMoreBinding;
-import com.krishibarirangpur.bdhelper.model.BidSummary;
+import com.krishibarirangpur.bdhelper.model.BidSummaryModel;
 import com.krishibarirangpur.bdhelper.utils.CacheManager;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
@@ -188,7 +188,7 @@ public class MoreFragment extends Fragment {
     }
 
     private void showCachedBidSummary() {
-        BidSummary summary = CacheManager.getInstance().getBidSummary();
+        BidSummaryModel summary = CacheManager.getInstance().getBidSummary();
 
         if (summary != null) {
             binding.totalBidTv.setText(

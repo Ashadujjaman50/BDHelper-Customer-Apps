@@ -18,9 +18,9 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
-import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
+import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
@@ -234,7 +234,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
 
                 if (currentDue >= limit){
                     String message ="আপনার বকেয়া "+currentDue+" টাকা রয়েছে। অনুগ্রহ করে প্রথমে বকেয়া পরিশোধ করুন, তারপর বিড করতে পারবেন।";
-                    DialogAlert.dueAlert(context,"",Replacement.ReplacementNumberInLocal(context,message));
+                    DueWarningAlertDialog.dueAlert(context,"",Replacement.ReplacementNumberInLocal(context,message));
                 }
                 else {
                     if (listener != null){

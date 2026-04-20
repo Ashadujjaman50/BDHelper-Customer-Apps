@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -18,19 +17,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentLoadUnloadFormBinding;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
+import com.krishibarirangpur.bdhelper.utils.customer.SubmitPostBottomSheetDialog;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.CustomDateAndTimePicker;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.OrderCreateHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.OrderMapBuilder;
 import com.krishibarirangpur.bdhelper.userActivity.customer.AddressActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.SubCategoryActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,7 @@ public class LoadUnloadFormFragment extends Fragment{
 
         //Date and Time picker
         binding.dateTimeTV.setOnClickListener(v -> {
-            CommonClass.showDateTimePicker(requireContext(), 3, (displayText, englishDate, millis) -> {
+            CustomDateAndTimePicker.showDateTimePicker(requireContext(), 3, (displayText, englishDate, millis) -> {
                 binding.dateTimeTV.setText(displayText); // লোকেল অনুযায়ী UI
                 rentDateAndTime = String.valueOf(millis);    // timestamp
                 Log.d("UserInfo", "rentDateAndTime: " + rentDateAndTime);
@@ -483,11 +484,11 @@ public class LoadUnloadFormFragment extends Fragment{
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     private void continueToReview() {
         // ✅ Validate fields
-        if (CommonClass.validateField(binding.dateTimeTV)) return;
-        if (CommonClass.validateField(binding.capacityTV)) return;
-        if (CommonClass.validateField(binding.durationTV)) return;
-        if (CommonClass.validateField(binding.countTV)) return;
-        if (CommonClass.validateField(binding.productTypeTV)) return;
+        if (ValidationClass.validateField(binding.dateTimeTV)) return;
+        if (ValidationClass.validateField(binding.capacityTV)) return;
+        if (ValidationClass.validateField(binding.durationTV)) return;
+        if (ValidationClass.validateField(binding.countTV)) return;
+        if (ValidationClass.validateField(binding.productTypeTV)) return;
 
         // ✅ Collect values
         specificationCapacity = binding.capacityTV.getText().toString().trim();
@@ -496,125 +497,43 @@ public class LoadUnloadFormFragment extends Fragment{
         quantity = binding.countTV.getText().toString().trim();
         description = binding.detailsET.getText().toString().trim();
 
+
         // ✅ Setup BottomSheet
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        dialog.setContentView(R.layout.layout_submit_post);
+        //After validation check submit
+        SubmitPostBottomSheetDialog.show(this,
+                categoryId,
+                subCategoryId,
+                subCategoryName,
+                quantity,
+                loadLocation,
+                unloadLocation,
+                "",
+                specificationCapacity,
+                specificationDuration,
+                specificationTypes,
+                description,
+                "",
+                binding.dateTimeTV.getText().toString(),
+                this::postForRent);
 
-        ImageView iconView = dialog.findViewById(R.id.iconImageViewSub);
-        TextView size = dialog.findViewById(R.id.sizeCapacityTV);
-        TextView count = dialog.findViewById(R.id.totalCountTV);
-        TextView duration = dialog.findViewById(R.id.popupDurationTV);
-        TextView product = dialog.findViewById(R.id.productTV);
-        TextView sizeDef = dialog.findViewById(R.id.sizeCapacityDefTV);
-        TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
-        TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
-        TextView productDef = dialog.findViewById(R.id.productDefTV);
-        TextView time = dialog.findViewById(R.id.popupTimeTV);
-        TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
-
-        RelativeLayout loadLocationRl = dialog.findViewById(R.id.loadLocationRl);
-        RelativeLayout unloadLocationRl = dialog.findViewById(R.id.unloadLocationRl);
-        RelativeLayout areaLocationRl = dialog.findViewById(R.id.areaLocationRl);
-
-        TextView locationTv = dialog.findViewById(R.id.locationTv);
-        TextView unloadLocationTv = dialog.findViewById(R.id.unloadLocationTv);
-        TextView areaLocationTv = dialog.findViewById(R.id.areaLocationTv);
-
-        dialog.show();
-
-        // ✅ Toggle visibility
-        boolean isEquipment = categoryId.equals(MyUtils.EQUIPMENT_ID) || categoryId.equals(MyUtils.HARVESTER_MACHINE_ID);
-        if (loadLocationRl != null && unloadLocationRl != null && areaLocationRl != null) {
-            loadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
-            unloadLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
-            areaLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
-        }
-
-        // ✅ Set texts safely
-        if (countDef != null) countDef.setText(subCategoryName);
-        if (count != null) count.setText(quantity);
-
-        if (locationTv != null) locationTv.setText(loadLocation);
-        if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation);
-        if (areaLocationTv != null) areaLocationTv.setText("");
-
-        if (categoryId.equals(MyUtils.RENT_A_CAR_ID)){
-            if (sizeDef != null) sizeDef.setText(getString(R.string.category_dot));
-        }
-        else {
-            if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
-        }
-        if (size != null) size.setText(specificationCapacity);
-
-        if (durationDef != null) durationDef.setText(getString(R.string.duration_dot));
-        if (duration != null) duration.setText(specificationDuration);
-
-        if (subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) ||subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
-            if (productDef != null) productDef.setText(subCategoryName+" "+ getString(R.string.type_dot));
-        }
-        else if (subCategoryId.equals(MyUtils.SUB_CAR_ID)){
-            if (productDef != null) productDef.setText(getString(R.string.program)+" "+ getString(R.string.type_dot));
-        }
-        else {
-            if (productDef != null) productDef.setText(getString(R.string.product_type));
-        }
-        if (product != null) product.setText(specificationTypes);
-
-        if (time != null) time.setText(binding.dateTimeTV.getText().toString());
-
-        // ✅ Set icon dynamically
-        if (iconView != null) {
-            int iconRes = getIconForSubCategory(subCategoryId);
-            if (iconRes != 0) {
-                iconView.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
-            }
-        }
-
-        // ✅ Submit
-        if (submitBtn != null) {
-            submitBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-                postForRent();
-            });
-        }
     }
-
-    // Helper method to get correct drawable for subCategory
-    private int getIconForSubCategory(String subCatId) {
-        switch (subCatId) {
-            case MyUtils.SUB_TRUCK_ID: return R.drawable.ic_truck;
-            case MyUtils.SUB_PICKUP_ID: return R.drawable.ic_pickup;
-            case MyUtils.SUB_COVERED_VAN_ID: return R.drawable.ic_covered_van;
-            case MyUtils.SUB_TRAILER_ID: return R.drawable.ic_trailer;
-            case MyUtils.SUB_LOW_BED_ID: return R.drawable.ic_low_bed;
-            case MyUtils.SUB_FREEZER_VAN_ID: return R.drawable.ic_freezer_van;
-            case MyUtils.SUB_DUMP_TRUCK_ID: return R.drawable.ic_dump_truck;
-            case MyUtils.SUB_CHARGER_VAN_ID: return R.drawable.ic_charger_van;
-
-            case MyUtils.SUB_CAR_ID: return R.drawable.ic_car;
-            case MyUtils.SUB_MICROBUS_ID: return R.drawable.ic_microbus;
-            case MyUtils.SUB_AMBULANCE_ID: return R.drawable.ic_ambulance;
-            default: return 0;
-        }
-    }
-
 
     private void postForRent() {
         loadingDialog.setMessage("অর্ডার সাবমিট হচ্ছে...");
         loadingDialog.show();
 
         // 🔽 CommonClass থেকে OrderId জেনারেট করব
-        CommonClass.generateOrderId(
+        GenerateOrderId.newOrderId(
                 db,
                 "orders",
                 "orderInfo.orderId",
                 "BOL",
                 5,
-                new CommonClass.OrderIdCallback() {
+                new GenerateOrderId.OrderIdCallback() {
             @Override
             public void onSuccess(String orderId) {
                 // 🔽 Order Map তৈরি
-                Map<String, Object> order = OrderCreateHelper.createOrder(
+                Map<String, Object> order = OrderMapBuilder.createOrderMap(
                         orderId,
                         userId,
                         userName,
@@ -623,6 +542,7 @@ public class LoadUnloadFormFragment extends Fragment{
                         subCategoryId,
                         loadLocation,
                         unloadLocation,
+                        "",
                         "",
                         rentDateAndTime,
                         specificationCapacity,

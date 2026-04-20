@@ -1,13 +1,13 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class BidSummary {
+public class BidSummaryModel {
     private int total;
     private int success;
     private int cancel;
 
-    public BidSummary() {}
+    public BidSummaryModel() {}
 
-    public BidSummary(int total, int success, int cancel) {
+    public BidSummaryModel(int total, int success, int cancel) {
         this.total = total;
         this.success = success;
         this.cancel = cancel;

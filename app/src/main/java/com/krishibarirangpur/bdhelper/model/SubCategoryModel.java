@@ -1,6 +1,6 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class ModelSubCategory {
+public class SubCategoryModel {
 
     private String categoryId;
     private String subCategoryId;
@@ -8,10 +8,10 @@ public class ModelSubCategory {
     private int iconResId; // Uri এর পরিবর্তে int রাখলাম
     private boolean isSelected;
 
-    public ModelSubCategory() {
+    public SubCategoryModel() {
     }
 
-    public ModelSubCategory(String categoryId, String subCategoryId, String subCategoryName, int iconResId, boolean isSelected) {
+    public SubCategoryModel(String categoryId, String subCategoryId, String subCategoryName, int iconResId, boolean isSelected) {
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.subCategoryName = subCategoryName;

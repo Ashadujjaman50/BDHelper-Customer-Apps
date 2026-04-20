@@ -17,7 +17,7 @@ import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
@@ -81,6 +81,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         String quantity = post.getSpecInfo().getQuantity();
         String capacity = post.getSpecInfo().getCapacity();
         String duration = post.getSpecInfo().getDuration();
+        String landArea = post.getSpecInfo().getLandArea();
         String types = post.getSpecInfo().getTypes();
         String postDescription = post.getSpecInfo().getDesc();
 
@@ -103,7 +104,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         holder.postImage.setImageDrawable(ContextCompat.getDrawable(context, iconRes));
 
         // ============ Handle SubCategory Specific ============
-        setServiceInfo(holder, subCategoryId, types, quantity, capacity);
+        setServiceInfo(holder, subCategoryId, landArea, types, quantity, capacity);
 
         // ============ Status ============
         setOrderStatus(holder, post , orderStatus);
@@ -111,11 +112,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
 
     // 🔹 Service Info based on subCategory
     @SuppressLint("SetTextI18n")
-    private void setServiceInfo(HolderViewOrder holder, String subCategoryId, String types, String quantity, String capacity) {
+    private void setServiceInfo(HolderViewOrder holder, String subCategoryId, String landArea, String types, String quantity, String capacity) {
+        landArea = landArea != null ? Replacement.ReplacementNumberInLocal(context, landArea) : context.getString(R.string.zero);
         switch (subCategoryId) {
             case MyUtils.SUB_MICROBUS_ID:
             case MyUtils.SUB_AMBULANCE_ID:
                 holder.serviceNameTV.setText(CommonClass.getSubCategoryName(context, subCategoryId));
+                holder.sizeCapacityDefTV.setText(context.getString(R.string.category_and_trip));
+                holder.typesTv.setText(types);
+                holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
+                break;
+            case MyUtils.SUB_CAR_ID:
+                holder.serviceNameTV.setText(context.getString(R.string.trip));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.category_and_trip));
                 holder.typesTv.setText(types);
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
@@ -131,18 +139,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 holder.serviceNameTV.setText(CommonClass.getSubCategoryName(context, subCategoryId));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.tractor_brand_trip_dot));
                 holder.typesTv.setText(types);
-                holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
-                break;
-            case MyUtils.SUB_CAR_ID:
-                holder.serviceNameTV.setText(context.getString(R.string.trip));
-                holder.sizeCapacityDefTV.setText(context.getString(R.string.category_and_trip));
-                holder.typesTv.setText(types);
+                holder.landAreaLL.setVisibility(View.VISIBLE);
+                holder.landAreaTv.setText(landArea+ " " + context.getString(R.string.acres));
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             case MyUtils.HARVESTER_MACHINE_ID:
                 holder.serviceNameTV.setText(context.getString(R.string.working));
                 holder.sizeCapacityDefTV.setText(context.getString(R.string.category_and_trip));
                 holder.typesTv.setText(types);
+                holder.landAreaLL.setVisibility(View.VISIBLE);
+                holder.landAreaTv.setText(landArea+ " " + context.getString(R.string.acres));
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             case MyUtils.HOME_SHIFTING_ID:
@@ -285,8 +291,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
 
         private final TextView orderIdTv, postNameTv, quantityTv, loadLocation, unLoadLocation,
                 rentTimeTv, postDescription, locationArea,postedDate, sizeCapacityDefTV, confirmVendorName,confirmVendorPrice,
-                confirmVendorMobile, postStatusTv, bidOrReviewTv, typesTv, capacityTv, durationTv, serviceNameTV;
-        private final LinearLayout confirmationLayout, productTypeLL;
+                confirmVendorMobile, landAreaTv, postStatusTv, bidOrReviewTv, typesTv, capacityTv, durationTv, serviceNameTV;
+        private final LinearLayout confirmationLayout, productTypeLL, landAreaLL;
         private final ImageView postImage;
 
         public HolderViewOrder(@NonNull View itemView, OnItemClickListener listener) {
@@ -306,6 +312,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
             confirmVendorName = itemView.findViewById(R.id.confirmVendorName);
             confirmVendorMobile = itemView.findViewById(R.id.confirmVendorMobile);
             confirmVendorPrice = itemView.findViewById(R.id.confirmVendorPrice);
+            landAreaTv = itemView.findViewById(R.id.landAreaTv);
             postImage = itemView.findViewById(R.id.postImage);
             postStatusTv = itemView.findViewById(R.id.postStatusTv);
 
@@ -314,6 +321,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
             durationTv = itemView.findViewById(R.id.durationTv);
             bidOrReviewTv = itemView.findViewById(R.id.bidOrReviewTv);
             productTypeLL = itemView.findViewById(R.id.productTypeLL);
+            landAreaLL = itemView.findViewById(R.id.landAreaLL);
             serviceNameTV = itemView.findViewById(R.id.serviceNameTV);
 
             itemView.setOnClickListener(v -> {

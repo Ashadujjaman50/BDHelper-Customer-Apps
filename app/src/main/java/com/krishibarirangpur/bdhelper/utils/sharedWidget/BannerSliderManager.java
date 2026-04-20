@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils.bothWidget;
+package com.krishibarirangpur.bdhelper.utils.sharedWidget;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,7 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.adapter.shared.SliderAdapterAuto;
-import com.krishibarirangpur.bdhelper.model.SlideImage;
+import com.krishibarirangpur.bdhelper.model.SlideImageModel;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
@@ -41,7 +41,7 @@ public class BannerSliderManager {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        SlideImage slide = doc.toObject(SlideImage.class);
+                        SlideImageModel slide = doc.toObject(SlideImageModel.class);
 
                         if (slide != null
                                 && (slide.getAudience().equals(audienceType)
@@ -74,7 +74,7 @@ public class BannerSliderManager {
             String placementType
     ) {
 
-        ArrayList<SlideImage> slideList = new ArrayList<>();
+        ArrayList<SlideImageModel> slideList = new ArrayList<>();
         SliderAdapterAuto adapter = new SliderAdapterAuto(context, slideList);
 
         sliderView.setSliderAdapter(adapter);
@@ -98,10 +98,10 @@ public class BannerSliderManager {
 
                     if (queryDocumentSnapshots != null) {
 
-                        List<SlideImage> newList = new ArrayList<>();
+                        List<SlideImageModel> newList = new ArrayList<>();
 
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            SlideImage slide = doc.toObject(SlideImage.class);
+                            SlideImageModel slide = doc.toObject(SlideImageModel.class);
 
                             if (slide != null
                                     && (slide.getAudience().equals(audienceType)

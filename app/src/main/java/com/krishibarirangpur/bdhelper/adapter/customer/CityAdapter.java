@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.City;
+import com.krishibarirangpur.bdhelper.model.CityModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import java.util.Locale;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHolder> implements Filterable {
 
-    private List<City> cityList;
-    private List<City> cityListFull;
+    private List<CityModel> cityList;
+    private List<CityModel> cityListFull;
     private OnItemClickListener mListener;
 
     class ExampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -52,9 +52,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHol
         this.mListener = onItemClickListener;
     }
 
-    public CityAdapter(List<City> cityList) {
-        this.cityList = cityList;
-        cityListFull = new ArrayList<>(cityList);
+    public CityAdapter(List<CityModel> cityModelList) {
+        this.cityList = cityModelList;
+        cityListFull = new ArrayList<>(cityModelList);
     }
 
     @NonNull
@@ -68,7 +68,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHol
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
 
-        City currentCity = cityList.get(position);
+        CityModel currentCity = cityList.get(position);
         holder.cityName.setText(currentCity.getCityName());
     }
 
@@ -86,14 +86,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ExampleViewHol
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<City> filteredList = new ArrayList<>();
+            List<CityModel> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(cityListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
-                for (City item : cityListFull) {
+                for (CityModel item : cityListFull) {
                     if (item.getCityId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }

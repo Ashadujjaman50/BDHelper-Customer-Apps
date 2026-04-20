@@ -8,16 +8,15 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.databinding.DataBindingUtil;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityLoginBinding;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
@@ -27,15 +26,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 public class LoginActivity extends BaseActivity {
 
     private ActivityLoginBinding binding;
     private static final String KEY_FIRST_TIME_NOTIFICATION_REQUESTED = "notification_requested";
+    private static final String USER_LOGIN_MODE = "user_role";
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private LoadingDialog loadingDialog;
-
+    private SharedPrefHelper sharedPrefHelper;
     private GoogleSignInHelper googleSignInHelper;
 
     @Override
@@ -47,7 +48,7 @@ public class LoginActivity extends BaseActivity {
         //setContentView(R.layout.activity_login);
 
         //Post Notification Enable
-        SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
+        sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);
 
         if (!alreadyAsked) {
@@ -105,11 +106,11 @@ public class LoginActivity extends BaseActivity {
             String password = binding.passwordET.getText().toString().trim();
 
             if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                setErrorWatcher(binding.emailET, true);
+                ValidationClass.setErrorWatcher(binding.emailET, true);
                 MyToast.showShort(this, "সঠিক ইমেইল অ্যাড্রেস দিন");
             }
             else if (TextUtils.isEmpty(password) || password.length() < 6) {
-                setErrorWatcher(binding.passwordET, true);
+                ValidationClass.setErrorWatcher(binding.passwordET, true);
                 MyToast.showShort(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
             }
             else {
@@ -140,19 +141,6 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
-    private void setErrorWatcher(EditText editText, boolean hasError) {
-        if (hasError) {
-            editText.setBackgroundResource(R.drawable.bg_edit_text_error);
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    editText.setBackgroundResource(R.drawable.bg_edit_text);
-                }
-                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                @Override public void afterTextChanged(Editable s) {}
-            });
-        }
-    }
-
     private void gotoNextActivity(String userSignInWith) {
         String userId = mAuth.getCurrentUser().getUid();
         db.collection("users")
@@ -166,9 +154,11 @@ public class LoginActivity extends BaseActivity {
                             // User exists in "users" table, go to MainActivity or Dashboard
                             String userType = document.getString("userType");
                             if ("customer".equals(userType)) {
+                                sharedPrefHelper.putString(USER_LOGIN_MODE, "customer");
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
                             }
                             else if ("partner".equals(userType)) {
+                                sharedPrefHelper.putString(USER_LOGIN_MODE, "partner");
                                 intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             }
                             else {

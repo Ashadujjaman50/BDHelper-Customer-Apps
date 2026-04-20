@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -19,10 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -30,11 +27,14 @@ import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHomesShiftingFormBinding;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
+import com.krishibarirangpur.bdhelper.utils.customer.SubmitPostBottomSheetDialog;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.CustomDateAndTimePicker;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
-import com.krishibarirangpur.bdhelper.utils.OrderCreateHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.OrderMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.userActivity.customer.AddressActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -42,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,7 +152,7 @@ public class HomesShiftingFormFragment extends Fragment {
 
 
         //shifting date and time
-        binding.shiftingDateEt.setOnClickListener(v -> CommonClass.showDateTimePicker(requireContext(), 3, (displayText, returnDate, millis) -> {
+        binding.shiftingDateEt.setOnClickListener(v -> CustomDateAndTimePicker.showDateTimePicker(requireContext(), 3, (displayText, returnDate, millis) -> {
             binding.shiftingDateEt.setText(displayText);  // লোকেল অনুযায়ী UI
             rentDateAndTime = String.valueOf(millis);    // timestamp
         }));
@@ -265,6 +266,7 @@ public class HomesShiftingFormFragment extends Fragment {
         binding.continuePostBtn.setOnClickListener(v -> continueToReview());
 
     }
+
     private void getFloorList() {
         array_list.clear();
         array_list.add(getString(R.string.ground_floor));
@@ -327,10 +329,10 @@ public class HomesShiftingFormFragment extends Fragment {
         // Get selected radio button id
         int selectedId = binding.truckAccessRG.getCheckedRadioButtonId();
 
-        if (CommonClass.validateField(binding.shiftingDateEt)) return;
-        if (CommonClass.validateField(binding.roomTypeTv)) return;
-        if (CommonClass.validateField(binding.loadingFloorEt)) return;
-        if (CommonClass.validateField(binding.unloadingFloorEt)) return;
+        if (ValidationClass.validateField(binding.shiftingDateEt)) return;
+        if (ValidationClass.validateField(binding.roomTypeTv)) return;
+        if (ValidationClass.validateField(binding.loadingFloorEt)) return;
+        if (ValidationClass.validateField(binding.unloadingFloorEt)) return;
         if (selectedId == -1) {
             // কিছুই সিলেক্ট করা হয়নি
             MyToast.showShort(getContext(), "বাসার সামনে ট্রাক আসবে কি না সিলেক্ট করুন");
@@ -356,75 +358,24 @@ public class HomesShiftingFormFragment extends Fragment {
         unLoadFloor = binding.unloadingFloorEt.getText().toString().trim();
 
 
-
-        // সব valid হলে এখানে আসবে
         // ✅ Setup BottomSheet
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        dialog.setContentView(R.layout.layout_submit_post);
+        //After validation check submit
+        SubmitPostBottomSheetDialog.show(this,
+                categoryId,
+                subCategoryId,
+                specificationCapacity,     //subCategoryName == truckAccess
+                quantity,
+                loadLocation+"\n"+loadFloor,
+                unloadLocation+"\n"+unLoadFloor,
+                "",
+                specificationTypes,
+                specificationDuration,
+                truckAccess,
+                description,
+                "",
+                binding.shiftingDateEt.getText().toString(),
+                this::postForRent);
 
-        ImageView iconView = dialog.findViewById(R.id.iconImageViewSub);
-        TextView size = dialog.findViewById(R.id.sizeCapacityTV);
-        TextView count = dialog.findViewById(R.id.totalCountTV);
-        TextView duration = dialog.findViewById(R.id.popupDurationTV);
-        TextView product = dialog.findViewById(R.id.productTV);
-        TextView sizeDef = dialog.findViewById(R.id.sizeCapacityDefTV);
-        TextView countDef = dialog.findViewById(R.id.totalCountDefTV);
-        TextView durationDef = dialog.findViewById(R.id.popupDurationDefTV);
-        TextView productDef = dialog.findViewById(R.id.productDefTV);
-        TextView time = dialog.findViewById(R.id.popupTimeTV);
-        TextView submitBtn = dialog.findViewById(R.id.postSubmitBtn);
-
-        RelativeLayout loadLocationRl = dialog.findViewById(R.id.loadLocationRl);
-        RelativeLayout unloadLocationRl = dialog.findViewById(R.id.unloadLocationRl);
-        RelativeLayout areaLocationRl = dialog.findViewById(R.id.areaLocationRl);
-
-        TextView locationTv = dialog.findViewById(R.id.locationTv);
-        TextView unloadLocationTv = dialog.findViewById(R.id.unloadLocationTv);
-        TextView areaLocationTv = dialog.findViewById(R.id.areaLocationTv);
-
-
-        dialog.show();
-
-        // ✅ Toggle visibility
-        boolean isEquipment = categoryId.equals(MyUtils.HOME_SHIFTING_ID);
-        if (loadLocationRl != null && unloadLocationRl != null && areaLocationRl != null) {
-            loadLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
-            unloadLocationRl.setVisibility(isEquipment ? View.VISIBLE : View.GONE);
-            areaLocationRl.setVisibility(isEquipment ? View.GONE : View.VISIBLE);
-        }
-
-        // ✅ Set texts safely
-
-        if (sizeDef != null) sizeDef.setText(getString(R.string.size_dot));
-        if (size != null) size.setText(specificationCapacity);
-
-        if (countDef != null) countDef.setText(getString(R.string.truck_access));
-        if (count != null) count.setText(truckAccess);
-
-        if (productDef != null) productDef.setText(getString(R.string.shift_type_dot));
-        if (product != null) product.setText(specificationTypes);
-
-        if (locationTv != null) locationTv.setText(loadLocation+"\n"+loadFloor);
-        if (unloadLocationTv != null) unloadLocationTv.setText(unloadLocation+"\n"+unLoadFloor);
-        if (areaLocationTv != null) areaLocationTv.setText("");
-
-        if (durationDef != null) durationDef.setVisibility(View.GONE);
-        if (duration != null) duration.setVisibility(View.GONE);
-
-        if (time != null) time.setText(binding.shiftingDateEt.getText().toString());
-
-        // ✅ Set icon dynamically
-        if (iconView != null) {
-            iconView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_home_shift));
-        }
-
-        // ✅ Submit
-        if (submitBtn != null) {
-            submitBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-                postForRent();
-            });
-        }
 
     }
 
@@ -434,16 +385,16 @@ public class HomesShiftingFormFragment extends Fragment {
 
 
         // 🔽 CommonClass থেকে OrderId জেনারেট করব
-        CommonClass.generateOrderId(
+        GenerateOrderId.newOrderId(
                 db,
                 "orders",
                 "orderInfo.orderId",
                 "BOL",
                 5,
-                new CommonClass.OrderIdCallback() {
+                new GenerateOrderId.OrderIdCallback() {
             @Override
             public void onSuccess(String orderId) {
-                Map<String, Object> order = OrderCreateHelper.createOrder(
+                Map<String, Object> order = OrderMapBuilder.createOrderMap(
                         orderId,
                         userId,
                         userName,
@@ -452,6 +403,7 @@ public class HomesShiftingFormFragment extends Fragment {
                         subCategoryId,
                         loadLocation+"\n"+loadFloor,
                         unloadLocation+"\n"+unLoadFloor,
+                        "",
                         "",
                         rentDateAndTime,
                         specificationCapacity,

@@ -30,7 +30,7 @@ import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentWithdrawBinding
 import com.krishibarirangpur.bdhelper.model.WithdrawRequest;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 
 import java.util.ArrayList;

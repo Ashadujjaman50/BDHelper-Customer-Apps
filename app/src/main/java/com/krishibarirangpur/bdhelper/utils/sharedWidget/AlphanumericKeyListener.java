@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils.bothWidget;
+package com.krishibarirangpur.bdhelper.utils.sharedWidget;
 
 import android.text.InputType;
 import android.text.Spanned;

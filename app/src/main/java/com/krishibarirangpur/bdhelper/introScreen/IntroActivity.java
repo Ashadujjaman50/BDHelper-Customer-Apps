@@ -9,7 +9,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.krishibarirangpur.bdhelper.databinding.ActivityIntroBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;

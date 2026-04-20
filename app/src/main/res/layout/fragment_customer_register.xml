@@ -101,6 +101,7 @@
                     android:textSize="16sp"
                     android:hint="@string/mobile_number"
                     android:inputType="phone"
+                    android:maxLength="11"
                     android:paddingStart="12dp"
                     android:paddingEnd="0dp"
                     android:imeOptions="actionNext"

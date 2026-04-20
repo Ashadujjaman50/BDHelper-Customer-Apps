@@ -1,6 +1,6 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class SlideImage {
+public class SlideImageModel {
     private String bannerId;
     private String title;
     private String imageUrl;
@@ -11,11 +11,11 @@ public class SlideImage {
     private long timestamp;
 
     // Empty constructor (Firestore এর জন্য দরকার)
-    public SlideImage() {}
+    public SlideImageModel() {}
 
-    public SlideImage(String bannerId, String title, String imageUrl,
-                      String audience, String placement,
-                      int order, boolean active, long timestamp) {
+    public SlideImageModel(String bannerId, String title, String imageUrl,
+                           String audience, String placement,
+                           int order, boolean active, long timestamp) {
         this.bannerId = bannerId;
         this.title = title;
         this.imageUrl = imageUrl;

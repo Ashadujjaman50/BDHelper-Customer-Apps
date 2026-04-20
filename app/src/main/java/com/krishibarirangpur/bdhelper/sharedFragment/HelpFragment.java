@@ -16,10 +16,10 @@ import android.view.ViewGroup;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.krishibarirangpur.bdhelper.sharedActivity.ChatActivity;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.customer.ServiceRequestActivity;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHelpBinding;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.BannerSliderManager;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.BannerSliderManager;
 import com.smarteist.autoimageslider.SliderView;
 
 

@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.authWidget;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 
 public class LogoutHelper {
 

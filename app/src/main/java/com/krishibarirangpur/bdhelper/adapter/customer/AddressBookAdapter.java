@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.ModelAddressBook;
+import com.krishibarirangpur.bdhelper.model.AddressBookModel;
 
 import java.util.ArrayList;
 
 public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.HolderViewAddressBook>{
 
     Context context;
-    ArrayList<ModelAddressBook> addressBookArrayList;
+    ArrayList<AddressBookModel> addressBookArrayList;
 
     private static OnItemClickListener mListener;
 
-    public AddressBookAdapter(Context context, ArrayList<ModelAddressBook> addressBookArrayList) {
+    public AddressBookAdapter(Context context, ArrayList<AddressBookModel> addressBookArrayList) {
         this.context = context;
         this.addressBookArrayList = addressBookArrayList;
     }
@@ -40,11 +40,11 @@ public class AddressBookAdapter extends RecyclerView.Adapter<AddressBookAdapter.
     @Override
     public void onBindViewHolder(@NonNull HolderViewAddressBook holder, int position) {
         //Get Data
-        ModelAddressBook modelAddressBook = addressBookArrayList.get(position);
-        String addressName = modelAddressBook.getAddressName();
-        String address = modelAddressBook.getAddress();
-        String recipientName = modelAddressBook.getRecipientName();
-        String recipientMobile = modelAddressBook.getRecipientMobile();
+        AddressBookModel addressBookModel = addressBookArrayList.get(position);
+        String addressName = addressBookModel.getAddressName();
+        String address = addressBookModel.getAddress();
+        String recipientName = addressBookModel.getRecipientName();
+        String recipientMobile = addressBookModel.getRecipientMobile();
 
 
         holder.addressNameTv.setText(addressName);

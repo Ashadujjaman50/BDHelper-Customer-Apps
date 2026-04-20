@@ -26,7 +26,7 @@ import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentPaidToCompanyBi
 import com.krishibarirangpur.bdhelper.model.PaymentModel;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;

@@ -20,7 +20,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;

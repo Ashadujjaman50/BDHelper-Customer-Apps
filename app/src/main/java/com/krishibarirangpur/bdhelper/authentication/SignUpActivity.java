@@ -2,13 +2,9 @@ package com.krishibarirangpur.bdhelper.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.databinding.DataBindingUtil;
 
@@ -24,13 +20,14 @@ import com.krishibarirangpur.bdhelper.databinding.ActivitySignUpBinding;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.List;
 
@@ -99,15 +96,15 @@ public class SignUpActivity extends BaseActivity {
             String confirmPass = binding.confirmPasswordET.getText().toString().trim();
 
             if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                setErrorWatcher(binding.emailET, true);
+                ValidationClass.setErrorWatcher(binding.emailET, true);
                 MyToast.showShort(this, "সঠিক ইমেইল অ্যাড্রেস দিন");
             }
             else if (TextUtils.isEmpty(password) || password.length() < 6) {
-                setErrorWatcher(binding.passwordET, true);
+                ValidationClass.setErrorWatcher(binding.passwordET, true);
                 MyToast.showShort(this, "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
             }
             else if (!confirmPass.equals(password)) {
-                setErrorWatcher(binding.confirmPasswordET, true);
+                ValidationClass.setErrorWatcher(binding.confirmPasswordET, true);
                 MyToast.showShort(this, "পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড মেলে না");
             }
             else {
@@ -238,16 +235,5 @@ public class SignUpActivity extends BaseActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
     
-    private void setErrorWatcher(EditText editText, boolean hasError) {
-        if (hasError) {
-            editText.setBackgroundResource(R.drawable.bg_edit_text_error);
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    editText.setBackgroundResource(R.drawable.bg_edit_text);
-                }
-                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                @Override public void afterTextChanged(Editable s) {}
-            });
-        }
-    }
+
 }

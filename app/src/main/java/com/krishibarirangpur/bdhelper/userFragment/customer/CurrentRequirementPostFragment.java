@@ -20,7 +20,7 @@ import com.krishibarirangpur.bdhelper.adapter.customer.OrderAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentCurrentRequirementPostBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

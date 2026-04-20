@@ -1,14 +1,14 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class Area {
+public class AreaModel {
     private String cityId;
     private String areaId;
     private String areaName;
 
-    public Area() {
+    public AreaModel() {
     }
 
-    public Area(String cityId, String areaId, String areaName) {
+    public AreaModel(String cityId, String areaId, String areaName) {
         this.cityId = cityId;
         this.areaId = areaId;
         this.areaName = areaName;

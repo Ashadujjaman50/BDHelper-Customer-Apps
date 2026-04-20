@@ -13,9 +13,9 @@ import com.krishibarirangpur.bdhelper.adapter.customer.AreaAdapter;
 import com.krishibarirangpur.bdhelper.adapter.customer.CityAdapter;
 import com.krishibarirangpur.bdhelper.adapter.customer.SubAreaAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityAreaLocationBinding;
-import com.krishibarirangpur.bdhelper.model.Area;
-import com.krishibarirangpur.bdhelper.model.City;
-import com.krishibarirangpur.bdhelper.model.SubArea;
+import com.krishibarirangpur.bdhelper.model.AreaModel;
+import com.krishibarirangpur.bdhelper.model.CityModel;
+import com.krishibarirangpur.bdhelper.model.SubAreaModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
@@ -29,9 +29,9 @@ public class AreaLocationActivity extends BaseActivity {
     private CityAdapter cityAdapter;
     private AreaAdapter areaAdapter;
     private SubAreaAdapter subAreaAdapter;
-    private List<City> cityList;
-    private List<Area> areaList;
-    private List<SubArea> subAreaList;
+    private List<CityModel> cityModelList;
+    private List<AreaModel> areaModelList;
+    private List<SubAreaModel> subAreaModelList;
     private String selectedCityId, selectedCityName, selectedAreaId, selectedAreaName, selectedSubAreaName;
 
 
@@ -57,7 +57,7 @@ public class AreaLocationActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
 
-                City currentCity = cityList.get(position);
+                CityModel currentCity = cityModelList.get(position);
                 selectedCityId = currentCity.getCityId();
                 selectedCityName = currentCity.getCityName();
 
@@ -87,7 +87,7 @@ public class AreaLocationActivity extends BaseActivity {
         areaAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Area currentArea = areaList.get(position);
+                AreaModel currentArea = areaModelList.get(position);
                 selectedAreaId = currentArea.getAreaId();
                 selectedAreaName = currentArea.getAreaName();
 
@@ -115,9 +115,9 @@ public class AreaLocationActivity extends BaseActivity {
         subAreaAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                SubArea currentSubArea = subAreaList.get(position);
+                SubAreaModel currentSubAreaModel = subAreaModelList.get(position);
                 //selectedSubAreaId = currentSubArea.getSubAreaId();
-                selectedSubAreaName = currentSubArea.getSubAreaName();
+                selectedSubAreaName = currentSubAreaModel.getSubAreaName();
 
                 binding.subAreaNameTV.setText(selectedSubAreaName);
 
@@ -146,1499 +146,1499 @@ public class AreaLocationActivity extends BaseActivity {
 
     private void setUpRecyclerView() {
         binding.cityRecyclerView.setHasFixedSize(true);
-        cityAdapter = new CityAdapter(cityList);
+        cityAdapter = new CityAdapter(cityModelList);
         binding.cityRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.cityRecyclerView.setAdapter(cityAdapter);
 
         binding.areaRecyclerView.setHasFixedSize(true);
-        areaAdapter = new AreaAdapter(areaList);
+        areaAdapter = new AreaAdapter(areaModelList);
         binding.areaRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.areaRecyclerView.setAdapter(areaAdapter);
 
         binding.subAreaRecyclerView.setHasFixedSize(true);
-        subAreaAdapter = new SubAreaAdapter(subAreaList);
+        subAreaAdapter = new SubAreaAdapter(subAreaModelList);
         binding.subAreaRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.subAreaRecyclerView.setAdapter(subAreaAdapter);
     }
 
 
     private void fillCityList() {
-        cityList = new ArrayList<>();
-        cityList.add(new City("1", getString(R.string.dhaka_city)));
-        cityList.add(new City("2", getString(R.string.chittagong_city)));
-        cityList.add(new City("Dhaka", getString(R.string.dhaka_division)));
-        cityList.add(new City("Barisal", getString(R.string.barisal_division)));
-        cityList.add(new City("Chittagong", getString(R.string.chittagong_division)));
-        cityList.add(new City("Mymensingh", getString(R.string.mymensingh_division)));
-        cityList.add(new City("Khulna", getString(R.string.khulna_division)));
-        cityList.add(new City("Rajshahi", getString(R.string.rajshahi_division)));
-        cityList.add(new City("Rangpur", getString(R.string.rangpur_division)));
-        cityList.add(new City("Sylhet", getString(R.string.sylhet_division)));
+        cityModelList = new ArrayList<>();
+        cityModelList.add(new CityModel("1", getString(R.string.dhaka_city)));
+        cityModelList.add(new CityModel("2", getString(R.string.chittagong_city)));
+        cityModelList.add(new CityModel("Dhaka", getString(R.string.dhaka_division)));
+        cityModelList.add(new CityModel("Barisal", getString(R.string.barisal_division)));
+        cityModelList.add(new CityModel("Chittagong", getString(R.string.chittagong_division)));
+        cityModelList.add(new CityModel("Mymensingh", getString(R.string.mymensingh_division)));
+        cityModelList.add(new CityModel("Khulna", getString(R.string.khulna_division)));
+        cityModelList.add(new CityModel("Rajshahi", getString(R.string.rajshahi_division)));
+        cityModelList.add(new CityModel("Rangpur", getString(R.string.rangpur_division)));
+        cityModelList.add(new CityModel("Sylhet", getString(R.string.sylhet_division)));
 
     }
 
     private void fillAreaList() {
-        areaList = new ArrayList<>();
-        areaList.add(new Area("1", "Uttara", getString(R.string.uttara)));
-        areaList.add(new Area("1", "Kafrul", getString(R.string.kafrul)));
-        areaList.add(new Area("1", "KamrangirChor", getString(R.string.kamrangir_char)));
-        areaList.add(new Area("1", "Kotoyaly", getString(R.string.kotoyali)));
-        areaList.add(new Area("1", "Cantonment", getString(R.string.cantonment)));
-        areaList.add(new Area("1", "Khilgaon", getString(R.string.khilgaon)));
-        areaList.add(new Area("1", "Gulshan", getString(R.string.gulsan)));
-        areaList.add(new Area("1", "Demra", getString(R.string.demra)));
-        areaList.add(new Area("1", "Tejgaon", getString(R.string.tejgaon)));
-        areaList.add(new Area("1", "Dhanmondi", getString(R.string.dhanmondi)));
-        areaList.add(new Area("1", "Pollobi", getString(R.string.pollobi)));
-        areaList.add(new Area("1", "Bosundhara", getString(R.string.bosundhara)));
-        areaList.add(new Area("1", "Badda", getString(R.string.badda)));
-        areaList.add(new Area("1", "Motijhil", getString(R.string.motijhil)));
-        areaList.add(new Area("1", "Mirpur", getString(R.string.mirpur)));
-        areaList.add(new Area("1", "Mohammadpur", getString(R.string.mohammadpur)));
-        areaList.add(new Area("1", "Ramona", getString(R.string.ramona)));
-        areaList.add(new Area("1", "Lalbag", getString(R.string.lalbug)));
-        areaList.add(new Area("1", "Shampur", getString(R.string.shampur)));
-        areaList.add(new Area("1", "ShobujBug", getString(R.string.sobuj_bug)));
-        areaList.add(new Area("1", "Sutrapur", getString(R.string.sutrapur)));
-        areaList.add(new Area("1", "Hajaribug", getString(R.string.hajaribug)));
+        areaModelList = new ArrayList<>();
+        areaModelList.add(new AreaModel("1", "Uttara", getString(R.string.uttara)));
+        areaModelList.add(new AreaModel("1", "Kafrul", getString(R.string.kafrul)));
+        areaModelList.add(new AreaModel("1", "KamrangirChor", getString(R.string.kamrangir_char)));
+        areaModelList.add(new AreaModel("1", "Kotoyaly", getString(R.string.kotoyali)));
+        areaModelList.add(new AreaModel("1", "Cantonment", getString(R.string.cantonment)));
+        areaModelList.add(new AreaModel("1", "Khilgaon", getString(R.string.khilgaon)));
+        areaModelList.add(new AreaModel("1", "Gulshan", getString(R.string.gulsan)));
+        areaModelList.add(new AreaModel("1", "Demra", getString(R.string.demra)));
+        areaModelList.add(new AreaModel("1", "Tejgaon", getString(R.string.tejgaon)));
+        areaModelList.add(new AreaModel("1", "Dhanmondi", getString(R.string.dhanmondi)));
+        areaModelList.add(new AreaModel("1", "Pollobi", getString(R.string.pollobi)));
+        areaModelList.add(new AreaModel("1", "Bosundhara", getString(R.string.bosundhara)));
+        areaModelList.add(new AreaModel("1", "Badda", getString(R.string.badda)));
+        areaModelList.add(new AreaModel("1", "Motijhil", getString(R.string.motijhil)));
+        areaModelList.add(new AreaModel("1", "Mirpur", getString(R.string.mirpur)));
+        areaModelList.add(new AreaModel("1", "Mohammadpur", getString(R.string.mohammadpur)));
+        areaModelList.add(new AreaModel("1", "Ramona", getString(R.string.ramona)));
+        areaModelList.add(new AreaModel("1", "Lalbag", getString(R.string.lalbug)));
+        areaModelList.add(new AreaModel("1", "Shampur", getString(R.string.shampur)));
+        areaModelList.add(new AreaModel("1", "ShobujBug", getString(R.string.sobuj_bug)));
+        areaModelList.add(new AreaModel("1", "Sutrapur", getString(R.string.sutrapur)));
+        areaModelList.add(new AreaModel("1", "Hajaribug", getString(R.string.hajaribug)));
 
 
-        areaList.add(new Area("2", "Akborshah", getString(R.string.akbor_shah)));
-        areaList.add(new Area("2", "Andharkilla", getString(R.string.andhar_killa)));
-        areaList.add(new Area("2", "AmirbugAbashikalaka", getString(R.string.amirbug_abashik_alaka)));
-        areaList.add(new Area("2", "Alishapara", getString(R.string.ali_shapara)));
-        areaList.add(new Area("2", "Asadgonjcommercialarea", getString(R.string.asadganj_commercial_area)));
-        areaList.add(new Area("2", "EPZ", getString(R.string.epz)));
-        areaList.add(new Area("2", "Uttarpathantuli", getString(R.string.uttar_pathantuli)));
-        areaList.add(new Area("2", "Anayetbazar", getString(R.string.anayet_bazar)));
-        areaList.add(new Area("2", "KarnafuliResidentialarea", getString(R.string.karnafuli_residential_area)));
-        areaList.add(new Area("2", "Kotoyali", getString(R.string.kotoyali2)));
-        areaList.add(new Area("2", "Khatungonj", getString(R.string.khatungonj)));
-        areaList.add(new Area("2", "Khulshi", getString(R.string.khulshi)));
-        areaList.add(new Area("2", "Gosaildanga", getString(R.string.gosaildanga)));
-        areaList.add(new Area("2", "Chowkbazar", getString(R.string.chowk_bazar)));
-        areaList.add(new Area("2", "Chattagrambondor", getString(R.string.chattagram_bondor)));
-        areaList.add(new Area("2", "Chorpara", getString(R.string.chor_para)));
+        areaModelList.add(new AreaModel("2", "Akborshah", getString(R.string.akbor_shah)));
+        areaModelList.add(new AreaModel("2", "Andharkilla", getString(R.string.andhar_killa)));
+        areaModelList.add(new AreaModel("2", "AmirbugAbashikalaka", getString(R.string.amirbug_abashik_alaka)));
+        areaModelList.add(new AreaModel("2", "Alishapara", getString(R.string.ali_shapara)));
+        areaModelList.add(new AreaModel("2", "Asadgonjcommercialarea", getString(R.string.asadganj_commercial_area)));
+        areaModelList.add(new AreaModel("2", "EPZ", getString(R.string.epz)));
+        areaModelList.add(new AreaModel("2", "Uttarpathantuli", getString(R.string.uttar_pathantuli)));
+        areaModelList.add(new AreaModel("2", "Anayetbazar", getString(R.string.anayet_bazar)));
+        areaModelList.add(new AreaModel("2", "KarnafuliResidentialarea", getString(R.string.karnafuli_residential_area)));
+        areaModelList.add(new AreaModel("2", "Kotoyali", getString(R.string.kotoyali2)));
+        areaModelList.add(new AreaModel("2", "Khatungonj", getString(R.string.khatungonj)));
+        areaModelList.add(new AreaModel("2", "Khulshi", getString(R.string.khulshi)));
+        areaModelList.add(new AreaModel("2", "Gosaildanga", getString(R.string.gosaildanga)));
+        areaModelList.add(new AreaModel("2", "Chowkbazar", getString(R.string.chowk_bazar)));
+        areaModelList.add(new AreaModel("2", "Chattagrambondor", getString(R.string.chattagram_bondor)));
+        areaModelList.add(new AreaModel("2", "Chorpara", getString(R.string.chor_para)));
 
-        areaList.add(new Area("2", "Chorhalda", getString(R.string.chor_halda)));
-        areaList.add(new Area("2", "Chadgao", getString(R.string.chadgao)));
-        areaList.add(new Area("2", "ChowdhuryPara", getString(R.string.chowdhury_para)));
-        areaList.add(new Area("2", "GEMofficerscolony", getString(R.string.gem_officers_colony)));
-        areaList.add(new Area("2", "Jhawtola", getString(R.string.jhawtola)));
-        areaList.add(new Area("2", "Tigerpassrailwaycolony", getString(R.string.tigerpass_railway_colony)));
-        areaList.add(new Area("2", "TSPcolony", getString(R.string.tsp_colony)));
-        areaList.add(new Area("2", "Teribazar", getString(R.string.teri_bazar)));
-        areaList.add(new Area("2", "Doublemuring", getString(R.string.double_muring)));
-        areaList.add(new Area("2", "Doijpara", getString(R.string.doijpara)));
-        areaList.add(new Area("2", "Southpatenga", getString(R.string.south_patenga)));
-        areaList.add(new Area("2", "Southbondar", getString(R.string.south_bondar)));
-        areaList.add(new Area("2", "Dokkhin moddho holyshohor", getString(R.string.dokkhin_moddho_holyshohor)));
-        areaList.add(new Area("2", "Dampara", getString(R.string.dampara)));
-        areaList.add(new Area("2", "Deoyanghat", getString(R.string.deoyan_ghat)));
-        areaList.add(new Area("2", "Dewanbazar", getString(R.string.deoyan_bazar)));
-        areaList.add(new Area("2", "Dhumpara", getString(R.string.dhumpara)));
-        areaList.add(new Area("2", "Northmiddleholishohor", getString(R.string.north_middle_holishohor)));
-        areaList.add(new Area("2", "Nasirabad", getString(R.string.nasirabadh)));
-        areaList.add(new Area("2", "Newmuring", getString(R.string.new_muring)));
-        areaList.add(new Area("2", "Navyport", getString(R.string.navy_port)));
-        areaList.add(new Area("2", "Podmaabashikalaka", getString(R.string.podma_abashik_alaka)));
-        areaList.add(new Area("2", "Paslaish", getString(R.string.paslaish)));
-        areaList.add(new Area("2", "Pathantuli", getString(R.string.pathantuli)));
-        areaList.add(new Area("2", "Potenga", getString(R.string.potenga)));
-        areaList.add(new Area("2", "Patharghata", getString(R.string.patharghata)));
-        areaList.add(new Area("2", "Pahartali", getString(R.string.pahartali)));
-        areaList.add(new Area("2", "Purbonimtala", getString(R.string.purbo_nimtala)));
-        areaList.add(new Area("2", "Purbomadarbari", getString(R.string.purbo_madar_bari)));
-        areaList.add(new Area("2", "Bahaddarhat", getString(R.string.bahaddarhat)));
-        areaList.add(new Area("2", "Bangladeshbankcolony", getString(R.string.bangladesh_bank_colony)));
-        areaList.add(new Area("2", "bakolia", getString(R.string.bakolia)));
-        areaList.add(new Area("2", "Bayazidbostami", getString(R.string.bayazid_bostami)));
-        areaList.add(new Area("2", "Mansurabad", getString(R.string.mansurabad)));
-        areaList.add(new Area("2", "Maijpara", getString(R.string.majipara)));
-        areaList.add(new Area("2", "Rangiparabankcolony", getString(R.string.rangipara_bank_colony)));
-        areaList.add(new Area("2", "Laldairchar", getString(R.string.laldair_char)));
-        areaList.add(new Area("2", "Shadorghat", getString(R.string.shadorghat)));
-        areaList.add(new Area("2", "Sondippara", getString(R.string.sondip_para)));
-        areaList.add(new Area("2", "Southagrabad", getString(R.string.south_agrabad)));
-        areaList.add(new Area("2", "CGScolony", getString(R.string.cgs_colony)));
-        areaList.add(new Area("2", "Hali_shohor", getString(R.string.hali_shohor)));
-        areaList.add(new Area("2", "Halishohormunshipara", getString(R.string.hali_shohor_munshipara)));
-        areaList.add(new Area("2", "Halishohorsenanibash", getString(R.string.hali_shohor_senanibash)));
-        areaList.add(new Area("2", "Hosenahmedpara", getString(R.string.hosen_ahmedpara)));
-
-
-        areaList.add(new Area("Dhaka", "Kishorgonj", getString(R.string.kishorgonj)));
-        areaList.add(new Area("Dhaka", "Gazipur", getString(R.string.gazipur)));
-        areaList.add(new Area("Dhaka", "Gopalgonj", getString(R.string.gopalgonj)));
-        areaList.add(new Area("Dhaka", "Tangail", getString(R.string.tangail)));
-        areaList.add(new Area("Dhaka", "Dhaka", getString(R.string.dhaka)));
-        areaList.add(new Area("Dhaka", "Narsingdi", getString(R.string.narsingdi)));
-        areaList.add(new Area("Dhaka", "NarayanGanj", getString(R.string.narayanganj)));
-        areaList.add(new Area("Dhaka", "Faridpur", getString(R.string.faridpur)));
-        areaList.add(new Area("Dhaka", "Madaripur", getString(R.string.madaripur)));
-        areaList.add(new Area("Dhaka", "Manikgonj", getString(R.string.manikgonj)));
-        areaList.add(new Area("Dhaka", "Munshigonj", getString(R.string.munshigonj)));
-        areaList.add(new Area("Dhaka", "Rajbari", getString(R.string.rajbari)));
-        areaList.add(new Area("Dhaka", "Shariatpur", getString(R.string.shariatpur)));
+        areaModelList.add(new AreaModel("2", "Chorhalda", getString(R.string.chor_halda)));
+        areaModelList.add(new AreaModel("2", "Chadgao", getString(R.string.chadgao)));
+        areaModelList.add(new AreaModel("2", "ChowdhuryPara", getString(R.string.chowdhury_para)));
+        areaModelList.add(new AreaModel("2", "GEMofficerscolony", getString(R.string.gem_officers_colony)));
+        areaModelList.add(new AreaModel("2", "Jhawtola", getString(R.string.jhawtola)));
+        areaModelList.add(new AreaModel("2", "Tigerpassrailwaycolony", getString(R.string.tigerpass_railway_colony)));
+        areaModelList.add(new AreaModel("2", "TSPcolony", getString(R.string.tsp_colony)));
+        areaModelList.add(new AreaModel("2", "Teribazar", getString(R.string.teri_bazar)));
+        areaModelList.add(new AreaModel("2", "Doublemuring", getString(R.string.double_muring)));
+        areaModelList.add(new AreaModel("2", "Doijpara", getString(R.string.doijpara)));
+        areaModelList.add(new AreaModel("2", "Southpatenga", getString(R.string.south_patenga)));
+        areaModelList.add(new AreaModel("2", "Southbondar", getString(R.string.south_bondar)));
+        areaModelList.add(new AreaModel("2", "Dokkhin moddho holyshohor", getString(R.string.dokkhin_moddho_holyshohor)));
+        areaModelList.add(new AreaModel("2", "Dampara", getString(R.string.dampara)));
+        areaModelList.add(new AreaModel("2", "Deoyanghat", getString(R.string.deoyan_ghat)));
+        areaModelList.add(new AreaModel("2", "Dewanbazar", getString(R.string.deoyan_bazar)));
+        areaModelList.add(new AreaModel("2", "Dhumpara", getString(R.string.dhumpara)));
+        areaModelList.add(new AreaModel("2", "Northmiddleholishohor", getString(R.string.north_middle_holishohor)));
+        areaModelList.add(new AreaModel("2", "Nasirabad", getString(R.string.nasirabadh)));
+        areaModelList.add(new AreaModel("2", "Newmuring", getString(R.string.new_muring)));
+        areaModelList.add(new AreaModel("2", "Navyport", getString(R.string.navy_port)));
+        areaModelList.add(new AreaModel("2", "Podmaabashikalaka", getString(R.string.podma_abashik_alaka)));
+        areaModelList.add(new AreaModel("2", "Paslaish", getString(R.string.paslaish)));
+        areaModelList.add(new AreaModel("2", "Pathantuli", getString(R.string.pathantuli)));
+        areaModelList.add(new AreaModel("2", "Potenga", getString(R.string.potenga)));
+        areaModelList.add(new AreaModel("2", "Patharghata", getString(R.string.patharghata)));
+        areaModelList.add(new AreaModel("2", "Pahartali", getString(R.string.pahartali)));
+        areaModelList.add(new AreaModel("2", "Purbonimtala", getString(R.string.purbo_nimtala)));
+        areaModelList.add(new AreaModel("2", "Purbomadarbari", getString(R.string.purbo_madar_bari)));
+        areaModelList.add(new AreaModel("2", "Bahaddarhat", getString(R.string.bahaddarhat)));
+        areaModelList.add(new AreaModel("2", "Bangladeshbankcolony", getString(R.string.bangladesh_bank_colony)));
+        areaModelList.add(new AreaModel("2", "bakolia", getString(R.string.bakolia)));
+        areaModelList.add(new AreaModel("2", "Bayazidbostami", getString(R.string.bayazid_bostami)));
+        areaModelList.add(new AreaModel("2", "Mansurabad", getString(R.string.mansurabad)));
+        areaModelList.add(new AreaModel("2", "Maijpara", getString(R.string.majipara)));
+        areaModelList.add(new AreaModel("2", "Rangiparabankcolony", getString(R.string.rangipara_bank_colony)));
+        areaModelList.add(new AreaModel("2", "Laldairchar", getString(R.string.laldair_char)));
+        areaModelList.add(new AreaModel("2", "Shadorghat", getString(R.string.shadorghat)));
+        areaModelList.add(new AreaModel("2", "Sondippara", getString(R.string.sondip_para)));
+        areaModelList.add(new AreaModel("2", "Southagrabad", getString(R.string.south_agrabad)));
+        areaModelList.add(new AreaModel("2", "CGScolony", getString(R.string.cgs_colony)));
+        areaModelList.add(new AreaModel("2", "Hali_shohor", getString(R.string.hali_shohor)));
+        areaModelList.add(new AreaModel("2", "Halishohormunshipara", getString(R.string.hali_shohor_munshipara)));
+        areaModelList.add(new AreaModel("2", "Halishohorsenanibash", getString(R.string.hali_shohor_senanibash)));
+        areaModelList.add(new AreaModel("2", "Hosenahmedpara", getString(R.string.hosen_ahmedpara)));
 
 
-        areaList.add(new Area("Barisal", "Jhalokati", getString(R.string.jhalokati)));
-        areaList.add(new Area("Barisal", "Patuakhali", getString(R.string.patuakhali)));
-        areaList.add(new Area("Barisal", "Pirojpur", getString(R.string.pirojpur)));
-        areaList.add(new Area("Barisal", "Barguna", getString(R.string.barguna)));
-        areaList.add(new Area("Barisal", "Barisal", getString(R.string.barisal)));
-        areaList.add(new Area("Barisal", "Bhola", getString(R.string.bhola)));
+        areaModelList.add(new AreaModel("Dhaka", "Kishorgonj", getString(R.string.kishorgonj)));
+        areaModelList.add(new AreaModel("Dhaka", "Gazipur", getString(R.string.gazipur)));
+        areaModelList.add(new AreaModel("Dhaka", "Gopalgonj", getString(R.string.gopalgonj)));
+        areaModelList.add(new AreaModel("Dhaka", "Tangail", getString(R.string.tangail)));
+        areaModelList.add(new AreaModel("Dhaka", "Dhaka", getString(R.string.dhaka)));
+        areaModelList.add(new AreaModel("Dhaka", "Narsingdi", getString(R.string.narsingdi)));
+        areaModelList.add(new AreaModel("Dhaka", "NarayanGanj", getString(R.string.narayanganj)));
+        areaModelList.add(new AreaModel("Dhaka", "Faridpur", getString(R.string.faridpur)));
+        areaModelList.add(new AreaModel("Dhaka", "Madaripur", getString(R.string.madaripur)));
+        areaModelList.add(new AreaModel("Dhaka", "Manikgonj", getString(R.string.manikgonj)));
+        areaModelList.add(new AreaModel("Dhaka", "Munshigonj", getString(R.string.munshigonj)));
+        areaModelList.add(new AreaModel("Dhaka", "Rajbari", getString(R.string.rajbari)));
+        areaModelList.add(new AreaModel("Dhaka", "Shariatpur", getString(R.string.shariatpur)));
 
 
-        areaList.add(new Area("Chittagong", "CoxsBazar", getString(R.string.cox_bazar)));
-        areaList.add(new Area("Chittagong", "Comilla", getString(R.string.comilla)));
-        areaList.add(new Area("Chittagong", "Khagrasori", getString(R.string.khagrasori)));
-        areaList.add(new Area("Chittagong", "Chittagong", getString(R.string.chattogram)));
-        areaList.add(new Area("Chittagong", "Chandpur", getString(R.string.chandpur)));
-        areaList.add(new Area("Chittagong", "Noakhali", getString(R.string.noakhali)));
-        areaList.add(new Area("Chittagong", "Feni", getString(R.string.feni)));
-        areaList.add(new Area("Chittagong", "Bandarban", getString(R.string.bandarban)));
-        areaList.add(new Area("Chittagong", "Brahmanbaria", getString(R.string.brahmanbaria)));
-        areaList.add(new Area("Chittagong", "Rangamati", getString(R.string.rangamati)));
-        areaList.add(new Area("Chittagong", "Lokkhipur", getString(R.string.lokkhipur)));
+        areaModelList.add(new AreaModel("Barisal", "Jhalokati", getString(R.string.jhalokati)));
+        areaModelList.add(new AreaModel("Barisal", "Patuakhali", getString(R.string.patuakhali)));
+        areaModelList.add(new AreaModel("Barisal", "Pirojpur", getString(R.string.pirojpur)));
+        areaModelList.add(new AreaModel("Barisal", "Barguna", getString(R.string.barguna)));
+        areaModelList.add(new AreaModel("Barisal", "Barisal", getString(R.string.barisal)));
+        areaModelList.add(new AreaModel("Barisal", "Bhola", getString(R.string.bhola)));
 
-        areaList.add(new Area("Mymensingh", "Jamalpur", getString(R.string.jamalpur)));
-        areaList.add(new Area("Mymensingh", "Netrokona", getString(R.string.netrokona)));
-        areaList.add(new Area("Mymensingh", "Mymensingh", getString(R.string.mymensingh)));
-        areaList.add(new Area("Mymensingh", "Sherpur", getString(R.string.sherpur)));
 
-        areaList.add(new Area("Khulna", "Kustia", getString(R.string.kustia)));
-        areaList.add(new Area("Khulna", "Khulna", getString(R.string.khulna)));
-        areaList.add(new Area("Khulna", "Chuadanga", getString(R.string.chuadanga)));
-        areaList.add(new Area("Khulna", "Jhenaidah", getString(R.string.jhenaidah)));
-        areaList.add(new Area("Khulna", "Norail", getString(R.string.norail)));
-        areaList.add(new Area("Khulna", "Bagerhat", getString(R.string.bagerhat)));
-        areaList.add(new Area("Khulna", "Magura", getString(R.string.magura)));
-        areaList.add(new Area("Khulna", "Meherpur", getString(R.string.meherpur)));
-        areaList.add(new Area("Khulna", "Jessore", getString(R.string.jessore)));
-        areaList.add(new Area("Khulna", "Satkhira", getString(R.string.satkhira)));
+        areaModelList.add(new AreaModel("Chittagong", "CoxsBazar", getString(R.string.cox_bazar)));
+        areaModelList.add(new AreaModel("Chittagong", "Comilla", getString(R.string.comilla)));
+        areaModelList.add(new AreaModel("Chittagong", "Khagrasori", getString(R.string.khagrasori)));
+        areaModelList.add(new AreaModel("Chittagong", "Chittagong", getString(R.string.chattogram)));
+        areaModelList.add(new AreaModel("Chittagong", "Chandpur", getString(R.string.chandpur)));
+        areaModelList.add(new AreaModel("Chittagong", "Noakhali", getString(R.string.noakhali)));
+        areaModelList.add(new AreaModel("Chittagong", "Feni", getString(R.string.feni)));
+        areaModelList.add(new AreaModel("Chittagong", "Bandarban", getString(R.string.bandarban)));
+        areaModelList.add(new AreaModel("Chittagong", "Brahmanbaria", getString(R.string.brahmanbaria)));
+        areaModelList.add(new AreaModel("Chittagong", "Rangamati", getString(R.string.rangamati)));
+        areaModelList.add(new AreaModel("Chittagong", "Lokkhipur", getString(R.string.lokkhipur)));
 
-        areaList.add(new Area("Rajshahi", "Chapainawabganj", getString(R.string.chapainawabganj)));
-        areaList.add(new Area("Rajshahi", "Joypurhat", getString(R.string.joypurhat)));
-        areaList.add(new Area("Rajshahi", "Nouga", getString(R.string.nouga)));
-        areaList.add(new Area("Rajshahi", "Natore", getString(R.string.natore)));
-        areaList.add(new Area("Rajshahi", "Pabna", getString(R.string.pabna)));
-        areaList.add(new Area("Rajshahi", "Bagura", getString(R.string.bagura)));
-        areaList.add(new Area("Rajshahi", "Rajshahi", getString(R.string.rajshahi)));
-        areaList.add(new Area("Rajshahi", "Sirajgonj", getString(R.string.sirajgonj)));
+        areaModelList.add(new AreaModel("Mymensingh", "Jamalpur", getString(R.string.jamalpur)));
+        areaModelList.add(new AreaModel("Mymensingh", "Netrokona", getString(R.string.netrokona)));
+        areaModelList.add(new AreaModel("Mymensingh", "Mymensingh", getString(R.string.mymensingh)));
+        areaModelList.add(new AreaModel("Mymensingh", "Sherpur", getString(R.string.sherpur)));
 
-        areaList.add(new Area("Rangpur", "Kurigram", getString(R.string.kurigram)));
-        areaList.add(new Area("Rangpur", "Gaibandha", getString(R.string.gaibandha)));
-        areaList.add(new Area("Rangpur", "Thakurgaon", getString(R.string.thakurgaon)));
-        areaList.add(new Area("Rangpur", "Dinajpur", getString(R.string.dinajpur)));
-        areaList.add(new Area("Rangpur", "Nilfamari", getString(R.string.nilfamari)));
-        areaList.add(new Area("Rangpur", "Ponchogor", getString(R.string.ponchogor)));
-        areaList.add(new Area("Rangpur", "Rangpur", getString(R.string.rangpur)));
-        areaList.add(new Area("Rangpur", "Lalmoni", getString(R.string.lalmoni)));
+        areaModelList.add(new AreaModel("Khulna", "Kustia", getString(R.string.kustia)));
+        areaModelList.add(new AreaModel("Khulna", "Khulna", getString(R.string.khulna)));
+        areaModelList.add(new AreaModel("Khulna", "Chuadanga", getString(R.string.chuadanga)));
+        areaModelList.add(new AreaModel("Khulna", "Jhenaidah", getString(R.string.jhenaidah)));
+        areaModelList.add(new AreaModel("Khulna", "Norail", getString(R.string.norail)));
+        areaModelList.add(new AreaModel("Khulna", "Bagerhat", getString(R.string.bagerhat)));
+        areaModelList.add(new AreaModel("Khulna", "Magura", getString(R.string.magura)));
+        areaModelList.add(new AreaModel("Khulna", "Meherpur", getString(R.string.meherpur)));
+        areaModelList.add(new AreaModel("Khulna", "Jessore", getString(R.string.jessore)));
+        areaModelList.add(new AreaModel("Khulna", "Satkhira", getString(R.string.satkhira)));
 
-        areaList.add(new Area("Sylhet", "Moulvibazar", getString(R.string.moulvibazar)));
-        areaList.add(new Area("Sylhet", "Sylhet", getString(R.string.sylhet)));
-        areaList.add(new Area("Sylhet", "Sunamgonj", getString(R.string.sunamganj)));
-        areaList.add(new Area("Sylhet", "Habiganj", getString(R.string.habiganj)));
+        areaModelList.add(new AreaModel("Rajshahi", "Chapainawabganj", getString(R.string.chapainawabganj)));
+        areaModelList.add(new AreaModel("Rajshahi", "Joypurhat", getString(R.string.joypurhat)));
+        areaModelList.add(new AreaModel("Rajshahi", "Nouga", getString(R.string.nouga)));
+        areaModelList.add(new AreaModel("Rajshahi", "Natore", getString(R.string.natore)));
+        areaModelList.add(new AreaModel("Rajshahi", "Pabna", getString(R.string.pabna)));
+        areaModelList.add(new AreaModel("Rajshahi", "Bagura", getString(R.string.bagura)));
+        areaModelList.add(new AreaModel("Rajshahi", "Rajshahi", getString(R.string.rajshahi)));
+        areaModelList.add(new AreaModel("Rajshahi", "Sirajgonj", getString(R.string.sirajgonj)));
+
+        areaModelList.add(new AreaModel("Rangpur", "Kurigram", getString(R.string.kurigram)));
+        areaModelList.add(new AreaModel("Rangpur", "Gaibandha", getString(R.string.gaibandha)));
+        areaModelList.add(new AreaModel("Rangpur", "Thakurgaon", getString(R.string.thakurgaon)));
+        areaModelList.add(new AreaModel("Rangpur", "Dinajpur", getString(R.string.dinajpur)));
+        areaModelList.add(new AreaModel("Rangpur", "Nilfamari", getString(R.string.nilfamari)));
+        areaModelList.add(new AreaModel("Rangpur", "Ponchogor", getString(R.string.ponchogor)));
+        areaModelList.add(new AreaModel("Rangpur", "Rangpur", getString(R.string.rangpur)));
+        areaModelList.add(new AreaModel("Rangpur", "Lalmoni", getString(R.string.lalmoni)));
+
+        areaModelList.add(new AreaModel("Sylhet", "Moulvibazar", getString(R.string.moulvibazar)));
+        areaModelList.add(new AreaModel("Sylhet", "Sylhet", getString(R.string.sylhet)));
+        areaModelList.add(new AreaModel("Sylhet", "Sunamgonj", getString(R.string.sunamganj)));
+        areaModelList.add(new AreaModel("Sylhet", "Habiganj", getString(R.string.habiganj)));
 
     }
 
     private void fillSubAreaList() {
-        subAreaList = new ArrayList<>();
-        subAreaList.add(new SubArea("Uttara", "Aisnubug", getString(R.string.aisnubug)));
-        subAreaList.add(new SubArea("Uttara", "Ajompur", getString(R.string.ajompur)));
-        subAreaList.add(new SubArea("Uttara", "Anurbug", getString(R.string.anurbug)));
-        subAreaList.add(new SubArea("Uttara", "Abdullahpur", getString(R.string.abdullahpur)));
-        subAreaList.add(new SubArea("Uttara", "Amtola", getString(R.string.amtola)));
-        subAreaList.add(new SubArea("Uttara", "AshiyanCity", getString(R.string.asiyan_city)));
-        subAreaList.add(new SubArea("Uttara", "Ahalia", getString(R.string.ahalia)));
-        subAreaList.add(new SubArea("Uttara", "Uttorkhan", getString(R.string.uttorkhan)));
-        subAreaList.add(new SubArea("Uttara", "Kaola", getString(R.string.kaola)));
-        subAreaList.add(new SubArea("Uttara", "Kajibari", getString(R.string.kajibari)));
-        subAreaList.add(new SubArea("Uttara", "Kamarpara", getString(R.string.kamarpara)));
-        subAreaList.add(new SubArea("Uttara", "Khilkhet", getString(R.string.khilkhet)));
-        subAreaList.add(new SubArea("Uttara", "Gaoyair", getString(R.string.gaoyair)));
-        subAreaList.add(new SubArea("Uttara", "Joshimuddin", getString(R.string.joshimuddin)));
-        subAreaList.add(new SubArea("Uttara", "DhakaAirport", getString(R.string.dhaka_airport)));
-        subAreaList.add(new SubArea("Uttara", "SouthMollertech", getString(R.string.south_mollertech)));
-        subAreaList.add(new SubArea("Uttara", "Dokkhinkhan", getString(R.string.dokkhinkhan)));
-        subAreaList.add(new SubArea("Uttara", "Diyabari", getString(R.string.diyabari)));
-        subAreaList.add(new SubArea("Uttara", "Deoyanpara", getString(R.string.deoyanpara)));
-        subAreaList.add(new SubArea("Uttara", "Dhour", getString(R.string.dhour)));
-        subAreaList.add(new SubArea("Uttara", "Noddapara", getString(R.string.noddapara)));
-        subAreaList.add(new SubArea("Uttara", "NoyaNogor", getString(R.string.noya_nogor)));
-        subAreaList.add(new SubArea("Uttara", "Fulbaria", getString(R.string.fulbaria)));
-        subAreaList.add(new SubArea("Uttara", "RomnarTech", getString(R.string.romnar_tech)));
-        subAreaList.add(new SubArea("Uttara", "Bepari Bari", getString(R.string.bepari_bari)));
-        subAreaList.add(new SubArea("Uttara", "Vatira", getString(R.string.vatira)));
-        subAreaList.add(new SubArea("Uttara", "Viyapara", getString(R.string.viyapara)));
-        subAreaList.add(new SubArea("Uttara", "ModdhoPara", getString(R.string.moddho_para)));
-        subAreaList.add(new SubArea("Uttara", "MadarBari", getString(R.string.madar_bari)));
-        subAreaList.add(new SubArea("Uttara", "RajBari", getString(R.string.raj_bari)));
-        subAreaList.add(new SubArea("Uttara", "Shekherpara", getString(R.string.shekherpara)));
-        subAreaList.add(new SubArea("Uttara", "Shonakhola", getString(R.string.shona_khola)));
-        subAreaList.add(new SubArea("Uttara", "Hajipara", getString(R.string.hajipara)));
-        subAreaList.add(new SubArea("Uttara", "1nosectorUttara", getString(R.string.viyapara)));
-        subAreaList.add(new SubArea("Uttara", "10 no. sector Uttara", getString(R.string._10_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "11 no. sector Uttara", getString(R.string._11_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "12 no. sector Uttara", getString(R.string._12_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "13 no. sector Uttara", getString(R.string._13_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "14 no. sector Uttara", getString(R.string._14_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "15 no. sector Uttara", getString(R.string._15_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "16 no. sector Uttara", getString(R.string._16_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "17 no. sector Uttara", getString(R.string._17_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "2 no. sector Uttara", getString(R.string._2_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "3 no. sector Uttara", getString(R.string._3_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "4 no. sector Uttara", getString(R.string._4_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "5 no. sector Uttara", getString(R.string._5_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "6 no. sector Uttara", getString(R.string._6_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "7 no. sector Uttara", getString(R.string._7_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "8 no. sector Uttara", getString(R.string._8_no_sector_uttara)));
-        subAreaList.add(new SubArea("Uttara", "9 no. sector Uttara", getString(R.string._9_no_sector_uttara)));
-
-
-        subAreaList.add(new SubArea("Kafrul", "Ajijpolli", getString(R.string.ajij_polli)));
-        subAreaList.add(new SubArea("Kafrul", "Dhaka navy colony", getString(R.string.dhaka_navy_colony)));
-        subAreaList.add(new SubArea("Kafrul", "Damal kot", getString(R.string.dhamal_kot)));
-        subAreaList.add(new SubArea("Kafrul", "Vasantech", getString(R.string.vasantech)));
-        subAreaList.add(new SubArea("Kafrul", "Mohakhali dohs", getString(R.string.mohakhali_dohs)));
-        subAreaList.add(new SubArea("Kafrul", "Matikata", getString(R.string.matikata)));
-        subAreaList.add(new SubArea("Kafrul", "Soudi koloni", getString(R.string.soudi_koloni)));
-
-
-        subAreaList.add(new SubArea("KamrangirChor", "Abu soiyod bazar", getString(R.string.abu_soiyod_bazar)));
-        subAreaList.add(new SubArea("KamrangirChor", "Koyla ghat", getString(R.string.koyla_ghat)));
-        subAreaList.add(new SubArea("KamrangirChor", "Karim bug", getString(R.string.karim_bug)));
-        subAreaList.add(new SubArea("KamrangirChor", "Nurburg", getString(R.string.nurbug)));
-        subAreaList.add(new SubArea("KamrangirChor", "Munsi hut", getString(R.string.munshi_hat)));
-        subAreaList.add(new SubArea("KamrangirChor", "Muslimbug", getString(R.string.muslimbug)));
-        subAreaList.add(new SubArea("KamrangirChor", "Zaullar hati chourasta", getString(R.string.zaullar_hati_chourasta)));
-        subAreaList.add(new SubArea("KamrangirChor", "Sultanganj", getString(R.string.sultanganj)));
-        subAreaList.add(new SubArea("KamrangirChor", "Hajurpara", getString(R.string.hajirpara)));
-        subAreaList.add(new SubArea("KamrangirChor", "Hasan nagor", getString(R.string.hasan_nagor)));
-
-
-        subAreaList.add(new SubArea("Kotoyaly", "Islampur", getString(R.string.islampur)));
-        subAreaList.add(new SubArea("Kotoyaly", "Jinda bazar", getString(R.string.jinda_bazar)));
-        subAreaList.add(new SubArea("Kotoyaly", "Tati bazar", getString(R.string.tati_bazar)));
-        subAreaList.add(new SubArea("Kotoyaly", "Noya bazar", getString(R.string.noya_bazar)));
-        subAreaList.add(new SubArea("Kotoyaly", "Potuyatoli", getString(R.string.potuyatoli)));
-        subAreaList.add(new SubArea("Kotoyaly", "Badam toli", getString(R.string.badam_toli)));
-        subAreaList.add(new SubArea("Kotoyaly", "Ray saheb bazar", getString(R.string.ray_ssaheb_bazar)));
-        subAreaList.add(new SubArea("Kotoyaly", "Lokkhi Bazar", getString(R.string.lokkhi_bazar)));
-        subAreaList.add(new SubArea("Kotoyaly", "Sadarghat", getString(R.string.sadarghat)));
-
-
-        subAreaList.add(new SubArea("Cantonment", "Ecb chottor", getString(R.string.ecb_chottor)));
-        subAreaList.add(new SubArea("Cantonment", "MES colony", getString(R.string.mes_colony)));
-        subAreaList.add(new SubArea("Cantonment", "Kalibari", getString(R.string.kalibari)));
-        subAreaList.add(new SubArea("Cantonment", "Noya bazar", getString(R.string.noya_bazar)));
-        subAreaList.add(new SubArea("Cantonment", "Kurmitola", getString(R.string.kirmitola)));
-        subAreaList.add(new SubArea("Cantonment", "Goaltech", getString(R.string.goaltech)));
-        subAreaList.add(new SubArea("Cantonment", "Jamtola", getString(R.string.jamtola)));
-        subAreaList.add(new SubArea("Cantonment", "Zia colony", getString(R.string.zia_colony)));
-        subAreaList.add(new SubArea("Cantonment", "Dali market", getString(R.string.dali_market)));
-        subAreaList.add(new SubArea("Cantonment", "Deoyanpara", getString(R.string.deoyanpara)));
-        subAreaList.add(new SubArea("Cantonment", "Nikung", getString(R.string.nikung)));
-        subAreaList.add(new SubArea("Cantonment", "Nirjhor", getString(R.string.nirjhor)));
-        subAreaList.add(new SubArea("Cantonment", "Barontech", getString(R.string.barontech)));
-        subAreaList.add(new SubArea("Cantonment", "Balurghat", getString(R.string.balurghat)));
-        subAreaList.add(new SubArea("Cantonment", "Manikdi", getString(R.string.manikdi)));
-        subAreaList.add(new SubArea("Cantonment", "Mastertech", getString(R.string.mastertech)));
-        subAreaList.add(new SubArea("Cantonment", "Mostafa kamal chottor", getString(R.string.mostafa_kamal_chottor)));
-
-
-        subAreaList.add(new SubArea("Khilgaon", "Adarsh bug", getString(R.string.adarsh)));
-        subAreaList.add(new SubArea("Khilgaon", "Ansar bug", getString(R.string.ansar_bug)));
-        subAreaList.add(new SubArea("Khilgaon", "Aftab Nagar", getString(R.string.aftab_nagar)));
-        subAreaList.add(new SubArea("Khilgaon", "Ulon", getString(R.string.ulon)));
-        subAreaList.add(new SubArea("Khilgaon", "Khilgaon bagicha", getString(R.string.khilgoan_bagicha)));
-        subAreaList.add(new SubArea("Khilgaon", "Khilgaon block -a", getString(R.string.khilgoan_block_a)));
-        subAreaList.add(new SubArea("Khilgaon", "Khilgaon block -b", getString(R.string.khilgoan_block_b)));
-        subAreaList.add(new SubArea("Khilgaon", "Khilgaon block -c", getString(R.string.khilgoan_block_c)));
-        subAreaList.add(new SubArea("Khilgaon", "Khilgaon railgate", getString(R.string.khilgoan_railgate)));
-        subAreaList.add(new SubArea("Khilgaon", "Goran", getString(R.string.goran)));
-        subAreaList.add(new SubArea("Khilgaon", "Chowdhury Para", getString(R.string.chowdhury_para)));
-        subAreaList.add(new SubArea("Khilgaon", "Tilpa para", getString(R.string.tilpa_para)));
-        subAreaList.add(new SubArea("Khilgaon", "Notun bug", getString(R.string.notun_bug)));
-        subAreaList.add(new SubArea("Khilgaon", "Nondi para", getString(R.string.nondi_para)));
-        subAreaList.add(new SubArea("Khilgaon", "Bonosri", getString(R.string.bonosri)));
-        subAreaList.add(new SubArea("Khilgaon", "Malibog", getString(R.string.malibug)));
-        subAreaList.add(new SubArea("Khilgaon", "Meradiya", getString(R.string.meradiya)));
-        subAreaList.add(new SubArea("Khilgaon", "Rampura", getString(R.string.rampura)));
-        subAreaList.add(new SubArea("Khilgaon", "Riyaj bug", getString(R.string.riyai_bug)));
-        subAreaList.add(new SubArea("Khilgaon", "Sipahi Bug", getString(R.string.sipahi_bug)));
-
-
-        subAreaList.add(new SubArea("Gulshan", "Korail", getString(R.string.korail)));
-        subAreaList.add(new SubArea("Gulshan", "Gulshan avenue", getString(R.string.gulshan_avenue)));
-        subAreaList.add(new SubArea("Gulshan", "Gulshan 2", getString(R.string.gulshan_2)));
-        subAreaList.add(new SubArea("Gulshan", "Gulshan 1", getString(R.string.gulshan_1)));
-        subAreaList.add(new SubArea("Gulshan", "Niketon", getString(R.string.niketon)));
-        subAreaList.add(new SubArea("Gulshan", "Bonani", getString(R.string.bonani)));
-        subAreaList.add(new SubArea("Gulshan", "Bari dhara", getString(R.string.bari_dhara)));
-        subAreaList.add(new SubArea("Gulshan", "Bari dhara dohs", getString(R.string.bari_dhara_dohs)));
-        subAreaList.add(new SubArea("Gulshan", "Mohakhali", getString(R.string.mohakhali)));
-
-
-        subAreaList.add(new SubArea("Demra", "Ahmed Nagar", getString(R.string.ahmed_nagar)));
-        subAreaList.add(new SubArea("Demra", "Konapara", getString(R.string.konapara)));
-        subAreaList.add(new SubArea("Demra", "Green model town", getString(R.string.green_model_town)));
-        subAreaList.add(new SubArea("Demra", "Chonpara", getString(R.string.chonpara)));
-        subAreaList.add(new SubArea("Demra", "Dogair", getString(R.string.dogair)));
-        subAreaList.add(new SubArea("Demra", "Tarabo", getString(R.string.tarabo)));
-        subAreaList.add(new SubArea("Demra", "South rupsi", getString(R.string.south_rupsi)));
-        subAreaList.add(new SubArea("Demra", "Naopara", getString(R.string.naopara)));
-        subAreaList.add(new SubArea("Demra", "Bamoli bazar", getString(R.string.bamoli_bazar)));
-        subAreaList.add(new SubArea("Demra", "Bahir tengra", getString(R.string.bahir_tengra)));
-        subAreaList.add(new SubArea("Demra", "Rasul nagor", getString(R.string.rasul_nagor)));
-        subAreaList.add(new SubArea("Demra", "Sanar para", getString(R.string.saar_para)));
-        subAreaList.add(new SubArea("Demra", "Saruliya", getString(R.string.saruliya)));
-        subAreaList.add(new SubArea("Demra", "Haji nagor", getString(R.string.haji_nagor)));
-
-
-        subAreaList.add(new SubArea("Tejgaon", "Kawran Bazar", getString(R.string.kawran_bazar)));
-        subAreaList.add(new SubArea("Tejgaon", "Tejkuni para", getString(R.string.tejkuni_para)));
-        subAreaList.add(new SubArea("Tejgaon", "Nakhal para", getString(R.string.nakhal_para)));
-        subAreaList.add(new SubArea("Tejgaon", "Tejturi bazar", getString(R.string.tejturi_bazar)));
-        subAreaList.add(new SubArea("Tejgaon", "Nabisko", getString(R.string.nabisko)));
-        subAreaList.add(new SubArea("Tejgaon", "Farmgate", getString(R.string.farmgate)));
-        subAreaList.add(new SubArea("Tejgaon", "Monipuripara", getString(R.string.monipuripara)));
-        subAreaList.add(new SubArea("Tejgaon", "Rasul bug", getString(R.string.rsul_bug)));
-        subAreaList.add(new SubArea("Tejgaon", "Raja bazar", getString(R.string.raja_bazar)));
-        subAreaList.add(new SubArea("Tejgaon", "Shahin bug", getString(R.string.shahin_bug)));
-        subAreaList.add(new SubArea("Tejgaon", "Shukrabad", getString(R.string.shukrabad)));
-
-
-        subAreaList.add(new SubArea("Dhanmondi", "Kalabagan", getString(R.string.kalabagan)));
-        subAreaList.add(new SubArea("Dhanmondi", "Green road", getString(R.string.green_road)));
-        subAreaList.add(new SubArea("Dhanmondi", "Jiga tola", getString(R.string.jiga_tola)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -1", getString(R.string.dhanmondi_1)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -2", getString(R.string.dhanmondi_2)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -3", getString(R.string.dhanmondi_3)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -4", getString(R.string.dhanmondi_4)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -5", getString(R.string.dhanmondi_5)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -6", getString(R.string.dhanmondi_6)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -7", getString(R.string.dhanmondi_7)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -8A", getString(R.string.dhanmondi_8a)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -9A", getString(R.string.dhanmondi_9a)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -10A", getString(R.string.dhanmondi_10a)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -11", getString(R.string.dhanmondi_11)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -12", getString(R.string.dhanmondi_12)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -13", getString(R.string.dhanmondi_13)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -14", getString(R.string.dhanmondi_14)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -15", getString(R.string.dhanmondi_15)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -27", getString(R.string.dhanmondi_27)));
-        subAreaList.add(new SubArea("Dhanmondi", "Dhanmondi -32", getString(R.string.dhanmondi_32)));
-        subAreaList.add(new SubArea("Dhanmondi", "Newmarket", getString(R.string.newmarket)));
-        subAreaList.add(new SubArea("Dhanmondi", "Panthapath", getString(R.string.panthapath)));
-        subAreaList.add(new SubArea("Dhanmondi", "Shankar", getString(R.string.kalashankarbagan)));
-        subAreaList.add(new SubArea("Dhanmondi", "Shobhan Bug", getString(R.string.shobhan_bug)));
-        subAreaList.add(new SubArea("Dhanmondi", "Shukrabad", getString(R.string.shukrabad)));
-
-
-        subAreaList.add(new SubArea("Pollobi", "Kalshi", getString(R.string.kalshi)));
-        subAreaList.add(new SubArea("Pollobi", "Duip nagar", getString(R.string.duip_nagar)));
-        subAreaList.add(new SubArea("Pollobi", "Bordhito polli", getString(R.string.bordhito_polli)));
-        subAreaList.add(new SubArea("Pollobi", "Mirpur dohs", getString(R.string.mirpur_dohs)));
-        subAreaList.add(new SubArea("Pollobi", "Mirpur senanibas", getString(R.string.mirpur_senanibas)));
-        subAreaList.add(new SubArea("Pollobi", "Shagufta", getString(R.string.shagufta)));
-        subAreaList.add(new SubArea("Pollobi", "Section-12 mirpur", getString(R.string.section_12_mirpur)));
-
-
-        subAreaList.add(new SubArea("Bosundhara", "Kuril", getString(R.string.kuril)));
-        subAreaList.add(new SubArea("Bosundhara", "Cocacola", getString(R.string.cococola)));
-        subAreaList.add(new SubArea("Bosundhara", "Nodda", getString(R.string.nodda)));
-        subAreaList.add(new SubArea("Bosundhara", "Neela market", getString(R.string.neela_market)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -i", getString(R.string.bashundhara_block_i)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -e", getString(R.string.bashundhara_block_e)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -A", getString(R.string.bashundhara_block_a)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -H", getString(R.string.bashundhara_block_h)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -F", getString(R.string.bashundhara_block_f)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -M", getString(R.string.bashundhara_block_m)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -L", getString(R.string.bashundhara_block_L)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -K", getString(R.string.bashundhara_block_k)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -g", getString(R.string.bashundhara_block_g)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -j", getString(R.string.bashundhara_block_j)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -d", getString(R.string.bashundhara_block_d)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -b", getString(R.string.bashundhara_block_b)));
-        subAreaList.add(new SubArea("Bosundhara", "Bashundhara block -c", getString(R.string.bashundhara_block_c)));
-        subAreaList.add(new SubArea("Bosundhara", "Beraid", getString(R.string.beraid)));
-
-
-        subAreaList.add(new SubArea("Badda", "Namapara", getString(R.string.namapara)));
-        subAreaList.add(new SubArea("Badda", "Nurerchala", getString(R.string.benurerchalaraid)));
-        subAreaList.add(new SubArea("Badda", "East nurer chala", getString(R.string.east_nurer_chala)));
-        subAreaList.add(new SubArea("Badda", "Bayou La para", getString(R.string.beyou_la_para)));
-        subAreaList.add(new SubArea("Badda", "Badda D I T project", getString(R.string.badda_dit_project)));
-        subAreaList.add(new SubArea("Badda", "Badda link road", getString(R.string.badda_link_road)));
-        subAreaList.add(new SubArea("Badda", "Bepari bari", getString(R.string.bepari_bari)));
-        subAreaList.add(new SubArea("Badda", "Middle badda", getString(R.string.middle_badda)));
-        subAreaList.add(new SubArea("Badda", "Merul", getString(R.string.merul)));
-        subAreaList.add(new SubArea("Badda", "Vatara", getString(R.string.vatara)));
-        subAreaList.add(new SubArea("Badda", "Merul badda", getString(R.string.merul_badda)));
-        subAreaList.add(new SubArea("Badda", "Rup nagar", getString(R.string.rup_nagar)));
-        subAreaList.add(new SubArea("Badda", "Shahjadpur", getString(R.string.shahjadpur)));
-        subAreaList.add(new SubArea("Badda", "Solmaid", getString(R.string.solmaid)));
-
-
-        subAreaList.add(new SubArea("Motijhil", "Fakirapul", getString(R.string.fakirapul)));
-        subAreaList.add(new SubArea("Motijhil", "Motijhil", getString(R.string.motijhil)));
-        subAreaList.add(new SubArea("Motijhil", "Razarbug", getString(R.string.razarbug)));
-        subAreaList.add(new SubArea("Motijhil", "Shahidbug", getString(R.string.shahidbug)));
-        subAreaList.add(new SubArea("Motijhil", "Shanti nagar", getString(R.string.bershanti_nagaraid)));
-        subAreaList.add(new SubArea("Motijhil", "Shanti bug", getString(R.string.shanti_bug)));
-        subAreaList.add(new SubArea("Motijhil", "Shahjahanpur", getString(R.string.shahjahanpur)));
-
-
-        subAreaList.add(new SubArea("Mirpur", "Gabtoli", getString(R.string.gabtoli)));
-        subAreaList.add(new SubArea("Mirpur", "Zoo", getString(R.string.zoo)));
-        subAreaList.add(new SubArea("Mirpur", "Zahurabad", getString(R.string.zahurabad)));
-        subAreaList.add(new SubArea("Mirpur", "Tolarbug", getString(R.string.tolarbug)));
-        subAreaList.add(new SubArea("Mirpur", "South monipur", getString(R.string.south_monipur)));
-        subAreaList.add(new SubArea("Mirpur", "Nonderbug", getString(R.string.nonderbug)));
-        subAreaList.add(new SubArea("Mirpur", "Nobaberbug", getString(R.string.nobaberbug)));
-        subAreaList.add(new SubArea("Mirpur", "West kazipara", getString(R.string.west_kazipara)));
-        subAreaList.add(new SubArea("Mirpur", "West shewrapara", getString(R.string.west_shewrapara)));
-        subAreaList.add(new SubArea("Mirpur", "Paikpara", getString(R.string.paikpara)));
-        subAreaList.add(new SubArea("Mirpur", "Palapara", getString(R.string.palapara)));
-        subAreaList.add(new SubArea("Mirpur", "Pirer bug", getString(R.string.pirerbug)));
-        subAreaList.add(new SubArea("Mirpur", "East kazipara", getString(R.string.est_kazipara)));
-        subAreaList.add(new SubArea("Mirpur", "East shewrapara", getString(R.string.east_shewrapara)));
-        subAreaList.add(new SubArea("Mirpur", "Boshupara", getString(R.string.boshupara)));
-        subAreaList.add(new SubArea("Mirpur", "Baten nagar", getString(R.string.baten_nagar)));
-        subAreaList.add(new SubArea("Mirpur", "Beribadh", getString(R.string.beribadh)));
-        subAreaList.add(new SubArea("Mirpur", "Borobug", getString(R.string.borobug)));
-        subAreaList.add(new SubArea("Mirpur", "Modina nagar", getString(R.string.modina_nagar)));
-        subAreaList.add(new SubArea("Mirpur", "Monipur", getString(R.string.monipur)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -6", getString(R.string.mirpur_6)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -2", getString(R.string.mirpur_2)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -60 feet", getString(R.string.mirpur_60_feet)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur rupnagar abashik alaka", getString(R.string.mirpur_rupnagar_abashik_alaka)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -11", getString(R.string.mirpur_11)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -12", getString(R.string.mirpur_12)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -10", getString(R.string.mirpur_10)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -13", getString(R.string.mirpur_13)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -14", getString(R.string.mirpur_14)));
-        subAreaList.add(new SubArea("Mirpur", "Mirpur -1", getString(R.string.mirpur_1)));
-        subAreaList.add(new SubArea("Mirpur", "Mohammadiya society", getString(R.string.mohammadiya_society)));
-        subAreaList.add(new SubArea("Mirpur", "Rainkhola", getString(R.string.rainlhola)));
-        subAreaList.add(new SubArea("Mirpur", "Shain pukur", getString(R.string.shain_pukur)));
-        subAreaList.add(new SubArea("Mirpur", "Shah ali bug", getString(R.string.shah_ali_bug)));
-        subAreaList.add(new SubArea("Mirpur", "Shimul tala", getString(R.string.shimul_tala)));
-        subAreaList.add(new SubArea("Mirpur", "Lalkuthi", getString(R.string.lalkuthi)));
-        subAreaList.add(new SubArea("Mirpur", "Hariram pur", getString(R.string.hariram_pur)));
-
-
-        subAreaList.add(new SubArea("Mohammadpur", "Adabar", getString(R.string.adabar)));
-        subAreaList.add(new SubArea("Mohammadpur", "Ashadget", getString(R.string.ashadget)));
-        subAreaList.add(new SubArea("Mohammadpur", "Chadmiya housing", getString(R.string.chadmiya_housing)));
-        subAreaList.add(new SubArea("Mohammadpur", "Jafrabad", getString(R.string.jafrabad)));
-        subAreaList.add(new SubArea("Mohammadpur", "Tajmohol road", getString(R.string.tajmohol_road)));
-        subAreaList.add(new SubArea("Mohammadpur", "Bosila", getString(R.string.bosila)));
-        subAreaList.add(new SubArea("Mohammadpur", "Baitul aman housing", getString(R.string.baitul_aman_housing)));
-        subAreaList.add(new SubArea("Mohammadpur", "Mohammadiya abashik alaka", getString(R.string.mohammadiya_abashik_alaka)));
-        subAreaList.add(new SubArea("Mohammadpur", "Ring road", getString(R.string.ringroad)));
-        subAreaList.add(new SubArea("Mohammadpur", "Lalmatia", getString(R.string.lalmatia)));
-        subAreaList.add(new SubArea("Mohammadpur", "Shongkar", getString(R.string.shongkar)));
-        subAreaList.add(new SubArea("Mohammadpur", "Shekhertek", getString(R.string.shekhertek)));
-        subAreaList.add(new SubArea("Mohammadpur", "Shamoli", getString(R.string.shamoli)));
-
-
-        subAreaList.add(new SubArea("Ramona", "Elephant road", getString(R.string.elephant_road)));
-        subAreaList.add(new SubArea("Ramona", "Old iskaton", getString(R.string.old_iskaton)));
-        subAreaList.add(new SubArea("Ramona", "Kakrail", getString(R.string.kakrail)));
-        subAreaList.add(new SubArea("Ramona", "Katabon", getString(R.string.katabon)));
-        subAreaList.add(new SubArea("Ramona", "Dhaka varsity", getString(R.string.dhaka_versity)));
-        subAreaList.add(new SubArea("Ramona", "New iskaton", getString(R.string.new_iskaton)));
-        subAreaList.add(new SubArea("Ramona", "Naya Tola", getString(R.string.noya_tola)));
-        subAreaList.add(new SubArea("Ramona", "Poribug", getString(R.string.poribug)));
-        subAreaList.add(new SubArea("Ramona", "Bangla motor", getString(R.string.bangla_motor)));
-        subAreaList.add(new SubArea("Ramona", "Beili road", getString(R.string.beili_road)));
-        subAreaList.add(new SubArea("Ramona", "Boro mogbazar", getString(R.string.boro_mogbazar)));
-        subAreaList.add(new SubArea("Ramona", "Moghbazar T & T colony", getString(R.string.mogbazar_tandt_colony)));
-        subAreaList.add(new SubArea("Ramona", "Mirbug", getString(R.string.mirbug)));
-        subAreaList.add(new SubArea("Ramona", "Shah bug", getString(R.string.shahbug)));
-        subAreaList.add(new SubArea("Ramona", "Shiddessori", getString(R.string.shiddessori)));
-        subAreaList.add(new SubArea("Ramona", "Segunbagicha", getString(R.string.segunbagicha)));
-        subAreaList.add(new SubArea("Ramona", "Hatirpul", getString(R.string.hatirpul)));
-
-
-        subAreaList.add(new SubArea("Lalbag", "Azimpur", getString(R.string.azimpur)));
-        subAreaList.add(new SubArea("Lalbag", "Amligola", getString(R.string.amligola)));
-        subAreaList.add(new SubArea("Lalbag", "Islam bug", getString(R.string.islambug)));
-        subAreaList.add(new SubArea("Lalbag", "Kamrangirchor", getString(R.string.kamrangirchor)));
-        subAreaList.add(new SubArea("Lalbag", "Chawkbazar", getString(R.string.chawkbazar)));
-        subAreaList.add(new SubArea("Lalbag", "Bakshi bazar", getString(R.string.bakshibazar)));
-        subAreaList.add(new SubArea("Lalbag", "Babu bazar", getString(R.string.babubazar)));
-        subAreaList.add(new SubArea("Lalbag", "Begum bazar", getString(R.string.begumbazar)));
-        subAreaList.add(new SubArea("Lalbag", "Lalbug", getString(R.string.lalbug)));
-        subAreaList.add(new SubArea("Lalbag", "Shahid nagar", getString(R.string.shahid_nagar)));
-        subAreaList.add(new SubArea("Lalbag", "Soyari ghat", getString(R.string.soyari_ghat)));
-
-
-        subAreaList.add(new SubArea("Shampur", "Kadamtali", getString(R.string.kadamtali)));
-        subAreaList.add(new SubArea("Shampur", "Kutub khali", getString(R.string.kutub_khali)));
-        subAreaList.add(new SubArea("Shampur", "Janata market", getString(R.string.janata_market)));
-        subAreaList.add(new SubArea("Shampur", "Japani market", getString(R.string.japani_market)));
-        subAreaList.add(new SubArea("Shampur", "Jurain", getString(R.string.jurain)));
-        subAreaList.add(new SubArea("Shampur", "Doniya", getString(R.string.doniya)));
-        subAreaList.add(new SubArea("Shampur", "Deul para", getString(R.string.deul_para)));
-        subAreaList.add(new SubArea("Shampur", "Dholai para", getString(R.string.dholaipara)));
-        subAreaList.add(new SubArea("Shampur", "Pagla", getString(R.string.pagla)));
-        subAreaList.add(new SubArea("Shampur", "Faridabad", getString(R.string.faridabad)));
-        subAreaList.add(new SubArea("Shampur", "Munshibug", getString(R.string.munshibug)));
-        subAreaList.add(new SubArea("Shampur", "Muradpur", getString(R.string.muradpur)));
-        subAreaList.add(new SubArea("Shampur", "Meraz nagar", getString(R.string.meraznagar)));
-        subAreaList.add(new SubArea("Shampur", "Mohammad Bug", getString(R.string.mohammadbugg)));
-        subAreaList.add(new SubArea("Shampur", "Rasulpur", getString(R.string.rasulpur)));
-        subAreaList.add(new SubArea("Shampur", "Rayer bug", getString(R.string.rayerbug)));
-
-
-        subAreaList.add(new SubArea("ShobujBug", "Ahmed Bug", getString(R.string.ahmedbug)));
-        subAreaList.add(new SubArea("ShobujBug", "North mugda para", getString(R.string.north_mugda_para)));
-        subAreaList.add(new SubArea("ShobujBug", "Kadamtala", getString(R.string.kadamtala)));
-        subAreaList.add(new SubArea("ShobujBug", "South mugdapara", getString(R.string.south_mugdapara)));
-        subAreaList.add(new SubArea("ShobujBug", "Natun para", getString(R.string.natunpara)));
-        subAreaList.add(new SubArea("ShobujBug", "East nandipara", getString(R.string.east_nandipara)));
-        subAreaList.add(new SubArea("ShobujBug", "Baganbari", getString(R.string.baganbari)));
-        subAreaList.add(new SubArea("ShobujBug", "Basabo", getString(R.string.basabo)));
-        subAreaList.add(new SubArea("ShobujBug", "Madartech", getString(R.string.madartech)));
-        subAreaList.add(new SubArea("ShobujBug", "Mugdapara", getString(R.string.mugdapara)));
-
-        subAreaList.add(new SubArea("Sutrapur", "Wari", getString(R.string.wari)));
-        subAreaList.add(new SubArea("Sutrapur", "Kaptan bazar", getString(R.string.kaptan_bazar)));
-        subAreaList.add(new SubArea("Sutrapur", "Kerati tola", getString(R.string.keraati_tola)));
-        subAreaList.add(new SubArea("Sutrapur", "Gendaria", getString(R.string.gendaria)));
-        subAreaList.add(new SubArea("Sutrapur", "Tikatuli", getString(R.string.tikatuli)));
-        subAreaList.add(new SubArea("Sutrapur", "Doyagang", getString(R.string.doyagang)));
-        subAreaList.add(new SubArea("Sutrapur", "Dhup khola", getString(R.string.dhup_khola)));
-        subAreaList.add(new SubArea("Sutrapur", "Nawabpur", getString(R.string.nawabpur)));
-        subAreaList.add(new SubArea("Sutrapur", "Narinda", getString(R.string.narinda)));
-        subAreaList.add(new SubArea("Sutrapur", "Jatrabari", getString(R.string.jatrabari)));
-        subAreaList.add(new SubArea("Sutrapur", "Saydabad", getString(R.string.saydabad)));
-        subAreaList.add(new SubArea("Sutrapur", "Soyami bug", getString(R.string.soyamibug)));
-        subAreaList.add(new SubArea("Sutrapur", "Hut khola", getString(R.string.hatkhola)));
-
-
-        subAreaList.add(new SubArea("Hajaribug", "Anayet Gang", getString(R.string.anayetgang)));
-        subAreaList.add(new SubArea("Hajaribug", "Company ghat", getString(R.string.company_ghat)));
-        subAreaList.add(new SubArea("Hajaribug", "Jigatola", getString(R.string.jigatola)));
-        subAreaList.add(new SubArea("Hajaribug", "Tollabug", getString(R.string.tollabug)));
-        subAreaList.add(new SubArea("Hajaribug", "Tinmazar", getString(R.string.tinmazar)));
-        subAreaList.add(new SubArea("Hajaribug", "Nabab gang", getString(R.string.nababganj)));
-        subAreaList.add(new SubArea("Hajaribug", "Pilkhana", getString(R.string.pilkhana)));
-        subAreaList.add(new SubArea("Hajaribug", "Borhanpur", getString(R.string.borhanpur)));
-        subAreaList.add(new SubArea("Hajaribug", "Monesshor", getString(R.string.monesshor)));
-        subAreaList.add(new SubArea("Hajaribug", "Rayer bazar", getString(R.string.rayerbazar)));
-        subAreaList.add(new SubArea("Hajaribug", "Hazari bug", getString(R.string.hazaribug)));
-
-
-        subAreaList.add(new SubArea("Akborshah", "Alongkar mor", getString(R.string.alongkarmor)));
-        subAreaList.add(new SubArea("Akborshah", "Ishapani mor", getString(R.string.ishapanimor)));
-        subAreaList.add(new SubArea("Akborshah", "Ak khan", getString(R.string.akkhan)));
-        subAreaList.add(new SubArea("Akborshah", "Karnel hat", getString(R.string.karnelhat)));
-        subAreaList.add(new SubArea("Akborshah", "Kalir choura", getString(R.string.kalir_choura)));
-        subAreaList.add(new SubArea("Akborshah", "Kiobolo badh railway station", getString(R.string.kiobolo_badh_railway_station)));
-        subAreaList.add(new SubArea("Akborshah", "Josim market", getString(R.string.josim_market)));
-        subAreaList.add(new SubArea("Akborshah", "Pahartoli", getString(R.string.pahartoli)));
-        subAreaList.add(new SubArea("Akborshah", "Purobi feroz shah mazar", getString(R.string.purobi_feroz_shah_mazar)));
-        subAreaList.add(new SubArea("Akborshah", "Firoz shah colony", getString(R.string.firoz_shah_colony)));
-        subAreaList.add(new SubArea("Akborshah", "CDA 1 no bus stop", getString(R.string.cda_1_no_bus_stop)));
-
-
-        subAreaList.add(new SubArea("Andharkilla", "Andhar killa", getString(R.string.andhar_killa)));
-
-
-        subAreaList.add(new SubArea("AmirbugAbashikalaka", "Amirbug Abashik alaka", getString(R.string.amirbug_abashik_alaka)));
-
-
-        subAreaList.add(new SubArea("Alishapara", "Ali shapara", getString(R.string.ali_shapara)));
-
-        subAreaList.add(new SubArea("Asadgonjcommercialarea", "Asadgonj commercial area", getString(R.string.asadganj_commercial_area)));
-
-
-        subAreaList.add(new SubArea("EPZ", "Ishan mistrir hat", getString(R.string.ishan_mistrir_hat)));
-        subAreaList.add(new SubArea("EPZ", "Hritu hostel", getString(R.string.hritu_hostel)));
-        subAreaList.add(new SubArea("EPZ", "Chowdhury bazar", getString(R.string.chowdhury_bazar)));
-        subAreaList.add(new SubArea("EPZ", "Dhup pal", getString(R.string.dhup_pal)));
-        subAreaList.add(new SubArea("EPZ", "Nim tola", getString(R.string.nim_tola)));
-        subAreaList.add(new SubArea("EPZ", "Bandortila", getString(R.string.bandortila)));
-        subAreaList.add(new SubArea("EPZ", "BNA office", getString(R.string.bna_office)));
-        subAreaList.add(new SubArea("EPZ", "BNA upanibesh", getString(R.string.bna_upanibesh)));
-        subAreaList.add(new SubArea("EPZ", "Bissho rasta", getString(R.string.bissho_rasta)));
-        subAreaList.add(new SubArea("EPZ", "Lohar pul", getString(R.string.lohar_pul)));
-        subAreaList.add(new SubArea("EPZ", "Saltgola", getString(R.string.saltgola)));
-        subAreaList.add(new SubArea("EPZ", "Sagorika", getString(R.string.sagorika)));
-        subAreaList.add(new SubArea("EPZ", "CEPZ mailer matha", getString(R.string.cepz_mailer_matha)));
-        subAreaList.add(new SubArea("EPZ", "Cement crossing", getString(R.string.cement_crossing)));
-        subAreaList.add(new SubArea("EPZ", "Steel mil bazar", getString(R.string.steel_mil_bazar)));
-        subAreaList.add(new SubArea("EPZ", "Haspataler get", getString(R.string.haspataler_get)));
-        subAreaList.add(new SubArea("EPZ", "3 no fakir hat", getString(R.string._3_no_fakir_hat)));
-
-
-        subAreaList.add(new SubArea("Uttarpathantuli", "Uttar pathantuli", getString(R.string.uttar_pathantuli)));
-
-        subAreaList.add(new SubArea("Anayetbazar", "Anayet bazar", getString(R.string.anayet_bazar)));
-        subAreaList.add(new SubArea("KarnafuliResidentialarea", "Karnafuli Residential area", getString(R.string.karnafuli_residential_area)));
-
-
-        subAreaList.add(new SubArea("Kotoyali", "Amirbug", getString(R.string.amirbug)));
-        subAreaList.add(new SubArea("Kotoyali", "Kajir deuri", getString(R.string.kajir_deuri)));
-        subAreaList.add(new SubArea("Kotoyali", "Khatun ganj", getString(R.string.khatun_ganj)));
-        subAreaList.add(new SubArea("Kotoyali", "Gani uponibesh", getString(R.string.gani_uponibesh)));
-        subAreaList.add(new SubArea("Kotoyali", "Chattagram bandor", getString(R.string.chattagram_bandor)));
-        subAreaList.add(new SubArea("Kotoyali", "Jaotola", getString(R.string.jaotola)));
-        subAreaList.add(new SubArea("Kotoyali", "Firingi bazar", getString(R.string.firingi_bazar)));
-        subAreaList.add(new SubArea("Kotoyali", "Pathorghat", getString(R.string.pathorghat)));
-        subAreaList.add(new SubArea("Kotoyali", "Pathantuli", getString(R.string.pathantuli)));
-        subAreaList.add(new SubArea("Kotoyali", "Station road", getString(R.string.station_road)));
-        subAreaList.add(new SubArea("Kotoyali", "Stand rasta", getString(R.string.stand_rasta)));
-
-        subAreaList.add(new SubArea("Khatungonj", "Khatungonj", getString(R.string.khatunganj)));
-
-
-        subAreaList.add(new SubArea("Khulshi", "Wireless mor", getString(R.string.wirelessmor)));
-        subAreaList.add(new SubArea("Khulshi", "Khulsi shahid", getString(R.string.khulsi_shahid)));
-        subAreaList.add(new SubArea("Khulshi", "Chattagram bandor nagori international university", getString(R.string.chattagram_bandor_nagori_international_university)));
-        subAreaList.add(new SubArea("Khulshi", "Chittagong Government Women's College", getString(R.string.chittagong_government_women_college)));
-        subAreaList.add(new SubArea("Khulshi", "Jautla Railway Station", getString(R.string.jautla_railway_station)));
-        subAreaList.add(new SubArea("Khulshi", "Polytechnic Institute", getString(R.string.polytechnic_institute)));
-        subAreaList.add(new SubArea("Khulshi", "Foyeslech", getString(R.string.foyeslech)));
-        subAreaList.add(new SubArea("Khulshi", "Bangladesh Agricultural Research Centre", getString(R.string.bangladesh_agricultural_research_centre)));
-        subAreaList.add(new SubArea("Khulshi", "BGMEA", getString(R.string.bgmea)));
-        subAreaList.add(new SubArea("Khulshi", "Holy crescent bus stop", getString(R.string.holy_crescent_bus_stop)));
-
-        subAreaList.add(new SubArea("Gosaildanga", "Gosaildanga", getString(R.string.gosaildanga)));
-
-        subAreaList.add(new SubArea("Chowkbazar", "Wasa mor", getString(R.string.wasa_mor)));
-        subAreaList.add(new SubArea("Chowkbazar", "Gani bekari mor", getString(R.string.gani_bekari_mor)));
-        subAreaList.add(new SubArea("Chowkbazar", "Chawk bazar bus stop", getString(R.string.chawk_bazar_bus_stop)));
-        subAreaList.add(new SubArea("Chowkbazar", "Chawk bazar super market", getString(R.string.chawk_bazar_super_market)));
-        subAreaList.add(new SubArea("Chowkbazar", "Chattessori mor", getString(R.string.chattessori_mor)));
-        subAreaList.add(new SubArea("Chowkbazar", "Jamal khan", getString(R.string.jamal_khan)));
-        subAreaList.add(new SubArea("Chowkbazar", "Deb pahar", getString(R.string.deb_pahar)));
-        subAreaList.add(new SubArea("Chowkbazar", "Perad moydan", getString(R.string.perad_moydan)));
-        subAreaList.add(new SubArea("Chowkbazar", "Boddo mondir", getString(R.string.boddo_mondir)));
-
-        subAreaList.add(new SubArea("Chattagrambondor", "Ekrampur Ispahani", getString(R.string.ekrampur_ispahani)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Kalgachiya", getString(R.string.kalgachiya)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Khaitkhali", getString(R.string.khaitkhali)));
-        subAreaList.add(new SubArea("Chattagrambondor", "TinGau", getString(R.string.tin_gau)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Boro Nayabazar", getString(R.string.boro_nayabazar)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Bag Nayaghar", getString(R.string.bag_nayaghar)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Madanapura Masjid", getString(R.string.madanapura_masjid)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Madanpur Khal", getString(R.string.madanpur_khal)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Madhav Pasha", getString(R.string.madhav_pasha)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Mahmud Nagar", getString(R.string.mahmud_nagar)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Rasulbagh", getString(R.string.rasulbagh)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Langalbrand", getString(R.string.langalbrand)));
-        subAreaList.add(new SubArea("Chattagrambondor", "Sonakanda", getString(R.string.sonakanda)));
-
-        subAreaList.add(new SubArea("Chorpara", "Chor para", getString(R.string.chor_para)));
-
-        subAreaList.add(new SubArea("Chorhalda", "Chor halda", getString(R.string.chor_halda)));
-
-        subAreaList.add(new SubArea("Chadgao", "Kaptai rastar matha", getString(R.string.kaptai_rastar_matha)));
-        subAreaList.add(new SubArea("Chadgao", "Kalurghat bus stop", getString(R.string.kalurghat_bus_stop)));
-        subAreaList.add(new SubArea("Chadgao", "Chattagram betar kendro", getString(R.string.chattragram_betar_kendro)));
-        subAreaList.add(new SubArea("Chadgao", "Chadgao abashik", getString(R.string.chadgao_abashik)));
-        subAreaList.add(new SubArea("Chadgao", "Bohoddarhat", getString(R.string.bohoddar_hat)));
-        subAreaList.add(new SubArea("Chadgao", "Bus terminal", getString(R.string.bus_terminal)));
-        subAreaList.add(new SubArea("Chadgao", "Bahir signal", getString(R.string.bahir_signal)));
-        subAreaList.add(new SubArea("Chadgao", "Moulvibazar", getString(R.string.moulvibazar)));
-        subAreaList.add(new SubArea("Chadgao", "CNB", getString(R.string.cnb)));
-        subAreaList.add(new SubArea("Chadgao", "Haji Saber Ahmed Timber Company Limited", getString(R.string.haji_saber_ahmed_timber)));
-        subAreaList.add(new SubArea("Chadgao", "Hajera Taju degree college", getString(R.string.hajera_taju_degree_college)));
-
-        subAreaList.add(new SubArea("ChowdhuryPara", "Chowdhury Para", getString(R.string.chowdhury_para)));
-
-
-        subAreaList.add(new SubArea("GEMofficerscolony", "GEM officers colony", getString(R.string.gem_officers_colony)));
-        subAreaList.add(new SubArea("Jhawtola", "Jhawtola", getString(R.string.jhawtola)));
-        subAreaList.add(new SubArea("Tigerpassrailwaycolony", "Tigerpass railway colony", getString(R.string.tigerpass_railway_colony)));
-
-        subAreaList.add(new SubArea("TSPcolony", "TSP colony", getString(R.string.tsp_colony)));
-        subAreaList.add(new SubArea("Teribazar", "Teri bazar", getString(R.string.teri_bazar)));
-
-
-        subAreaList.add(new SubArea("Doublemuring", "Chattagram bondor", getString(R.string.chattagram_bondor)));
-        subAreaList.add(new SubArea("Doublemuring", "Double muring", getString(R.string.double_muring)));
-        subAreaList.add(new SubArea("Doublemuring", "South agrabad", getString(R.string.south_agrabad)));
-        subAreaList.add(new SubArea("Doublemuring", "Noya bazar pahartoli", getString(R.string.noyabazar_pahartoli)));
-        subAreaList.add(new SubArea("Doublemuring", "Bou bazar", getString(R.string.bou_bazar)));
-        subAreaList.add(new SubArea("Doublemuring", "Pahartoli", getString(R.string.pahartoli)));
-        subAreaList.add(new SubArea("Doublemuring", "Bangladesh Bank", getString(R.string.bangladesh_bank_colony)));
-        subAreaList.add(new SubArea("Doublemuring", "Bou bazar", getString(R.string.bou_bazar)));
-        subAreaList.add(new SubArea("Doublemuring", "Mohuri paara", getString(R.string.mohuri_para)));
-        subAreaList.add(new SubArea("Doublemuring", "Soray para", getString(R.string.soray_para)));
-
-        subAreaList.add(new SubArea("Doijpara", "Doijpara", getString(R.string.doijpara)));
-        subAreaList.add(new SubArea("Southpatenga", "South patenga", getString(R.string.south_patenga)));
-        subAreaList.add(new SubArea("Southbondar", "South bondar", getString(R.string.south_bondor)));
-        subAreaList.add(new SubArea("Dokkhinmoddhoholyshohor", "Dokkhin moddho holyshohor", getString(R.string.dokkhin_moddho_holyshohor)));
-        subAreaList.add(new SubArea("Dampara", "Dampara", getString(R.string.dampara)));
-        subAreaList.add(new SubArea("Deoyanghat", "Deoyan ghat", getString(R.string.deyan_ghat)));
-        subAreaList.add(new SubArea("Dewanbazar", "Dewan bazar", getString(R.string.dewan_bazar)));
-        subAreaList.add(new SubArea("Dhumpara", "Dhumpara", getString(R.string.dhumpara)));
-        subAreaList.add(new SubArea("Northmiddleholishohor", "North middle holishohor", getString(R.string.north_middle_holishohor)));
-        subAreaList.add(new SubArea("Nasirabad", "Nasirabad", getString(R.string.nasirabad)));
-        subAreaList.add(new SubArea("Newmuring", "New muring", getString(R.string.new_muring)));
-        subAreaList.add(new SubArea("Navyport", "Navy port", getString(R.string.navy_port)));
-        subAreaList.add(new SubArea("Podmaabashikalaka", "Podma abashik alaka", getString(R.string.podma_abashik_alaka)));
-
-
-        subAreaList.add(new SubArea("Paslaish", "Aturar dipu", getString(R.string.aturar_dipu)));
-        subAreaList.add(new SubArea("Paslaish", "Amirbug R/A", getString(R.string.amirbug_r_a)));
-        subAreaList.add(new SubArea("Paslaish", "Chattroseri", getString(R.string.chattroseri)));
-        subAreaList.add(new SubArea("Paslaish", "GEC mor", getString(R.string.gec_mor)));
-        subAreaList.add(new SubArea("Paslaish", "Pashlaish R/A", getString(R.string.pashlaish_ra)));
-        subAreaList.add(new SubArea("Paslaish", "Peyara bagan", getString(R.string.payara_bagan)));
-        subAreaList.add(new SubArea("Paslaish", "Bagmoniram", getString(R.string.bagmoniram)));
-        subAreaList.add(new SubArea("Paslaish", "KhatMufijur rahman abashik alakaungonj", getString(R.string.mufijur_rahman_abashik_alaka)));
-        subAreaList.add(new SubArea("Paslaish", "Murad pur", getString(R.string.muradpur)));
-        subAreaList.add(new SubArea("Paslaish", "Medical staff quarter", getString(R.string.medical_staff_quarter)));
-        subAreaList.add(new SubArea("Paslaish", "Mehedi bug", getString(R.string.mehedibug)));
-        subAreaList.add(new SubArea("Paslaish", "Shulkobohor", getString(R.string.shulkobohor)));
-        subAreaList.add(new SubArea("Paslaish", "Sholoshohor", getString(R.string.sholoshohor)));
-        subAreaList.add(new SubArea("Paslaish", "Sholoshohor railway station", getString(R.string.sholoshorer_railway_station)));
-        subAreaList.add(new SubArea("Paslaish", "Hamjarbag", getString(R.string.hamjarbug)));
-        subAreaList.add(new SubArea("Paslaish", "2 no. gate", getString(R.string._2_n0_gate)));
-
-        subAreaList.add(new SubArea("Pathantuli", "Pathantuli", getString(R.string.pathantuli)));
-
-
-        subAreaList.add(new SubArea("Potenga", "South port", getString(R.string.south_port)));
-        subAreaList.add(new SubArea("Potenga", "Najira para", getString(R.string.najirapara)));
-        subAreaList.add(new SubArea("Potenga", "Navy colony", getString(R.string.navy_colony)));
-        subAreaList.add(new SubArea("Potenga", "Patenga beach", getString(R.string.patenga_beatch)));
-        subAreaList.add(new SubArea("Potenga", "Porapara", getString(R.string.porapara)));
-        subAreaList.add(new SubArea("Potenga", "Bangladesh navy golf club", getString(R.string.banglladesh_navy_golf_club)));
-        subAreaList.add(new SubArea("Potenga", "Muslimabad", getString(R.string.muslimabad)));
-        subAreaList.add(new SubArea("Potenga", "Steel industries", getString(R.string.steel_industries)));
-
-
-        subAreaList.add(new SubArea("Patharghata", "Patharghata", getString(R.string.patharghata)));
-
-        subAreaList.add(new SubArea("Pahartali", "North katrali", getString(R.string.north_katrali)));
-        subAreaList.add(new SubArea("Pahartali", "Koibolo dam railway station", getString(R.string.koibolo_dam_railway_station)));
-        subAreaList.add(new SubArea("Pahartali", "Cricket stadium railway station", getString(R.string.cricket_stadium_railway_station)));
-        subAreaList.add(new SubArea("Pahartali", "South katrali", getString(R.string.south_katrail)));
-        subAreaList.add(new SubArea("Pahartali", "Pahartoli railway station", getString(R.string.pahartoli_railway_station)));
-        subAreaList.add(new SubArea("Pahartali", "Firoz shah uponibesh", getString(R.string.firoz_shah_railway_station)));
-        subAreaList.add(new SubArea("Pahartali", "Bishorzo para", getString(R.string.bishorzopara)));
-        subAreaList.add(new SubArea("Pahartali", "Samoli abashik alaka", getString(R.string.samoli_abashik_alaka)));
-
-
-        subAreaList.add(new SubArea("Purbonimtala", "Purbo nimtala", getString(R.string.purbo_nimtala)));
-
-        subAreaList.add(new SubArea("Purbomadarbari", "Purbo madar bari", getString(R.string.purbo_madar_bari)));
-
-        subAreaList.add(new SubArea("Bahaddarhat", "Bahaddarhat", getString(R.string.bahaddarhat)));
-        subAreaList.add(new SubArea("Bangladeshbankcolony", "Bangladesh bank colony", getString(R.string.bangladesh_bank_colony)));
-
-        subAreaList.add(new SubArea("Bakolia", "Kalmia Bazar", getString(R.string.kalmia_bazar)));
-        subAreaList.add(new SubArea("Bakolia", "Khatunganj", getString(R.string.khatunganj)));
-        subAreaList.add(new SubArea("Bakolia", "Goni Bakeri More", getString(R.string.goni_bakerimore)));
-        subAreaList.add(new SubArea("Bakolia", "Dewan Bazar", getString(R.string.dewan_bazar)));
-        subAreaList.add(new SubArea("Bakolia", "Pathorghata", getString(R.string.pathorghata)));
-        subAreaList.add(new SubArea("Bakolia", "Bakshirhat", getString(R.string.bakshirhat)));
-        subAreaList.add(new SubArea("Bakolia", "Maizpara", getString(R.string.maizpara)));
-        subAreaList.add(new SubArea("Bakolia", "Rahattorpul", getString(R.string.rahattorpul)));
-
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.oxygen_more)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.amin_jut_mile)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.arefin_nagor)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.ali_nagor)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.chittagong_cant_public_college)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.textile_gate)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.nobi_nagor)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.nasirabad)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.poly_technical)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.bangladesh_forest_research_institute_gate)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.bayazid_bostami)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.barma_coloni)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.rahaman_nagor)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.rawfabad)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.sher_shah_coloni)));
-        subAreaList.add(new SubArea("Bayazidbostami", "Bayazid bostami", getString(R.string.hamjarbag)));
-
-        subAreaList.add(new SubArea("Mansurabad", "Mansurabad", getString(R.string.mansurabad)));
-        subAreaList.add(new SubArea("Mansurabad", "Shafi Motors Limited", getString(R.string.shafi_motors_limited)));
-
-        subAreaList.add(new SubArea("Maijpara", "Maijpara", getString(R.string.maizpara)));
-        subAreaList.add(new SubArea("Rangiparabankcolony", "Rangipara bank colony", getString(R.string.rangipara_bank_colony)));
-        subAreaList.add(new SubArea("Laldairchar", "Laldair char", getString(R.string.laldair_char)));
-
-        subAreaList.add(new SubArea("Shadorghat", "Abhayamitra", getString(R.string.abhayamitra)));
-        subAreaList.add(new SubArea("Shadorghat", "Karnaphuli Dockyard", getString(R.string.karnaphuli_dockyard)));
-        subAreaList.add(new SubArea("Shadorghat", "Kamal Gate Bazar", getString(R.string.kamal_gate_bazar)));
-        subAreaList.add(new SubArea("Shadorghat", "Choktai Khal", getString(R.string.choktai_khal)));
-        subAreaList.add(new SubArea("Shadorghat", "Tin pooler matha", getString(R.string.tin_pool_matha)));
-        subAreaList.add(new SubArea("Shadorghat", "Noton Bazar", getString(R.string.noton_bazar)));
-        subAreaList.add(new SubArea("Shadorghat", "Bakshirhat", getString(R.string.baksirhat)));
-        subAreaList.add(new SubArea("Shadorghat", "Motherbari Railway Pump Station", getString(R.string.motherbari_railway_pump_station)));
-        subAreaList.add(new SubArea("Shadorghat", "Mia Khan Bridge", getString(R.string.mia_khan_setu)));
-        subAreaList.add(new SubArea("Shadorghat", "Riaz Uddin Bazar", getString(R.string.riaz_uddin_bazar)));
-        subAreaList.add(new SubArea("Shadorghat", "Laldigi more", getString(R.string.laldigi_more)));
-        subAreaList.add(new SubArea("Shadorghat", "Sadarghat Jeti", getString(R.string.sadarghat_jt)));
-        subAreaList.add(new SubArea("Shadorghat", "Cinema Place", getString(R.string.cinema_place)));
-
-        subAreaList.add(new SubArea("Sondippara", "Sondip para", getString(R.string.sondip_para)));
-        subAreaList.add(new SubArea("Southagrabad", "KhatunSouth agrabadgonj", getString(R.string.south_agrabad)));
-        subAreaList.add(new SubArea("CGScolony", "CGS colony", getString(R.string.cgs_colony)));
-
-        subAreaList.add(new SubArea("Hali_shohor", "KNT Logistics Limited", getString(R.string.knt_logistics_limited)));
-        subAreaList.add(new SubArea("Hali_shohor", "Chittagong Container Terminal", getString(R.string.chittagong_container_terminal)));
-        subAreaList.add(new SubArea("Hali_shohor", "Chittagong Container Transportation Co. Ltd", getString(R.string.chittagong_container_tran_co_ltd)));
-        subAreaList.add(new SubArea("Hali_shohor", "Chittagong Bondor dharak", getString(R.string.chittagong_bondor_dharak)));
-        subAreaList.add(new SubArea("Hali_shohor", "Daksin Halishahar", getString(R.string.daksin_halishahar)));
-        subAreaList.add(new SubArea("Hali_shohor", "Noton sidebar", getString(R.string.noton_sidebar)));
-        subAreaList.add(new SubArea("Hali_shohor", "Newmooring Container Terminal", getString(R.string.newmooring_container_terminal)));
-        subAreaList.add(new SubArea("Hali_shohor", "Nau Bondor", getString(R.string.nau_bondor)));
-        subAreaList.add(new SubArea("Hali_shohor", "Bondor new mooring", getString(R.string.bondor_new_mooring)));
-        subAreaList.add(new SubArea("Hali_shohor", "Bondor link road", getString(R.string.bondor_link_road)));
-        subAreaList.add(new SubArea("Hali_shohor", "Munshiipara", getString(R.string.munshiipara)));
-        subAreaList.add(new SubArea("Hali_shohor", "Labor Colony", getString(R.string.labor_colony)));
-        subAreaList.add(new SubArea("Hali_shohor", "Halishahar Housing Society", getString(R.string.halishahar_housing_society)));
-
-        subAreaList.add(new SubArea("Halishohormunshipara", "Hali shohor munshipara", getString(R.string.hali_shohor_munshipara)));
-        subAreaList.add(new SubArea("Halishohorsenanibash", "Hali shohor senanibash", getString(R.string.hali_shohor_senanibash)));
-        subAreaList.add(new SubArea("Hosenahmedpara", "Hosen ahmedpara", getString(R.string.hosen_ahmedpara)));
-
-
-        subAreaList.add(new SubArea("Faridpur", "Alfadanga", getString(R.string.alfadanga)));
-        subAreaList.add(new SubArea("Faridpur", "Vanga", getString(R.string.vanga)));
-        subAreaList.add(new SubArea("Faridpur", "Boyalmari", getString(R.string.boyalmari)));
-        subAreaList.add(new SubArea("Faridpur", "Chorvodroson", getString(R.string.chorvodroson)));
-        subAreaList.add(new SubArea("Faridpur", "Faridpur sadar", getString(R.string.faridpur_sadar)));
-        subAreaList.add(new SubArea("Faridpur", "Madhukhali", getString(R.string.madhukhali)));
-        subAreaList.add(new SubArea("Faridpur", "Nagarkanda", getString(R.string.nagarkanda)));
-        subAreaList.add(new SubArea("Faridpur", "Sadarpur", getString(R.string.sadarpur)));
-        subAreaList.add(new SubArea("Faridpur", "Saltha", getString(R.string.saltha)));
-
-
-        subAreaList.add(new SubArea("Kishorgonj", "Ostogram", getString(R.string.ostogram)));
-        subAreaList.add(new SubArea("Kishorgonj", "Bajitpur", getString(R.string.bajitpur)));
-        subAreaList.add(new SubArea("Kishorgonj", "Karimganj", getString(R.string.karimganj)));
-        subAreaList.add(new SubArea("Kishorgonj", "Bhairab", getString(R.string.bhairab)));
-        subAreaList.add(new SubArea("Kishorgonj", "Hosenpur", getString(R.string.hosenpur)));
-        subAreaList.add(new SubArea("Kishorgonj", "Itna", getString(R.string.itna)));
-        subAreaList.add(new SubArea("Kishorgonj", "Katiadi", getString(R.string.katiadi)));
-        subAreaList.add(new SubArea("Kishorgonj", "Kishoreganj Sadar", getString(R.string.kishoreganj_sadar)));
-        subAreaList.add(new SubArea("Kishorgonj", "Kuliyachor", getString(R.string.kuliyachor)));
-        subAreaList.add(new SubArea("Kishorgonj", "Mithamoin", getString(R.string.mithamoin)));
-        subAreaList.add(new SubArea("Kishorgonj", "Nikoli", getString(R.string.nikoli)));
-        subAreaList.add(new SubArea("Kishorgonj", "Pakundia", getString(R.string.pakundia)));
-        subAreaList.add(new SubArea("Kishorgonj", "Tarail", getString(R.string.tarail)));
-
-
-        subAreaList.add(new SubArea("Rajbari", "Baliakandi", getString(R.string.baliakandi)));
-        subAreaList.add(new SubArea("Rajbari", "Goyalondo", getString(R.string.goyalondo)));
-        subAreaList.add(new SubArea("Rajbari", "Kalukhali", getString(R.string.kalukhali)));
-        subAreaList.add(new SubArea("Rajbari", "Pangsha", getString(R.string.pangsha)));
-        subAreaList.add(new SubArea("Rajbari", "Rajbari Sadar", getString(R.string.rajbari_sadar)));
-
-
-        subAreaList.add(new SubArea("Tangail", "Basail", getString(R.string.basail)));
-        subAreaList.add(new SubArea("Tangail", "Vuyapur", getString(R.string.vuyapur)));
-        subAreaList.add(new SubArea("Tangail", "Delduar", getString(R.string.delduar)));
-        subAreaList.add(new SubArea("Tangail", "Dhanbari", getString(R.string.dhanbari)));
-        subAreaList.add(new SubArea("Tangail", "Ghatail", getString(R.string.ghatail)));
-        subAreaList.add(new SubArea("Tangail", "Gopalpur", getString(R.string.gopalpur)));
-        subAreaList.add(new SubArea("Tangail", "Kalihati", getString(R.string.kalihati)));
-        subAreaList.add(new SubArea("Tangail", "Madhupur", getString(R.string.madhupur)));
-        subAreaList.add(new SubArea("Tangail", "Mirzapur", getString(R.string.mirzapur)));
-        subAreaList.add(new SubArea("Tangail", "Nagarpur", getString(R.string.nagarpur)));
-        subAreaList.add(new SubArea("Tangail", "Sakhipur", getString(R.string.sakhipur)));
-        subAreaList.add(new SubArea("Tangail", "Tangail Sadar", getString(R.string.tangail_sadar)));
-
-
-        subAreaList.add(new SubArea("Narsingdi", "Belabo", getString(R.string.belabo)));
-        subAreaList.add(new SubArea("Narsingdi", "Monohardi", getString(R.string.monohardi)));
-        subAreaList.add(new SubArea("Narsingdi", "Narsingdi sadar", getString(R.string.narsingdi_sadar)));
-        subAreaList.add(new SubArea("Narsingdi", "Polash", getString(R.string.polash)));
-        subAreaList.add(new SubArea("Narsingdi", "Raipura", getString(R.string.raipura)));
-        subAreaList.add(new SubArea("Narsingdi", "Shibpur", getString(R.string.shibpur)));
-
-
-        subAreaList.add(new SubArea("Shariatpur", "Vedorganj", getString(R.string.vedorganj)));
-        subAreaList.add(new SubArea("Shariatpur", "Damuda", getString(R.string.demuda)));
-        subAreaList.add(new SubArea("Shariatpur", "Gosairhat", getString(R.string.gosairhat)));
-        subAreaList.add(new SubArea("Shariatpur", "Noriya", getString(R.string.noriya)));
-        subAreaList.add(new SubArea("Shariatpur", "Shariatpur Sadar", getString(R.string.shariatpur_sadar)));
-        subAreaList.add(new SubArea("Shariatpur", "Jajira", getString(R.string.jajira)));
-
-
-        subAreaList.add(new SubArea("Dhaka", "Dhamrai", getString(R.string.dhamrai)));
-        subAreaList.add(new SubArea("Dhaka", "Dohar", getString(R.string.dohar)));
-        subAreaList.add(new SubArea("Dhaka", "Keraniganj", getString(R.string.keraniganj)));
-        subAreaList.add(new SubArea("Dhaka", "Nobabganj", getString(R.string.nobabganj)));
-        subAreaList.add(new SubArea("Dhaka", "Savar", getString(R.string.savar)));
-
-        subAreaList.add(new SubArea("Manikgonj", "Doulatpur", getString(R.string.doulotpur)));
-        subAreaList.add(new SubArea("Manikgonj", "Ghior", getString(R.string.ghior)));
-        subAreaList.add(new SubArea("Manikgonj", "Harirampur", getString(R.string.harirampur)));
-        subAreaList.add(new SubArea("Manikgonj", "Manikganj sadar", getString(R.string.manikganj_sadar)));
-        subAreaList.add(new SubArea("Manikgonj", "Saturia", getString(R.string.saturia)));
-        subAreaList.add(new SubArea("Manikgonj", "Shibaloy", getString(R.string.shibloy)));
-        subAreaList.add(new SubArea("Manikgonj", "Singair", getString(R.string.singair)));
-
-
-        subAreaList.add(new SubArea("Munshigonj", "Gozaria", getString(R.string.gozaria)));
-        subAreaList.add(new SubArea("Munshigonj", "Louhajong", getString(R.string.louhajong)));
-        subAreaList.add(new SubArea("Munshigonj", "Munshiganj sadar", getString(R.string.munshiganj_sadar)));
-        subAreaList.add(new SubArea("Munshigonj", "Srinagar", getString(R.string.srinagar)));
-        subAreaList.add(new SubArea("Munshigonj", "Sirajdikhan", getString(R.string.sirajdikhan)));
-        subAreaList.add(new SubArea("Munshigonj", "Tongibari", getString(R.string.tongibari)));
-
-
-        subAreaList.add(new SubArea("Gopalgonj", "Gopalganj sadar", getString(R.string.gopalganj_sadar)));
-        subAreaList.add(new SubArea("Gopalgonj", "Kashiyani", getString(R.string.kashiyani)));
-        subAreaList.add(new SubArea("Gopalgonj", "Kotalipara", getString(R.string.kotalipara)));
-        subAreaList.add(new SubArea("Gopalgonj", "Muksudpur", getString(R.string.muksudpur)));
-        subAreaList.add(new SubArea("Gopalgonj", "Tungipara", getString(R.string.tungipara)));
-
-
-        subAreaList.add(new SubArea("Madaripur", "Kalkini", getString(R.string.kalkini)));
-        subAreaList.add(new SubArea("Madaripur", "Dasar", getString(R.string.dasar)));
-        subAreaList.add(new SubArea("Madaripur", "Madaripur sadar", getString(R.string.madaripur_sadar)));
-        subAreaList.add(new SubArea("Madaripur", "Rajoub", getString(R.string.rajoiub)));
-        subAreaList.add(new SubArea("Madaripur", "Shibchar", getString(R.string.shibchar)));
-
-
-        subAreaList.add(new SubArea("NarayanGanj", "Araihazar", getString(R.string.araihazar)));
-        subAreaList.add(new SubArea("NarayanGanj", "Bandar", getString(R.string.bandar)));
-        subAreaList.add(new SubArea("NarayanGanj", "Narayanganj sadar", getString(R.string.narayanganj_sadar)));
-        subAreaList.add(new SubArea("NarayanGanj", "Narayanganj city", getString(R.string.narayanganj_city)));
-        subAreaList.add(new SubArea("NarayanGanj", "Rupganj", getString(R.string.rupganj)));
-        subAreaList.add(new SubArea("NarayanGanj", "Sonargaon", getString(R.string.sonargoan)));
-        subAreaList.add(new SubArea("NarayanGanj", "Fatullah", getString(R.string.fatullah)));
-
-
-        subAreaList.add(new SubArea("Gazipur", "Kaliganj", getString(R.string.kaliganj)));
-        subAreaList.add(new SubArea("Gazipur", "Kaliakoir", getString(R.string.kaliakoir)));
-        subAreaList.add(new SubArea("Gazipur", "Kapasia", getString(R.string.kapasia)));
-        subAreaList.add(new SubArea("Gazipur", "Basan", getString(R.string.basan)));
-        subAreaList.add(new SubArea("Gazipur", "Gazipur sadar", getString(R.string.gazipur_sadar)));
-        subAreaList.add(new SubArea("Gazipur", "Gazipur city corporation", getString(R.string.gazipur_city_corporation)));
-        subAreaList.add(new SubArea("Gazipur", "Sripur", getString(R.string.sripur)));
-        subAreaList.add(new SubArea("Gazipur", "Kayaloti", getString(R.string.kayaloti)));
-        subAreaList.add(new SubArea("Gazipur", "Konabari", getString(R.string.konabari)));
-        subAreaList.add(new SubArea("Gazipur", "Gasa", getString(R.string.gasa)));
-        subAreaList.add(new SubArea("Gazipur", "Kashimpur", getString(R.string.kashimpur)));
-
-
-        subAreaList.add(new SubArea("Brahmanbaria", "Bancharampur", getString(R.string.bancharampur)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Bijoynagar", getString(R.string.bijoynagar)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Akhaura", getString(R.string.akhaura)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Ashugonj", getString(R.string.ashuganj)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Kosba", getString(R.string.kosba)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Nobinogor", getString(R.string.nabinagar)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Nasirnogor", getString(R.string.nasirnagar)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Brahmanbaria sadar", getString(R.string.brahmanbaria_sadar)));
-        subAreaList.add(new SubArea("Brahmanbaria", "Sarail", getString(R.string.sarail)));
-
-
-        subAreaList.add(new SubArea("Bandarban", "Alikodom", getString(R.string.alikodom)));
-        subAreaList.add(new SubArea("Bandarban", "Thanchi", getString(R.string.thanchi)));
-        subAreaList.add(new SubArea("Bandarban", "Naikkhongchori", getString(R.string.naikkhonchori)));
-        subAreaList.add(new SubArea("Bandarban", "Ruma", getString(R.string.ruma)));
-        subAreaList.add(new SubArea("Bandarban", "Bandarban sadar", getString(R.string.bandarban_sadar)));
-        subAreaList.add(new SubArea("Bandarban", "Rongchori", getString(R.string.rongchori)));
-        subAreaList.add(new SubArea("Bandarban", "Lama", getString(R.string.lama)));
-
-
-        subAreaList.add(new SubArea("Chittagong", "Anoyara", getString(R.string.anoyara)));
-        subAreaList.add(new SubArea("Chittagong", "Chondonaish", getString(R.string.chondonaish)));
-        subAreaList.add(new SubArea("Chittagong", "Bashkhali", getString(R.string.bashkhali)));
-        subAreaList.add(new SubArea("Chittagong", "Boalkhali", getString(R.string.boalkhali)));
-        subAreaList.add(new SubArea("Chittagong", "Mirsarai", getString(R.string.mirsarai)));
-        subAreaList.add(new SubArea("Chittagong", "Sondip", getString(R.string.sondip)));
-        subAreaList.add(new SubArea("Chittagong", "Satkania", getString(R.string.satkania)));
-        subAreaList.add(new SubArea("Chittagong", "Hathazari", getString(R.string.hathazari)));
-        subAreaList.add(new SubArea("Chittagong", "Kornofuli", getString(R.string.kornofuli)));
-        subAreaList.add(new SubArea("Chittagong", "Potiya", getString(R.string.potiya)));
-        subAreaList.add(new SubArea("Chittagong", "Fotikchori", getString(R.string.fotikchori)));
-        subAreaList.add(new SubArea("Chittagong", "Roujan", getString(R.string.roujan)));
-        subAreaList.add(new SubArea("Chittagong", "Rangunia", getString(R.string.rangunia)));
-        subAreaList.add(new SubArea("Chittagong", "Lohagara", getString(R.string.hohagara)));
-        subAreaList.add(new SubArea("Chittagong", "Sitakunda", getString(R.string.sitakunda)));
-
-
-        subAreaList.add(new SubArea("Rangamati", "Kaptai", getString(R.string.kaptai)));
-        subAreaList.add(new SubArea("Rangamati", "Kaukhali", getString(R.string.kaukhali)));
-        subAreaList.add(new SubArea("Rangamati", "Jurachori", getString(R.string.jurachri)));
-        subAreaList.add(new SubArea("Rangamati", "Naniarchar", getString(R.string.naniarchar)));
-        subAreaList.add(new SubArea("Rangamati", "Borkol", getString(R.string.borkol)));
-        subAreaList.add(new SubArea("Rangamati", "Bagaichori", getString(R.string.bagaichori)));
-        subAreaList.add(new SubArea("Rangamati", "Bilaichori", getString(R.string.bilaichori)));
-        subAreaList.add(new SubArea("Rangamati", "Rangamati sadar", getString(R.string.rangamati_sadar)));
-        subAreaList.add(new SubArea("Rangamati", "Rajstoli", getString(R.string.rajstoli)));
-        subAreaList.add(new SubArea("Rangamati", "Longgodu", getString(R.string.longodu)));
-
-
-        subAreaList.add(new SubArea("Comilla", "Nangalkot", getString(R.string.nangalkot)));
-        subAreaList.add(new SubArea("Comilla", "Burichong", getString(R.string.burichong)));
-        subAreaList.add(new SubArea("Comilla", "Muradnagar", getString(R.string.muradnagar)));
-        subAreaList.add(new SubArea("Comilla", "Comilla city", getString(R.string.comilla_city)));
-        subAreaList.add(new SubArea("Comilla", "Comilla sadar", getString(R.string.comilla_sadar)));
-        subAreaList.add(new SubArea("Comilla", "Chandina", getString(R.string.chandina)));
-        subAreaList.add(new SubArea("Comilla", "Choddogram", getString(R.string.choddogram)));
-        subAreaList.add(new SubArea("Comilla", "Titas", getString(R.string.titas)));
-        subAreaList.add(new SubArea("Comilla", "Debidar", getString(R.string.debidar)));
-        subAreaList.add(new SubArea("Comilla", "Daudkandi", getString(R.string.daudkandi)));
-        subAreaList.add(new SubArea("Comilla", "Borura", getString(R.string.borura)));
-        subAreaList.add(new SubArea("Comilla", "Brahmanpara", getString(R.string.brahmanpara)));
-        subAreaList.add(new SubArea("Comilla", "Monohorgonj", getString(R.string.monohorganj)));
-        subAreaList.add(new SubArea("Comilla", "Megna", getString(R.string.megna)));
-        subAreaList.add(new SubArea("Comilla", "Laksham", getString(R.string.laksam)));
-        subAreaList.add(new SubArea("Comilla", "Lalmai", getString(R.string.lalmai)));
-        subAreaList.add(new SubArea("Comilla", "Sadar dokkhin", getString(R.string.sadar_dokkhin)));
-        subAreaList.add(new SubArea("Comilla", "Homna", getString(R.string.homna)));
-
-
-        subAreaList.add(new SubArea("Noakhali", "Kabirhat", getString(R.string.kabirhat)));
-        subAreaList.add(new SubArea("Noakhali", "Kompanigonj", getString(R.string.kompaniganj)));
-        subAreaList.add(new SubArea("Noakhali", "Chatkhil", getString(R.string.chatkhil)));
-        subAreaList.add(new SubArea("Noakhali", "Noakhali sadar", getString(R.string.noakhali_sadar)));
-        subAreaList.add(new SubArea("Noakhali", "Begumgonj", getString(R.string.begumganj)));
-        subAreaList.add(new SubArea("Noakhali", "Subornochor", getString(R.string.subornochor)));
-        subAreaList.add(new SubArea("Noakhali", "Senbag", getString(R.string.senbug)));
-        subAreaList.add(new SubArea("Noakhali", "Sonaimuri", getString(R.string.sonaimuri)));
-        subAreaList.add(new SubArea("Noakhali", "Hatiya", getString(R.string.hatiya)));
-
-
-        subAreaList.add(new SubArea("CoxsBazar", "Ukhiya", getString(R.string.ukhiya)));
-        subAreaList.add(new SubArea("CoxsBazar", "Kutubdia", getString(R.string.kutubdia)));
-        subAreaList.add(new SubArea("CoxsBazar", "Cox's Bazar sadar", getString(R.string.coxsbazar_sadar)));
-        subAreaList.add(new SubArea("CoxsBazar", "Chokoria", getString(R.string.chokoria)));
-        subAreaList.add(new SubArea("CoxsBazar", "Teknaf", getString(R.string.teknaf)));
-        subAreaList.add(new SubArea("CoxsBazar", "Pekuya", getString(R.string.pekuya)));
-        subAreaList.add(new SubArea("CoxsBazar", "Moheshkhali", getString(R.string.moheshkhali)));
-        subAreaList.add(new SubArea("CoxsBazar", "Ramu", getString(R.string.ramu)));
-
-
-        subAreaList.add(new SubArea("Chandpur", "Kochuya", getString(R.string.kochuya)));
-        subAreaList.add(new SubArea("Chandpur", "Motlob dokkhain", getString(R.string.motlob_dokkhin)));
-        subAreaList.add(new SubArea("Chandpur", "Chandpur sadar", getString(R.string.chandpur_sadar)));
-        subAreaList.add(new SubArea("Chandpur", "Faridgonj", getString(R.string.faridganj)));
-        subAreaList.add(new SubArea("Chandpur", "Motlob uttar", getString(R.string.motlob_sadar)));
-        subAreaList.add(new SubArea("Chandpur", "Shahrasti", getString(R.string.shahrasti)));
-        subAreaList.add(new SubArea("Chandpur", "Haimchor", getString(R.string.hhaimchor)));
-        subAreaList.add(new SubArea("Chandpur", "Hajigonj", getString(R.string.hajiganj)));
-
-
-        subAreaList.add(new SubArea("Feni", "Dagonbhuiyan", getString(R.string.dagunbhuiyan)));
-        subAreaList.add(new SubArea("Feni", "Chagla naiya", getString(R.string.changla_naiya)));
-        subAreaList.add(new SubArea("Feni", "Porshuram", getString(R.string.porshuram)));
-        subAreaList.add(new SubArea("Feni", "Fulgazi", getString(R.string.fulgazi)));
-        subAreaList.add(new SubArea("Feni", "Feni sadar", getString(R.string.feni_sadar)));
-        subAreaList.add(new SubArea("Feni", "Sonagazi", getString(R.string.sonagazi)));
-
-
-        subAreaList.add(new SubArea("Khagrasori", "Guimara", getString(R.string.guimara)));
-        subAreaList.add(new SubArea("Khagrasori", "Matiranga", getString(R.string.matiranga)));
-        subAreaList.add(new SubArea("Khagrasori", "Manikchari", getString(R.string.manikchari)));
-        subAreaList.add(new SubArea("Khagrasori", "Ramgarh", getString(R.string.ramgarh)));
-        subAreaList.add(new SubArea("Khagrasori", "Khagrachari sadar", getString(R.string.khagrachari_sadar)));
-        subAreaList.add(new SubArea("Khagrasori", "Dighinala", getString(R.string.dighinala)));
-        subAreaList.add(new SubArea("Khagrasori", "Panchori", getString(R.string.panchori)));
-        subAreaList.add(new SubArea("Khagrasori", "Mohalchori", getString(R.string.mohalchori)));
-        subAreaList.add(new SubArea("Khagrasori", "Lokkhichori", getString(R.string.lokkhichori)));
-
-
-        subAreaList.add(new SubArea("Lokkhipur", "Komol Nogor", getString(R.string.komol_nagar)));
-        subAreaList.add(new SubArea("Lokkhipur", "Ramgoti", getString(R.string.ramgoti)));
-        subAreaList.add(new SubArea("Lokkhipur", "Raipur", getString(R.string.raipur)));
-        subAreaList.add(new SubArea("Lokkhipur", "Ramgonj", getString(R.string.ramganj)));
-        subAreaList.add(new SubArea("Lokkhipur", "Lakshmipur sadar", getString(R.string.laksmipur_sadar)));
-
-
-        subAreaList.add(new SubArea("Barisal", "Agoilojhara", getString(R.string.agoilojhara)));
-        subAreaList.add(new SubArea("Barisal", "Babuganj", getString(R.string.babuganj)));
-        subAreaList.add(new SubArea("Barisal", "Bakerganj", getString(R.string.bakerganj)));
-        subAreaList.add(new SubArea("Barisal", "Banaripara", getString(R.string.banaripara)));
-        subAreaList.add(new SubArea("Barisal", "Barisal sadar", getString(R.string.barishal_sadar)));
-        subAreaList.add(new SubArea("Barisal", "Gournadi", getString(R.string.gournadi)));
-        subAreaList.add(new SubArea("Barisal", "Mehendiganj", getString(R.string.mehendiganj)));
-        subAreaList.add(new SubArea("Barisal", "Muladi", getString(R.string.muladi)));
-        subAreaList.add(new SubArea("Barisal", "Hijla", getString(R.string.hijla)));
-        subAreaList.add(new SubArea("Barisal", "Ujirpur", getString(R.string.ujirpur)));
-        subAreaList.add(new SubArea("Barisal", "Barisal city", getString(R.string.barisal_city)));
-
-
-        subAreaList.add(new SubArea("Barguna", "Amtali", getString(R.string.amtali)));
-        subAreaList.add(new SubArea("Barguna", "Bamna", getString(R.string.bamna)));
-        subAreaList.add(new SubArea("Barguna", "Barguna sadar", getString(R.string.barguna_sadar)));
-        subAreaList.add(new SubArea("Barguna", "Betagi", getString(R.string.betagi)));
-        subAreaList.add(new SubArea("Barguna", "Patharghata", getString(R.string.patharghata)));
-        subAreaList.add(new SubArea("Barguna", "Taltoli", getString(R.string.taltoli)));
-
-
-        subAreaList.add(new SubArea("Patuakhali", "Baufal", getString(R.string.baufal)));
-        subAreaList.add(new SubArea("Patuakhali", "Doshmina", getString(R.string.doshmina)));
-        subAreaList.add(new SubArea("Patuakhali", "Dumki", getString(R.string.dumki)));
-        subAreaList.add(new SubArea("Patuakhali", "Galachipa", getString(R.string.galachipa)));
-        subAreaList.add(new SubArea("Patuakhali", "Kalapara", getString(R.string.kalapara)));
-        subAreaList.add(new SubArea("Patuakhali", "Mirzaganj", getString(R.string.mirzaganj)));
-        subAreaList.add(new SubArea("Patuakhali", "Patuakhali sadar", getString(R.string.patuakhali_sadar)));
-        subAreaList.add(new SubArea("Patuakhali", "Rangabali", getString(R.string.rangabali)));
-
-
-        subAreaList.add(new SubArea("Pirojpur", "Vandariya", getString(R.string.vandariya)));
-        subAreaList.add(new SubArea("Pirojpur", "Kaukhali", getString(R.string.kaukhali)));
-        subAreaList.add(new SubArea("Pirojpur", "Motbariya", getString(R.string.motbariya)));
-        subAreaList.add(new SubArea("Pirojpur", "Najirpur", getString(R.string.najirpur)));
-        subAreaList.add(new SubArea("Pirojpur", "Nesarabad", getString(R.string.nesarabad)));
-        subAreaList.add(new SubArea("Pirojpur", "Pirojpur Sadar", getString(R.string.pirojpur_sadar)));
-        subAreaList.add(new SubArea("Pirojpur", "Jiyanagar", getString(R.string.jiyanagar)));
-
-
-        subAreaList.add(new SubArea("Bhola", "Bhola sadar", getString(R.string.bhola_sadar)));
-        subAreaList.add(new SubArea("Bhola", "Borhanuddin", getString(R.string.borhanuddn)));
-        subAreaList.add(new SubArea("Bhola", "Charfashion", getString(R.string.charfashion)));
-        subAreaList.add(new SubArea("Bhola", "Doulathkhan", getString(R.string.doulatkhan)));
-        subAreaList.add(new SubArea("Bhola", "Lalmohan", getString(R.string.lalmohan)));
-        subAreaList.add(new SubArea("Bhola", "Monpura", getString(R.string.monpura)));
-        subAreaList.add(new SubArea("Bhola", "Tajumuddin", getString(R.string.tajumuddin)));
-
-
-        subAreaList.add(new SubArea("Jhalokati", "Jhalokati sadar", getString(R.string.jhalokati_sadar)));
-        subAreaList.add(new SubArea("Jhalokati", "Kathaliya", getString(R.string.kathaliya)));
-        subAreaList.add(new SubArea("Jhalokati", "Nolsity", getString(R.string.nolsity)));
-        subAreaList.add(new SubArea("Jhalokati", "Rajapur", getString(R.string.rajapur)));
-
-
-        subAreaList.add(new SubArea("Jessore", "Avoynagar", getString(R.string.avoynagar)));
-        subAreaList.add(new SubArea("Jessore", "Bagharpara", getString(R.string.bagharpara)));
-        subAreaList.add(new SubArea("Jessore", "Chougasa", getString(R.string.chougasa)));
-        subAreaList.add(new SubArea("Jessore", "Jessore sadar", getString(R.string.jessore_sadar)));
-        subAreaList.add(new SubArea("Jessore", "Jhikargacha", getString(R.string.jhikargacha)));
-        subAreaList.add(new SubArea("Jessore", "Keshabpur", getString(R.string.keshabpur)));
-        subAreaList.add(new SubArea("Jessore", "Monirampur", getString(R.string.monirampur)));
-        subAreaList.add(new SubArea("Jessore", "Sharsha", getString(R.string.sharsha)));
-
-
-        subAreaList.add(new SubArea("Chuadanga", "Alamdanga", getString(R.string.alamdanga)));
-        subAreaList.add(new SubArea("Chuadanga", "Chuadanga sadar", getString(R.string.chuadanga_sadar)));
-        subAreaList.add(new SubArea("Chuadanga", "Damurhuda", getString(R.string.damurhuda)));
-        subAreaList.add(new SubArea("Chuadanga", "Jibonnagar", getString(R.string.jibonnagar)));
-
-        subAreaList.add(new SubArea("Satkhira", "Ashasuni", getString(R.string.ashasuni)));
-        subAreaList.add(new SubArea("Satkhira", "Debhata", getString(R.string.debhata)));
-        subAreaList.add(new SubArea("Satkhira", "Kolaroya", getString(R.string.kolaraya)));
-        subAreaList.add(new SubArea("Satkhira", "Kaliganj", getString(R.string.kaliganj)));
-        subAreaList.add(new SubArea("Satkhira", "Satkhira sadar", getString(R.string.satkhira_sadar)));
-        subAreaList.add(new SubArea("Satkhira", "Shyamnagar", getString(R.string.shyamnagar)));
-        subAreaList.add(new SubArea("Satkhira", "Tala", getString(R.string.tala)));
-
-
-        subAreaList.add(new SubArea("Bagerhat", "Bagerhat sadar", getString(R.string.bagherhat_sadar)));
-        subAreaList.add(new SubArea("Bagerhat", "Citolmari", getString(R.string.citolmari)));
-        subAreaList.add(new SubArea("Bagerhat", "Fakirhat", getString(R.string.fakirhat)));
-        subAreaList.add(new SubArea("Bagerhat", "Kocuya", getString(R.string.kochuya)));
-        subAreaList.add(new SubArea("Bagerhat", "Mollahat", getString(R.string.mollarhat)));
-        subAreaList.add(new SubArea("Bagerhat", "Mongla", getString(R.string.mongla)));
-        subAreaList.add(new SubArea("Bagerhat", "Morolganj", getString(R.string.morolganj)));
-        subAreaList.add(new SubArea("Bagerhat", "Rampal", getString(R.string.rampal)));
-        subAreaList.add(new SubArea("Bagerhat", "Shoronkhola", getString(R.string.shoronkhola)));
-
-
-        subAreaList.add(new SubArea("Kustia", "Veramara", getString(R.string.veramara)));
-        subAreaList.add(new SubArea("Kustia", "Doulatpur", getString(R.string.doulatpur)));
-        subAreaList.add(new SubArea("Kustia", "Khoksa", getString(R.string.khoksa)));
-        subAreaList.add(new SubArea("Kustia", "Kumarkhali", getString(R.string.kumarkhali)));
-        subAreaList.add(new SubArea("Kustia", "Kushtia sadar", getString(R.string.kustia_sadar)));
-        subAreaList.add(new SubArea("Kustia", "Mirpur kushtia", getString(R.string.mirpur_kustia)));
-
-
-        subAreaList.add(new SubArea("Khulna", "Batiaghata", getString(R.string.batiaghata)));
-        subAreaList.add(new SubArea("Khulna", "Dakop", getString(R.string.dakop)));
-        subAreaList.add(new SubArea("Khulna", "Dhigliya", getString(R.string.dhigliya)));
-        subAreaList.add(new SubArea("Khulna", "Dumuriya", getString(R.string.dumuriya)));
-        subAreaList.add(new SubArea("Khulna", "Fultola", getString(R.string.fultola)));
-        subAreaList.add(new SubArea("Khulna", "Koyra", getString(R.string.koyra)));
-        subAreaList.add(new SubArea("Khulna", "Paikgasa", getString(R.string.paikgasa)));
-        subAreaList.add(new SubArea("Khulna", "Rupsa", getString(R.string.rupsa)));
-        subAreaList.add(new SubArea("Khulna", "Terokhada", getString(R.string.terokhada)));
-        subAreaList.add(new SubArea("Khulna", "Khulna city", getString(R.string.khulna_city)));
-
-
-        subAreaList.add(new SubArea("Meherpur", "Gangni", getString(R.string.gangni)));
-        subAreaList.add(new SubArea("Meherpur", "Meherpur sadar", getString(R.string.meherpur_sadar)));
-        subAreaList.add(new SubArea("Meherpur", "Mujibnagar", getString(R.string.mujibnagar)));
-
-
-        subAreaList.add(new SubArea("Jhenaidah", "Harinakundu", getString(R.string.harinakundu)));
-        subAreaList.add(new SubArea("Jhenaidah", "Jhenaidah sadar", getString(R.string.jhenaidah_sadar)));
-        subAreaList.add(new SubArea("Jhenaidah", "Kaliganj", getString(R.string.kaliganj)));
-        subAreaList.add(new SubArea("Jhenaidah", "Kotchandpur", getString(R.string.kotchandpur)));
-        subAreaList.add(new SubArea("Jhenaidah", "Maheshpur", getString(R.string.maheshpur)));
-        subAreaList.add(new SubArea("Jhenaidah", "Shailkupa", getString(R.string.shailkupa)));
-
-
-        subAreaList.add(new SubArea("Norail", "Kaliya", getString(R.string.kaliya)));
-        subAreaList.add(new SubArea("Norail", "Lohagara", getString(R.string.lohagara)));
-        subAreaList.add(new SubArea("Norail", "Narail sadar", getString(R.string.narail_sadar)));
-
-
-        subAreaList.add(new SubArea("Magura", "Magura sadar", getString(R.string.magura_sadar)));
-        subAreaList.add(new SubArea("Magura", "Mohammadpur", getString(R.string.mohammadpur)));
-        subAreaList.add(new SubArea("Magura", "Shalikha", getString(R.string.shalikha)));
-        subAreaList.add(new SubArea("Magura", "Sripur", getString(R.string.sripur)));
-
-
-        subAreaList.add(new SubArea("Lalmonir hat", "Aditmari", getString(R.string.aditmari)));
-        subAreaList.add(new SubArea("Lalmonir hat", "Hatibandha", getString(R.string.hatibandha)));
-        subAreaList.add(new SubArea("Lalmonir hat", "Kaliganj", getString(R.string.kaliganj)));
-        subAreaList.add(new SubArea("Lalmonir hat", "Patgram", getString(R.string.patgram)));
-        subAreaList.add(new SubArea("Lalmonir hat", "Lalmonirhat sadar", getString(R.string.lalmonirhat_sadar)));
-
-
-        subAreaList.add(new SubArea("Ponchogor", "Atoyari", getString(R.string.atoyari)));
-        subAreaList.add(new SubArea("Ponchogor", "Boda", getString(R.string.boda)));
-        subAreaList.add(new SubArea("Ponchogor", "Debiganj", getString(R.string.debiganj)));
-        subAreaList.add(new SubArea("Ponchogor", "Panchagar", getString(R.string.panchagar)));
-        subAreaList.add(new SubArea("Ponchogor", "tetulia", getString(R.string.tetulia)));
-
-
-        subAreaList.add(new SubArea("Rangpur", "Badarganj", getString(R.string.badarganj)));
-        subAreaList.add(new SubArea("Rangpur", "Gangachara", getString(R.string.gangachar)));
-        subAreaList.add(new SubArea("Rangpur", "Kaunia", getString(R.string.kaunia)));
-        subAreaList.add(new SubArea("Rangpur", "Mithapukur", getString(R.string.mithapukur)));
-        subAreaList.add(new SubArea("Rangpur", "Pirgasa", getString(R.string.pirgasa)));
-        subAreaList.add(new SubArea("Rangpur", "Pirganj", getString(R.string.pirganj)));
-        subAreaList.add(new SubArea("Rangpur", "Rangpur sadar", getString(R.string.rangpur_sadar)));
-        subAreaList.add(new SubArea("Rangpur", "Taraganj", getString(R.string.taraganj)));
-        subAreaList.add(new SubArea("Rangpur", "Rangpur city", getString(R.string.rangpur_city)));
-
-
-        subAreaList.add(new SubArea("Thakurgaon", "Baliya Dangi", getString(R.string.baliya_dangi)));
-        subAreaList.add(new SubArea("Thakurgaon", "Haripur", getString(R.string.haripur)));
-        subAreaList.add(new SubArea("Thakurgaon", "Pirganj", getString(R.string.pirganj)));
-        subAreaList.add(new SubArea("Thakurgaon", "Ranisankail", getString(R.string.ranisankail)));
-        subAreaList.add(new SubArea("Thakurgaon", "Thakurgaon sadar", getString(R.string.thakurgaon_sadar)));
-
-
-        subAreaList.add(new SubArea("Kurigram", "Bhurungamari", getString(R.string.bhurangamari)));
-        subAreaList.add(new SubArea("Kurigram", "Char rajibpur", getString(R.string.char_rajibpur)));
-        subAreaList.add(new SubArea("Kurigram", "Chilmari", getString(R.string.chilmari)));
-        subAreaList.add(new SubArea("Kurigram", "Kaliganj", getString(R.string.kaliganj)));
-        subAreaList.add(new SubArea("Kurigram", "Kurigram sadar", getString(R.string.kurigram_sadar)));
-        subAreaList.add(new SubArea("Kurigram", "Nageswari", getString(R.string.nageswari)));
-        subAreaList.add(new SubArea("Kurigram", "Fulbari", getString(R.string.fulbari)));
-        subAreaList.add(new SubArea("Kurigram", "Rajarhat", getString(R.string.rajarhat)));
-        subAreaList.add(new SubArea("Kurigram", "Roumari", getString(R.string.roumari)));
-        subAreaList.add(new SubArea("Kurigram", "Ulipur", getString(R.string.ulipur)));
-
-
-        subAreaList.add(new SubArea("Dinajpur", "Birampur", getString(R.string.birampur)));
-        subAreaList.add(new SubArea("Dinajpur", "Birganj", getString(R.string.birganj)));
-        subAreaList.add(new SubArea("Dinajpur", "Bochaganj", getString(R.string.bochaganj)));
-        subAreaList.add(new SubArea("Dinajpur", "Birol", getString(R.string.birol)));
-        subAreaList.add(new SubArea("Dinajpur", "Chirirbandar", getString(R.string.chirirbandar)));
-        subAreaList.add(new SubArea("Dinajpur", "Dinajpur sadar", getString(R.string.dinajpur_sadar)));
-        subAreaList.add(new SubArea("Dinajpur", "Fulbari", getString(R.string.fulbari)));
-        subAreaList.add(new SubArea("Dinajpur", "Ghoraghat", getString(R.string.ghorahat)));
-        subAreaList.add(new SubArea("Dinajpur", "Hakimpur", getString(R.string.hakimpur)));
-        subAreaList.add(new SubArea("Dinajpur", "Kaharol", getString(R.string.kaharol)));
-        subAreaList.add(new SubArea("Dinajpur", "Khansama", getString(R.string.khansama)));
-        subAreaList.add(new SubArea("Dinajpur", "Nababganj", getString(R.string.nababganj)));
-        subAreaList.add(new SubArea("Dinajpur", "Parbatipur", getString(R.string.parbatipur)));
-
-
-        subAreaList.add(new SubArea("Nilfamari", "Dimla", getString(R.string.dimla)));
-        subAreaList.add(new SubArea("Nilfamari", "Domar", getString(R.string.domar)));
-        subAreaList.add(new SubArea("Nilfamari", "Jaldhaka", getString(R.string.jaldhaka)));
-        subAreaList.add(new SubArea("Nilfamari", "Kishorgonj", getString(R.string.kishorgonj)));
-        subAreaList.add(new SubArea("Nilfamari", "Nilphamari sadar", getString(R.string.nilphamari_sadar)));
-        subAreaList.add(new SubArea("Nilfamari", "Saidpur", getString(R.string.saidpur)));
-
-
-        subAreaList.add(new SubArea("Gaibandha", "Gaibandha sadar", getString(R.string.gaibandha_sadar)));
-        subAreaList.add(new SubArea("Gaibandha", "Gobindaganj", getString(R.string.gobindaganj)));
-        subAreaList.add(new SubArea("Gaibandha", "Palashbari", getString(R.string.palashbari)));
-        subAreaList.add(new SubArea("Gaibandha", "Fulsori", getString(R.string.fulsori)));
-        subAreaList.add(new SubArea("Gaibandha", "Sadullahpur", getString(R.string.sadullahpur)));
-        subAreaList.add(new SubArea("Gaibandha", "Saghata", getString(R.string.saghata)));
-        subAreaList.add(new SubArea("Gaibandha", "Sundorganj", getString(R.string.sundorganj)));
-
-
-        subAreaList.add(new SubArea("Bagura", "Bogra Sadar", getString(R.string.bogra_sadar)));
-        subAreaList.add(new SubArea("Bagura", "Gabtoli", getString(R.string.gabtoli)));
-        subAreaList.add(new SubArea("Bagura", "Sariakandi", getString(R.string.sariakandi)));
-        subAreaList.add(new SubArea("Bagura", "Adamdighi", getString(R.string.adamdighi)));
-        subAreaList.add(new SubArea("Bagura", "Sonatala", getString(R.string.sonatala)));
-        subAreaList.add(new SubArea("Bagura", "Sherpur", getString(R.string.sherpur)));
-        subAreaList.add(new SubArea("Bagura", "Kahaloo", getString(R.string.kahaloo)));
-        subAreaList.add(new SubArea("Bagura", "Shibganj", getString(R.string.shibganj)));
-        subAreaList.add(new SubArea("Bagura", "Dupchanchia", getString(R.string.dupchachia)));
-        subAreaList.add(new SubArea("Bagura", "Nandigram", getString(R.string.nandigram)));
-        subAreaList.add(new SubArea("Bagura", "Sahajanpur", getString(R.string.sahajahanpur)));
-        subAreaList.add(new SubArea("Bagura", "Dhunat", getString(R.string.dhunat)));
-
-
-        subAreaList.add(new SubArea("Chapainawabganj", "Gomastapur", getString(R.string.gomastapur)));
-        subAreaList.add(new SubArea("Chapainawabganj", "Chapainawabganj Sadar", getString(R.string.chapainawabganj_sadar)));
-        subAreaList.add(new SubArea("Chapainawabganj", "Nachole", getString(R.string.nachole)));
-        subAreaList.add(new SubArea("Chapainawabganj", "Bholahat", getString(R.string.bholahat)));
-        subAreaList.add(new SubArea("Chapainawabganj", "Shibganj", getString(R.string.shibganj)));
-
-
-        subAreaList.add(new SubArea("Joypurhat", "Akkelpur", getString(R.string.akkelpur)));
-        subAreaList.add(new SubArea("Joypurhat", "Kalai", getString(R.string.kalai)));
-        subAreaList.add(new SubArea("Joypurhat", "Khetlal", getString(R.string.khetlal)));
-        subAreaList.add(new SubArea("Joypurhat", "Joypurhat Sadar", getString(R.string.joypurhat_sadar)));
-        subAreaList.add(new SubArea("Joypurhat", "Panchbibi", getString(R.string.panchbibi)));
-
-
-        subAreaList.add(new SubArea("Nouga", "Atrai", getString(R.string.atrai)));
-        subAreaList.add(new SubArea("Nouga", "Dhamoirhat", getString(R.string.dhamoirhat)));
-        subAreaList.add(new SubArea("Nouga", "Niamatpur", getString(R.string.niamatpur)));
-        subAreaList.add(new SubArea("Nouga", "Patnitala", getString(R.string.patnitala)));
-        subAreaList.add(new SubArea("Nouga", "Porsha", getString(R.string.porsha)));
-        subAreaList.add(new SubArea("Nouga", "Badalgachhi", getString(R.string.badalgachhi)));
-        subAreaList.add(new SubArea("Nouga", "Mahadebpur", getString(R.string.mahadebpur)));
-        subAreaList.add(new SubArea("Nouga", "Manda", getString(R.string.manda)));
-        subAreaList.add(new SubArea("Nouga", "Naogaon Sadar", getString(R.string.naogaon_sadar)));
-        subAreaList.add(new SubArea("Nouga", "Raninagar", getString(R.string.raninagar)));
-        subAreaList.add(new SubArea("Nouga", "Sapahar", getString(R.string.sapahar)));
-
-
-        subAreaList.add(new SubArea("Natore", "Gurudaspur", getString(R.string.gurudaspur)));
-        subAreaList.add(new SubArea("Natore", "Naldanga", getString(R.string.naldanga)));
-        subAreaList.add(new SubArea("Natore", "Natore Sadar", getString(R.string.natore_sadar)));
-        subAreaList.add(new SubArea("Natore", "Baraigram", getString(R.string.baraigram)));
-        subAreaList.add(new SubArea("Natore", "Bagatipara", getString(R.string.bagatipara)));
-        subAreaList.add(new SubArea("Natore", "Lalpur", getString(R.string.lalpur)));
-        subAreaList.add(new SubArea("Natore", "Singra", getString(R.string.singra)));
-
-
-        subAreaList.add(new SubArea("Pabna", "Bera",getString(R.string.bera) ));
-        subAreaList.add(new SubArea("Pabna", "Bhangura", getString(R.string.bhangura)));
-        subAreaList.add(new SubArea("Pabna", "Chatmohar", getString(R.string.chatmohar)));
-        subAreaList.add(new SubArea("Pabna", "Ishwardi", getString(R.string.Ishwardi)));
-        subAreaList.add(new SubArea("Pabna", "Pabna Sadar", getString(R.string.Pabna_Sadar)));
-        subAreaList.add(new SubArea("Pabna", "Sathia", getString(R.string.Sathia)));
-        subAreaList.add(new SubArea("Pabna", "Sujanagar", getString(R.string.Sujanagar)));
-        subAreaList.add(new SubArea("Pabna", "Atghoria", getString(R.string.Atghoria)));
-        subAreaList.add(new SubArea("Pabna", "Faridpur", getString(R.string.faridpur)));
-
-
-        subAreaList.add(new SubArea("Rajshahi", "Durgapur", getString(R.string.Durgapur)));
-        subAreaList.add(new SubArea("Rajshahi", "Bagha", getString(R.string.Bagha)));
-        subAreaList.add(new SubArea("Rajshahi", "Bagmara", getString(R.string.Bagmara)));
-        subAreaList.add(new SubArea("Rajshahi", "Charghat", getString(R.string.Charghat)));
-        subAreaList.add(new SubArea("Rajshahi", "Godagari", getString(R.string.Godagari)));
-        subAreaList.add(new SubArea("Rajshahi", "Mohonpur", getString(R.string.Mohonpur)));
-        subAreaList.add(new SubArea("Rajshahi", "Paba", getString(R.string.Paba)));
-        subAreaList.add(new SubArea("Rajshahi", "Puthia", getString(R.string.Puthia)));
-        subAreaList.add(new SubArea("Rajshahi", "Tanore", getString(R.string.Tanore)));
-
-
-        subAreaList.add(new SubArea("Sirajgonj", "Belkuchi", getString(R.string.Belkuchi)));
-        subAreaList.add(new SubArea("Sirajgonj", "Chauhali", getString(R.string.Chauhali)));
-        subAreaList.add(new SubArea("Sirajgonj", "Kamarkhanda", getString(R.string.Kamarkhanda)));
-        subAreaList.add(new SubArea("Sirajgonj", "Kazipur", getString(R.string.Kazipur)));
-        subAreaList.add(new SubArea("Sirajgonj", "Raiganj", getString(R.string.Raiganj)));
-        subAreaList.add(new SubArea("Sirajgonj", "Shahjadpur", getString(R.string.Shahjadpur)));
-        subAreaList.add(new SubArea("Sirajgonj", "Sirajganj sadar", getString(R.string.Sirajganj_sadar)));
-        subAreaList.add(new SubArea("Sirajgonj", "Tarash", getString(R.string.Tarash)));
-        subAreaList.add(new SubArea("Sirajgonj", "Ullapara", getString(R.string.Ullapara)));
-
-
-        subAreaList.add(new SubArea("Habiganj", "Ajmiriganj", getString(R.string.ajmiriganj)));
-        subAreaList.add(new SubArea("Habiganj", "Bahubal", getString(R.string.bahubal)));
-        subAreaList.add(new SubArea("Habiganj", "Baniachong", getString(R.string.baniachong)));
-        subAreaList.add(new SubArea("Habiganj", "Chunarughat", getString(R.string.chunarughat)));
-        subAreaList.add(new SubArea("Habiganj", "Habiganj sadar", getString(R.string.habiganj_sadar)));
-        subAreaList.add(new SubArea("Habiganj", "Lakhai", getString(R.string.lakhai)));
-        subAreaList.add(new SubArea("Habiganj", "Madhabpur", getString(R.string.madhabpur)));
-        subAreaList.add(new SubArea("Habiganj", "Nabiganj", getString(R.string.nabiganj)));
-        subAreaList.add(new SubArea("Habiganj", "Shaistaganj", getString(R.string.shaistaganj)));
-
-
-        subAreaList.add(new SubArea("Moulvibazar", "Barlekha", getString(R.string.barlekha)));
-        subAreaList.add(new SubArea("Moulvibazar", "Juri", getString(R.string.juri)));
-        subAreaList.add(new SubArea("Moulvibazar", "Kamalganj", getString(R.string.kamalganj)));
-        subAreaList.add(new SubArea("Moulvibazar", "Kulaura", getString(R.string.kulaura)));
-        subAreaList.add(new SubArea("Moulvibazar", "Moulvibazar sadar", getString(R.string.moulvibazar_sadar)));
-        subAreaList.add(new SubArea("Moulvibazar", "Srimangal", getString(R.string.srimangal)));
-
-
-        subAreaList.add(new SubArea("Sylhet", "Belal Ganj", getString(R.string.belalganj)));
-        subAreaList.add(new SubArea("Sylhet", "Biyani Bazar", getString(R.string.biyanibazar)));
-        subAreaList.add(new SubArea("Sylhet", "Bishwanath", getString(R.string.bishwanath)));
-        subAreaList.add(new SubArea("Sylhet", "Companiganj", getString(R.string.companiganj)));
-        subAreaList.add(new SubArea("Sylhet", "Dokkhin surma", getString(R.string.dokkhin_surma)));
-        subAreaList.add(new SubArea("Sylhet", "Fenchuganj", getString(R.string.fenchuganj)));
-        subAreaList.add(new SubArea("Sylhet", "Gopalganj", getString(R.string.gopalganj)));
-        subAreaList.add(new SubArea("Sylhet", "Goyainghat", getString(R.string.goyainghat)));
-        subAreaList.add(new SubArea("Sylhet", "Jointapur", getString(R.string.jointapur)));
-        subAreaList.add(new SubArea("Sylhet", "Jokiganj", getString(R.string.jokiganj)));
-        subAreaList.add(new SubArea("Sylhet", "Kanaighat", getString(R.string.kanaighat)));
-        subAreaList.add(new SubArea("Sylhet", "Osmani nagar", getString(R.string.osmaninagar)));
-        subAreaList.add(new SubArea("Sylhet", "Sylhet sadar", getString(R.string.sylhet_sadar)));
-        subAreaList.add(new SubArea("Sylhet", "Sylhet city", getString(R.string.sylhet_city)));
-
-
-        subAreaList.add(new SubArea("Sunamgonj", "Bissomvorpur", getString(R.string.bissomvorpur)));
-        subAreaList.add(new SubArea("Sunamgonj", "Satok", getString(R.string.satok)));
-        subAreaList.add(new SubArea("Sunamgonj", "Derai", getString(R.string.derai)));
-        subAreaList.add(new SubArea("Sunamgonj", "Dharmapasha", getString(R.string.dharmapasha)));
-        subAreaList.add(new SubArea("Sunamgonj", "Doyarabazar", getString(R.string.doyarabazar)));
-        subAreaList.add(new SubArea("Sunamgonj", "Jagannathpur", getString(R.string.jagannathpur)));
-        subAreaList.add(new SubArea("Sunamgonj", "Jamalganj", getString(R.string.jamalganj)));
-        subAreaList.add(new SubArea("Sunamgonj", "Salla", getString(R.string.salla)));
-        subAreaList.add(new SubArea("Sunamgonj", "Madhyanagar", getString(R.string.madhyanagar)));
-        subAreaList.add(new SubArea("Sunamgonj", "Sunamganj sadar", getString(R.string.sunamganj_sadar)));
-        subAreaList.add(new SubArea("Sunamgonj", "Dokkhin sunamganj", getString(R.string.dokkhin_sunamganj)));
-        subAreaList.add(new SubArea("Sunamgonj", "Tahirpur", getString(R.string.tahirpur)));
-
-
-        subAreaList.add(new SubArea("Netrokona", "Atpara", getString(R.string.atpara)));
-        subAreaList.add(new SubArea("Netrokona", "Barohatta", getString(R.string.barohatta)));
-        subAreaList.add(new SubArea("Netrokona", "Durgapur", getString(R.string.durgapur)));
-        subAreaList.add(new SubArea("Netrokona", "Komolakanter", getString(R.string.komolakanter)));
-        subAreaList.add(new SubArea("Netrokona", "Kenduwa", getString(R.string.kenduwa)));
-        subAreaList.add(new SubArea("Netrokona", "Khaliajuri", getString(R.string.khaliajuri)));
-        subAreaList.add(new SubArea("Netrokona", "Modon", getString(R.string.modon)));
-        subAreaList.add(new SubArea("Netrokona", "Khaliajuri", getString(R.string.mohonganj)));
-        subAreaList.add(new SubArea("Netrokona", "Netrokona sodor", getString(R.string.netrokona_sadar)));
-        subAreaList.add(new SubArea("Netrokona", "Purbadhala", getString(R.string.purbadhala)));
-
-
-        subAreaList.add(new SubArea("Mymensingh", "Valuka", getString(R.string.valuka)));
-        subAreaList.add(new SubArea("Mymensingh", "Bobaura", getString(R.string.bobaura)));
-        subAreaList.add(new SubArea("Mymensingh", "Fulbariya", getString(R.string.fulbariya)));
-        subAreaList.add(new SubArea("Mymensingh", "Goforgau", getString(R.string.goforgau)));
-        subAreaList.add(new SubArea("Mymensingh", "Gouripur", getString(R.string.gouripur)));
-        subAreaList.add(new SubArea("Mymensingh", "Haluaghat", getString(R.string.haluaghat)));
-        subAreaList.add(new SubArea("Mymensingh", "Issorgonj", getString(R.string.issorganj)));
-        subAreaList.add(new SubArea("Mymensingh", "Muktagacha", getString(R.string.muktagacha)));
-        subAreaList.add(new SubArea("Mymensingh", "Mymensingh sodor", getString(R.string.mymensingh_sadar)));
-        subAreaList.add(new SubArea("Mymensingh", "Nandail", getString(R.string.nandail)));
-        subAreaList.add(new SubArea("Mymensingh", "Phulpur", getString(R.string.phulpur)));
-        subAreaList.add(new SubArea("Mymensingh", "Tarakanda", getString(R.string.tarakanda)));
-        subAreaList.add(new SubArea("Mymensingh", "Trishal", getString(R.string.trishal)));
-        subAreaList.add(new SubArea("Mymensingh", "Mymensingh city", getString(R.string.mymensingh_city)));
-
-
-        subAreaList.add(new SubArea("Jamalpur", "Bakshiganj", getString(R.string.bakshiganj)));
-        subAreaList.add(new SubArea("Jamalpur", "Dewanganj", getString(R.string.dewanganj)));
-        subAreaList.add(new SubArea("Jamalpur", "Islampur", getString(R.string.islampur)));
-        subAreaList.add(new SubArea("Jamalpur", "Jamalpur sadar", getString(R.string.jamalpur_sadar)));
-        subAreaList.add(new SubArea("Jamalpur", "Madarganj", getString(R.string.madarganj)));
-        subAreaList.add(new SubArea("Jamalpur", "Melandho", getString(R.string.melandho)));
-        subAreaList.add(new SubArea("Jamalpur", "Sorisabaari", getString(R.string.sorisabari)));
-
-
-        subAreaList.add(new SubArea("Sherpur", "Jhinaigati", getString(R.string.jhinaigati)));
-        subAreaList.add(new SubArea("Sherpur", "Nalitabari", getString(R.string.nalitabari)));
-        subAreaList.add(new SubArea("Sherpur", "Nokla", getString(R.string.nokla)));
-        subAreaList.add(new SubArea("Sherpur", "Sherpur Sadar", getString(R.string.sherpur_sadar)));
-        subAreaList.add(new SubArea("Sherpur", "Sreebordi", getString(R.string.sreebordi)));
+        subAreaModelList = new ArrayList<>();
+        subAreaModelList.add(new SubAreaModel("Uttara", "Aisnubug", getString(R.string.aisnubug)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Ajompur", getString(R.string.ajompur)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Anurbug", getString(R.string.anurbug)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Abdullahpur", getString(R.string.abdullahpur)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Amtola", getString(R.string.amtola)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "AshiyanCity", getString(R.string.asiyan_city)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Ahalia", getString(R.string.ahalia)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Uttorkhan", getString(R.string.uttorkhan)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Kaola", getString(R.string.kaola)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Kajibari", getString(R.string.kajibari)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Kamarpara", getString(R.string.kamarpara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Khilkhet", getString(R.string.khilkhet)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Gaoyair", getString(R.string.gaoyair)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Joshimuddin", getString(R.string.joshimuddin)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "DhakaAirport", getString(R.string.dhaka_airport)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "SouthMollertech", getString(R.string.south_mollertech)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Dokkhinkhan", getString(R.string.dokkhinkhan)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Diyabari", getString(R.string.diyabari)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Deoyanpara", getString(R.string.deoyanpara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Dhour", getString(R.string.dhour)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Noddapara", getString(R.string.noddapara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "NoyaNogor", getString(R.string.noya_nogor)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Fulbaria", getString(R.string.fulbaria)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "RomnarTech", getString(R.string.romnar_tech)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Bepari Bari", getString(R.string.bepari_bari)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Vatira", getString(R.string.vatira)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Viyapara", getString(R.string.viyapara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "ModdhoPara", getString(R.string.moddho_para)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "MadarBari", getString(R.string.madar_bari)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "RajBari", getString(R.string.raj_bari)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Shekherpara", getString(R.string.shekherpara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Shonakhola", getString(R.string.shona_khola)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "Hajipara", getString(R.string.hajipara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "1nosectorUttara", getString(R.string.viyapara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "10 no. sector Uttara", getString(R.string._10_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "11 no. sector Uttara", getString(R.string._11_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "12 no. sector Uttara", getString(R.string._12_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "13 no. sector Uttara", getString(R.string._13_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "14 no. sector Uttara", getString(R.string._14_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "15 no. sector Uttara", getString(R.string._15_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "16 no. sector Uttara", getString(R.string._16_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "17 no. sector Uttara", getString(R.string._17_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "2 no. sector Uttara", getString(R.string._2_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "3 no. sector Uttara", getString(R.string._3_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "4 no. sector Uttara", getString(R.string._4_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "5 no. sector Uttara", getString(R.string._5_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "6 no. sector Uttara", getString(R.string._6_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "7 no. sector Uttara", getString(R.string._7_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "8 no. sector Uttara", getString(R.string._8_no_sector_uttara)));
+        subAreaModelList.add(new SubAreaModel("Uttara", "9 no. sector Uttara", getString(R.string._9_no_sector_uttara)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Ajijpolli", getString(R.string.ajij_polli)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Dhaka navy colony", getString(R.string.dhaka_navy_colony)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Damal kot", getString(R.string.dhamal_kot)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Vasantech", getString(R.string.vasantech)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Mohakhali dohs", getString(R.string.mohakhali_dohs)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Matikata", getString(R.string.matikata)));
+        subAreaModelList.add(new SubAreaModel("Kafrul", "Soudi koloni", getString(R.string.soudi_koloni)));
+
+
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Abu soiyod bazar", getString(R.string.abu_soiyod_bazar)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Koyla ghat", getString(R.string.koyla_ghat)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Karim bug", getString(R.string.karim_bug)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Nurburg", getString(R.string.nurbug)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Munsi hut", getString(R.string.munshi_hat)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Muslimbug", getString(R.string.muslimbug)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Zaullar hati chourasta", getString(R.string.zaullar_hati_chourasta)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Sultanganj", getString(R.string.sultanganj)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Hajurpara", getString(R.string.hajirpara)));
+        subAreaModelList.add(new SubAreaModel("KamrangirChor", "Hasan nagor", getString(R.string.hasan_nagor)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Islampur", getString(R.string.islampur)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Jinda bazar", getString(R.string.jinda_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Tati bazar", getString(R.string.tati_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Noya bazar", getString(R.string.noya_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Potuyatoli", getString(R.string.potuyatoli)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Badam toli", getString(R.string.badam_toli)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Ray saheb bazar", getString(R.string.ray_ssaheb_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Lokkhi Bazar", getString(R.string.lokkhi_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyaly", "Sadarghat", getString(R.string.sadarghat)));
+
+
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Ecb chottor", getString(R.string.ecb_chottor)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "MES colony", getString(R.string.mes_colony)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Kalibari", getString(R.string.kalibari)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Noya bazar", getString(R.string.noya_bazar)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Kurmitola", getString(R.string.kirmitola)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Goaltech", getString(R.string.goaltech)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Jamtola", getString(R.string.jamtola)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Zia colony", getString(R.string.zia_colony)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Dali market", getString(R.string.dali_market)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Deoyanpara", getString(R.string.deoyanpara)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Nikung", getString(R.string.nikung)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Nirjhor", getString(R.string.nirjhor)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Barontech", getString(R.string.barontech)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Balurghat", getString(R.string.balurghat)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Manikdi", getString(R.string.manikdi)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Mastertech", getString(R.string.mastertech)));
+        subAreaModelList.add(new SubAreaModel("Cantonment", "Mostafa kamal chottor", getString(R.string.mostafa_kamal_chottor)));
+
+
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Adarsh bug", getString(R.string.adarsh)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Ansar bug", getString(R.string.ansar_bug)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Aftab Nagar", getString(R.string.aftab_nagar)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Ulon", getString(R.string.ulon)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Khilgaon bagicha", getString(R.string.khilgoan_bagicha)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Khilgaon block -a", getString(R.string.khilgoan_block_a)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Khilgaon block -b", getString(R.string.khilgoan_block_b)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Khilgaon block -c", getString(R.string.khilgoan_block_c)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Khilgaon railgate", getString(R.string.khilgoan_railgate)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Goran", getString(R.string.goran)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Chowdhury Para", getString(R.string.chowdhury_para)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Tilpa para", getString(R.string.tilpa_para)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Notun bug", getString(R.string.notun_bug)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Nondi para", getString(R.string.nondi_para)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Bonosri", getString(R.string.bonosri)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Malibog", getString(R.string.malibug)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Meradiya", getString(R.string.meradiya)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Rampura", getString(R.string.rampura)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Riyaj bug", getString(R.string.riyai_bug)));
+        subAreaModelList.add(new SubAreaModel("Khilgaon", "Sipahi Bug", getString(R.string.sipahi_bug)));
+
+
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Korail", getString(R.string.korail)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Gulshan avenue", getString(R.string.gulshan_avenue)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Gulshan 2", getString(R.string.gulshan_2)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Gulshan 1", getString(R.string.gulshan_1)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Niketon", getString(R.string.niketon)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Bonani", getString(R.string.bonani)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Bari dhara", getString(R.string.bari_dhara)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Bari dhara dohs", getString(R.string.bari_dhara_dohs)));
+        subAreaModelList.add(new SubAreaModel("Gulshan", "Mohakhali", getString(R.string.mohakhali)));
+
+
+        subAreaModelList.add(new SubAreaModel("Demra", "Ahmed Nagar", getString(R.string.ahmed_nagar)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Konapara", getString(R.string.konapara)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Green model town", getString(R.string.green_model_town)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Chonpara", getString(R.string.chonpara)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Dogair", getString(R.string.dogair)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Tarabo", getString(R.string.tarabo)));
+        subAreaModelList.add(new SubAreaModel("Demra", "South rupsi", getString(R.string.south_rupsi)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Naopara", getString(R.string.naopara)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Bamoli bazar", getString(R.string.bamoli_bazar)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Bahir tengra", getString(R.string.bahir_tengra)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Rasul nagor", getString(R.string.rasul_nagor)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Sanar para", getString(R.string.saar_para)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Saruliya", getString(R.string.saruliya)));
+        subAreaModelList.add(new SubAreaModel("Demra", "Haji nagor", getString(R.string.haji_nagor)));
+
+
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Kawran Bazar", getString(R.string.kawran_bazar)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Tejkuni para", getString(R.string.tejkuni_para)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Nakhal para", getString(R.string.nakhal_para)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Tejturi bazar", getString(R.string.tejturi_bazar)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Nabisko", getString(R.string.nabisko)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Farmgate", getString(R.string.farmgate)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Monipuripara", getString(R.string.monipuripara)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Rasul bug", getString(R.string.rsul_bug)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Raja bazar", getString(R.string.raja_bazar)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Shahin bug", getString(R.string.shahin_bug)));
+        subAreaModelList.add(new SubAreaModel("Tejgaon", "Shukrabad", getString(R.string.shukrabad)));
+
+
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Kalabagan", getString(R.string.kalabagan)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Green road", getString(R.string.green_road)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Jiga tola", getString(R.string.jiga_tola)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -1", getString(R.string.dhanmondi_1)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -2", getString(R.string.dhanmondi_2)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -3", getString(R.string.dhanmondi_3)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -4", getString(R.string.dhanmondi_4)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -5", getString(R.string.dhanmondi_5)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -6", getString(R.string.dhanmondi_6)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -7", getString(R.string.dhanmondi_7)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -8A", getString(R.string.dhanmondi_8a)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -9A", getString(R.string.dhanmondi_9a)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -10A", getString(R.string.dhanmondi_10a)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -11", getString(R.string.dhanmondi_11)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -12", getString(R.string.dhanmondi_12)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -13", getString(R.string.dhanmondi_13)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -14", getString(R.string.dhanmondi_14)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -15", getString(R.string.dhanmondi_15)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -27", getString(R.string.dhanmondi_27)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Dhanmondi -32", getString(R.string.dhanmondi_32)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Newmarket", getString(R.string.newmarket)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Panthapath", getString(R.string.panthapath)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Shankar", getString(R.string.kalashankarbagan)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Shobhan Bug", getString(R.string.shobhan_bug)));
+        subAreaModelList.add(new SubAreaModel("Dhanmondi", "Shukrabad", getString(R.string.shukrabad)));
+
+
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Kalshi", getString(R.string.kalshi)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Duip nagar", getString(R.string.duip_nagar)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Bordhito polli", getString(R.string.bordhito_polli)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Mirpur dohs", getString(R.string.mirpur_dohs)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Mirpur senanibas", getString(R.string.mirpur_senanibas)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Shagufta", getString(R.string.shagufta)));
+        subAreaModelList.add(new SubAreaModel("Pollobi", "Section-12 mirpur", getString(R.string.section_12_mirpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Kuril", getString(R.string.kuril)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Cocacola", getString(R.string.cococola)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Nodda", getString(R.string.nodda)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Neela market", getString(R.string.neela_market)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -i", getString(R.string.bashundhara_block_i)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -e", getString(R.string.bashundhara_block_e)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -A", getString(R.string.bashundhara_block_a)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -H", getString(R.string.bashundhara_block_h)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -F", getString(R.string.bashundhara_block_f)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -M", getString(R.string.bashundhara_block_m)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -L", getString(R.string.bashundhara_block_L)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -K", getString(R.string.bashundhara_block_k)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -g", getString(R.string.bashundhara_block_g)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -j", getString(R.string.bashundhara_block_j)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -d", getString(R.string.bashundhara_block_d)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -b", getString(R.string.bashundhara_block_b)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Bashundhara block -c", getString(R.string.bashundhara_block_c)));
+        subAreaModelList.add(new SubAreaModel("Bosundhara", "Beraid", getString(R.string.beraid)));
+
+
+        subAreaModelList.add(new SubAreaModel("Badda", "Namapara", getString(R.string.namapara)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Nurerchala", getString(R.string.benurerchalaraid)));
+        subAreaModelList.add(new SubAreaModel("Badda", "East nurer chala", getString(R.string.east_nurer_chala)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Bayou La para", getString(R.string.beyou_la_para)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Badda D I T project", getString(R.string.badda_dit_project)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Badda link road", getString(R.string.badda_link_road)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Bepari bari", getString(R.string.bepari_bari)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Middle badda", getString(R.string.middle_badda)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Merul", getString(R.string.merul)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Vatara", getString(R.string.vatara)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Merul badda", getString(R.string.merul_badda)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Rup nagar", getString(R.string.rup_nagar)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Shahjadpur", getString(R.string.shahjadpur)));
+        subAreaModelList.add(new SubAreaModel("Badda", "Solmaid", getString(R.string.solmaid)));
+
+
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Fakirapul", getString(R.string.fakirapul)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Motijhil", getString(R.string.motijhil)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Razarbug", getString(R.string.razarbug)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Shahidbug", getString(R.string.shahidbug)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Shanti nagar", getString(R.string.bershanti_nagaraid)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Shanti bug", getString(R.string.shanti_bug)));
+        subAreaModelList.add(new SubAreaModel("Motijhil", "Shahjahanpur", getString(R.string.shahjahanpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Gabtoli", getString(R.string.gabtoli)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Zoo", getString(R.string.zoo)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Zahurabad", getString(R.string.zahurabad)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Tolarbug", getString(R.string.tolarbug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "South monipur", getString(R.string.south_monipur)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Nonderbug", getString(R.string.nonderbug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Nobaberbug", getString(R.string.nobaberbug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "West kazipara", getString(R.string.west_kazipara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "West shewrapara", getString(R.string.west_shewrapara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Paikpara", getString(R.string.paikpara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Palapara", getString(R.string.palapara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Pirer bug", getString(R.string.pirerbug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "East kazipara", getString(R.string.est_kazipara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "East shewrapara", getString(R.string.east_shewrapara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Boshupara", getString(R.string.boshupara)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Baten nagar", getString(R.string.baten_nagar)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Beribadh", getString(R.string.beribadh)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Borobug", getString(R.string.borobug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Modina nagar", getString(R.string.modina_nagar)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Monipur", getString(R.string.monipur)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -6", getString(R.string.mirpur_6)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -2", getString(R.string.mirpur_2)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -60 feet", getString(R.string.mirpur_60_feet)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur rupnagar abashik alaka", getString(R.string.mirpur_rupnagar_abashik_alaka)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -11", getString(R.string.mirpur_11)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -12", getString(R.string.mirpur_12)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -10", getString(R.string.mirpur_10)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -13", getString(R.string.mirpur_13)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -14", getString(R.string.mirpur_14)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mirpur -1", getString(R.string.mirpur_1)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Mohammadiya society", getString(R.string.mohammadiya_society)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Rainkhola", getString(R.string.rainlhola)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Shain pukur", getString(R.string.shain_pukur)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Shah ali bug", getString(R.string.shah_ali_bug)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Shimul tala", getString(R.string.shimul_tala)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Lalkuthi", getString(R.string.lalkuthi)));
+        subAreaModelList.add(new SubAreaModel("Mirpur", "Hariram pur", getString(R.string.hariram_pur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Adabar", getString(R.string.adabar)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Ashadget", getString(R.string.ashadget)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Chadmiya housing", getString(R.string.chadmiya_housing)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Jafrabad", getString(R.string.jafrabad)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Tajmohol road", getString(R.string.tajmohol_road)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Bosila", getString(R.string.bosila)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Baitul aman housing", getString(R.string.baitul_aman_housing)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Mohammadiya abashik alaka", getString(R.string.mohammadiya_abashik_alaka)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Ring road", getString(R.string.ringroad)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Lalmatia", getString(R.string.lalmatia)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Shongkar", getString(R.string.shongkar)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Shekhertek", getString(R.string.shekhertek)));
+        subAreaModelList.add(new SubAreaModel("Mohammadpur", "Shamoli", getString(R.string.shamoli)));
+
+
+        subAreaModelList.add(new SubAreaModel("Ramona", "Elephant road", getString(R.string.elephant_road)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Old iskaton", getString(R.string.old_iskaton)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Kakrail", getString(R.string.kakrail)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Katabon", getString(R.string.katabon)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Dhaka varsity", getString(R.string.dhaka_versity)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "New iskaton", getString(R.string.new_iskaton)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Naya Tola", getString(R.string.noya_tola)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Poribug", getString(R.string.poribug)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Bangla motor", getString(R.string.bangla_motor)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Beili road", getString(R.string.beili_road)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Boro mogbazar", getString(R.string.boro_mogbazar)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Moghbazar T & T colony", getString(R.string.mogbazar_tandt_colony)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Mirbug", getString(R.string.mirbug)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Shah bug", getString(R.string.shahbug)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Shiddessori", getString(R.string.shiddessori)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Segunbagicha", getString(R.string.segunbagicha)));
+        subAreaModelList.add(new SubAreaModel("Ramona", "Hatirpul", getString(R.string.hatirpul)));
+
+
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Azimpur", getString(R.string.azimpur)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Amligola", getString(R.string.amligola)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Islam bug", getString(R.string.islambug)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Kamrangirchor", getString(R.string.kamrangirchor)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Chawkbazar", getString(R.string.chawkbazar)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Bakshi bazar", getString(R.string.bakshibazar)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Babu bazar", getString(R.string.babubazar)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Begum bazar", getString(R.string.begumbazar)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Lalbug", getString(R.string.lalbug)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Shahid nagar", getString(R.string.shahid_nagar)));
+        subAreaModelList.add(new SubAreaModel("Lalbag", "Soyari ghat", getString(R.string.soyari_ghat)));
+
+
+        subAreaModelList.add(new SubAreaModel("Shampur", "Kadamtali", getString(R.string.kadamtali)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Kutub khali", getString(R.string.kutub_khali)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Janata market", getString(R.string.janata_market)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Japani market", getString(R.string.japani_market)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Jurain", getString(R.string.jurain)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Doniya", getString(R.string.doniya)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Deul para", getString(R.string.deul_para)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Dholai para", getString(R.string.dholaipara)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Pagla", getString(R.string.pagla)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Faridabad", getString(R.string.faridabad)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Munshibug", getString(R.string.munshibug)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Muradpur", getString(R.string.muradpur)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Meraz nagar", getString(R.string.meraznagar)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Mohammad Bug", getString(R.string.mohammadbugg)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Rasulpur", getString(R.string.rasulpur)));
+        subAreaModelList.add(new SubAreaModel("Shampur", "Rayer bug", getString(R.string.rayerbug)));
+
+
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Ahmed Bug", getString(R.string.ahmedbug)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "North mugda para", getString(R.string.north_mugda_para)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Kadamtala", getString(R.string.kadamtala)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "South mugdapara", getString(R.string.south_mugdapara)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Natun para", getString(R.string.natunpara)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "East nandipara", getString(R.string.east_nandipara)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Baganbari", getString(R.string.baganbari)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Basabo", getString(R.string.basabo)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Madartech", getString(R.string.madartech)));
+        subAreaModelList.add(new SubAreaModel("ShobujBug", "Mugdapara", getString(R.string.mugdapara)));
+
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Wari", getString(R.string.wari)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Kaptan bazar", getString(R.string.kaptan_bazar)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Kerati tola", getString(R.string.keraati_tola)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Gendaria", getString(R.string.gendaria)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Tikatuli", getString(R.string.tikatuli)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Doyagang", getString(R.string.doyagang)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Dhup khola", getString(R.string.dhup_khola)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Nawabpur", getString(R.string.nawabpur)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Narinda", getString(R.string.narinda)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Jatrabari", getString(R.string.jatrabari)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Saydabad", getString(R.string.saydabad)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Soyami bug", getString(R.string.soyamibug)));
+        subAreaModelList.add(new SubAreaModel("Sutrapur", "Hut khola", getString(R.string.hatkhola)));
+
+
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Anayet Gang", getString(R.string.anayetgang)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Company ghat", getString(R.string.company_ghat)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Jigatola", getString(R.string.jigatola)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Tollabug", getString(R.string.tollabug)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Tinmazar", getString(R.string.tinmazar)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Nabab gang", getString(R.string.nababganj)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Pilkhana", getString(R.string.pilkhana)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Borhanpur", getString(R.string.borhanpur)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Monesshor", getString(R.string.monesshor)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Rayer bazar", getString(R.string.rayerbazar)));
+        subAreaModelList.add(new SubAreaModel("Hajaribug", "Hazari bug", getString(R.string.hazaribug)));
+
+
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Alongkar mor", getString(R.string.alongkarmor)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Ishapani mor", getString(R.string.ishapanimor)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Ak khan", getString(R.string.akkhan)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Karnel hat", getString(R.string.karnelhat)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Kalir choura", getString(R.string.kalir_choura)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Kiobolo badh railway station", getString(R.string.kiobolo_badh_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Josim market", getString(R.string.josim_market)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Pahartoli", getString(R.string.pahartoli)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Purobi feroz shah mazar", getString(R.string.purobi_feroz_shah_mazar)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "Firoz shah colony", getString(R.string.firoz_shah_colony)));
+        subAreaModelList.add(new SubAreaModel("Akborshah", "CDA 1 no bus stop", getString(R.string.cda_1_no_bus_stop)));
+
+
+        subAreaModelList.add(new SubAreaModel("Andharkilla", "Andhar killa", getString(R.string.andhar_killa)));
+
+
+        subAreaModelList.add(new SubAreaModel("AmirbugAbashikalaka", "Amirbug Abashik alaka", getString(R.string.amirbug_abashik_alaka)));
+
+
+        subAreaModelList.add(new SubAreaModel("Alishapara", "Ali shapara", getString(R.string.ali_shapara)));
+
+        subAreaModelList.add(new SubAreaModel("Asadgonjcommercialarea", "Asadgonj commercial area", getString(R.string.asadganj_commercial_area)));
+
+
+        subAreaModelList.add(new SubAreaModel("EPZ", "Ishan mistrir hat", getString(R.string.ishan_mistrir_hat)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Hritu hostel", getString(R.string.hritu_hostel)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Chowdhury bazar", getString(R.string.chowdhury_bazar)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Dhup pal", getString(R.string.dhup_pal)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Nim tola", getString(R.string.nim_tola)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Bandortila", getString(R.string.bandortila)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "BNA office", getString(R.string.bna_office)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "BNA upanibesh", getString(R.string.bna_upanibesh)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Bissho rasta", getString(R.string.bissho_rasta)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Lohar pul", getString(R.string.lohar_pul)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Saltgola", getString(R.string.saltgola)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Sagorika", getString(R.string.sagorika)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "CEPZ mailer matha", getString(R.string.cepz_mailer_matha)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Cement crossing", getString(R.string.cement_crossing)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Steel mil bazar", getString(R.string.steel_mil_bazar)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "Haspataler get", getString(R.string.haspataler_get)));
+        subAreaModelList.add(new SubAreaModel("EPZ", "3 no fakir hat", getString(R.string._3_no_fakir_hat)));
+
+
+        subAreaModelList.add(new SubAreaModel("Uttarpathantuli", "Uttar pathantuli", getString(R.string.uttar_pathantuli)));
+
+        subAreaModelList.add(new SubAreaModel("Anayetbazar", "Anayet bazar", getString(R.string.anayet_bazar)));
+        subAreaModelList.add(new SubAreaModel("KarnafuliResidentialarea", "Karnafuli Residential area", getString(R.string.karnafuli_residential_area)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Amirbug", getString(R.string.amirbug)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Kajir deuri", getString(R.string.kajir_deuri)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Khatun ganj", getString(R.string.khatun_ganj)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Gani uponibesh", getString(R.string.gani_uponibesh)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Chattagram bandor", getString(R.string.chattagram_bandor)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Jaotola", getString(R.string.jaotola)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Firingi bazar", getString(R.string.firingi_bazar)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Pathorghat", getString(R.string.pathorghat)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Pathantuli", getString(R.string.pathantuli)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Station road", getString(R.string.station_road)));
+        subAreaModelList.add(new SubAreaModel("Kotoyali", "Stand rasta", getString(R.string.stand_rasta)));
+
+        subAreaModelList.add(new SubAreaModel("Khatungonj", "Khatungonj", getString(R.string.khatunganj)));
+
+
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Wireless mor", getString(R.string.wirelessmor)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Khulsi shahid", getString(R.string.khulsi_shahid)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Chattagram bandor nagori international university", getString(R.string.chattagram_bandor_nagori_international_university)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Chittagong Government Women's College", getString(R.string.chittagong_government_women_college)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Jautla Railway Station", getString(R.string.jautla_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Polytechnic Institute", getString(R.string.polytechnic_institute)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Foyeslech", getString(R.string.foyeslech)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Bangladesh Agricultural Research Centre", getString(R.string.bangladesh_agricultural_research_centre)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "BGMEA", getString(R.string.bgmea)));
+        subAreaModelList.add(new SubAreaModel("Khulshi", "Holy crescent bus stop", getString(R.string.holy_crescent_bus_stop)));
+
+        subAreaModelList.add(new SubAreaModel("Gosaildanga", "Gosaildanga", getString(R.string.gosaildanga)));
+
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Wasa mor", getString(R.string.wasa_mor)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Gani bekari mor", getString(R.string.gani_bekari_mor)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Chawk bazar bus stop", getString(R.string.chawk_bazar_bus_stop)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Chawk bazar super market", getString(R.string.chawk_bazar_super_market)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Chattessori mor", getString(R.string.chattessori_mor)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Jamal khan", getString(R.string.jamal_khan)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Deb pahar", getString(R.string.deb_pahar)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Perad moydan", getString(R.string.perad_moydan)));
+        subAreaModelList.add(new SubAreaModel("Chowkbazar", "Boddo mondir", getString(R.string.boddo_mondir)));
+
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Ekrampur Ispahani", getString(R.string.ekrampur_ispahani)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Kalgachiya", getString(R.string.kalgachiya)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Khaitkhali", getString(R.string.khaitkhali)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "TinGau", getString(R.string.tin_gau)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Boro Nayabazar", getString(R.string.boro_nayabazar)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Bag Nayaghar", getString(R.string.bag_nayaghar)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Madanapura Masjid", getString(R.string.madanapura_masjid)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Madanpur Khal", getString(R.string.madanpur_khal)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Madhav Pasha", getString(R.string.madhav_pasha)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Mahmud Nagar", getString(R.string.mahmud_nagar)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Rasulbagh", getString(R.string.rasulbagh)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Langalbrand", getString(R.string.langalbrand)));
+        subAreaModelList.add(new SubAreaModel("Chattagrambondor", "Sonakanda", getString(R.string.sonakanda)));
+
+        subAreaModelList.add(new SubAreaModel("Chorpara", "Chor para", getString(R.string.chor_para)));
+
+        subAreaModelList.add(new SubAreaModel("Chorhalda", "Chor halda", getString(R.string.chor_halda)));
+
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Kaptai rastar matha", getString(R.string.kaptai_rastar_matha)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Kalurghat bus stop", getString(R.string.kalurghat_bus_stop)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Chattagram betar kendro", getString(R.string.chattragram_betar_kendro)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Chadgao abashik", getString(R.string.chadgao_abashik)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Bohoddarhat", getString(R.string.bohoddar_hat)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Bus terminal", getString(R.string.bus_terminal)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Bahir signal", getString(R.string.bahir_signal)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Moulvibazar", getString(R.string.moulvibazar)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "CNB", getString(R.string.cnb)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Haji Saber Ahmed Timber Company Limited", getString(R.string.haji_saber_ahmed_timber)));
+        subAreaModelList.add(new SubAreaModel("Chadgao", "Hajera Taju degree college", getString(R.string.hajera_taju_degree_college)));
+
+        subAreaModelList.add(new SubAreaModel("ChowdhuryPara", "Chowdhury Para", getString(R.string.chowdhury_para)));
+
+
+        subAreaModelList.add(new SubAreaModel("GEMofficerscolony", "GEM officers colony", getString(R.string.gem_officers_colony)));
+        subAreaModelList.add(new SubAreaModel("Jhawtola", "Jhawtola", getString(R.string.jhawtola)));
+        subAreaModelList.add(new SubAreaModel("Tigerpassrailwaycolony", "Tigerpass railway colony", getString(R.string.tigerpass_railway_colony)));
+
+        subAreaModelList.add(new SubAreaModel("TSPcolony", "TSP colony", getString(R.string.tsp_colony)));
+        subAreaModelList.add(new SubAreaModel("Teribazar", "Teri bazar", getString(R.string.teri_bazar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Chattagram bondor", getString(R.string.chattagram_bondor)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Double muring", getString(R.string.double_muring)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "South agrabad", getString(R.string.south_agrabad)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Noya bazar pahartoli", getString(R.string.noyabazar_pahartoli)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Bou bazar", getString(R.string.bou_bazar)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Pahartoli", getString(R.string.pahartoli)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Bangladesh Bank", getString(R.string.bangladesh_bank_colony)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Bou bazar", getString(R.string.bou_bazar)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Mohuri paara", getString(R.string.mohuri_para)));
+        subAreaModelList.add(new SubAreaModel("Doublemuring", "Soray para", getString(R.string.soray_para)));
+
+        subAreaModelList.add(new SubAreaModel("Doijpara", "Doijpara", getString(R.string.doijpara)));
+        subAreaModelList.add(new SubAreaModel("Southpatenga", "South patenga", getString(R.string.south_patenga)));
+        subAreaModelList.add(new SubAreaModel("Southbondar", "South bondar", getString(R.string.south_bondor)));
+        subAreaModelList.add(new SubAreaModel("Dokkhinmoddhoholyshohor", "Dokkhin moddho holyshohor", getString(R.string.dokkhin_moddho_holyshohor)));
+        subAreaModelList.add(new SubAreaModel("Dampara", "Dampara", getString(R.string.dampara)));
+        subAreaModelList.add(new SubAreaModel("Deoyanghat", "Deoyan ghat", getString(R.string.deyan_ghat)));
+        subAreaModelList.add(new SubAreaModel("Dewanbazar", "Dewan bazar", getString(R.string.dewan_bazar)));
+        subAreaModelList.add(new SubAreaModel("Dhumpara", "Dhumpara", getString(R.string.dhumpara)));
+        subAreaModelList.add(new SubAreaModel("Northmiddleholishohor", "North middle holishohor", getString(R.string.north_middle_holishohor)));
+        subAreaModelList.add(new SubAreaModel("Nasirabad", "Nasirabad", getString(R.string.nasirabad)));
+        subAreaModelList.add(new SubAreaModel("Newmuring", "New muring", getString(R.string.new_muring)));
+        subAreaModelList.add(new SubAreaModel("Navyport", "Navy port", getString(R.string.navy_port)));
+        subAreaModelList.add(new SubAreaModel("Podmaabashikalaka", "Podma abashik alaka", getString(R.string.podma_abashik_alaka)));
+
+
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Aturar dipu", getString(R.string.aturar_dipu)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Amirbug R/A", getString(R.string.amirbug_r_a)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Chattroseri", getString(R.string.chattroseri)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "GEC mor", getString(R.string.gec_mor)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Pashlaish R/A", getString(R.string.pashlaish_ra)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Peyara bagan", getString(R.string.payara_bagan)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Bagmoniram", getString(R.string.bagmoniram)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "KhatMufijur rahman abashik alakaungonj", getString(R.string.mufijur_rahman_abashik_alaka)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Murad pur", getString(R.string.muradpur)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Medical staff quarter", getString(R.string.medical_staff_quarter)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Mehedi bug", getString(R.string.mehedibug)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Shulkobohor", getString(R.string.shulkobohor)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Sholoshohor", getString(R.string.sholoshohor)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Sholoshohor railway station", getString(R.string.sholoshorer_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "Hamjarbag", getString(R.string.hamjarbug)));
+        subAreaModelList.add(new SubAreaModel("Paslaish", "2 no. gate", getString(R.string._2_n0_gate)));
+
+        subAreaModelList.add(new SubAreaModel("Pathantuli", "Pathantuli", getString(R.string.pathantuli)));
+
+
+        subAreaModelList.add(new SubAreaModel("Potenga", "South port", getString(R.string.south_port)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Najira para", getString(R.string.najirapara)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Navy colony", getString(R.string.navy_colony)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Patenga beach", getString(R.string.patenga_beatch)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Porapara", getString(R.string.porapara)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Bangladesh navy golf club", getString(R.string.banglladesh_navy_golf_club)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Muslimabad", getString(R.string.muslimabad)));
+        subAreaModelList.add(new SubAreaModel("Potenga", "Steel industries", getString(R.string.steel_industries)));
+
+
+        subAreaModelList.add(new SubAreaModel("Patharghata", "Patharghata", getString(R.string.patharghata)));
+
+        subAreaModelList.add(new SubAreaModel("Pahartali", "North katrali", getString(R.string.north_katrali)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Koibolo dam railway station", getString(R.string.koibolo_dam_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Cricket stadium railway station", getString(R.string.cricket_stadium_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "South katrali", getString(R.string.south_katrail)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Pahartoli railway station", getString(R.string.pahartoli_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Firoz shah uponibesh", getString(R.string.firoz_shah_railway_station)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Bishorzo para", getString(R.string.bishorzopara)));
+        subAreaModelList.add(new SubAreaModel("Pahartali", "Samoli abashik alaka", getString(R.string.samoli_abashik_alaka)));
+
+
+        subAreaModelList.add(new SubAreaModel("Purbonimtala", "Purbo nimtala", getString(R.string.purbo_nimtala)));
+
+        subAreaModelList.add(new SubAreaModel("Purbomadarbari", "Purbo madar bari", getString(R.string.purbo_madar_bari)));
+
+        subAreaModelList.add(new SubAreaModel("Bahaddarhat", "Bahaddarhat", getString(R.string.bahaddarhat)));
+        subAreaModelList.add(new SubAreaModel("Bangladeshbankcolony", "Bangladesh bank colony", getString(R.string.bangladesh_bank_colony)));
+
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Kalmia Bazar", getString(R.string.kalmia_bazar)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Khatunganj", getString(R.string.khatunganj)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Goni Bakeri More", getString(R.string.goni_bakerimore)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Dewan Bazar", getString(R.string.dewan_bazar)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Pathorghata", getString(R.string.pathorghata)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Bakshirhat", getString(R.string.bakshirhat)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Maizpara", getString(R.string.maizpara)));
+        subAreaModelList.add(new SubAreaModel("Bakolia", "Rahattorpul", getString(R.string.rahattorpul)));
+
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.oxygen_more)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.amin_jut_mile)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.arefin_nagor)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.ali_nagor)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.chittagong_cant_public_college)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.textile_gate)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.nobi_nagor)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.nasirabad)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.poly_technical)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.bangladesh_forest_research_institute_gate)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.bayazid_bostami)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.barma_coloni)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.rahaman_nagor)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.rawfabad)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.sher_shah_coloni)));
+        subAreaModelList.add(new SubAreaModel("Bayazidbostami", "Bayazid bostami", getString(R.string.hamjarbag)));
+
+        subAreaModelList.add(new SubAreaModel("Mansurabad", "Mansurabad", getString(R.string.mansurabad)));
+        subAreaModelList.add(new SubAreaModel("Mansurabad", "Shafi Motors Limited", getString(R.string.shafi_motors_limited)));
+
+        subAreaModelList.add(new SubAreaModel("Maijpara", "Maijpara", getString(R.string.maizpara)));
+        subAreaModelList.add(new SubAreaModel("Rangiparabankcolony", "Rangipara bank colony", getString(R.string.rangipara_bank_colony)));
+        subAreaModelList.add(new SubAreaModel("Laldairchar", "Laldair char", getString(R.string.laldair_char)));
+
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Abhayamitra", getString(R.string.abhayamitra)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Karnaphuli Dockyard", getString(R.string.karnaphuli_dockyard)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Kamal Gate Bazar", getString(R.string.kamal_gate_bazar)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Choktai Khal", getString(R.string.choktai_khal)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Tin pooler matha", getString(R.string.tin_pool_matha)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Noton Bazar", getString(R.string.noton_bazar)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Bakshirhat", getString(R.string.baksirhat)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Motherbari Railway Pump Station", getString(R.string.motherbari_railway_pump_station)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Mia Khan Bridge", getString(R.string.mia_khan_setu)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Riaz Uddin Bazar", getString(R.string.riaz_uddin_bazar)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Laldigi more", getString(R.string.laldigi_more)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Sadarghat Jeti", getString(R.string.sadarghat_jt)));
+        subAreaModelList.add(new SubAreaModel("Shadorghat", "Cinema Place", getString(R.string.cinema_place)));
+
+        subAreaModelList.add(new SubAreaModel("Sondippara", "Sondip para", getString(R.string.sondip_para)));
+        subAreaModelList.add(new SubAreaModel("Southagrabad", "KhatunSouth agrabadgonj", getString(R.string.south_agrabad)));
+        subAreaModelList.add(new SubAreaModel("CGScolony", "CGS colony", getString(R.string.cgs_colony)));
+
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "KNT Logistics Limited", getString(R.string.knt_logistics_limited)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Chittagong Container Terminal", getString(R.string.chittagong_container_terminal)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Chittagong Container Transportation Co. Ltd", getString(R.string.chittagong_container_tran_co_ltd)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Chittagong Bondor dharak", getString(R.string.chittagong_bondor_dharak)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Daksin Halishahar", getString(R.string.daksin_halishahar)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Noton sidebar", getString(R.string.noton_sidebar)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Newmooring Container Terminal", getString(R.string.newmooring_container_terminal)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Nau Bondor", getString(R.string.nau_bondor)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Bondor new mooring", getString(R.string.bondor_new_mooring)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Bondor link road", getString(R.string.bondor_link_road)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Munshiipara", getString(R.string.munshiipara)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Labor Colony", getString(R.string.labor_colony)));
+        subAreaModelList.add(new SubAreaModel("Hali_shohor", "Halishahar Housing Society", getString(R.string.halishahar_housing_society)));
+
+        subAreaModelList.add(new SubAreaModel("Halishohormunshipara", "Hali shohor munshipara", getString(R.string.hali_shohor_munshipara)));
+        subAreaModelList.add(new SubAreaModel("Halishohorsenanibash", "Hali shohor senanibash", getString(R.string.hali_shohor_senanibash)));
+        subAreaModelList.add(new SubAreaModel("Hosenahmedpara", "Hosen ahmedpara", getString(R.string.hosen_ahmedpara)));
+
+
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Alfadanga", getString(R.string.alfadanga)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Vanga", getString(R.string.vanga)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Boyalmari", getString(R.string.boyalmari)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Chorvodroson", getString(R.string.chorvodroson)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Faridpur sadar", getString(R.string.faridpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Madhukhali", getString(R.string.madhukhali)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Nagarkanda", getString(R.string.nagarkanda)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Sadarpur", getString(R.string.sadarpur)));
+        subAreaModelList.add(new SubAreaModel("Faridpur", "Saltha", getString(R.string.saltha)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Ostogram", getString(R.string.ostogram)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Bajitpur", getString(R.string.bajitpur)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Karimganj", getString(R.string.karimganj)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Bhairab", getString(R.string.bhairab)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Hosenpur", getString(R.string.hosenpur)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Itna", getString(R.string.itna)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Katiadi", getString(R.string.katiadi)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Kishoreganj Sadar", getString(R.string.kishoreganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Kuliyachor", getString(R.string.kuliyachor)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Mithamoin", getString(R.string.mithamoin)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Nikoli", getString(R.string.nikoli)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Pakundia", getString(R.string.pakundia)));
+        subAreaModelList.add(new SubAreaModel("Kishorgonj", "Tarail", getString(R.string.tarail)));
+
+
+        subAreaModelList.add(new SubAreaModel("Rajbari", "Baliakandi", getString(R.string.baliakandi)));
+        subAreaModelList.add(new SubAreaModel("Rajbari", "Goyalondo", getString(R.string.goyalondo)));
+        subAreaModelList.add(new SubAreaModel("Rajbari", "Kalukhali", getString(R.string.kalukhali)));
+        subAreaModelList.add(new SubAreaModel("Rajbari", "Pangsha", getString(R.string.pangsha)));
+        subAreaModelList.add(new SubAreaModel("Rajbari", "Rajbari Sadar", getString(R.string.rajbari_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Tangail", "Basail", getString(R.string.basail)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Vuyapur", getString(R.string.vuyapur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Delduar", getString(R.string.delduar)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Dhanbari", getString(R.string.dhanbari)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Ghatail", getString(R.string.ghatail)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Gopalpur", getString(R.string.gopalpur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Kalihati", getString(R.string.kalihati)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Madhupur", getString(R.string.madhupur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Mirzapur", getString(R.string.mirzapur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Nagarpur", getString(R.string.nagarpur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Sakhipur", getString(R.string.sakhipur)));
+        subAreaModelList.add(new SubAreaModel("Tangail", "Tangail Sadar", getString(R.string.tangail_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Belabo", getString(R.string.belabo)));
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Monohardi", getString(R.string.monohardi)));
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Narsingdi sadar", getString(R.string.narsingdi_sadar)));
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Polash", getString(R.string.polash)));
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Raipura", getString(R.string.raipura)));
+        subAreaModelList.add(new SubAreaModel("Narsingdi", "Shibpur", getString(R.string.shibpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Vedorganj", getString(R.string.vedorganj)));
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Damuda", getString(R.string.demuda)));
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Gosairhat", getString(R.string.gosairhat)));
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Noriya", getString(R.string.noriya)));
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Shariatpur Sadar", getString(R.string.shariatpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Shariatpur", "Jajira", getString(R.string.jajira)));
+
+
+        subAreaModelList.add(new SubAreaModel("Dhaka", "Dhamrai", getString(R.string.dhamrai)));
+        subAreaModelList.add(new SubAreaModel("Dhaka", "Dohar", getString(R.string.dohar)));
+        subAreaModelList.add(new SubAreaModel("Dhaka", "Keraniganj", getString(R.string.keraniganj)));
+        subAreaModelList.add(new SubAreaModel("Dhaka", "Nobabganj", getString(R.string.nobabganj)));
+        subAreaModelList.add(new SubAreaModel("Dhaka", "Savar", getString(R.string.savar)));
+
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Doulatpur", getString(R.string.doulotpur)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Ghior", getString(R.string.ghior)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Harirampur", getString(R.string.harirampur)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Manikganj sadar", getString(R.string.manikganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Saturia", getString(R.string.saturia)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Shibaloy", getString(R.string.shibloy)));
+        subAreaModelList.add(new SubAreaModel("Manikgonj", "Singair", getString(R.string.singair)));
+
+
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Gozaria", getString(R.string.gozaria)));
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Louhajong", getString(R.string.louhajong)));
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Munshiganj sadar", getString(R.string.munshiganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Srinagar", getString(R.string.srinagar)));
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Sirajdikhan", getString(R.string.sirajdikhan)));
+        subAreaModelList.add(new SubAreaModel("Munshigonj", "Tongibari", getString(R.string.tongibari)));
+
+
+        subAreaModelList.add(new SubAreaModel("Gopalgonj", "Gopalganj sadar", getString(R.string.gopalganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Gopalgonj", "Kashiyani", getString(R.string.kashiyani)));
+        subAreaModelList.add(new SubAreaModel("Gopalgonj", "Kotalipara", getString(R.string.kotalipara)));
+        subAreaModelList.add(new SubAreaModel("Gopalgonj", "Muksudpur", getString(R.string.muksudpur)));
+        subAreaModelList.add(new SubAreaModel("Gopalgonj", "Tungipara", getString(R.string.tungipara)));
+
+
+        subAreaModelList.add(new SubAreaModel("Madaripur", "Kalkini", getString(R.string.kalkini)));
+        subAreaModelList.add(new SubAreaModel("Madaripur", "Dasar", getString(R.string.dasar)));
+        subAreaModelList.add(new SubAreaModel("Madaripur", "Madaripur sadar", getString(R.string.madaripur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Madaripur", "Rajoub", getString(R.string.rajoiub)));
+        subAreaModelList.add(new SubAreaModel("Madaripur", "Shibchar", getString(R.string.shibchar)));
+
+
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Araihazar", getString(R.string.araihazar)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Bandar", getString(R.string.bandar)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Narayanganj sadar", getString(R.string.narayanganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Narayanganj city", getString(R.string.narayanganj_city)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Rupganj", getString(R.string.rupganj)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Sonargaon", getString(R.string.sonargoan)));
+        subAreaModelList.add(new SubAreaModel("NarayanGanj", "Fatullah", getString(R.string.fatullah)));
+
+
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Kaliganj", getString(R.string.kaliganj)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Kaliakoir", getString(R.string.kaliakoir)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Kapasia", getString(R.string.kapasia)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Basan", getString(R.string.basan)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Gazipur sadar", getString(R.string.gazipur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Gazipur city corporation", getString(R.string.gazipur_city_corporation)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Sripur", getString(R.string.sripur)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Kayaloti", getString(R.string.kayaloti)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Konabari", getString(R.string.konabari)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Gasa", getString(R.string.gasa)));
+        subAreaModelList.add(new SubAreaModel("Gazipur", "Kashimpur", getString(R.string.kashimpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Bancharampur", getString(R.string.bancharampur)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Bijoynagar", getString(R.string.bijoynagar)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Akhaura", getString(R.string.akhaura)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Ashugonj", getString(R.string.ashuganj)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Kosba", getString(R.string.kosba)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Nobinogor", getString(R.string.nabinagar)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Nasirnogor", getString(R.string.nasirnagar)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Brahmanbaria sadar", getString(R.string.brahmanbaria_sadar)));
+        subAreaModelList.add(new SubAreaModel("Brahmanbaria", "Sarail", getString(R.string.sarail)));
+
+
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Alikodom", getString(R.string.alikodom)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Thanchi", getString(R.string.thanchi)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Naikkhongchori", getString(R.string.naikkhonchori)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Ruma", getString(R.string.ruma)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Bandarban sadar", getString(R.string.bandarban_sadar)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Rongchori", getString(R.string.rongchori)));
+        subAreaModelList.add(new SubAreaModel("Bandarban", "Lama", getString(R.string.lama)));
+
+
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Anoyara", getString(R.string.anoyara)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Chondonaish", getString(R.string.chondonaish)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Bashkhali", getString(R.string.bashkhali)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Boalkhali", getString(R.string.boalkhali)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Mirsarai", getString(R.string.mirsarai)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Sondip", getString(R.string.sondip)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Satkania", getString(R.string.satkania)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Hathazari", getString(R.string.hathazari)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Kornofuli", getString(R.string.kornofuli)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Potiya", getString(R.string.potiya)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Fotikchori", getString(R.string.fotikchori)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Roujan", getString(R.string.roujan)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Rangunia", getString(R.string.rangunia)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Lohagara", getString(R.string.hohagara)));
+        subAreaModelList.add(new SubAreaModel("Chittagong", "Sitakunda", getString(R.string.sitakunda)));
+
+
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Kaptai", getString(R.string.kaptai)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Kaukhali", getString(R.string.kaukhali)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Jurachori", getString(R.string.jurachri)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Naniarchar", getString(R.string.naniarchar)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Borkol", getString(R.string.borkol)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Bagaichori", getString(R.string.bagaichori)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Bilaichori", getString(R.string.bilaichori)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Rangamati sadar", getString(R.string.rangamati_sadar)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Rajstoli", getString(R.string.rajstoli)));
+        subAreaModelList.add(new SubAreaModel("Rangamati", "Longgodu", getString(R.string.longodu)));
+
+
+        subAreaModelList.add(new SubAreaModel("Comilla", "Nangalkot", getString(R.string.nangalkot)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Burichong", getString(R.string.burichong)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Muradnagar", getString(R.string.muradnagar)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Comilla city", getString(R.string.comilla_city)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Comilla sadar", getString(R.string.comilla_sadar)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Chandina", getString(R.string.chandina)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Choddogram", getString(R.string.choddogram)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Titas", getString(R.string.titas)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Debidar", getString(R.string.debidar)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Daudkandi", getString(R.string.daudkandi)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Borura", getString(R.string.borura)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Brahmanpara", getString(R.string.brahmanpara)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Monohorgonj", getString(R.string.monohorganj)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Megna", getString(R.string.megna)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Laksham", getString(R.string.laksam)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Lalmai", getString(R.string.lalmai)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Sadar dokkhin", getString(R.string.sadar_dokkhin)));
+        subAreaModelList.add(new SubAreaModel("Comilla", "Homna", getString(R.string.homna)));
+
+
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Kabirhat", getString(R.string.kabirhat)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Kompanigonj", getString(R.string.kompaniganj)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Chatkhil", getString(R.string.chatkhil)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Noakhali sadar", getString(R.string.noakhali_sadar)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Begumgonj", getString(R.string.begumganj)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Subornochor", getString(R.string.subornochor)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Senbag", getString(R.string.senbug)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Sonaimuri", getString(R.string.sonaimuri)));
+        subAreaModelList.add(new SubAreaModel("Noakhali", "Hatiya", getString(R.string.hatiya)));
+
+
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Ukhiya", getString(R.string.ukhiya)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Kutubdia", getString(R.string.kutubdia)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Cox's Bazar sadar", getString(R.string.coxsbazar_sadar)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Chokoria", getString(R.string.chokoria)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Teknaf", getString(R.string.teknaf)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Pekuya", getString(R.string.pekuya)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Moheshkhali", getString(R.string.moheshkhali)));
+        subAreaModelList.add(new SubAreaModel("CoxsBazar", "Ramu", getString(R.string.ramu)));
+
+
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Kochuya", getString(R.string.kochuya)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Motlob dokkhain", getString(R.string.motlob_dokkhin)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Chandpur sadar", getString(R.string.chandpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Faridgonj", getString(R.string.faridganj)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Motlob uttar", getString(R.string.motlob_sadar)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Shahrasti", getString(R.string.shahrasti)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Haimchor", getString(R.string.hhaimchor)));
+        subAreaModelList.add(new SubAreaModel("Chandpur", "Hajigonj", getString(R.string.hajiganj)));
+
+
+        subAreaModelList.add(new SubAreaModel("Feni", "Dagonbhuiyan", getString(R.string.dagunbhuiyan)));
+        subAreaModelList.add(new SubAreaModel("Feni", "Chagla naiya", getString(R.string.changla_naiya)));
+        subAreaModelList.add(new SubAreaModel("Feni", "Porshuram", getString(R.string.porshuram)));
+        subAreaModelList.add(new SubAreaModel("Feni", "Fulgazi", getString(R.string.fulgazi)));
+        subAreaModelList.add(new SubAreaModel("Feni", "Feni sadar", getString(R.string.feni_sadar)));
+        subAreaModelList.add(new SubAreaModel("Feni", "Sonagazi", getString(R.string.sonagazi)));
+
+
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Guimara", getString(R.string.guimara)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Matiranga", getString(R.string.matiranga)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Manikchari", getString(R.string.manikchari)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Ramgarh", getString(R.string.ramgarh)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Khagrachari sadar", getString(R.string.khagrachari_sadar)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Dighinala", getString(R.string.dighinala)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Panchori", getString(R.string.panchori)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Mohalchori", getString(R.string.mohalchori)));
+        subAreaModelList.add(new SubAreaModel("Khagrasori", "Lokkhichori", getString(R.string.lokkhichori)));
+
+
+        subAreaModelList.add(new SubAreaModel("Lokkhipur", "Komol Nogor", getString(R.string.komol_nagar)));
+        subAreaModelList.add(new SubAreaModel("Lokkhipur", "Ramgoti", getString(R.string.ramgoti)));
+        subAreaModelList.add(new SubAreaModel("Lokkhipur", "Raipur", getString(R.string.raipur)));
+        subAreaModelList.add(new SubAreaModel("Lokkhipur", "Ramgonj", getString(R.string.ramganj)));
+        subAreaModelList.add(new SubAreaModel("Lokkhipur", "Lakshmipur sadar", getString(R.string.laksmipur_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Barisal", "Agoilojhara", getString(R.string.agoilojhara)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Babuganj", getString(R.string.babuganj)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Bakerganj", getString(R.string.bakerganj)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Banaripara", getString(R.string.banaripara)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Barisal sadar", getString(R.string.barishal_sadar)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Gournadi", getString(R.string.gournadi)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Mehendiganj", getString(R.string.mehendiganj)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Muladi", getString(R.string.muladi)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Hijla", getString(R.string.hijla)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Ujirpur", getString(R.string.ujirpur)));
+        subAreaModelList.add(new SubAreaModel("Barisal", "Barisal city", getString(R.string.barisal_city)));
+
+
+        subAreaModelList.add(new SubAreaModel("Barguna", "Amtali", getString(R.string.amtali)));
+        subAreaModelList.add(new SubAreaModel("Barguna", "Bamna", getString(R.string.bamna)));
+        subAreaModelList.add(new SubAreaModel("Barguna", "Barguna sadar", getString(R.string.barguna_sadar)));
+        subAreaModelList.add(new SubAreaModel("Barguna", "Betagi", getString(R.string.betagi)));
+        subAreaModelList.add(new SubAreaModel("Barguna", "Patharghata", getString(R.string.patharghata)));
+        subAreaModelList.add(new SubAreaModel("Barguna", "Taltoli", getString(R.string.taltoli)));
+
+
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Baufal", getString(R.string.baufal)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Doshmina", getString(R.string.doshmina)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Dumki", getString(R.string.dumki)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Galachipa", getString(R.string.galachipa)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Kalapara", getString(R.string.kalapara)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Mirzaganj", getString(R.string.mirzaganj)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Patuakhali sadar", getString(R.string.patuakhali_sadar)));
+        subAreaModelList.add(new SubAreaModel("Patuakhali", "Rangabali", getString(R.string.rangabali)));
+
+
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Vandariya", getString(R.string.vandariya)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Kaukhali", getString(R.string.kaukhali)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Motbariya", getString(R.string.motbariya)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Najirpur", getString(R.string.najirpur)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Nesarabad", getString(R.string.nesarabad)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Pirojpur Sadar", getString(R.string.pirojpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Pirojpur", "Jiyanagar", getString(R.string.jiyanagar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Bhola", "Bhola sadar", getString(R.string.bhola_sadar)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Borhanuddin", getString(R.string.borhanuddn)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Charfashion", getString(R.string.charfashion)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Doulathkhan", getString(R.string.doulatkhan)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Lalmohan", getString(R.string.lalmohan)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Monpura", getString(R.string.monpura)));
+        subAreaModelList.add(new SubAreaModel("Bhola", "Tajumuddin", getString(R.string.tajumuddin)));
+
+
+        subAreaModelList.add(new SubAreaModel("Jhalokati", "Jhalokati sadar", getString(R.string.jhalokati_sadar)));
+        subAreaModelList.add(new SubAreaModel("Jhalokati", "Kathaliya", getString(R.string.kathaliya)));
+        subAreaModelList.add(new SubAreaModel("Jhalokati", "Nolsity", getString(R.string.nolsity)));
+        subAreaModelList.add(new SubAreaModel("Jhalokati", "Rajapur", getString(R.string.rajapur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Jessore", "Avoynagar", getString(R.string.avoynagar)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Bagharpara", getString(R.string.bagharpara)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Chougasa", getString(R.string.chougasa)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Jessore sadar", getString(R.string.jessore_sadar)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Jhikargacha", getString(R.string.jhikargacha)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Keshabpur", getString(R.string.keshabpur)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Monirampur", getString(R.string.monirampur)));
+        subAreaModelList.add(new SubAreaModel("Jessore", "Sharsha", getString(R.string.sharsha)));
+
+
+        subAreaModelList.add(new SubAreaModel("Chuadanga", "Alamdanga", getString(R.string.alamdanga)));
+        subAreaModelList.add(new SubAreaModel("Chuadanga", "Chuadanga sadar", getString(R.string.chuadanga_sadar)));
+        subAreaModelList.add(new SubAreaModel("Chuadanga", "Damurhuda", getString(R.string.damurhuda)));
+        subAreaModelList.add(new SubAreaModel("Chuadanga", "Jibonnagar", getString(R.string.jibonnagar)));
+
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Ashasuni", getString(R.string.ashasuni)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Debhata", getString(R.string.debhata)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Kolaroya", getString(R.string.kolaraya)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Kaliganj", getString(R.string.kaliganj)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Satkhira sadar", getString(R.string.satkhira_sadar)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Shyamnagar", getString(R.string.shyamnagar)));
+        subAreaModelList.add(new SubAreaModel("Satkhira", "Tala", getString(R.string.tala)));
+
+
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Bagerhat sadar", getString(R.string.bagherhat_sadar)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Citolmari", getString(R.string.citolmari)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Fakirhat", getString(R.string.fakirhat)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Kocuya", getString(R.string.kochuya)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Mollahat", getString(R.string.mollarhat)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Mongla", getString(R.string.mongla)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Morolganj", getString(R.string.morolganj)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Rampal", getString(R.string.rampal)));
+        subAreaModelList.add(new SubAreaModel("Bagerhat", "Shoronkhola", getString(R.string.shoronkhola)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kustia", "Veramara", getString(R.string.veramara)));
+        subAreaModelList.add(new SubAreaModel("Kustia", "Doulatpur", getString(R.string.doulatpur)));
+        subAreaModelList.add(new SubAreaModel("Kustia", "Khoksa", getString(R.string.khoksa)));
+        subAreaModelList.add(new SubAreaModel("Kustia", "Kumarkhali", getString(R.string.kumarkhali)));
+        subAreaModelList.add(new SubAreaModel("Kustia", "Kushtia sadar", getString(R.string.kustia_sadar)));
+        subAreaModelList.add(new SubAreaModel("Kustia", "Mirpur kushtia", getString(R.string.mirpur_kustia)));
+
+
+        subAreaModelList.add(new SubAreaModel("Khulna", "Batiaghata", getString(R.string.batiaghata)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Dakop", getString(R.string.dakop)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Dhigliya", getString(R.string.dhigliya)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Dumuriya", getString(R.string.dumuriya)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Fultola", getString(R.string.fultola)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Koyra", getString(R.string.koyra)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Paikgasa", getString(R.string.paikgasa)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Rupsa", getString(R.string.rupsa)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Terokhada", getString(R.string.terokhada)));
+        subAreaModelList.add(new SubAreaModel("Khulna", "Khulna city", getString(R.string.khulna_city)));
+
+
+        subAreaModelList.add(new SubAreaModel("Meherpur", "Gangni", getString(R.string.gangni)));
+        subAreaModelList.add(new SubAreaModel("Meherpur", "Meherpur sadar", getString(R.string.meherpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Meherpur", "Mujibnagar", getString(R.string.mujibnagar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Harinakundu", getString(R.string.harinakundu)));
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Jhenaidah sadar", getString(R.string.jhenaidah_sadar)));
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Kaliganj", getString(R.string.kaliganj)));
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Kotchandpur", getString(R.string.kotchandpur)));
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Maheshpur", getString(R.string.maheshpur)));
+        subAreaModelList.add(new SubAreaModel("Jhenaidah", "Shailkupa", getString(R.string.shailkupa)));
+
+
+        subAreaModelList.add(new SubAreaModel("Norail", "Kaliya", getString(R.string.kaliya)));
+        subAreaModelList.add(new SubAreaModel("Norail", "Lohagara", getString(R.string.lohagara)));
+        subAreaModelList.add(new SubAreaModel("Norail", "Narail sadar", getString(R.string.narail_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Magura", "Magura sadar", getString(R.string.magura_sadar)));
+        subAreaModelList.add(new SubAreaModel("Magura", "Mohammadpur", getString(R.string.mohammadpur)));
+        subAreaModelList.add(new SubAreaModel("Magura", "Shalikha", getString(R.string.shalikha)));
+        subAreaModelList.add(new SubAreaModel("Magura", "Sripur", getString(R.string.sripur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Lalmonir hat", "Aditmari", getString(R.string.aditmari)));
+        subAreaModelList.add(new SubAreaModel("Lalmonir hat", "Hatibandha", getString(R.string.hatibandha)));
+        subAreaModelList.add(new SubAreaModel("Lalmonir hat", "Kaliganj", getString(R.string.kaliganj)));
+        subAreaModelList.add(new SubAreaModel("Lalmonir hat", "Patgram", getString(R.string.patgram)));
+        subAreaModelList.add(new SubAreaModel("Lalmonir hat", "Lalmonirhat sadar", getString(R.string.lalmonirhat_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Ponchogor", "Atoyari", getString(R.string.atoyari)));
+        subAreaModelList.add(new SubAreaModel("Ponchogor", "Boda", getString(R.string.boda)));
+        subAreaModelList.add(new SubAreaModel("Ponchogor", "Debiganj", getString(R.string.debiganj)));
+        subAreaModelList.add(new SubAreaModel("Ponchogor", "Panchagar", getString(R.string.panchagar)));
+        subAreaModelList.add(new SubAreaModel("Ponchogor", "tetulia", getString(R.string.tetulia)));
+
+
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Badarganj", getString(R.string.badarganj)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Gangachara", getString(R.string.gangachar)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Kaunia", getString(R.string.kaunia)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Mithapukur", getString(R.string.mithapukur)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Pirgasa", getString(R.string.pirgasa)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Pirganj", getString(R.string.pirganj)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Rangpur sadar", getString(R.string.rangpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Taraganj", getString(R.string.taraganj)));
+        subAreaModelList.add(new SubAreaModel("Rangpur", "Rangpur city", getString(R.string.rangpur_city)));
+
+
+        subAreaModelList.add(new SubAreaModel("Thakurgaon", "Baliya Dangi", getString(R.string.baliya_dangi)));
+        subAreaModelList.add(new SubAreaModel("Thakurgaon", "Haripur", getString(R.string.haripur)));
+        subAreaModelList.add(new SubAreaModel("Thakurgaon", "Pirganj", getString(R.string.pirganj)));
+        subAreaModelList.add(new SubAreaModel("Thakurgaon", "Ranisankail", getString(R.string.ranisankail)));
+        subAreaModelList.add(new SubAreaModel("Thakurgaon", "Thakurgaon sadar", getString(R.string.thakurgaon_sadar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Bhurungamari", getString(R.string.bhurangamari)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Char rajibpur", getString(R.string.char_rajibpur)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Chilmari", getString(R.string.chilmari)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Kaliganj", getString(R.string.kaliganj)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Kurigram sadar", getString(R.string.kurigram_sadar)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Nageswari", getString(R.string.nageswari)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Fulbari", getString(R.string.fulbari)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Rajarhat", getString(R.string.rajarhat)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Roumari", getString(R.string.roumari)));
+        subAreaModelList.add(new SubAreaModel("Kurigram", "Ulipur", getString(R.string.ulipur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Birampur", getString(R.string.birampur)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Birganj", getString(R.string.birganj)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Bochaganj", getString(R.string.bochaganj)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Birol", getString(R.string.birol)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Chirirbandar", getString(R.string.chirirbandar)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Dinajpur sadar", getString(R.string.dinajpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Fulbari", getString(R.string.fulbari)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Ghoraghat", getString(R.string.ghorahat)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Hakimpur", getString(R.string.hakimpur)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Kaharol", getString(R.string.kaharol)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Khansama", getString(R.string.khansama)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Nababganj", getString(R.string.nababganj)));
+        subAreaModelList.add(new SubAreaModel("Dinajpur", "Parbatipur", getString(R.string.parbatipur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Dimla", getString(R.string.dimla)));
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Domar", getString(R.string.domar)));
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Jaldhaka", getString(R.string.jaldhaka)));
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Kishorgonj", getString(R.string.kishorgonj)));
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Nilphamari sadar", getString(R.string.nilphamari_sadar)));
+        subAreaModelList.add(new SubAreaModel("Nilfamari", "Saidpur", getString(R.string.saidpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Gaibandha sadar", getString(R.string.gaibandha_sadar)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Gobindaganj", getString(R.string.gobindaganj)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Palashbari", getString(R.string.palashbari)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Fulsori", getString(R.string.fulsori)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Sadullahpur", getString(R.string.sadullahpur)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Saghata", getString(R.string.saghata)));
+        subAreaModelList.add(new SubAreaModel("Gaibandha", "Sundorganj", getString(R.string.sundorganj)));
+
+
+        subAreaModelList.add(new SubAreaModel("Bagura", "Bogra Sadar", getString(R.string.bogra_sadar)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Gabtoli", getString(R.string.gabtoli)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Sariakandi", getString(R.string.sariakandi)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Adamdighi", getString(R.string.adamdighi)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Sonatala", getString(R.string.sonatala)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Sherpur", getString(R.string.sherpur)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Kahaloo", getString(R.string.kahaloo)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Shibganj", getString(R.string.shibganj)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Dupchanchia", getString(R.string.dupchachia)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Nandigram", getString(R.string.nandigram)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Sahajanpur", getString(R.string.sahajahanpur)));
+        subAreaModelList.add(new SubAreaModel("Bagura", "Dhunat", getString(R.string.dhunat)));
+
+
+        subAreaModelList.add(new SubAreaModel("Chapainawabganj", "Gomastapur", getString(R.string.gomastapur)));
+        subAreaModelList.add(new SubAreaModel("Chapainawabganj", "Chapainawabganj Sadar", getString(R.string.chapainawabganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Chapainawabganj", "Nachole", getString(R.string.nachole)));
+        subAreaModelList.add(new SubAreaModel("Chapainawabganj", "Bholahat", getString(R.string.bholahat)));
+        subAreaModelList.add(new SubAreaModel("Chapainawabganj", "Shibganj", getString(R.string.shibganj)));
+
+
+        subAreaModelList.add(new SubAreaModel("Joypurhat", "Akkelpur", getString(R.string.akkelpur)));
+        subAreaModelList.add(new SubAreaModel("Joypurhat", "Kalai", getString(R.string.kalai)));
+        subAreaModelList.add(new SubAreaModel("Joypurhat", "Khetlal", getString(R.string.khetlal)));
+        subAreaModelList.add(new SubAreaModel("Joypurhat", "Joypurhat Sadar", getString(R.string.joypurhat_sadar)));
+        subAreaModelList.add(new SubAreaModel("Joypurhat", "Panchbibi", getString(R.string.panchbibi)));
+
+
+        subAreaModelList.add(new SubAreaModel("Nouga", "Atrai", getString(R.string.atrai)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Dhamoirhat", getString(R.string.dhamoirhat)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Niamatpur", getString(R.string.niamatpur)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Patnitala", getString(R.string.patnitala)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Porsha", getString(R.string.porsha)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Badalgachhi", getString(R.string.badalgachhi)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Mahadebpur", getString(R.string.mahadebpur)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Manda", getString(R.string.manda)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Naogaon Sadar", getString(R.string.naogaon_sadar)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Raninagar", getString(R.string.raninagar)));
+        subAreaModelList.add(new SubAreaModel("Nouga", "Sapahar", getString(R.string.sapahar)));
+
+
+        subAreaModelList.add(new SubAreaModel("Natore", "Gurudaspur", getString(R.string.gurudaspur)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Naldanga", getString(R.string.naldanga)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Natore Sadar", getString(R.string.natore_sadar)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Baraigram", getString(R.string.baraigram)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Bagatipara", getString(R.string.bagatipara)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Lalpur", getString(R.string.lalpur)));
+        subAreaModelList.add(new SubAreaModel("Natore", "Singra", getString(R.string.singra)));
+
+
+        subAreaModelList.add(new SubAreaModel("Pabna", "Bera",getString(R.string.bera) ));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Bhangura", getString(R.string.bhangura)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Chatmohar", getString(R.string.chatmohar)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Ishwardi", getString(R.string.Ishwardi)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Pabna Sadar", getString(R.string.Pabna_Sadar)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Sathia", getString(R.string.Sathia)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Sujanagar", getString(R.string.Sujanagar)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Atghoria", getString(R.string.Atghoria)));
+        subAreaModelList.add(new SubAreaModel("Pabna", "Faridpur", getString(R.string.faridpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Durgapur", getString(R.string.Durgapur)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Bagha", getString(R.string.Bagha)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Bagmara", getString(R.string.Bagmara)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Charghat", getString(R.string.Charghat)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Godagari", getString(R.string.Godagari)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Mohonpur", getString(R.string.Mohonpur)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Paba", getString(R.string.Paba)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Puthia", getString(R.string.Puthia)));
+        subAreaModelList.add(new SubAreaModel("Rajshahi", "Tanore", getString(R.string.Tanore)));
+
+
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Belkuchi", getString(R.string.Belkuchi)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Chauhali", getString(R.string.Chauhali)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Kamarkhanda", getString(R.string.Kamarkhanda)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Kazipur", getString(R.string.Kazipur)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Raiganj", getString(R.string.Raiganj)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Shahjadpur", getString(R.string.Shahjadpur)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Sirajganj sadar", getString(R.string.Sirajganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Tarash", getString(R.string.Tarash)));
+        subAreaModelList.add(new SubAreaModel("Sirajgonj", "Ullapara", getString(R.string.Ullapara)));
+
+
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Ajmiriganj", getString(R.string.ajmiriganj)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Bahubal", getString(R.string.bahubal)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Baniachong", getString(R.string.baniachong)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Chunarughat", getString(R.string.chunarughat)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Habiganj sadar", getString(R.string.habiganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Lakhai", getString(R.string.lakhai)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Madhabpur", getString(R.string.madhabpur)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Nabiganj", getString(R.string.nabiganj)));
+        subAreaModelList.add(new SubAreaModel("Habiganj", "Shaistaganj", getString(R.string.shaistaganj)));
+
+
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Barlekha", getString(R.string.barlekha)));
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Juri", getString(R.string.juri)));
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Kamalganj", getString(R.string.kamalganj)));
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Kulaura", getString(R.string.kulaura)));
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Moulvibazar sadar", getString(R.string.moulvibazar_sadar)));
+        subAreaModelList.add(new SubAreaModel("Moulvibazar", "Srimangal", getString(R.string.srimangal)));
+
+
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Belal Ganj", getString(R.string.belalganj)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Biyani Bazar", getString(R.string.biyanibazar)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Bishwanath", getString(R.string.bishwanath)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Companiganj", getString(R.string.companiganj)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Dokkhin surma", getString(R.string.dokkhin_surma)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Fenchuganj", getString(R.string.fenchuganj)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Gopalganj", getString(R.string.gopalganj)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Goyainghat", getString(R.string.goyainghat)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Jointapur", getString(R.string.jointapur)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Jokiganj", getString(R.string.jokiganj)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Kanaighat", getString(R.string.kanaighat)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Osmani nagar", getString(R.string.osmaninagar)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Sylhet sadar", getString(R.string.sylhet_sadar)));
+        subAreaModelList.add(new SubAreaModel("Sylhet", "Sylhet city", getString(R.string.sylhet_city)));
+
+
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Bissomvorpur", getString(R.string.bissomvorpur)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Satok", getString(R.string.satok)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Derai", getString(R.string.derai)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Dharmapasha", getString(R.string.dharmapasha)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Doyarabazar", getString(R.string.doyarabazar)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Jagannathpur", getString(R.string.jagannathpur)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Jamalganj", getString(R.string.jamalganj)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Salla", getString(R.string.salla)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Madhyanagar", getString(R.string.madhyanagar)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Sunamganj sadar", getString(R.string.sunamganj_sadar)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Dokkhin sunamganj", getString(R.string.dokkhin_sunamganj)));
+        subAreaModelList.add(new SubAreaModel("Sunamgonj", "Tahirpur", getString(R.string.tahirpur)));
+
+
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Atpara", getString(R.string.atpara)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Barohatta", getString(R.string.barohatta)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Durgapur", getString(R.string.durgapur)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Komolakanter", getString(R.string.komolakanter)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Kenduwa", getString(R.string.kenduwa)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Khaliajuri", getString(R.string.khaliajuri)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Modon", getString(R.string.modon)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Khaliajuri", getString(R.string.mohonganj)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Netrokona sodor", getString(R.string.netrokona_sadar)));
+        subAreaModelList.add(new SubAreaModel("Netrokona", "Purbadhala", getString(R.string.purbadhala)));
+
+
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Valuka", getString(R.string.valuka)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Bobaura", getString(R.string.bobaura)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Fulbariya", getString(R.string.fulbariya)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Goforgau", getString(R.string.goforgau)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Gouripur", getString(R.string.gouripur)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Haluaghat", getString(R.string.haluaghat)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Issorgonj", getString(R.string.issorganj)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Muktagacha", getString(R.string.muktagacha)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Mymensingh sodor", getString(R.string.mymensingh_sadar)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Nandail", getString(R.string.nandail)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Phulpur", getString(R.string.phulpur)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Tarakanda", getString(R.string.tarakanda)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Trishal", getString(R.string.trishal)));
+        subAreaModelList.add(new SubAreaModel("Mymensingh", "Mymensingh city", getString(R.string.mymensingh_city)));
+
+
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Bakshiganj", getString(R.string.bakshiganj)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Dewanganj", getString(R.string.dewanganj)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Islampur", getString(R.string.islampur)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Jamalpur sadar", getString(R.string.jamalpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Madarganj", getString(R.string.madarganj)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Melandho", getString(R.string.melandho)));
+        subAreaModelList.add(new SubAreaModel("Jamalpur", "Sorisabaari", getString(R.string.sorisabari)));
+
+
+        subAreaModelList.add(new SubAreaModel("Sherpur", "Jhinaigati", getString(R.string.jhinaigati)));
+        subAreaModelList.add(new SubAreaModel("Sherpur", "Nalitabari", getString(R.string.nalitabari)));
+        subAreaModelList.add(new SubAreaModel("Sherpur", "Nokla", getString(R.string.nokla)));
+        subAreaModelList.add(new SubAreaModel("Sherpur", "Sherpur Sadar", getString(R.string.sherpur_sadar)));
+        subAreaModelList.add(new SubAreaModel("Sherpur", "Sreebordi", getString(R.string.sreebordi)));
 
 
     }

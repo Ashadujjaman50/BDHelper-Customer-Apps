@@ -1,6 +1,6 @@
 package com.krishibarirangpur.bdhelper.model;
 
-public class ModelAddressBook {
+public class AddressBookModel {
     private String addressId;
     private String address;
     private String addressName;
@@ -8,10 +8,10 @@ public class ModelAddressBook {
     private String recipientName;
     private String timestamp;
 
-    public ModelAddressBook() {
+    public AddressBookModel() {
     }
 
-    public ModelAddressBook(String addressId, String address, String addressName, String recipientMobile, String recipientName, String timestamp) {
+    public AddressBookModel(String addressId, String address, String addressName, String recipientMobile, String recipientName, String timestamp) {
         this.addressId = addressId;
         this.address = address;
         this.addressName = addressName;

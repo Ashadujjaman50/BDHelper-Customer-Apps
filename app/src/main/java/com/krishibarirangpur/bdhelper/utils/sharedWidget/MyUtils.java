@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.utils.bothWidget;
+package com.krishibarirangpur.bdhelper.utils.sharedWidget;
 
 public class MyUtils {
 
@@ -51,7 +51,7 @@ public class MyUtils {
     public static String USER_SIGN_IN_WITH = "userSignWith";
     public static String USER_TYPE_GOOGLE = "Google";
     public static String USER_TYPE_EMAIL = "Email";
-    public static String USER_TYPE_PHONE = "Phone";
+    //public static String USER_TYPE_PHONE = "Phone";
 
 
     //Category
@@ -76,11 +76,11 @@ public class MyUtils {
     public static final String RENT_A_CAR_ID = "-OWJvNnQxBs3AlCh9VIn";
     public static final String HOME_SHIFTING_ID = "-OWJvRzJrq10WqaIoSnu";
     public static final String SKILLED_LABOR_ID = "-OWJvzPzpMSuEzbZfzLV";
-    public static final String SHOP_ID = "-OWJw0oqEzDbUBs2NTby";
+    //public static final String SHOP_ID = "-OWJw0oqEzDbUBs2NTby";
 
 
 
-    //Road Transport Sub-Category Id
+    //Road Transport Sub-Category ID
     public static final String SUB_TRUCK_ID = "-OWJw97ET9UoSGkgWja6";
     public static final String SUB_PICKUP_ID = "-OWJwAZX3cAQoSZqbPsy";
     public static final String SUB_COVERED_VAN_ID = "-OWJwBv3WJXmIKgDRiWl";
@@ -99,7 +99,7 @@ public class MyUtils {
 
 
 
-    //Skilled Labor Sub-Category Id
+    //Skilled Labor Sub-Category ID
     public static final String SUB_DRIVER_ID = "-OWJwTc96KlHKS1unZif";
     public static final String SUB_MECHANIC_ID = "-OWJwV2vliP8jJneKLiW";
     public static final String SUB_ELECTRICIAN_ID = "-OWJwWNhqzEjQkkuqaFV";

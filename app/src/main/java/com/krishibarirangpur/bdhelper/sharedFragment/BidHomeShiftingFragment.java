@@ -32,8 +32,8 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
@@ -42,9 +42,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.krishibarirangpur.bdhelper.utils.partner.DialogAlert;
+import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,8 +126,8 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
 
             // ✅ submit button click
             binding.bidSubmitBtn.setOnClickListener(v -> {
-                if (CommonClass.validateField(binding.selectVehicleNameTv)) return;
-                else if (CommonClass.validateField(binding.amountEt)) return;
+                if (ValidationClass.validateField(binding.selectVehicleNameTv)) return;
+                else if (ValidationClass.validateField(binding.amountEt)) return;
                 else dataUploadInDatabase(selectedServiceModel);
             });
         }
@@ -305,7 +306,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
 
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
-        DialogAlert.showDeleteBidDialog(requireContext(),()->{
+        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
             loadingDialog.show();
             db.collection("bidForOrder")
                     .document(bidId)

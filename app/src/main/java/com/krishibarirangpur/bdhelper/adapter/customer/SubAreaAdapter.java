@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.SubArea;
+import com.krishibarirangpur.bdhelper.model.SubAreaModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleViewHolder> implements Filterable {
-    private List<SubArea> subAreaList;
-    private List<SubArea> subAreaListFull;
+    private List<SubAreaModel> subAreaList;
+    private List<SubAreaModel> subAreaListFull;
     private OnItemClickListener mListener;
 
     class ExampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -53,7 +53,7 @@ public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleV
         this.mListener = onItemClickListener;
     }
 
-    public SubAreaAdapter(List<SubArea> subAreaList) {
+    public SubAreaAdapter(List<SubAreaModel> subAreaList) {
         this.subAreaList = subAreaList;
         subAreaListFull = new ArrayList<>(subAreaList);
     }
@@ -69,8 +69,8 @@ public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleV
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
 
-        SubArea currentSubArea = subAreaList.get(position);
-        holder.cityName.setText(currentSubArea.getSubAreaName());
+        SubAreaModel currentSubAreaModel = subAreaList.get(position);
+        holder.cityName.setText(currentSubAreaModel.getSubAreaName());
     }
 
     @Override
@@ -86,14 +86,14 @@ public class SubAreaAdapter extends RecyclerView.Adapter<SubAreaAdapter.ExampleV
     private Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<SubArea> filteredList = new ArrayList<>();
+            List<SubAreaModel> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(subAreaListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
-                for (SubArea item : subAreaListFull) {
+                for (SubAreaModel item : subAreaListFull) {
                     if (item.getAreaId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }

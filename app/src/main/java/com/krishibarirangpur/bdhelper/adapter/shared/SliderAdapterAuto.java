@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.SlideImage;
+import com.krishibarirangpur.bdhelper.model.SlideImageModel;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -20,9 +20,9 @@ import java.util.List;
 public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.SliderAdapterVH> {
 
     Context context;
-    ArrayList<SlideImage> slideImageArrayList;
+    ArrayList<SlideImageModel> slideImageArrayList;
 
-    public SliderAdapterAuto(Context context, ArrayList<SlideImage> slideImageArrayList) {
+    public SliderAdapterAuto(Context context, ArrayList<SlideImageModel> slideImageArrayList) {
         this.context = context;
         this.slideImageArrayList = slideImageArrayList;
     }
@@ -35,13 +35,13 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
 
     @Override
     public void onBindViewHolder(SliderAdapterVH holder, int position) {
-        SlideImage slideImage = slideImageArrayList.get(position);
+        SlideImageModel slideImageModel = slideImageArrayList.get(position);
 
-        holder.textViewDescription.setText(slideImage.getTitle());
+        holder.textViewDescription.setText(slideImageModel.getTitle());
 
-        if (slideImage.getImageUrl() != null && !slideImage.getImageUrl().isEmpty()) {
+        if (slideImageModel.getImageUrl() != null && !slideImageModel.getImageUrl().isEmpty()) {
             Picasso.get()
-                    .load(slideImage.getImageUrl())
+                    .load(slideImageModel.getImageUrl())
                     .placeholder(R.drawable.demo_help_slide1)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(holder.imageViewBackground, new Callback() {
@@ -51,7 +51,7 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
 
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(slideImage.getImageUrl()).into(holder.imageViewBackground);
+                            Picasso.get().load(slideImageModel.getImageUrl()).into(holder.imageViewBackground);
                         }
                     });
         }
@@ -64,7 +64,7 @@ public class SliderAdapterAuto extends SliderViewAdapter<SliderAdapterAuto.Slide
         return slideImageArrayList.size();
     }
 
-    public void updateList(List<SlideImage> newList) {
+    public void updateList(List<SlideImageModel> newList) {
         slideImageArrayList.clear();
         slideImageArrayList.addAll(newList);
         notifyDataSetChanged(); // smooth refresh

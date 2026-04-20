@@ -8,50 +8,51 @@ import androidx.databinding.DataBindingUtil;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityUserTypeSelectionBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 
 public class UserTypeSelectionActivity extends BaseActivity {
 
     private ActivityUserTypeSelectionBinding binding;
+    private SharedPrefHelper prefHelper;
+    private String signInWith;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // থিম আগে সেট কর
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_type_selection);
+        prefHelper = new SharedPrefHelper(this);
 
-        //init views
-        SharedPrefHelper prefHelper = new SharedPrefHelper(this);
-        String signInWith = getIntent().getStringExtra(MyUtils.USER_SIGN_IN_WITH);
+        initSignInMethod();
+        initClickListeners();
+    }
 
-        // fallback from shared pref if null
-        if (signInWith == null) {
+    private void initSignInMethod() {
+        signInWith = getIntent().getStringExtra(MyUtils.USER_SIGN_IN_WITH);
+
+        if (signInWith == null || signInWith.isEmpty()) {
             signInWith = prefHelper.getString("userSignWith", "");
         }
 
+        // Save latest
         MyUtils.USER_SIGN_IN_WITH = signInWith;
-        // Save to SharedPreferences
-        prefHelper.putString("userSignWith", signInWith); // always save lates
+        prefHelper.putString("userSignWith", signInWith);
+    }
 
+    private void initClickListeners() {
+        binding.customerBtn.setOnClickListener(v -> openRegistration("customer"));
+        binding.partnerBtn.setOnClickListener(v -> openRegistration("partner"));
+    }
 
-        binding.customerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(UserTypeSelectionActivity.this, RegistrationActivity.class);
-            intent.putExtra("user_type", "customer");
-            intent.putExtra("userSignWith", MyUtils.USER_SIGN_IN_WITH);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        });
+    private void openRegistration(String userType) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        intent.putExtra("user_type", userType);
+        intent.putExtra("userSignWith", signInWith);
 
-        binding.partnerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(UserTypeSelectionActivity.this, RegistrationActivity.class);
-            intent.putExtra("user_type", "partner");
-            intent.putExtra("userSignWith", MyUtils.USER_SIGN_IN_WITH);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        });
-
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

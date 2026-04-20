@@ -24,7 +24,7 @@ import com.krishibarirangpur.bdhelper.api.BarikoiClient;
 import com.krishibarirangpur.bdhelper.api.SearchAutoCompleteResponse;
 import com.krishibarirangpur.bdhelper.databinding.ActivityAddressBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 

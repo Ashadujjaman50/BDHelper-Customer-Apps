@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,6 @@ public class BarikoiCacheHelper {
 
     private FirebaseFirestore db;
     BarikoiApiService apiInterface;
-    String address, area, city,subDistrict, district;
 
     public interface LocationCallback {
         void onSuccess(BarikoiResponse.Place place);
@@ -87,7 +86,7 @@ public class BarikoiCacheHelper {
 
         // এখানে আপনার Retrofit API call বসাবেন
 
-        // Example pseudo code:
+        // Example pseudocode:
 
         Call<BarikoiResponse> call = apiInterface.getPlaceInfo(MyUtils.barikoi_api_key, lng, lat,
                 true, // district
@@ -158,4 +157,5 @@ public class BarikoiCacheHelper {
                 .addOnSuccessListener(doc -> Log.d(TAG, "Location cached"))
                 .addOnFailureListener(e -> Log.e(TAG, "Cache save failed"));
     }
+
 }

@@ -35,7 +35,7 @@ import com.krishibarirangpur.bdhelper.api.BarikoiClient;
 import com.krishibarirangpur.bdhelper.api.BarikoiResponse;
 import com.krishibarirangpur.bdhelper.databinding.ActivityMapLocationBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;

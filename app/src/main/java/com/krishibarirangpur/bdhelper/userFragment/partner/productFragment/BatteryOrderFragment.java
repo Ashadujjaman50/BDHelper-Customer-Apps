@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBatteryOrderBinding;
-import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.userActivity.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -215,13 +215,13 @@ public class BatteryOrderFragment extends Fragment {
         paymentDetails.put("paymentStatus", "Unpaid");
         paymentDetails.put("transactionId", "");
 
-        CommonClass.generateOrderId(
+        GenerateOrderId.newOrderId(
                 db,
                 "batteryOrder",             // collection path
                 "orderId",                              // Document ID হিসেবে চাইলে documentId ব্যবহার করতে পারো
                 "ord",                                  // prefix
                 4,                                      // initial digit length, যেমন ord0001
-                new CommonClass.OrderIdCallback() {
+                new GenerateOrderId.OrderIdCallback() {
                     @Override
                     public void onSuccess(String orderId) {
                         Log.d("OrderID", "Generated: " + orderId);

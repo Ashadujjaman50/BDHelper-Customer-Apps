@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityDashboardBinding;
 import com.krishibarirangpur.bdhelper.sharedFragment.HelpFragment;
-import com.krishibarirangpur.bdhelper.model.BidSummary;
+import com.krishibarirangpur.bdhelper.model.BidSummaryModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.CacheManager;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
@@ -53,7 +54,7 @@ public class DashboardActivity extends BaseActivity {
         preloadFinanceSummary(); // ✅ preload once
         preloadVendorBidSummary(); // ✅ preload once
 
-
+        FirebaseMessaging.getInstance().subscribeToTopic("partners");
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);
@@ -62,6 +63,7 @@ public class DashboardActivity extends BaseActivity {
             NotificationPermissionHelper.requestPermissionAndSubscribe(this);
             sharedPrefHelper.putBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, true);
         }
+
 
         // শুধু তখনি ফ্র্যাগমেন্ট লোড হবে যদি savedInstanceState null হয়
         if (savedInstanceState == null) {
@@ -149,7 +151,7 @@ public class DashboardActivity extends BaseActivity {
                     }
 
                     // ✅ Cache এ রাখো
-                    BidSummary summary = new BidSummary(totalCount, successCount, cancelCount);
+                    BidSummaryModel summary = new BidSummaryModel(totalCount, successCount, cancelCount);
                     CacheManager.getInstance().setBidSummary(summary);
 
                     Log.d("BidSummaryCache", "✅ Cached: " + totalCount + " | Success: " + successCount + " | Cancel: " + cancelCount);

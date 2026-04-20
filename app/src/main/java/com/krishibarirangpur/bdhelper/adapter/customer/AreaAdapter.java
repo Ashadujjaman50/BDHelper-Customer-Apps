@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.model.Area;
+import com.krishibarirangpur.bdhelper.model.AreaModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHolder> implements Filterable {
-    private final List<Area> areaList;
-    private final List<Area> areaListFull;
+    private final List<AreaModel> areaList;
+    private final List<AreaModel> areaListFull;
     private OnItemClickListener mListener;
 
     class ExampleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -53,9 +53,9 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHol
         this.mListener = onItemClickListener;
     }
 
-    public AreaAdapter(List<Area> areaList) {
-        this.areaList = areaList;
-        areaListFull = new ArrayList<>(areaList);
+    public AreaAdapter(List<AreaModel> areaModelList) {
+        this.areaList = areaModelList;
+        areaListFull = new ArrayList<>(areaModelList);
     }
 
     @NonNull
@@ -69,7 +69,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHol
     @Override
     public void onBindViewHolder(@NonNull ExampleViewHolder holder, int position) {
 
-        Area currentArea = areaList.get(position);
+        AreaModel currentArea = areaList.get(position);
         holder.cityName.setText(currentArea.getAreaName());
     }
 
@@ -86,14 +86,14 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ExampleViewHol
     private final Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Area> filteredList = new ArrayList<>();
+            List<AreaModel> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(areaListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase(Locale.getDefault()).trim();
 
-                for (Area item : areaListFull) {
+                for (AreaModel item : areaListFull) {
                     if (item.getCityId().toLowerCase(Locale.getDefault()).contains(filterPattern)) {
                         filteredList.add(item);
                     }

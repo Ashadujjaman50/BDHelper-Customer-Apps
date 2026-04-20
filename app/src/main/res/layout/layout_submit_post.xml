@@ -42,7 +42,7 @@
                     android:id="@+id/sizeCapacityTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="16 feet 5 ton"
+                    android:hint="16 feet 5 ton"
                     android:textSize="15sp"
                     android:padding="2dp" />
             </TableRow>
@@ -61,7 +61,7 @@
                     android:id="@+id/totalCountTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="03"
+                    android:hint="03"
                     android:textSize="15sp"
                     android:padding="2dp" />
             </TableRow>
@@ -80,7 +80,7 @@
                     android:id="@+id/popupDurationTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Trip based"
+                    android:hint="Trip based"
                     android:textSize="15sp"
                     android:padding="2dp" />
             </TableRow>
@@ -99,7 +99,30 @@
                     android:id="@+id/productTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Glassware"
+                    android:hint="Glassware"
+                    android:textSize="15sp"
+                    android:padding="2dp" />
+            </TableRow>
+
+            <!-- Row 5 -->
+            <TableRow
+                android:id="@+id/landAreaNameTR"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/landAreaNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/land_area_acres_dot"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_secondary"
+                    android:padding="2dp" />
+                <TextView
+                    android:id="@+id/landAreaTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/land_area"
                     android:textSize="15sp"
                     android:padding="2dp" />
             </TableRow>

@@ -14,7 +14,7 @@ import com.krishibarirangpur.bdhelper.adapter.shared.AdapterChat;
 import com.krishibarirangpur.bdhelper.databinding.ActivityChatBinding;
 import com.krishibarirangpur.bdhelper.model.ModelChat;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

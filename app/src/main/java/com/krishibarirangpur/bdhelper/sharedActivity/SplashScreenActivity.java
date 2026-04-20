@@ -25,7 +25,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivitySplashScreenBinding;
 import com.krishibarirangpur.bdhelper.introScreen.IntroActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
@@ -37,6 +37,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private AppUpdateChecker appUpdateChecker;
+    private SharedPrefHelper sharedPrefHelper;
+    private static final String USER_LOGIN_MODE = "user_role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        sharedPrefHelper = new SharedPrefHelper(this);
 
         Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         Animation bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
@@ -109,8 +112,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                             Class<?> targetClass;
 
                             if ("customer".equals(userType)) {
+                                sharedPrefHelper.putString(USER_LOGIN_MODE, "customer");
                                 targetClass = MainActivity.class;
                             } else if ("partner".equals(userType)) {
+                                sharedPrefHelper.putString(USER_LOGIN_MODE, "partner");
                                 targetClass = DashboardActivity.class;
                             } else {
                                 mAuth.signOut();

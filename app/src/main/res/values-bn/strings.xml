@@ -455,6 +455,7 @@
 
     <string name="acres">একর</string>
     <string name="land_area_acres">জমির পরিমাণ (একর)</string>
+    <string name="land_area_acres_dot">জমির পরিমাণঃ</string>
     <string name="land_area">জমির পরিমাণ</string>
 
     <string name="hp_fal_21">২১ অশ্ব ক্ষমতা, ২ ফাল</string>

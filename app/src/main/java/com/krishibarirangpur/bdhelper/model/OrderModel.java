@@ -98,16 +98,18 @@ public class OrderModel {
         private String duration;
         private String types;
         private String quantity;
+        private String landArea;
         private String desc;
         private String postDistrict;
 
         public SpecInfo() {}
 
         public SpecInfo(String capacity, String duration, String types, String quantity,
-                        String desc, String postDistrict) {
+                        String landArea, String desc, String postDistrict) {
             this.capacity = capacity;
             this.duration = duration;
             this.types = types;
+            this.landArea = landArea;
             this.quantity = quantity;
             this.desc = desc;
             this.postDistrict = postDistrict;
@@ -116,6 +118,7 @@ public class OrderModel {
         public String getCapacity() { return capacity; }
         public String getDuration() { return duration; }
         public String getTypes() { return types; }
+        public String getLandArea() { return landArea; }
         public String getQuantity() { return quantity; }
         public String getDesc() { return desc; }
         public String getPostDistrict() { return postDistrict; }

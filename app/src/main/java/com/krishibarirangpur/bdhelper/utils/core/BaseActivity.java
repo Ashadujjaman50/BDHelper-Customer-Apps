@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.krishibarirangpur.bdhelper.utils.LocaleHelper;
-
 public class BaseActivity extends AppCompatActivity {
 
     @Override

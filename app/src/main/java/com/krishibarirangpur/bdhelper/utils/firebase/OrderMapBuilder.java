@@ -1,11 +1,13 @@
-package com.krishibarirangpur.bdhelper.utils;
+package com.krishibarirangpur.bdhelper.utils.firebase;
+
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrderCreateHelper {
+public class OrderMapBuilder {
 
-    public static Map<String, Object> createOrder(
+    public static Map<String, Object> createOrderMap(
             String orderId,
             String userId,
             String userName,
@@ -15,6 +17,7 @@ public class OrderCreateHelper {
             String loadLocation,
             String unloadLocation,
             String rentLocation,
+            String landArea,
             String rentDateAndTime,
             String specificationCapacity,
             String specificationDuration,
@@ -46,6 +49,7 @@ public class OrderCreateHelper {
         Map<String, Object> specInfo = new HashMap<>();
         specInfo.put("capacity", specificationCapacity);
         specInfo.put("duration", specificationDuration);
+        specInfo.put("landArea", Replacement.ReplacementNumberBnToEn(landArea));
         specInfo.put("types", specificationTypes);
         specInfo.put("quantity", Replacement.ReplacementNumberBnToEn(quantity));
         specInfo.put("desc", description);

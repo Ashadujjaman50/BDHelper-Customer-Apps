@@ -46,10 +46,10 @@ public class NotificationPermissionHelper {
     }
 
     private static void subscribeToFCM(Activity activity) {
-        FirebaseMessaging.getInstance().subscribeToTopic("general")
+        FirebaseMessaging.getInstance().subscribeToTopic("partners")
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Subscribed to FCM topic: general");
+                        Log.d(TAG, "Subscribed to FCM topic: partners");
                         Toast.makeText(activity, "Notification Enable", Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(TAG, "FCM subscription failed", task.getException());
@@ -66,6 +66,7 @@ public class NotificationPermissionHelper {
                         ActivityCompat.requestPermissions(activity,
                                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                                 REQUEST_CODE_POST_NOTIFICATIONS);
+                        subscribeToFCM(activity);
                     })
                     .setNegativeButton("না এখন নয়", (dialog, which) -> dialog.dismiss())
                     .show();

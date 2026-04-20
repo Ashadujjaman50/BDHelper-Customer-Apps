@@ -13,7 +13,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.ViewPagerProductAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityProductBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.android.material.tabs.TabLayout;
 

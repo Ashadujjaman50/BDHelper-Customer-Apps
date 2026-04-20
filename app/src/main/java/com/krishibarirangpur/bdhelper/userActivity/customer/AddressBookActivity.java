@@ -31,9 +31,9 @@ import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.customer.AddressBookAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityAddressBookBinding;
-import com.krishibarirangpur.bdhelper.model.ModelAddressBook;
+import com.krishibarirangpur.bdhelper.model.AddressBookModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyToast;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,7 +60,7 @@ public class AddressBookActivity extends BaseActivity {
     private FirebaseFirestore db;
 
     private AddressBookAdapter addressBookAdapter;
-    private ArrayList<ModelAddressBook> addressBookArrayList;
+    private ArrayList<AddressBookModel> addressBookArrayList;
     private LoadingDialog loadingDialog;
     private ListenerRegistration addressBookListener;
 
@@ -248,7 +248,7 @@ public class AddressBookActivity extends BaseActivity {
 
     private void showUpdateAddressBook(int position) {
         isUpdate = true;
-        ModelAddressBook model = addressBookArrayList.get(position);
+        AddressBookModel model = addressBookArrayList.get(position);
         locationData = model.getAddress();
         currentAddressId = model.getAddressId();
 
@@ -307,7 +307,7 @@ public class AddressBookActivity extends BaseActivity {
 
     // -------------------- Delete --------------------
     private void showDeleteDialog(int position) {
-        ModelAddressBook model = addressBookArrayList.get(position);
+        AddressBookModel model = addressBookArrayList.get(position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_delete_confirm, null);
@@ -352,7 +352,7 @@ public class AddressBookActivity extends BaseActivity {
                     addressBookArrayList.clear();
                     if (snapshots != null) {
                         for (DocumentSnapshot doc : snapshots.getDocuments()) {
-                            ModelAddressBook model = doc.toObject(ModelAddressBook.class);
+                            AddressBookModel model = doc.toObject(AddressBookModel.class);
                             if (model != null) addressBookArrayList.add(model);
                         }
                     }

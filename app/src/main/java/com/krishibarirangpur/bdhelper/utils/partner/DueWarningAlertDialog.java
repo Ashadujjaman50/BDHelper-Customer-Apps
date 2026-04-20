@@ -17,7 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.userActivity.partner.PaymentActivity;
 
-public class DialogAlert {
+public class DueWarningAlertDialog {
 
     public static void dueAlert(Context context, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

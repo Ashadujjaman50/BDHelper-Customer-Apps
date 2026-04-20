@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityBidBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.bothWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
 import com.krishibarirangpur.bdhelper.sharedFragment.BidEquipmentFragment;
 import com.krishibarirangpur.bdhelper.sharedFragment.BidHomeShiftingFragment;

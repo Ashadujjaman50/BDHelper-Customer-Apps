@@ -1,10 +1,10 @@
 package com.krishibarirangpur.bdhelper.utils;
 
-import com.krishibarirangpur.bdhelper.model.BidSummary;
+import com.krishibarirangpur.bdhelper.model.BidSummaryModel;
 
 public class CacheManager {
     private static CacheManager instance;
-    private BidSummary bidSummary;
+    private BidSummaryModel bidSummary;
 
     private CacheManager() {}
 
@@ -13,11 +13,11 @@ public class CacheManager {
         return instance;
     }
 
-    public void setBidSummary(BidSummary summary) {
+    public void setBidSummary(BidSummaryModel summary) {
         this.bidSummary = summary;
     }
 
-    public BidSummary getBidSummary() {
+    public BidSummaryModel getBidSummary() {
         return bidSummary;
     }
 
