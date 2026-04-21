@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -391,16 +392,33 @@ public class CommonClass {
         }
     }
 
+    //When commission Flat rate in 50
+    public static String getRoundedCommissionValue(String amountStr, String landArea) {
+        try {
+            double amount = Double.parseDouble(amountStr);
+            double area = Double.parseDouble(landArea);
+            double totalAmount = amount + (area * 50);
 
+            return NumberFormat.getInstance(Locale.getDefault()).format(totalAmount);
+        }
+        catch (Exception e) {
+            try {
+                double originalAmount = Double.parseDouble(amountStr);
+                return String.valueOf(originalAmount * 1.01);
+            } catch (Exception ex) {
+                return amountStr;
+            }
+        }
+    }
 
 
     /**
      * Starts a countdown from a given timestamp + additional hours and updates the given TextView.
-     *
      * @param timestamp      The original timestamp in milliseconds
      * @param hoursToAdd     Hours to add to the timestamp
      * @param countdownTv    TextView to update with countdown
      */
+
     private static CountDownTimer countDownTimer;
     @SuppressLint("SetTextI18n")
     public static void startConditionalCountdown(long timestamp, int hoursToAdd, String orderStatus,

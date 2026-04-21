@@ -34,6 +34,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -41,201 +42,128 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class NotificationActivity extends BaseActivity {
 
     private ActivityNotificationBinding binding;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
-    AdapterNotice adapterNotice;
-    ArrayList<ModelNotice> noticeArrayList;
-
-    String user_type;
+    private FirebaseFirestore db;
+    private FirebaseUser firebaseUser;
+    private AdapterNotice adapterNotice;
+    private ArrayList<ModelNotice> noticeArrayList;
+    private ListenerRegistration noticeListener;
+    private String user_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // থিম আগে সেট কর
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notification);
 
-        //init views
-        noticeArrayList = new ArrayList<>();
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        initViews();
+        setupClickListeners();
+        setupSwipeToDelete();
+        checkNotification();
+        loadAllNotice();
+    }
 
+    private void initViews() {
+        db = FirebaseFirestore.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        noticeArrayList = new ArrayList<>();
         user_type = getIntent().getStringExtra(MyUtils.USER_TYPE);
 
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 
-        // set adapter
         adapterNotice = new AdapterNotice(this, noticeArrayList);
         binding.noticeRv.setAdapter(adapterNotice);
+    }
 
-        //check Notification timestamp
-        checkNotification();
-
-        //get Current User All Notice Load
-        loadAllNotice();
-
-        //Click Post And Bid Notice to Goto Target Location
+    private void setupClickListeners() {
         adapterNotice.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
                 if (position < 0 || position >= noticeArrayList.size()) return;
 
                 ModelNotice notice = noticeArrayList.get(position);
-
                 String noticeType = notice.getNoticeCategory();
                 String orderId = notice.getOrderId();
 
-                // 🔹 Partner logic
                 if (MyUtils.NOTICE_RECEIVER_PARTNER.equals(user_type)) {
-
-                    if (MyUtils.NOTICE_TYPE_POST.equals(noticeType) ||
-                            MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
-
-                        getOrderIdToOrderInfo(orderId,
-                                MyUtils.NOTICE_RECEIVER_PARTNER,
-                                noticeType);
+                    if (MyUtils.NOTICE_TYPE_POST.equals(noticeType) || MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
+                        getOrderIdToOrderInfo(orderId, MyUtils.NOTICE_RECEIVER_PARTNER, noticeType);
                     }
-                    return;
-                }
-
-                // 🔹 Customer logic
-                if (MyUtils.NOTICE_RECEIVER_CUSTOMER.equals(user_type) &&
-                        MyUtils.NOTICE_TYPE_BID.equals(noticeType)) {
-
-                    getOrderIdToOrderInfo(orderId,
-                            MyUtils.NOTICE_RECEIVER_CUSTOMER,
-                            MyUtils.NOTICE_TYPE_BID);
+                } else if (MyUtils.NOTICE_RECEIVER_CUSTOMER.equals(user_type) && MyUtils.NOTICE_TYPE_BID.equals(noticeType)) {
+                    getOrderIdToOrderInfo(orderId, MyUtils.NOTICE_RECEIVER_CUSTOMER, noticeType);
                 }
             }
 
-
-            @Override
-            public void onShowItemClick(int position) {}
-
-            @Override
-            public void onDeleteItemClick(int position) {}
+            @Override public void onShowItemClick(int position) {}
+            @Override public void onDeleteItemClick(int position) {}
         });
-
-        //Clear Notice In Individual User
-        ItemTouchHelper.SimpleCallback simpleCallback =
-                new ItemTouchHelper.SimpleCallback(0,
-                        ItemTouchHelper.LEFT ) {
-
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView,
-                                          @NonNull RecyclerView.ViewHolder viewHolder,
-                                          @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
-
-                    @Override
-                    public int getSwipeDirs(@NonNull RecyclerView recyclerView,
-                                            @NonNull RecyclerView.ViewHolder viewHolder) {
-
-                        int position = viewHolder.getAdapterPosition();
-                        if (position == RecyclerView.NO_POSITION) return 0;
-
-                        ModelNotice notice = noticeArrayList.get(position);
-                        String noticeType = notice.getNoticeCategory();
-
-                        // 🔹 Partner logic → swipe allow
-                        if (MyUtils.NOTICE_RECEIVER_PARTNER.equals(user_type)) {
-                            if (MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
-                                return super.getSwipeDirs(recyclerView, viewHolder);
-                            }
-                        }
-
-                        // 🔹 Customer logic → swipe allow
-                        if (MyUtils.NOTICE_RECEIVER_CUSTOMER.equals(user_type)) {
-                            if (MyUtils.NOTICE_TYPE_BID.equals(noticeType)) {
-                                return super.getSwipeDirs(recyclerView, viewHolder);
-                            }
-                        }
-
-                        // ❌ Otherwise swipe disable
-                        return 0;
-                    }
-
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-                        int position = viewHolder.getBindingAdapterPosition();
-                        if (position == RecyclerView.NO_POSITION) return;
-
-                        ModelNotice notice = noticeArrayList.get(position);
-
-                        String noticeId = notice.getTimestamp();
-                        if (noticeId == null) {
-                            adapterNotice.notifyItemChanged(position);
-                            return;
-                        }
-
-                        // 🔹 UI থেকে আগে remove
-                        noticeArrayList.remove(position);
-                        adapterNotice.notifyItemRemoved(position);
-
-                        // 🔹 Firestore থেকে delete
-                        FirebaseFirestore.getInstance()
-                                .collection("Notice")
-                                .document(noticeId)
-                                .delete()
-                                .addOnSuccessListener(unused -> {
-                                    MyToast.showShort(
-                                            NotificationActivity.this,
-                                            noticeId
-                                    );
-                                    Log.e("NoticeDelete", "Delete Success");
-                                })
-                                .addOnFailureListener(e -> {
-
-                                    // ❌ failure হলে item আবার ফিরিয়ে দাও
-                                    noticeArrayList.add(position, notice);
-                                    adapterNotice.notifyItemInserted(position);
-
-                                    MyToast.showShort(
-                                            NotificationActivity.this,
-                                            noticeId
-                                    );
-
-                                    Log.e("NoticeDelete", "Delete failed", e);
-                                });
-                    }
-
-
-                    @Override
-                    public void onChildDraw(@NonNull Canvas c,
-                                            @NonNull RecyclerView recyclerView,
-                                            @NonNull RecyclerView.ViewHolder viewHolder,
-                                            float dX, float dY,
-                                            int actionState,
-                                            boolean isCurrentlyActive) {
-
-                        new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                                .addSwipeLeftBackgroundColor(ContextCompat.getColor(NotificationActivity.this, R.color.gray_light))
-                                .addSwipeLeftActionIcon(R.drawable.ic_clear)
-                                .addSwipeLeftLabel("Clear")
-                                .setSwipeLeftLabelColor(ContextCompat.getColor(NotificationActivity.this, R.color.text_primary))
-                                .create()
-                                .decorate();
-
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
-                                actionState, isCurrentlyActive);
-                    }
-                };
-
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.noticeRv);
-
-
     }
 
-    private ListenerRegistration noticeListener;
+    private void setupSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int position = viewHolder.getBindingAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) return 0;
+
+                ModelNotice notice = noticeArrayList.get(position);
+                String noticeType = notice.getNoticeCategory();
+
+                boolean canSwipe = (MyUtils.NOTICE_RECEIVER_PARTNER.equals(user_type) && MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) ||
+                        (MyUtils.NOTICE_RECEIVER_CUSTOMER.equals(user_type) && MyUtils.NOTICE_TYPE_BID.equals(noticeType));
+
+                return canSwipe ? super.getSwipeDirs(recyclerView, viewHolder) : 0;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getBindingAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) return;
+
+                ModelNotice notice = noticeArrayList.get(position);
+                String noticeId = notice.getTimestamp();
+
+                if (noticeId == null) {
+                    adapterNotice.notifyItemChanged(position);
+                    return;
+                }
+
+                // UI Update
+                noticeArrayList.remove(position);
+                adapterNotice.notifyItemRemoved(position);
+
+                // DB Delete
+                db.collection("Notice").document(noticeId).delete()
+                        .addOnSuccessListener(unused -> MyToast.showShort(NotificationActivity.this, "Clear"))
+                        .addOnFailureListener(e -> {
+                            noticeArrayList.add(position, notice);
+                            adapterNotice.notifyItemInserted(position);
+                            MyToast.showShort(NotificationActivity.this, "Failed");
+                        });
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(NotificationActivity.this, R.color.gray_light))
+                        .addSwipeLeftActionIcon(R.drawable.ic_clear)
+                        .addSwipeLeftLabel("Clear")
+                        .setSwipeLeftLabelColor(ContextCompat.getColor(NotificationActivity.this, R.color.text_primary))
+                        .create().decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.noticeRv);
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadAllNotice() {
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         noticeListener = db.collection("Notice")
@@ -283,81 +211,80 @@ public class NotificationActivity extends BaseActivity {
                 });
     }
 
+    /*private void loadAllNotice() {
+        if (firebaseUser == null) return;
+        String currentUserId = firebaseUser.getUid();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (noticeListener != null) {
-            noticeListener.remove(); // 🔹 Memory leak বন্ধ হবে
-        }
-    }
+        // 🔹 Optimized Query: fetch only relevant notifications
+        noticeListener = db.collection("Notice")
+                .whereIn("receivedUserId", Arrays.asList(currentUserId, MyUtils.NOTICE_RECEIVER_ALL, user_type))
+                .orderBy("timestamp", Query.Direction.DESCENDING) // Newest first is better for UX
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.e("FirestoreError", "Error loading notices", e);
+                        return;
+                    }
+                    if (snapshots == null) return;
 
+                    noticeArrayList.clear();
+                    for (DocumentSnapshot ds : snapshots) {
+                        ModelNotice notice = ds.toObject(ModelNotice.class);
+                        if (notice != null) {
+                            // Skip if I am the sender and receiver (redundant check if UI filters correctly)
+                            if (!notice.getSenderType().equals(notice.getReceivedUserId())) {
+                                noticeArrayList.add(notice);
+                            }
+                        }
+                    }
+
+                    binding.noNoticeTv.setVisibility(noticeArrayList.isEmpty() ? View.VISIBLE : View.GONE);
+                    adapterNotice.notifyDataSetChanged();
+                });
+    }*/
 
     private void checkNotification() {
-        //current time to stamp
-        long checkNotice = System.currentTimeMillis();
-
+        if (firebaseUser == null) return;
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("NoticeCheck");
-
-        HashMap<String, Object> checkMap = new HashMap<>();
-        checkMap.put("checkNotice", checkNotice);
-
-        userRef.child(firebaseUser.getUid()).updateChildren(checkMap);
+        userRef.child(firebaseUser.getUid()).child("checkNotice").setValue(System.currentTimeMillis());
     }
 
-
-    //Goto Order And Bid Activity
-    private void getOrderIdToOrderInfo(String orderId, String user_type, String noticeType) {
-
+    private void getOrderIdToOrderInfo(String orderId, String userType, String noticeType) {
         if (orderId == null || orderId.isEmpty()) {
             MyToast.showShort(this, "Invalid Order ID");
             return;
         }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("orders")
-                .document(orderId) // ⚠️ ধরে নিচ্ছি orderId = documentId
-                .get()
+        db.collection("orders").document(orderId).get()
                 .addOnSuccessListener(documentSnapshot -> {
-
                     if (!documentSnapshot.exists()) {
                         MyToast.showShort(this, "Order not found");
                         return;
                     }
 
                     OrderModel orderModel = documentSnapshot.toObject(OrderModel.class);
-                    if (orderModel == null || orderModel.getOrderInfo() == null) {
-                        MyToast.showShort(this, "Order info missing");
-                        return;
-                    }
-
-                    String categoryId = orderModel.getOrderInfo().getCategoryId();
-                    String subCategoryId = orderModel.getOrderInfo().getSubCategoryId();
+                    if (orderModel == null || orderModel.getOrderInfo() == null) return;
 
                     Intent intent = new Intent(this, BidActivity.class);
-                    intent.putExtra(MyUtils.USER_TYPE, user_type);
+                    intent.putExtra(MyUtils.USER_TYPE, userType);
 
                     if (MyUtils.NOTICE_TYPE_BID_CONFIRM.equals(noticeType)) {
                         intent.putExtra(MyUtils.bidAction, "confirmed");
-                    }
-                    else {
+                    } else {
                         intent.putExtra(MyUtils.bidAction, "new");
                         intent.putExtra(MyUtils.orderId, orderId);
-                        intent.putExtra(MyUtils.categoryId, categoryId);
-                        intent.putExtra(MyUtils.subCategoryId, subCategoryId);
+                        intent.putExtra(MyUtils.categoryId, orderModel.getOrderInfo().getCategoryId());
+                        intent.putExtra(MyUtils.subCategoryId, orderModel.getOrderInfo().getSubCategoryId());
                     }
 
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
                 })
-                .addOnFailureListener(e -> {
-                    MyToast.showShort(this, "Failed to load order");
-                    Log.e("OrderLoadError", e.getMessage());
-                });
+                .addOnFailureListener(e -> MyToast.showShort(this, "Failed to load order"));
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        if (noticeListener != null) noticeListener.remove();
+        super.onDestroy();
+    }
 }

@@ -405,6 +405,7 @@ public class RentLocationFormFragment extends Fragment {
                     array_list.add(getString(R.string.rice_harvesting));
                     array_list.add(getString(R.string.wheat_harvesting));
                     array_list.add(getString(R.string.corn_harvesting));
+                    array_list.add(getString(R.string.mustard_seed_harvesting));
                     array_list.add(getString(R.string.soybean_harvesting));
                     break;
             }

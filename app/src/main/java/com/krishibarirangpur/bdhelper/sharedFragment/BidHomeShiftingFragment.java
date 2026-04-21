@@ -175,7 +175,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentOrderBid() {
         bidModelArrayList = new ArrayList<>();
-        bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, this);
+        bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, "",this);
         binding.bidRV.setAdapter(bidCustomerAdapter);
 
         db.collection("bidForOrder")

@@ -498,6 +498,7 @@
     <string name="rice_harvesting">Rice harvesting</string>
     <string name="wheat_harvesting">Wheat harvesting</string>
     <string name="corn_harvesting">Corn harvesting</string>
+    <string name="mustard_seed_harvesting">Mustard harvesting</string>
     <string name="soybean_harvesting">Soybean harvesting</string>
 
     <!--Sign up / Login -->

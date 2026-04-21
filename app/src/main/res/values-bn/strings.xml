@@ -498,6 +498,7 @@
     <string name="rice_harvesting">ধান কাটা</string>
     <string name="wheat_harvesting">গম কাটা</string>
     <string name="corn_harvesting">ভুট্টা কাটা</string>
+    <string name="mustard_seed_harvesting">সরিষা কাটা</string>
     <string name="soybean_harvesting">সয়াবিন কাটা</string>
 
     <!--Sign up-->

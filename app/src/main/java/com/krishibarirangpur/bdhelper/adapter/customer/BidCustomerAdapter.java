@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,17 +25,18 @@ import java.util.ArrayList;
 
 public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.HolderViewBid> {
 
-    Context context;
-    ArrayList<BidModel> bidModelArrayList;
+    private final Context context;
+    private final ArrayList<BidModel> bidModelArrayList;
+    private final OnBidActionListener listener;
+    private String landArea;
 
-    private OnBidActionListener listener; // 👈 Interface reference
-
-    // Constructor
-    public BidCustomerAdapter(Context context, ArrayList<BidModel> bidModelArrayList, OnBidActionListener listener) {
+    public BidCustomerAdapter(Context context, ArrayList<BidModel> bidModelArrayList, String landArea, OnBidActionListener listener) {
         this.context = context;
         this.bidModelArrayList = bidModelArrayList;
+        this.landArea = landArea;
         this.listener = listener;
     }
+
 
     @NonNull
     @Override
@@ -49,15 +51,10 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         BidModel bidModel = bidModelArrayList.get(position);
 
         //Bid Info
-        String bidId = bidModel.getBidInfo().getBidId();
         String bidAmount = bidModel.getBidInfo().getBidAmount();
         String status = bidModel.getBidInfo().getStatus();
-        String userId = bidModel.getBidInfo().getUserId();
-        String vendorID = bidModel.getBidInfo().getVendorId();
-        String bidTime = bidModel.getBidInfo().getTimestamp();
 
         //Order Info
-        String orderId = bidModel.getOrderInfo().getOrderId();
         String categoryId = bidModel.getOrderInfo().getCategoryId();
         String subCategoryId = bidModel.getOrderInfo().getSubCategoryId();
         String rentTime = bidModel.getOrderInfo().getRentTime();
@@ -69,11 +66,31 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
 
         if (categoryId.equals(MyUtils.SKILLED_LABOR_ID)){
             holder.nameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
-        }
-        else {
+        } else {
             holder.nameTv.setText(vehicleModel);
         }
 
+        handleVehicleUI(holder, subCategoryId, vehicleRegNo, vehicleCatAndYear, vehicleModel);
+
+        String finalBidAmount = "";
+        switch (categoryId) {
+            case MyUtils.HARVESTER_MACHINE_ID -> finalBidAmount = CommonClass.getRoundedCommissionValue(bidAmount, landArea);
+            case MyUtils.EQUIPMENT_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
+            case MyUtils.ROAD_TRANSPORT_ID, MyUtils.RENT_A_CAR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_TRANSPORT);
+            case MyUtils.SKILLED_LABOR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
+            case MyUtils.HOME_SHIFTING_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
+        }
+        holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(finalBidAmount)));
+
+        // Handle Status and Dates
+        handleStatusAndDates(holder, status, rentTime);
+
+        // Click Listeners
+        holder.callBtn.setOnClickListener(v -> listener.onCallClicked(bidModel));
+        holder.confirmOrderBtn.setOnClickListener(v -> listener.onConfirmOrderClicked(bidModel));
+    }
+
+    private void handleVehicleUI(HolderViewBid holder, String subCategoryId, String vehicleRegNo, String vehicleCatAndYear, String vehicleModel) {
         if (subCategoryId.equals(MyUtils.SUB_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_PICKUP_ID) ||
                 subCategoryId.equals(MyUtils.SUB_COVERED_VAN_ID)||subCategoryId.equals(MyUtils.SUB_FREEZER_VAN_ID)||
                 subCategoryId.equals(MyUtils.SUB_DUMP_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_TRAILER_ID)||
@@ -81,109 +98,61 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
                 subCategoryId.equals(MyUtils.SUB_MICROBUS_ID) || subCategoryId.equals(MyUtils.SUB_AMBULANCE_ID)){
             holder.vehicleRegNoTv.setText(Replacement.convertVehicleRegByLocale(context, vehicleRegNo));
             holder.modelAndYear.setText(Replacement.ReplacementNumberInLocal(context, vehicleCatAndYear));
-        }
-
-        else if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID) || subCategoryId.equals(MyUtils.SUB_PLUMBER_ID) ||
+        } else if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID) || subCategoryId.equals(MyUtils.SUB_PLUMBER_ID) ||
                 subCategoryId.equals(MyUtils.SUB_ELECTRICIAN_ID) || subCategoryId.equals(MyUtils.SUB_STOVE_TECHNICIAN_ID) ||
                 subCategoryId.equals(MyUtils.SUB_MECHANIC_ID)){
             holder.registerNameTv.setText(R.string.work_type_dot);
             holder.modelAndTypeTv.setText(R.string.work_area_dot);
             holder.vehicleRegNoTv.setText(vehicleRegNo);
             holder.modelAndYear.setText(vehicleCatAndYear);
-        }
-        else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
+        } else if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID)){
             holder.registerNameTv.setText(R.string.work_type_dot);
             holder.modelAndTypeTv.setText(R.string.work_area_dot);
             holder.vehicleRegNoTv.setText(vehicleRegNo);
             holder.modelAndYear.setText(vehicleCatAndYear);
             holder.transportLl.setVisibility(View.GONE);
             holder.modelAndTypeTv.setText(R.string.tractor_type_dot);
-        }
-        else if (subCategoryId.equals(MyUtils.HOME_SHIFTING_ID)){
+        } else if (subCategoryId.equals(MyUtils.HOME_SHIFTING_ID)){
             holder.serviceNameTv.setText(R.string.team_leader_dot);
             holder.registerNameTv.setText(R.string.team_member_dot);
             holder.modelAndTypeTv.setText(R.string.work_area_dot);
             holder.nameTv.setText(vehicleRegNo);
             holder.vehicleRegNoTv.setText(Replacement.ReplacementPersonInLocal(context, vehicleModel));
             holder.modelAndYear.setText(vehicleCatAndYear);
-        }
-        else {
+        } else {
             holder.vehicleRegNoTv.setText(vehicleRegNo);
             holder.modelAndYear.setText(vehicleCatAndYear);
-            if (vehicleRegNo.isEmpty()){
-                holder.transportLl.setVisibility(View.GONE);
-            }
-            else {
-                holder.transportLl.setVisibility(View.VISIBLE);
-            }
+            holder.transportLl.setVisibility(vehicleRegNo.isEmpty() ? View.GONE : View.VISIBLE);
         }
+    }
 
-        // 🔹 এখন local format এ দেখাও
-        String finalBidAmount = "";
-        switch (categoryId) {
-            case MyUtils.HARVESTER_MACHINE_ID -> {
-                // HARVESTER_MACHINE_ID হলে: 1000 + 1%
-                String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HARVESTER);
-                double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
-                finalBidAmount = String.valueOf(calculatedAmount);
-            }
-            case MyUtils.EQUIPMENT_ID ->
-                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_EQUIPMENT);
-            case MyUtils.ROAD_TRANSPORT_ID, MyUtils.RENT_A_CAR_ID ->
-                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_TRANSPORT);
-            case MyUtils.SKILLED_LABOR_ID ->
-                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
-            case MyUtils.HOME_SHIFTING_ID ->
-                    finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
-        }
-        holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(finalBidAmount)));
-
-
-        // 🔹 rentTime যেহেতু millisecond string, তাই long এ convert করো
+    private void handleStatusAndDates(HolderViewBid holder, String status, String rentTime) {
         long rentMillis = CommonClass.parseMillis(rentTime);
         long todayMillis = CommonClass.getTodayStartMillis();
 
-
-        // 🔹 প্রথমে check করো bid status কী
         if (status.equals("confirmed") || status.equals("done")) {
-            // ✅ যদি confirmed হয় → fixed button
             holder.confirmIcon.setVisibility(View.VISIBLE);
             holder.confirmOrderBtn.setText("Confirmed");
             holder.confirmOrderBtn.setEnabled(false);
-            holder.confirmOrderBtn.setBackground(
-                    context.getDrawable(R.drawable.custom_button_confirmed)
-            );
-        }
-        else if (status.equals("pending")) {
-            // 🕓 যদি pending হয় → তারিখ compare করো
+            holder.confirmOrderBtn.setBackground(AppCompatResources.getDrawable(context, R.drawable.custom_button_confirmed));
+        } else if (status.equals("pending")) {
             holder.confirmIcon.setVisibility(View.GONE);
             if (rentMillis >= todayMillis) {
-                // ✅ Valid (future or today)
-                holder.confirmOrderBtn.setText("Confirm");
+                holder.confirmOrderBtn.setText(R.string.confirm);
                 holder.confirmOrderBtn.setEnabled(true);
-            }
-            else {
-                // ❌ Expired
+                holder.confirmOrderBtn.setBackground(AppCompatResources.getDrawable(context, R.drawable.custom_button_gradient));
+            } else {
                 holder.confirmOrderBtn.setText("Expired");
                 holder.confirmOrderBtn.setEnabled(false);
-                holder.confirmOrderBtn.setBackground(
-                        context.getDrawable(R.drawable.custom_button_disable)
-                );
+                holder.confirmOrderBtn.setBackground(AppCompatResources.getDrawable(context, R.drawable.custom_button_disable));
             }
         }
-
-        // 👇 Click Listeners call the interface methods
-        holder.callBtn.setOnClickListener(v -> listener.onCallClicked(bidModel));
-        holder.confirmOrderBtn.setOnClickListener(v -> listener.onConfirmOrderClicked(bidModel));
-
-
     }
 
     @Override
     public int getItemCount() {
         return bidModelArrayList.size();
     }
-
 
     static class HolderViewBid extends RecyclerView.ViewHolder {
         TextView serviceNameTv, nameTv, mobile, rentTimeTv, amountTv, registerNameTv, modelAndTypeTv, modelAndYear, vehicleRegNoTv;
@@ -193,7 +162,6 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         LinearLayout transportLl;
         public HolderViewBid(@NonNull View itemView) {
             super(itemView);
-            //
             serviceNameTv = itemView.findViewById(R.id.serviceNameTv);
             nameTv = itemView.findViewById(R.id.nameTV);
             mobile = itemView.findViewById(R.id.mobileNumberTv);
@@ -206,16 +174,13 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
             confirmIcon = itemView.findViewById(R.id.confirmIcon);
             cardLayout = itemView.findViewById(R.id.cardLayout);
             transportLl = itemView.findViewById(R.id.transportLl);
-
             callBtn = itemView.findViewById(R.id.callBtn);
             confirmOrderBtn = itemView.findViewById(R.id.confirmOrderBtn);
         }
     }
 
-    // 👇 Interface for handling actions from Activity
     public interface OnBidActionListener {
         void onCallClicked(BidModel bidModel);
         void onConfirmOrderClicked(BidModel bidModel);
     }
-
 }

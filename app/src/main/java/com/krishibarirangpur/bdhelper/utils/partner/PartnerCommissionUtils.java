@@ -9,7 +9,7 @@ public class PartnerCommissionUtils {
     public static final double COMMISSION_HOME_SHIFTING = 5;           //Percentage
     public static final double COMMISSION_SKILLED_LABOUR = 5;           //Percentage
     public static final double COMMISSION_EQUIPMENT = 5;               //Percentage
-    public static final double COMMISSION_HARVESTER = 1;                //Percentage
+    public static final double COMMISSION_HARVESTER = 50;                //Flat rate (Acrec)
     public static final double COMMISSION_HARVESTER_DEFAULT = 1000;     //Only Harvester 1000 Default Set
 
 }

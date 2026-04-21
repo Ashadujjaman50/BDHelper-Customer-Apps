@@ -18,6 +18,7 @@ public class BidMapBuilder {
             String subCategoryId
     ) {
 
+        int bidValue = (int) Double.parseDouble(bidAmount);
         String modelName = model.getServiceModelNumber();
         String licenceNumber = model.getServiceRegistrationNumber();
         String modelYear = model.getServiceCategoryAndYear();
@@ -34,7 +35,7 @@ public class BidMapBuilder {
         Map<String, Object> bidInfo = new HashMap<>();
         bidInfo.put("bidId", timestamp);
         bidInfo.put("status", "pending");
-        bidInfo.put("bidAmount", bidAmount);
+        bidInfo.put("bidAmount", String.valueOf(bidValue));
         bidInfo.put("userId", userId);
         bidInfo.put("vendorId", vendorId);
         bidInfo.put("timestamp", timestamp);

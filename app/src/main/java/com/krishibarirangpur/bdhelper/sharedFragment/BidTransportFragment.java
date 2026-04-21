@@ -174,7 +174,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentOrderBid() {
         bidModelArrayList = new ArrayList<>();
-        bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, this);
+        bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, "",this);
         binding.bidRV.setAdapter(bidCustomerAdapter);
 
         db.collection("bidForOrder")
@@ -670,39 +670,6 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                 categoryId,
                 subCategoryId
         );
-
-       /* String modelName = model.getServiceModelNumber();
-        String licenceNumber = model.getServiceRegistrationNumber();
-        String modelYear = model.getServiceCategoryAndYear();
-
-
-        Map<String, Object> bid = new HashMap<>();
-
-        // 🔹 service Info
-        Map<String, Object> serviceInfo = new HashMap<>();
-        serviceInfo.put("vehicleModel", modelName);
-        serviceInfo.put("vehicleRegNo", licenceNumber);
-        serviceInfo.put("vehicleCatAndYear", modelYear);
-
-        // 🔹 bid Info
-        Map<String, Object> bidInfo = new HashMap<>();
-        bidInfo.put("bidId", timestamp);
-        bidInfo.put("status", "pending");
-        bidInfo.put("bidAmount", bidAmount);
-        bidInfo.put("userId", userId);
-        bidInfo.put("vendorId", currentUserId);
-        bidInfo.put("timestamp", timestamp);
-
-        // 🔹 order Info
-        Map<String, Object> orderInfo = new HashMap<>();
-        orderInfo.put("orderId", orderId);
-        orderInfo.put("rentTime", rentTime);
-        orderInfo.put("categoryId", categoryId);
-        orderInfo.put("subCategoryId", subCategoryId);
-
-        bid.put("serviceInfo", serviceInfo);
-        bid.put("bidInfo", bidInfo);
-        bid.put("orderInfo", orderInfo);*/
 
         db.collection("bidForOrder")
                 .document(timestamp)

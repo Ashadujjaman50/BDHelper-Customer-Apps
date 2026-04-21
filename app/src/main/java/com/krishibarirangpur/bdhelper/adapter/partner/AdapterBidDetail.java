@@ -134,6 +134,8 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                     String types = order.getSpecInfo().getTypes();
                     String orderStatus = order.getOrderInfo().getStatus();
 
+                    holder.typesTv.setText(types);
+
 
                     // assume orderStatus ও bidStatus string হিসেবে আছে, এবং context আছে
                     if ("pending".equalsIgnoreCase(orderStatus) || "process".equalsIgnoreCase(orderStatus)) {
