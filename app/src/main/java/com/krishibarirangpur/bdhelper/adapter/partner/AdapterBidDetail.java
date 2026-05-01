@@ -116,6 +116,8 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
                     holder.postDescriptionTv.setText(order.getSpecInfo().getDesc());
 
+
+
                     // Calculate the company amount
                     int vendorPrice = order.getBidInfo().getVendorPrice();
                     int bidValue = (int) Double.parseDouble(bidAmount);
@@ -133,6 +135,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                     String capacity = order.getSpecInfo().getCapacity();
                     String types = order.getSpecInfo().getTypes();
                     String orderStatus = order.getOrderInfo().getStatus();
+                    String landArea = order.getSpecInfo().getLandArea();
 
                     holder.typesTv.setText(types);
 
@@ -205,7 +208,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
 
                     // ============ Handle SubCategory Specific ============
-                    setServiceInfo(holder, subCategoryId, types, quantity, capacity);
+                    setServiceInfo(holder, subCategoryId, types, quantity, capacity, landArea);
 
 
 
@@ -233,7 +236,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
     }
 
     @SuppressLint("SetTextI18n")
-    private void setServiceInfo(HolderViewBidDetail holder, String subCategoryId, String types, String quantity, String capacity) {
+    private void setServiceInfo(HolderViewBidDetail holder, String subCategoryId, String types, String quantity, String capacity, String landArea) {
         switch (subCategoryId) {
             case MyUtils.SUB_MICROBUS_ID:
             case MyUtils.SUB_AMBULANCE_ID:
@@ -270,6 +273,11 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
             case MyUtils.SUB_MECHANIC_ID:
                 holder.typesTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_service,0,0);
                 holder.quantityTv.setText(Replacement.ReplacementPersonInLocal(context, quantity));
+                break;
+            case MyUtils.HARVESTER_MACHINE_ID:
+            case MyUtils.SUB_TRACTOR_ID:
+                holder.landAreaLL.setVisibility(View.VISIBLE);
+                holder.landAreaTv.setText(Replacement.ReplacementNumberInLocal(context, landArea) +" "+context.getString(R.string.acres));
                 break;
             default:
                 holder.postNameTv.setVisibility(View.VISIBLE);
@@ -308,11 +316,11 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
         TextView orderIdTv, postNameTv, bidDateTv, bidAmountTv, rentTimeTv, capacityTv, quantityTv, typesTv,
                 locationNameTv, locationAreaTv, loadLocationTv, loadAreaTv, unLoadLocationTv, unLoadAreaTv,
-                postDescriptionTv, bidStatusTv,  confirmOrderPriceTv, companyAmountTv;
+                postDescriptionTv, bidStatusTv,  confirmOrderPriceTv, companyAmountTv, landAreaTv;
 
         ImageView postImage, moreBtn;
         ImageButton callBtn;
-        LinearLayout row_one, row_three;
+        LinearLayout row_one, row_three, landAreaLL;
         View dividerOne;
 
         CardView cardView;
@@ -352,6 +360,8 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
             unLoadAreaTv = itemView.findViewById(R.id.unLoadArea);
 
             bidStatusTv = itemView.findViewById(R.id.bidStatusTv);
+            landAreaLL = itemView.findViewById(R.id.landAreaLL);
+            landAreaTv = itemView.findViewById(R.id.landAreaTv);
 
         }
     }

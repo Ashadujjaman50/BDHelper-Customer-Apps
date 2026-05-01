@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.krishibarirangpur.bdhelper.authentication.UserTypeSelectionActivity;
@@ -29,6 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
@@ -38,15 +40,17 @@ public class SplashScreenActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private AppUpdateChecker appUpdateChecker;
     private SharedPrefHelper sharedPrefHelper;
-    private static final String USER_LOGIN_MODE = "user_role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
+
+        //init views
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
         sharedPrefHelper = new SharedPrefHelper(this);
 
         Animation topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
@@ -57,6 +61,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         Typeface customFont = ResourcesCompat.getFont(this, R.font.amaranth);
         TextView textView = findViewById(R.id.textView);
         textView.setTypeface(customFont);
+
+        //Token update
+        FCMTokenManager.updateFCMToken();
 
         // অ্যাপ আপডেট চেক করা হচ্ছে
         appUpdateChecker = new AppUpdateChecker(this);
@@ -112,10 +119,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                             Class<?> targetClass;
 
                             if ("customer".equals(userType)) {
-                                sharedPrefHelper.putString(USER_LOGIN_MODE, "customer");
+                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, "customer");
                                 targetClass = MainActivity.class;
                             } else if ("partner".equals(userType)) {
-                                sharedPrefHelper.putString(USER_LOGIN_MODE, "partner");
+                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, "partner");
                                 targetClass = DashboardActivity.class;
                             } else {
                                 mAuth.signOut();

@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
 
 public class NotificationPermissionHelper {
 
@@ -36,27 +37,12 @@ public class NotificationPermissionHelper {
 
             } else {
                 Log.d(TAG, "Notification permission already granted");
-                subscribeToFCM(activity);
             }
 
         } else {
             Log.d(TAG, "SDK < 33, no need to ask for notification permission");
-            subscribeToFCM(activity);
         }
     }
-
-    private static void subscribeToFCM(Activity activity) {
-        FirebaseMessaging.getInstance().subscribeToTopic("partners")
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "Subscribed to FCM topic: partners");
-                        Toast.makeText(activity, "Notification Enable", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.e(TAG, "FCM subscription failed", task.getException());
-                    }
-                });
-    }
-
     public static void showPermissionDialog(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             new AlertDialog.Builder(activity)
@@ -88,13 +74,14 @@ public class NotificationPermissionHelper {
         }
     }
 
+
+    private static void subscribeToFCM(Activity activity) {
+        // Topic subscriptions are now managed via SubscribeNotification class based on user role
+        Log.d(TAG, "Permissions checked. Topic subscriptions are managed separately.");
+    }
+
     private static void subscribeToFirebaseTopic(Activity activity) {
-        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_POST_NOTIFICATION).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(activity, "Notification enabled", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(activity, "Notification subscription failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Topic subscriptions are now managed via SubscribeNotification class based on user role
+        Log.d(TAG, "Permission result checked. Topic subscriptions are managed separately.");
     }
 }

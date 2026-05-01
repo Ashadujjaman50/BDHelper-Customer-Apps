@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityMainBinding;
 import com.krishibarirangpur.bdhelper.sharedFragment.HelpFragment;
@@ -24,6 +25,7 @@ import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
 
 public class MainActivity extends BaseActivity {
 
@@ -48,6 +50,8 @@ public class MainActivity extends BaseActivity {
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
 
+        FCMTokenManager.updateFCMToken();
+        SubscribeNotification.handleUserSubscribe("customer");
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);

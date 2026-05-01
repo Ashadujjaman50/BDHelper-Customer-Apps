@@ -10,6 +10,8 @@ import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -280,6 +282,11 @@ public class NIDPhotoActivity extends BaseActivity {
             MyToast.showShort(this,"এনআইডির ছবি সিলেক্ট করুন!");
             return;
         }
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            loadingDialog.setTheme("horizontal");
+            loadingDialog.setTitle("Processing...");
+        }, 2000);
 
         loadingDialog.setMessage("ছবি আপলোড হচ্ছে...");
         loadingDialog.show();

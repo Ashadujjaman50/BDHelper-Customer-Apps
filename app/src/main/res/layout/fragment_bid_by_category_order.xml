@@ -44,8 +44,6 @@
                 android:layout_marginHorizontal="5dp"
                 android:paddingBottom="25dp"
                 android:clipToPadding="false"
-                app:stackFromEnd="true"
-                app:reverseLayout="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/row_post_transport" />
 

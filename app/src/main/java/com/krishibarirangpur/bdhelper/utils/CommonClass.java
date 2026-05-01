@@ -393,18 +393,29 @@ public class CommonClass {
     }
 
     //When commission Flat rate in 50
-    public static String getRoundedCommissionValue(String amountStr, String landArea) {
+    public static String getRoundedCommissionValue(boolean convert, String amountStr, String landArea) {
         try {
             double amount = Double.parseDouble(amountStr);
             double area = Double.parseDouble(landArea);
             double totalAmount = amount + (area * 50);
 
-            return NumberFormat.getInstance(Locale.getDefault()).format(totalAmount);
-        }
-        catch (Exception e) {
+            if (convert) {
+                return NumberFormat.getInstance(Locale.getDefault()).format(totalAmount);
+            } else {
+                return String.valueOf(totalAmount);
+            }
+
+        } catch (Exception e) {
             try {
                 double originalAmount = Double.parseDouble(amountStr);
-                return String.valueOf(originalAmount * 1.01);
+                double fallback = originalAmount * 1.01;
+
+                if (convert) {
+                    return NumberFormat.getInstance(Locale.getDefault()).format(fallback);
+                } else {
+                    return String.valueOf(fallback);
+                }
+
             } catch (Exception ex) {
                 return amountStr;
             }

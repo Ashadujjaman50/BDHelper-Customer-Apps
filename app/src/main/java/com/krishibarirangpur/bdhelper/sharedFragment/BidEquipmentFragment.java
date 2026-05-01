@@ -200,119 +200,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 });
     }
 
-    @Override
-    public void onCallClicked(BidModel bidModel) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + MyUtils.HOTLINE_NUMBER));
-        startActivity(intent);
-    }
-
-    public void onConfirmOrderClicked(BidModel bidModel) {
-        try {
-            long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
-            long todayMillis = CommonClass.getTodayStartMillis();
-
-            if (rentMillis >= todayMillis) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
-                builder.setView(dialogView);
-
-                AlertDialog dialog = builder.create();
-
-                Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-                Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-                btnCancel.setOnClickListener(v1 -> dialog.dismiss());
-
-                btnConfirm.setOnClickListener(v2 -> {
-                    dialog.dismiss();
-                    loadingDialog.show();
-
-                    String bidId = bidModel.getBidInfo().getBidId();
-                    String orderId = bidModel.getOrderInfo().getOrderId();
-                    String categoryID = bidModel.getOrderInfo().getCategoryId();
-                    
-                    String finalBidAmount;
-                    if (categoryID.equals(MyUtils.HARVESTER_MACHINE_ID)){
-                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HARVESTER);
-                        double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
-                        finalBidAmount = String.valueOf(calculatedAmount);
-                    }
-                    else {
-                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_EQUIPMENT);
-                    }
-
-                    db.collection("bidForOrder")
-                            .document(bidId)
-                            .update("bidInfo.status", "confirmed")
-                            .addOnSuccessListener(aVoid -> {
-
-                                Map<String, Object> bidInfoUpdate = new HashMap<>();
-                                bidInfoUpdate.put("bidInfo.bidId", bidId);
-                                bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
-                                bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
-                                bidInfoUpdate.put("orderInfo.status", "confirmed");
-
-                                db.collection("orders")
-                                        .document(orderId)
-                                        .update(bidInfoUpdate)
-                                        .addOnSuccessListener(unused -> {
-                                            loadingDialog.dismiss();
-                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
-                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
-
-                                            MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
-                                            loadCurrentOrderBid();
-                                            getCurrentOrderInfo();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            loadingDialog.dismiss();
-                                            MyToast.showShort(getContext(), "Failed to update order.");
-                                        });
-
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                MyToast.showShort(getContext(), "Failed to confirm bid.");
-                            });
-                });
-
-                dialog.show();
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            }
-            else {
-                MyToast.showShort(getContext(), "⚠️ Already Expired this requirement");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onEditClicked(String bidId, String orderId) {
-        partnerBidEdit.startEditProcess(bidId, orderId);
-    }
-
-    @Override
-    public void onDeleteClicked(String bidId, String orderId) {
-        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
-            loadingDialog.show();
-            db.collection("bidForOrder")
-                    .document(bidId)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Bid deleted successfully.");
-                    })
-                    .addOnFailureListener(e -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
-                    });
-        });
-    }
-
     @SuppressLint("SetTextI18n")
     private void getCurrentOrderInfo() {
         if (orderId == null || orderId.isEmpty()) return;
@@ -564,7 +451,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 .addOnSuccessListener(aVoid->{
                     loadingDialog.dismiss();
                     binding.bottomPart.setVisibility(View.GONE);
-                    String finalBidAmount = categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) ? CommonClass.getRoundedCommissionValue(bidAmount, landArea) : CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
+                    String finalBidAmount = categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) ? CommonClass.getRoundedCommissionValue(true, bidAmount, landArea) : CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
                     sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
                     loadCurrentPartnerBid();
                 });
@@ -585,5 +472,122 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
         NoticeSend.sendNotice(sender, noticeType, currentUserId, userId, orderId, messageForUser);
         NoticeSend.sendNotice(sender, noticeType, currentUserId, MyUtils.NOTICE_RECEIVER_ADMIN, orderId, messageForAdmin);
+    }
+
+
+
+
+    @Override
+    public void onCallClicked(BidModel bidModel) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + MyUtils.HOTLINE_NUMBER));
+        startActivity(intent);
+    }
+
+    public void onConfirmOrderClicked(BidModel bidModel) {
+        try {
+            long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
+            long todayMillis = CommonClass.getTodayStartMillis();
+
+            if (rentMillis >= todayMillis) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
+                builder.setView(dialogView);
+
+                AlertDialog dialog = builder.create();
+
+                Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+                Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                btnCancel.setOnClickListener(v1 -> dialog.dismiss());
+
+                btnConfirm.setOnClickListener(v2 -> {
+                    dialog.dismiss();
+                    loadingDialog.show();
+
+                    String bidId = bidModel.getBidInfo().getBidId();
+                    String orderId = bidModel.getOrderInfo().getOrderId();
+                    String categoryID = bidModel.getOrderInfo().getCategoryId();
+
+                    String finalBidAmount;
+                    if (categoryID.equals(MyUtils.HARVESTER_MACHINE_ID)){
+                        finalBidAmount = CommonClass.getRoundedCommissionValue(false, bidModel.getBidInfo().getBidAmount(), landArea);
+                        /*String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HARVESTER);
+                        double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
+                        finalBidAmount = String.valueOf(calculatedAmount);*/
+                    }
+                    else {
+                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_EQUIPMENT);
+                    }
+
+                    db.collection("bidForOrder")
+                            .document(bidId)
+                            .update("bidInfo.status", "confirmed")
+                            .addOnSuccessListener(aVoid -> {
+
+                                Map<String, Object> bidInfoUpdate = new HashMap<>();
+                                bidInfoUpdate.put("bidInfo.bidId", bidId);
+                                bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
+                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
+                                bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
+                                bidInfoUpdate.put("orderInfo.status", "confirmed");
+
+                                db.collection("orders")
+                                        .document(orderId)
+                                        .update(bidInfoUpdate)
+                                        .addOnSuccessListener(unused -> {
+                                            loadingDialog.dismiss();
+                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
+                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
+
+                                            MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
+                                            loadCurrentOrderBid();
+                                            getCurrentOrderInfo();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            loadingDialog.dismiss();
+                                            MyToast.showShort(getContext(), "Failed to update order.");
+                                        });
+
+                            })
+                            .addOnFailureListener(e -> {
+                                loadingDialog.dismiss();
+                                MyToast.showShort(getContext(), "Failed to confirm bid.");
+                            });
+                });
+
+                dialog.show();
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            }
+            else {
+                MyToast.showShort(getContext(), "⚠️ Already Expired this requirement");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onEditClicked(String bidId, String orderId) {
+        partnerBidEdit.startEditProcess(bidId, orderId);
+    }
+
+    @Override
+    public void onDeleteClicked(String bidId, String orderId) {
+        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
+            loadingDialog.show();
+            db.collection("bidForOrder")
+                    .document(bidId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        loadingDialog.dismiss();
+                        MyToast.showShort(getContext(), "Bid deleted successfully.");
+                    })
+                    .addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
+                        MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
+                    });
+        });
     }
 }

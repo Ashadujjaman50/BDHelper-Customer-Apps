@@ -74,7 +74,7 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
 
         String finalBidAmount = "";
         switch (categoryId) {
-            case MyUtils.HARVESTER_MACHINE_ID -> finalBidAmount = CommonClass.getRoundedCommissionValue(bidAmount, landArea);
+            case MyUtils.HARVESTER_MACHINE_ID -> finalBidAmount = CommonClass.getRoundedCommissionValue(true, bidAmount, landArea);
             case MyUtils.EQUIPMENT_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
             case MyUtils.ROAD_TRANSPORT_ID, MyUtils.RENT_A_CAR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_TRANSPORT);
             case MyUtils.SKILLED_LABOR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);

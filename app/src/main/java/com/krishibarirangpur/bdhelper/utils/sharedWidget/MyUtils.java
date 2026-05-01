@@ -40,6 +40,8 @@ public class MyUtils {
 
     //User Type
     public static final String USER_TYPE = "user_type";
+    //User Role /Mode
+    public static final String USER_LOGIN_MODE = "user_role";
 
 
     //Admin Photo Url

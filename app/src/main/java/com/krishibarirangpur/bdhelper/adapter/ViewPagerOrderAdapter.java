@@ -1,7 +1,6 @@
 package com.krishibarirangpur.bdhelper.adapter;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,27 +15,19 @@ import java.util.List;
 
 public class ViewPagerOrderAdapter extends FragmentStateAdapter {
 
-    private final List<String> subCategoryIds;
+    private final ArrayList<String> subCategoryIds;
 
-    public ViewPagerOrderAdapter(@NonNull FragmentManager fragmentManager,
-                                 @NonNull Lifecycle lifecycle,
-                                 List<String> subCategoryIds) {
+    public ViewPagerOrderAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<String> subCategoryIds) {
         super(fragmentManager, lifecycle);
-        this.subCategoryIds = subCategoryIds != null ? subCategoryIds : new ArrayList<>();
+        this.subCategoryIds = subCategoryIds != null ? new ArrayList<>(subCategoryIds) : new ArrayList<>();
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Fragment fragment = (position == 0) ? new BidByCategoryOrderFragment() : new BidAllOrderFragment();
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("subCategoryIds", new ArrayList<>(subCategoryIds));
-
-        Fragment fragment;
-        if (position == 0) {
-            fragment = new BidAllOrderFragment();
-        } else {
-            fragment = new BidByCategoryOrderFragment();
-        }
+        bundle.putStringArrayList("subCategoryIds", subCategoryIds);
         fragment.setArguments(bundle);
         return fragment;
     }

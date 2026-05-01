@@ -18,6 +18,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.Map;
 import java.util.Random;
@@ -39,22 +40,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleNotificationFilter(String title, String body, Map<String, String> data) {
         String type = data.get("type");
+        Log.d("FCM_DEBUG", "Received Type: " + type); // এই লগটি চেক করবেন
+
         SharedPrefHelper sharedPreferences = new SharedPrefHelper(getApplicationContext());
-        String currentUserRole = sharedPreferences.getString("user_role", "");
+        String currentUserRole = sharedPreferences.getString(MyUtils.USER_LOGIN_MODE, "");
+        Log.d("FCM_DEBUG", "Current User Role: " + currentUserRole);
 
         // অ্যাডমিন থেকে আসা অফার বা নোটিশ সবার জন্য (টপিক অনুযায়ী অলরেডি ফিল্টার হয়ে এসেছে)
+        // ১. অফার বা নোটিশ (সবার জন্য)
         if ("OFFER".equals(type) || "NOTICE".equals(type)) {
             sendNotification(title, body, data, currentUserRole);
         }
-        else if ("NEW_ORDER".equals(type)) {
+        // ২. নতুন অর্ডার (শুধুমাত্র পার্টনার পাবে)
+        else if ("NEW_ORDER".equals(type) || "BID_CONFIRMED".equals(type)) { // দুইটাই পার্টনারের জন্য
             if ("partner".equalsIgnoreCase(currentUserRole)) {
                 sendNotification(title, body, data, currentUserRole);
+            } else {
+                Log.e("FCM_LOG", "Role mismatch! Expected partner but got: " + currentUserRole);
             }
         }
+        // ৩. নতুন বিড অ্যালার্ট (শুধুমাত্র কাস্টমার পাবে)
         else if ("NEW_BID".equals(type)) {
             if ("customer".equalsIgnoreCase(currentUserRole)) {
                 sendNotification(title, body, data, currentUserRole);
             }
+        }
+        else {
+            // অন্য কোনো সাধারণ নোটিফিকেশন হলে
+            sendNotification(title, body, data, currentUserRole);
         }
     }
 

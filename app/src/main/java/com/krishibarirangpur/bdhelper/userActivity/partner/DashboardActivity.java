@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityDashboardBinding;
 import com.krishibarirangpur.bdhelper.sharedFragment.HelpFragment;
@@ -31,6 +32,7 @@ import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.RentFr
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -54,7 +56,11 @@ public class DashboardActivity extends BaseActivity {
         preloadFinanceSummary(); // ✅ preload once
         preloadVendorBidSummary(); // ✅ preload once
 
-        FirebaseMessaging.getInstance().subscribeToTopic("partners");
+
+        FCMTokenManager.updateFCMToken();
+
+        SubscribeNotification.handleUserSubscribe("partner");
+
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
         boolean alreadyAsked = sharedPrefHelper.getBoolean(KEY_FIRST_TIME_NOTIFICATION_REQUESTED, false);
