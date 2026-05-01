@@ -58,6 +58,6 @@ public class PreloadingDialog extends Dialog {
                 lottieView.cancelAnimation();
             }
             super.dismiss();
-        }, 1000);
+        }, 300);
     }
 }

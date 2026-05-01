@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
@@ -60,6 +61,9 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
     private FragmentBidSkilledLaborBinding binding;
 
     private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, orderStatus, vendorId;
+    private long orderTimestamp = 0;
+    private boolean hasCurrentPartnerBidded = false;
+    private ListenerRegistration orderListener;
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
@@ -357,17 +361,19 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
             return;
         }
 
-        // 🔹 Loading শুরু
-        preloadingDialog.show();
+        if (orderTimestamp == 0) preloadingDialog.show();
 
-        db.collection("orders")
+        orderListener = db.collection("orders")
                 .document(orderId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    // 🔹 Loading শেষ
-                    preloadingDialog.dismiss();
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isAdded()) preloadingDialog.dismiss();
 
-                    if (documentSnapshot.exists()) {
+                    if (e != null) {
+                        Log.e("BidSkilledLabor", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
                         OrderModel order = documentSnapshot.toObject(OrderModel.class);
 
                         if (order != null) {
@@ -375,7 +381,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                             // ============ Order Info ============
                             categoryId = order.getOrderInfo().getCategoryId();
                             orderStatus = order.getOrderInfo().getStatus();
-                            long timestamp = order.getOrderInfo().getTimestamp();
+                            orderTimestamp = order.getOrderInfo().getTimestamp();
                             userId = order.getOrderInfo().getUid();
                             vendorId= order.getBidInfo().getVendorId();
 
@@ -404,7 +410,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                             int iconRes = CommonClass.getIconForSubCategory(subCategoryId);
                             binding.postImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
 
-                            // Example: binding data
+                            // binding data
                             binding.orderIdTv.setText(orderId);
                             binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
                             binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
@@ -415,12 +421,11 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
                             binding.quantityTv.setText(Replacement.ReplacementPersonInLocal(getContext(), quantity));
                             binding.postDescriptionTv.setText(postDescription);
-                            binding.postedDateTv.setText(CommonClass.formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
+                            binding.postedDateTv.setText(CommonClass.formatTime(String.valueOf(orderTimestamp), "dd-MMM-yy  hh:mm aa"));
 
 
-                            //Biding Time CountDown
-                            CommonClass.startConditionalCountdown(timestamp, 3, orderStatus,
-                                    binding.bidingTimeTv, binding.bidRunTimeLl);
+                            // Refresh Visibility logic
+                            refreshCountdown();
 
                             binding.typesTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tags,0,0);
                             binding.typesTv.setText(types);
@@ -436,14 +441,21 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                         }
                     }
                     else {
-                        preloadingDialog.dismiss(); // Ensure hide if no data
+                        if (isAdded()) preloadingDialog.dismiss();
                         MyToast.showShort(getContext(),"No order found for ID: " + orderId);
                     }
-                })
-                .addOnFailureListener(e -> {
-                    preloadingDialog.dismiss(); // Hide on failure
-                    MyToast.showShort(getContext(),"Error: " + e.getMessage());
                 });
+    }
+
+    private void refreshCountdown() {
+        if (orderTimestamp == 0 || !isAdded()) return;
+
+        CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
+                binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
+
+        if ("partner".equals(user_type) && hasCurrentPartnerBidded) {
+            binding.bottomPart.setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
@@ -556,7 +568,8 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                     }
                     bidModelArrayList.clear(); // clear before adding
 
-                    if (!querySnapshot.isEmpty()) {
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        hasCurrentPartnerBidded = true;
                         for (DocumentSnapshot doc : querySnapshot) {
                             BidModel bidModel = doc.toObject(BidModel.class);
                             if (bidModel != null) {
@@ -565,17 +578,13 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                         }
 
                         bidPartnerAdapter.notifyDataSetChanged();
-
-                        // 🔹 RecyclerView visible, hide "bottomPart" (bid input section)
                         binding.bidRV.setVisibility(View.VISIBLE);
-                        binding.bottomPart.setVisibility(View.GONE);
 
                     } else {
-                        // 🔹 কোনো bid নাই → নতুন bid create করার সুযোগ দেখাও
+                        hasCurrentPartnerBidded = false;
                         binding.bidRV.setVisibility(View.GONE);
-                        binding.bottomPart.setVisibility(View.VISIBLE);
                     }
-
+                    refreshCountdown();
                 });
     }
 
@@ -674,7 +683,8 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                 .addOnSuccessListener(aVoid->{
                     //Success
                     loadingDialog.dismiss();
-                    binding.bottomPart.setVisibility(View.GONE);
+                    hasCurrentPartnerBidded = true;
+                    refreshCountdown();
 
                     //Custome Notice Send
                     String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
@@ -691,6 +701,14 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                 });
 
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (orderListener != null) {
+            orderListener.remove();
+        }
     }
 
     private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
@@ -737,6 +755,5 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                 messageForAdmin
         );
     }
-
 
 }

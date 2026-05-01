@@ -13,11 +13,11 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 
 public class NotificationPermissionHelper {
 
     private static final int REQUEST_CODE_POST_NOTIFICATIONS = 1001;
-    private static final String TOPIC_POST_NOTIFICATION = "post_notification";
 
     private static final String TAG = "NotifPermHelper";
 
@@ -43,6 +43,7 @@ public class NotificationPermissionHelper {
             Log.d(TAG, "SDK < 33, no need to ask for notification permission");
         }
     }
+
     public static void showPermissionDialog(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             new AlertDialog.Builder(activity)
@@ -67,9 +68,9 @@ public class NotificationPermissionHelper {
     public static void onRequestPermissionsResult(Activity activity, int requestCode, int[] grantResults) {
         if (requestCode == REQUEST_CODE_POST_NOTIFICATIONS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                subscribeToFirebaseTopic(activity);
+                Log.d(TAG, "onRequestPermissionsResult: Granted");
             } else {
-                Toast.makeText(activity, "Notification permission denied", Toast.LENGTH_SHORT).show();
+                MyToast.showShort(activity, "Notification permission denied");
             }
         }
     }
@@ -77,11 +78,8 @@ public class NotificationPermissionHelper {
 
     private static void subscribeToFCM(Activity activity) {
         // Topic subscriptions are now managed via SubscribeNotification class based on user role
+        SubscribeNotification.handleUserSubscribe("partner");
         Log.d(TAG, "Permissions checked. Topic subscriptions are managed separately.");
     }
 
-    private static void subscribeToFirebaseTopic(Activity activity) {
-        // Topic subscriptions are now managed via SubscribeNotification class based on user role
-        Log.d(TAG, "Permission result checked. Topic subscriptions are managed separately.");
-    }
 }

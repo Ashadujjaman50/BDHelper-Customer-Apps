@@ -106,7 +106,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
         holder.locationArea.setText(CommonClass.formatAddress(rentArea).second);
 
         holder.postDescription.setText(postDescription);
-        holder.quantityTv.setText(quantity);
+        //holder.quantityTv.setText(quantity);
         holder.capacityTv.setText(capacity);
         holder.typesTv.setText(types);
         //holder.durationTv.setText(duration);
@@ -139,7 +139,8 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
                 holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             case MyUtils.HOME_SHIFTING_ID:
-                holder.typesTv.setText(types + ", ");
+                holder.typesTv.setText(CommonClass.getLocalizedShiftType(context, types) + ", ");
+                holder.capacityTv.setText(CommonClass.getLocalizedRoom(context, capacity));
                 if ("yes".equals(quantity)) {
                     holder.quantityTv.setText(context.getString(R.string.will_come_in_front_of_the_house));
                 }
@@ -167,6 +168,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
             case MyUtils.SUB_TRACTOR_ID:
                 holder.landAreaLL.setVisibility(View.VISIBLE);
                 holder.landAreaTv.setText(Replacement.ReplacementNumberInLocal(context, landArea) +" "+context.getString(R.string.acres));
+                holder.quantityTv.setText(Replacement.ReplacementQtyToLocal(context, quantity));
                 break;
             default:
                 holder.postNameTv.setVisibility(View.VISIBLE);

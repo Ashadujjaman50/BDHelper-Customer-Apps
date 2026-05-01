@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.krishibarirangpur.bdhelper.sharedActivity.NotificationActivity;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
 
@@ -36,8 +37,11 @@ public class LogoutHelper {
             dialog.dismiss();
             FinanceManager financeManager = new FinanceManager();
             financeManager.stopListening();
-            
+
+            //Subscribe to Notification
             SubscribeNotification.unSubscribeFromAll();
+            // লগআউট করার সময় এটি কল করবেন
+            NotificationActivity.cachedNoticeList.clear();
 
             FirebaseAuth.getInstance().signOut();
 

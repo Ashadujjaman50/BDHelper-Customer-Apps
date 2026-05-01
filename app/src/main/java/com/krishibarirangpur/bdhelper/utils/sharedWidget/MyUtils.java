@@ -1,5 +1,7 @@
 package com.krishibarirangpur.bdhelper.utils.sharedWidget;
 
+import com.krishibarirangpur.bdhelper.R;
+
 public class MyUtils {
 
 
@@ -31,6 +33,11 @@ public class MyUtils {
     public static final String NOTICE_SENDER_PARTNER = "partner";
     public static final String NOTICE_SENDER_ADMIN = "admin";
     public static final String NOTICE_SENDER_CUSTOMER = "customer";
+
+    //FCM Subscription
+    public static final String FCM_TOPIC_ALL = "all_users";
+    public static final String FCM_TOPIC_PARTNERS = "partners";
+    public static final String FCM_TOPIC_CUSTOMERS = "customers";
 
     //Notice Receiver Type
     public static final String NOTICE_RECEIVER_PARTNER = "partner";
@@ -126,6 +133,40 @@ public class MyUtils {
             "Rocket",
             "uPay"
      };
+
+    public static final int[] ROOM_LIST = {
+            R.string.one_room,
+            R.string.two_room,
+            R.string.three_room,
+            R.string.four_room,
+            R.string.five_room,
+            R.string.six_room,
+            R.string.seven_room,
+            R.string.eight_room,
+            R.string.nine_room,
+            R.string.ten_room,
+            R.string.more_room
+    };
+
+    public static final int[] FLOOR_LIST = {
+            R.string.ground_floor,
+            R.string.second_floor,
+            R.string.third_floor,
+            R.string.fourth_floor,
+            R.string.fifth_floor,
+            R.string.sixth_floor,
+            R.string.seventh_floor,
+            R.string.eighth_floor,
+            R.string.ninth_floor,
+            R.string.tenth_floor,
+            R.string.tenth_plus_floor
+    };
+
+    public static final int[] SELECT_SHIFT_TYPE = {
+            R.string.bachelor_house,
+            R.string.family_house,
+            R.string.office_shift
+    };
 
      public static String[] SERIAL_BAN = {
              "অ",

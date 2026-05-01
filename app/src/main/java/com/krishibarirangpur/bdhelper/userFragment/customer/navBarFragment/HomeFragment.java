@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private ListenerRegistration noticeListener;
+    private ListenerRegistration noticeListener, sliderListener;
     private long checkNotice = 0;
 
     private void loadNotificationCount() {
@@ -256,21 +256,25 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (noticeListener != null) {
-            noticeListener.remove(); // 🔹 Firestore Listener remove করতে হবে
-        }
-    }
+
 
     private void fetchSlides(View view) {
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         BannerSliderManager manager = new BannerSliderManager();
-        manager.loadImageSlider(imageSlider, "Customer", "Home");
+        // লিসেনারটি ভেরিয়েবলে রাখুন
+        sliderListener = manager.loadImageSlider(imageSlider, "Customer", "Home");
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (noticeListener != null) {
+            noticeListener.remove();
+        }
+        if (sliderListener != null) {
+            sliderListener.remove();
+        }
+    }
 
 
 }

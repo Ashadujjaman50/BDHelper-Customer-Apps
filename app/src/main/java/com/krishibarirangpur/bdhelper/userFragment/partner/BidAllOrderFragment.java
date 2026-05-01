@@ -3,14 +3,6 @@ package com.krishibarirangpur.bdhelper.userFragment.partner;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,36 +11,38 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.partner.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidAllOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.AddServiceActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BidAllOrderFragment extends Fragment {
 
     private FragmentBidAllOrderBinding binding;
-
     private ArrayList<String> subCategoryIds;
-
-    FirebaseUser firebaseUser;
-    FirebaseFirestore db;
-
-    OrderPartnerAdapter orderPartnerAdapter;
-    ArrayList<OrderModel> orderModelArrayList;
-    private long today;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private OrderPartnerAdapter adapter;
+    private final ArrayList<OrderModel> orderList = new ArrayList<>();
+    private ListenerRegistration orderListener;
 
     public BidAllOrderFragment() {
         // Required empty public constructor
@@ -57,132 +51,92 @@ public class BidAllOrderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // এখানে arguments থেকে subCategoryIds গুলো get করব
         if (getArguments() != null) {
             subCategoryIds = getArguments().getStringArrayList("subCategoryIds");
-            Log.d("BidAllCategory", "Got Unique IDs: " + subCategoryIds);
         }
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_bid_all_order, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bid_all_order, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //inti views
-        firebaseUser =FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
 
-        orderModelArrayList = new ArrayList<>();
-        orderPartnerAdapter = new OrderPartnerAdapter(getContext(), orderModelArrayList);
-        binding.myRentRecyclerView.setAdapter(orderPartnerAdapter);
+        adapter = new OrderPartnerAdapter(requireContext(), orderList);
+        binding.myRentRecyclerView.setAdapter(adapter);
 
+        fetchAllOrders();
 
-        //load all Order
-        getAllOrderPost();
-
-        orderPartnerAdapter.setOnItemClickListener(new OnItemClickListener() {
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String clickedSubCategoryId = orderModelArrayList.get(position)
-                        .getOrderInfo()
-                        .getSubCategoryId();
+                if (position < 0 || position >= orderList.size()) return;
 
-                Log.d("OrderClick", "Clicked SubCategory ID: " + clickedSubCategoryId);
+                OrderModel order = orderList.get(position);
+                String clickedSubCategoryId = order.getOrderInfo().getSubCategoryId();
 
-                // চেক করো subCategoryIds লিস্টে আছে কিনা
                 if (subCategoryIds == null || !subCategoryIds.contains(clickedSubCategoryId)) {
-                    // না থাকলে alert দেখাও
-                    showAlertDialog(position);
-                }
-                else {
-                    Intent intent = new Intent(getContext(), BidActivity.class);
-                    intent.putExtra(MyUtils.bidAction,"new");
+                    showAlertDialog(order);
+                } else {
+                    Intent intent = new Intent(requireContext(), BidActivity.class);
+                    intent.putExtra(MyUtils.bidAction, "new");
                     intent.putExtra(MyUtils.USER_TYPE, MyUtils.NOTICE_RECEIVER_PARTNER);
-                    intent.putExtra(MyUtils.orderId, orderModelArrayList.get(position).getOrderInfo().getOrderId());
-                    intent.putExtra(MyUtils.categoryId, orderModelArrayList.get(position).getOrderInfo().getCategoryId());
+                    intent.putExtra(MyUtils.orderId, order.getOrderInfo().getOrderId());
+                    intent.putExtra(MyUtils.categoryId, order.getOrderInfo().getCategoryId());
                     intent.putExtra(MyUtils.subCategoryId, clickedSubCategoryId);
-                    requireActivity().startActivity(intent);
+                    startActivity(intent);
                     requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
-
             }
 
-            @Override
-            public void onShowItemClick(int position) { }
-
-            @Override
-            public void onDeleteItemClick(int position) { }
+            @Override public void onShowItemClick(int position) {}
+            @Override public void onDeleteItemClick(int position) {}
         });
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void getAllOrderPost() {
-        long todayMillis = CommonClass.getTodayStartMillis(); // আজকের 00:00:00 সময় থেকে millis
+    private void fetchAllOrders() {
+        long todayMillis = CommonClass.getTodayStartMillis();
 
-        db.collection("orders")
+        // Optimized: Filter by multiple statuses and date in query
+        Query query = db.collection("orders")
+                .whereIn("orderInfo.status", Arrays.asList("pending", "process"))
                 .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(todayMillis))
-                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING) // rentTime অনুযায়ী সাজাও
-                .addSnapshotListener((querySnapshot, error) -> {
-                    if (error != null) {
-                        MyToast.showShort(getContext(), "❌ Error: " + error.getMessage());
-                        Log.d("Firestore", "loadAllData: " + error.getMessage());
-                        return;
-                    }
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING);
 
-                    if (querySnapshot != null) {
-                        orderModelArrayList.clear();
+        orderListener = query.addSnapshotListener((snapshots, error) -> {
+            if (error != null) {
+                Log.e("BidAllOrder", "Snapshot error", error);
+                return;
+            }
 
-                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            OrderModel order = doc.toObject(OrderModel.class);
+            if (snapshots != null) {
+                orderList.clear();
+                for (DocumentSnapshot doc : snapshots.getDocuments()) {
+                    OrderModel order = doc.toObject(OrderModel.class);
+                    if (order != null) orderList.add(order);
+                }
 
-                            if (order != null) {
-                                String status = order.getOrderInfo().getStatus();
-
-                                // ✅ শুধু pending বা process এবং ভবিষ্যতের তারিখের order নেবে
-                                if ("pending".equals(status) || "process".equals(status)) {
-                                    orderModelArrayList.add(order);
-                                }
-                            }
-                        }
-
-                        if (orderModelArrayList.isEmpty()){
-                            binding.noOnePostYet.setVisibility(View.VISIBLE);
-                            binding.myRentRecyclerView.setVisibility(View.GONE);
-                        }
-                        else {
-                            binding.noOnePostYet.setVisibility(View.GONE);
-                            binding.myRentRecyclerView.setVisibility(View.VISIBLE);
-                        }
-
-                        orderPartnerAdapter.notifyDataSetChanged();
-
-                    }
-                });
+                boolean isEmpty = orderList.isEmpty();
+                binding.noOnePostYet.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+                binding.myRentRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
-
     @SuppressLint("SetTextI18n")
-    private void showAlertDialog(int position) {
+    private void showAlertDialog(OrderModel order) {
+        String categoryId = order.getOrderInfo().getCategoryId();
+        String subCategoryId = order.getOrderInfo().getSubCategoryId();
+        String subCategoryName = CommonClass.getSubCategoryName(requireContext(), subCategoryId);
 
-        String categoryId = orderModelArrayList.get(position).getOrderInfo().getCategoryId();
-        String subCategoryId = orderModelArrayList.get(position).getOrderInfo().getSubCategoryId();
-
-        AlertDialog.Builder builder =new AlertDialog.Builder(requireContext());
-        @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.custom_no_service_dialog,null);
-
-        builder.setView(view);
-        AlertDialog alertDialog = builder.create();
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.custom_no_service_dialog, null);
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext()).setView(view).create();
         alertDialog.show();
 
         ImageView vehicleIv = view.findViewById(R.id.vehicleIv);
@@ -191,34 +145,34 @@ public class BidAllOrderFragment extends Fragment {
         TextView addServiceBtn = view.findViewById(R.id.addServiceBtn);
         ImageView closeBtn = view.findViewById(R.id.closeBtn);
 
-        //setData
-        subCategoryNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
-        descriptionTv.setText("অ্যাপে, আপনার কোনো "+ subCategoryNameTv.getText().toString() +" যোগ করা নেই। \n সার্ভিস যোগ করে বিড করুন।");
-        addServiceBtn.setText(subCategoryNameTv.getText().toString()+ " যোগ করুন");
-
-        // Set icon
-        int iconRes = CommonClass.getIconForSubCategory(subCategoryId);
-        vehicleIv.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
+        subCategoryNameTv.setText(subCategoryName);
+        descriptionTv.setText("অ্যাপে, আপনার কোনো " + subCategoryName + " যোগ করা নেই। \n সার্ভিস যোগ করে বিড করুন।");
+        addServiceBtn.setText(subCategoryName + " যোগ করুন");
+        vehicleIv.setImageDrawable(ContextCompat.getDrawable(requireContext(), CommonClass.getIconForSubCategory(subCategoryId)));
 
         closeBtn.setOnClickListener(v -> alertDialog.dismiss());
-
         addServiceBtn.setOnClickListener(v -> {
-
+            alertDialog.dismiss();
             Intent intent = new Intent(requireActivity(), AddServiceActivity.class);
-            intent.putExtra("loadDefault", "selectAddService"); // 🔹 এটিই গুরুত্বপূর্ণ
+            intent.putExtra("loadDefault", "selectAddService");
             intent.putExtra(MyUtils.categoryId, categoryId);
             intent.putExtra(MyUtils.subCategoryId, subCategoryId);
-            intent.putExtra(MyUtils.subCategoryName, subCategoryNameTv.getText().toString());
+            intent.putExtra(MyUtils.subCategoryName, subCategoryName);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
         });
 
-        alertDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        alertDialog.getWindow().setGravity(Gravity.CENTER);
-
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            alertDialog.getWindow().setGravity(Gravity.CENTER);
+        }
     }
 
-
+    @Override
+    public void onDestroyView() {
+        if (orderListener != null) orderListener.remove();
+        super.onDestroyView();
+        binding = null;
+    }
 }

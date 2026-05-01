@@ -26,43 +26,45 @@ public class BannerSliderManager {
         db = FirebaseFirestore.getInstance();
     }
 
-    // 🔹 For ImageSlider (Home Screens)
-    public void loadImageSlider(
+
+    // 🔹 For ImageSlider (Home Screens) - Updated for Realtime & Cache
+    public ListenerRegistration loadImageSlider(
             ImageSlider imageSlider,
             String audienceType,
             String placementType
     ) {
-
-        List<SlideModel> imageList = new ArrayList<>();
-
-        db.collection("bannersSlide")
+        return db.collection("bannersSlide")
                 .orderBy("order", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                        SlideImageModel slide = doc.toObject(SlideImageModel.class);
-
-                        if (slide != null
-                                && (slide.getAudience().equals(audienceType)
-                                || slide.getAudience().equals("Both"))
-                                && (slide.getPlacement().equals(placementType)
-                                || slide.getPlacement().equals("Both"))) {
-
-                            imageList.add(new SlideModel(
-                                    slide.getImageUrl(),
-                                    ScaleTypes.FIT
-                            ));
-                        }
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.e("BannerSlider", "Error loading ImageSlider", e);
+                        return;
                     }
 
-                    imageSlider.setImageList(imageList);
-                    imageSlider.startSliding(2000);
+                    if (queryDocumentSnapshots != null) {
+                        List<SlideModel> imageList = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            SlideImageModel slide = doc.toObject(SlideImageModel.class);
 
-                })
-                .addOnFailureListener(e ->
-                        Log.e("BannerSlider", "Error loading ImageSlider", e)
-                );
+                            if (slide != null
+                                    && (slide.getAudience().equals(audienceType)
+                                    || slide.getAudience().equals("Both"))
+                                    && (slide.getPlacement().equals(placementType)
+                                    || slide.getPlacement().equals("Both"))) {
+
+                                imageList.add(new SlideModel(
+                                        slide.getImageUrl(),
+                                        ScaleTypes.FIT
+                                ));
+                            }
+                        }
+
+                        if (!imageList.isEmpty()) {
+                            imageSlider.setImageList(imageList);
+                            imageSlider.startSliding(2000);
+                        }
+                    }
+                });
     }
 
 

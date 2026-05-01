@@ -183,12 +183,14 @@ public class HomesShiftingFormFragment extends Fragment {
         TextView titleTv = bottomSheetDialog.findViewById(R.id.titleTv);
         assert titleTv != null;
         assert lv != null;
-        lv.setAdapter(new ArrayAdapter<>((requireContext()), R.layout.single_listview_item, R.id.listItem, array_list));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>((requireContext()), R.layout.single_listview_item, R.id.listItem, array_list);
+        lv.setAdapter(adapter);
 
 
         binding.roomTypeTv.setOnClickListener(v -> {
             titleTv.setText(getString(R.string.room_type));
-            getRoomList();
+            updateRoomList();
+            adapter.notifyDataSetChanged();
             bottomSheetDialog.show();
             lv.setOnItemClickListener((parent, viewList, position, id) -> {
                 binding.roomTypeTv.setText(array_list.get(position));
@@ -199,7 +201,8 @@ public class HomesShiftingFormFragment extends Fragment {
         //loading Floor
         binding.loadingFloorEt.setOnClickListener(v -> {
             titleTv.setText(getString(R.string.floor_info));
-            getFloorList();
+            updateFloorList();
+            adapter.notifyDataSetChanged();
             bottomSheetDialog.show();
             lv.setOnItemClickListener((parent, viewList, position, id) -> {
                 binding.loadingFloorEt.setText(array_list.get(position));
@@ -210,7 +213,8 @@ public class HomesShiftingFormFragment extends Fragment {
         //UnLoading Floor
         binding.unloadingFloorEt.setOnClickListener(v -> {
             titleTv.setText(getString(R.string.floor_info));
-            getFloorList();
+            updateFloorList();
+            adapter.notifyDataSetChanged();
             bottomSheetDialog.show();
             lv.setOnItemClickListener((parent, viewList, position, id) -> {
                 binding.unloadingFloorEt.setText(array_list.get(position));
@@ -267,36 +271,14 @@ public class HomesShiftingFormFragment extends Fragment {
 
     }
 
-    private void getFloorList() {
+    private void updateFloorList() {
         array_list.clear();
-        array_list.add(getString(R.string.ground_floor));
-        array_list.add(getString(R.string.second_floor));
-        array_list.add(getString(R.string.third_floor));
-        array_list.add(getString(R.string.fourth_floor));
-        array_list.add(getString(R.string.fifth_floor));
-        array_list.add(getString(R.string.sixth_floor));
-        array_list.add(getString(R.string.seventh_floor));
-        array_list.add(getString(R.string.eighth_floor));
-        array_list.add(getString(R.string.ninth_floor));
-        array_list.add(getString(R.string.tenth_floor));
-        array_list.add(getString(R.string.tenth_plus_floor));
+        array_list.addAll(CommonClass.getFloorList(requireContext()));
     }
 
-    //Only Home shifting Then show  Room Requirement
-    private void getRoomList() {
-
+    private void updateRoomList() {
         array_list.clear();
-        array_list.add(getString(R.string.one_room));
-        array_list.add(getString(R.string.two_room));
-        array_list.add(getString(R.string.three_room));
-        array_list.add(getString(R.string.four_room));
-        array_list.add(getString(R.string.six_room));
-        array_list.add(getString(R.string.seven_room));
-        array_list.add(getString(R.string.eight_room));
-        array_list.add(getString(R.string.nine_room));
-        array_list.add(getString(R.string.ten_room));
-        array_list.add(getString(R.string.more_room));
-
+        array_list.addAll(CommonClass.getRoomList(requireContext()));
     }
 
     private void getUserInfo() {

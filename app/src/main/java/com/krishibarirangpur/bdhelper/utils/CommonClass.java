@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +34,7 @@ import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -433,7 +436,7 @@ public class CommonClass {
     private static CountDownTimer countDownTimer;
     @SuppressLint("SetTextI18n")
     public static void startConditionalCountdown(long timestamp, int hoursToAdd, String orderStatus,
-                                                 TextView countdownTv, View countdownLayout) {
+                                                 TextView countdownTv, View countdownLayout, View bottomPart) {
 
         // Cancel previous timer if running
         if (countDownTimer != null) {
@@ -447,6 +450,7 @@ public class CommonClass {
 
             if (millisUntilFinished > 0) {
                 countdownLayout.setVisibility(View.VISIBLE);
+                bottomPart.setVisibility(View.VISIBLE);
 
                 countDownTimer = new CountDownTimer(millisUntilFinished, 1000) {
                     @Override
@@ -467,6 +471,7 @@ public class CommonClass {
                         // 5 সেকেন্ড delay দিয়ে hide
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             countdownLayout.setVisibility(View.GONE);
+                            bottomPart.setVisibility(View.GONE);
                         }, 3000); // 3000 milliseconds = 3 seconds
                     }
                 }.start();
@@ -474,6 +479,7 @@ public class CommonClass {
                 // Time already expired
                 countdownTv.setText("00:00:00");
                 countdownLayout.setVisibility(View.GONE); // hide layout when countdown ends
+                bottomPart.setVisibility(View.GONE); // hide layout when countdown ends
             }
 
         } else {
@@ -482,6 +488,7 @@ public class CommonClass {
                 countDownTimer.cancel();
             }
             countdownLayout.setVisibility(View.GONE);
+            bottomPart.setVisibility(View.GONE);
         }
     }
 
@@ -517,6 +524,71 @@ public class CommonClass {
         void onFailure(Exception e);
     }
 
+    // 🔥 Update Room/Floor lists to use MyUtils resource IDs
+    public static List<String> getRoomList(Context context) {
+        List<String> list = new ArrayList<>();
+        for (int resId : MyUtils.ROOM_LIST) {
+            list.add(context.getString(resId));
+        }
+        return list;
+    }
 
+    public static List<String> getFloorList(Context context) {
+        List<String> list = new ArrayList<>();
+        for (int resId : MyUtils.FLOOR_LIST) {
+            list.add(context.getString(resId));
+        }
+        return list;
+    }
+
+
+    public static List<String> getShiftTypeList(Context context) {
+        List<String> list = new ArrayList<>();
+        for (int resId : MyUtils.SELECT_SHIFT_TYPE) {
+            list.add(context.getString(resId));
+        }
+        return list;
+    }
+
+    public static String getLocalizedRoom(Context context, String roomText) {
+        if (roomText == null || roomText.isEmpty()) return "";
+        for (int resId : MyUtils.ROOM_LIST) {
+            if (getStringInLocale(context, resId, "en").equalsIgnoreCase(roomText) ||
+                getStringInLocale(context, resId, "bn").equalsIgnoreCase(roomText)) {
+                return context.getString(resId);
+            }
+        }
+        return roomText;
+    }
+
+    public static String getLocalizedFloor(Context context, String floorText) {
+        if (floorText == null || floorText.isEmpty()) return "";
+        for (int resId : MyUtils.FLOOR_LIST) {
+            if (getStringInLocale(context, resId, "en").equalsIgnoreCase(floorText) ||
+                getStringInLocale(context, resId, "bn").equalsIgnoreCase(floorText)) {
+                return context.getString(resId);
+            }
+        }
+        return floorText;
+    }
+
+    public static String getLocalizedShiftType(Context context, String shiftTypeText) {
+        if (shiftTypeText == null || shiftTypeText.isEmpty()) return "";
+        for (int resId : MyUtils.SELECT_SHIFT_TYPE) {
+            if (getStringInLocale(context, resId, "en").equalsIgnoreCase(shiftTypeText) ||
+                getStringInLocale(context, resId, "bn").equalsIgnoreCase(shiftTypeText)) {
+                return context.getString(resId);
+            }
+        }
+        return shiftTypeText;
+    }
+
+    // Helper to get string in specific locale for comparison
+    private static String getStringInLocale(Context context, int resId, String lang) {
+        Resources res = context.getResources();
+        Configuration config = new Configuration(res.getConfiguration());
+        config.setLocale(new Locale(lang));
+        return context.createConfigurationContext(config).getResources().getString(resId);
+    }
 
 }
