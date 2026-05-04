@@ -206,7 +206,9 @@
 
     <!--Size-->
     <string name="seven_feet_one_ton_open">7 feet 1 ton</string>
+    <string name="eight_feet_one_ton_open">8 feet 1 ton</string>
     <string name="nine_feet_one_half_ton_open">9 feet 1.5 ton</string>
+    <string name="ten_feet_one_half_ton_open">10 feet 1.5 ton</string>
     <string name="twelve_feet_two_ton_open">12 feet 2 ton</string>
     <string name="forteen_feet_three_half_ton_open">14 feet 3.5 ton</string>
     <string name="seven_feet_one_ton_covered">7 feet 1 ton</string>

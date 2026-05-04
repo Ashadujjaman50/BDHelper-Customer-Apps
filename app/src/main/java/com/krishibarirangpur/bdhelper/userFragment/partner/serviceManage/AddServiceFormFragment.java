@@ -477,16 +477,16 @@ public class AddServiceFormFragment extends Fragment {
         //popup menu
         PopupMenu popupMenu = new PopupMenu(requireContext(), binding.harvesterCategoryEt, Gravity.END);
         if (subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
-            popupMenu.getMenu().add(Menu.NONE, 0, 0, getString(R.string.combine_harvester));
-            popupMenu.getMenu().add(Menu.NONE, 1, 0, getString(R.string.specialized_harvester));
+            popupMenu.getMenu().add(Menu.NONE, 0, 0, getString(R.string.full_feed));
+            popupMenu.getMenu().add(Menu.NONE, 1, 0, getString(R.string.half_feed));
         }
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == 0) {
-                binding.harvesterCategoryEt.setText("কম্বাইন হারভেস্টার");
+                binding.harvesterCategoryEt.setText(getString(R.string.full_feed));
             } else if (id == 1) {
-                binding.harvesterCategoryEt.setText("স্পেশালাইজড হারভেস্টার");
+                binding.harvesterCategoryEt.setText(getString(R.string.half_feed));
             }
             return false;
         });

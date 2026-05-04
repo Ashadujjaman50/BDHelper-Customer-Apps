@@ -194,7 +194,9 @@ public class LoadUnloadFormFragment extends Fragment{
                 case "পিকাপ":
                 case "Pickup":
                     array_list.add(getString(R.string.seven_feet_one_ton_open));
+                    array_list.add(getString(R.string.eight_feet_one_ton_open));
                     array_list.add(getString(R.string.nine_feet_one_half_ton_open));
+                    array_list.add(getString(R.string.ten_feet_one_half_ton_open));
                     array_list.add(getString(R.string.twelve_feet_two_ton_open));
                     array_list.add(getString(R.string.forteen_feet_three_half_ton_open));
                     break;

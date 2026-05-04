@@ -641,7 +641,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     // 🔹 Handle Call Button Click
     @Override
     public void onCallClicked(BidModel bidModel) {
-        BidActionManager.handleCall(getContext());
+        BidActionManager.handleCall(getContext(), bidModel);
     }
 
     /* // 🔹 Handle Confirm Button Click

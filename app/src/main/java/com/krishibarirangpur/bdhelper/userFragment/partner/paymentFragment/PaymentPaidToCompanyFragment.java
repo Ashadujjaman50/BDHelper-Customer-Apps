@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,30 +100,35 @@ public class PaymentPaidToCompanyFragment extends Fragment {
         adapter = new PaymentAdapter(getContext(), paymentList);
         binding.paymentAccountRv.setAdapter(adapter);
 
-        // "partnerPayments" কালেকশন থেকে ডেটা কুয়েরি করা (সর্বশেষ ডেটা আগে দেখানোর জন্য orderBy ব্যবহার করা হয়েছে)
+        // 🔹 বর্তমান ইউজারের আইডি (userId) দিয়ে ফিল্টার করা হয়েছে
         db.collection("partnerPayments")
+                .whereEqualTo("vendorId", userId)
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     if (e != null) {
-                        MyToast.showShort(getContext(), "Error: " + e.getMessage());
+                        Log.e("PaymentData", "Error: " + e.getMessage());
                         return;
                     }
 
-                    if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                    if (queryDocumentSnapshots != null) {
                         paymentList.clear();
                         for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
                             PaymentModel payment = document.toObject(PaymentModel.class);
-                            payment.setId(document.getId()); // Set the document ID
-                            paymentList.add(payment);
+                            if (payment != null) {
+                                payment.setId(document.getId());
+                                paymentList.add(payment);
+                            }
                         }
                         adapter.notifyDataSetChanged();
-                    } else {
-                        paymentList.clear();
-                        adapter.notifyDataSetChanged();
-                        MyToast.showShort(getContext(), "কোনো ডেটা পাওয়া যায়নি");
+
+                        // ডেটা না থাকলে মেসেজ দেখানো
+                        if (paymentList.isEmpty()) {
+                            MyToast.showShort(getContext(), "কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি");
+                        }
                     }
                 });
     }
+
 
 
     private void partnerFinanceSummaryLoad() {

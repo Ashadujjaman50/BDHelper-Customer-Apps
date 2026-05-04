@@ -206,7 +206,9 @@
 
     <!--Size-->
     <string name="seven_feet_one_ton_open">৭ ফিট ১ টন</string>
+    <string name="eight_feet_one_ton_open">৮ ফিট ১ টন</string>
     <string name="nine_feet_one_half_ton_open">৯ ফিট ১.৫ টন</string>
+    <string name="ten_feet_one_half_ton_open">১০ ফিট ১.৫ টন</string>
     <string name="twelve_feet_two_ton_open">১২ ফিট ২ টন</string>
     <string name="forteen_feet_three_half_ton_open">১৪ ফিট ৩.৫ টন</string>
     <string name="seven_feet_one_ton_covered">৭ ফিট ১ টন</string>

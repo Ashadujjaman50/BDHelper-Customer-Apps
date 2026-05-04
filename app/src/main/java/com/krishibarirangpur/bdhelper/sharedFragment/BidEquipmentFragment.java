@@ -500,7 +500,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
     @Override
     public void onCallClicked(BidModel bidModel) {
-        BidActionManager.handleCall(getContext());
+        BidActionManager.handleCall(getContext(), bidModel);
     }
 
     /*public void onConfirmOrderClicked(BidModel bidModel) {

@@ -35,6 +35,7 @@ import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
+import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -637,14 +638,18 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     // 🔹 Handle Call Button Click
     @Override
     public void onCallClicked(BidModel bidModel) {
-        //String phone = bidModel.getBidInfo().getBidId() != null ? bidModel.getOrderInfo().getOrderId() : null;
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + MyUtils.HOTLINE_NUMBER));
-        startActivity(intent);
+        BidActionManager.handleCall(getContext(), bidModel);
     }
 
     // 🔹 Handle Confirm Button Click
     public void onConfirmOrderClicked(BidModel bidModel) {
+        BidActionManager.confirmOrder(requireContext(), bidModel, user_type, "",
+                PartnerCommissionUtils.COMMISSION_HOME_SHIFTING, loadingDialog, () -> {
+                    getCurrentOrderInfo(); // সাকসেস হলে ডেটা রিফ্রেশ
+                });
+    }
+
+    /*public void onConfirmOrderClicked(BidModel bidModel) {
         try {
             // rentTime যেহেতু millisecond string, তাই long এ convert করো
             long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
@@ -736,7 +741,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
             Log.e("DateCheck", "Error parsing rentTime: " + e.getMessage());
         }
     }
-
+*/
 
     public void onEditClicked(String bidId, String orderId) {
         partnerBidEdit.startEditProcess(bidId, orderId);
@@ -744,21 +749,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
 
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
-        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
-            loadingDialog.show();
-            db.collection("bidForOrder")
-                    .document(bidId)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Bid deleted successfully.");
-                        // Snapshot listener will handle UI update
-                    })
-                    .addOnFailureListener(e -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
-                    });
-        });
+        BidActionManager.deleteBid(requireContext(), bidId, loadingDialog);
     }
 
 }
