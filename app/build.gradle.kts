@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -16,15 +18,25 @@ android {
         versionName = "1.0.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // local.properties থেকে API Key লোড করা
+        val properties = Properties()
+        val localPropertiesFile = project.rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { properties.load(it) }
+        }
+        val mapsApiKey = properties.getProperty("MAPS_API_KEY") ?: ""
+        manifestPlaceholders["mapsApiKey"] = mapsApiKey
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
     }
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     bundle {
         language {
-            // Disable language splits, so all languages stay in the base APK
             enableSplit = false
         }
     }
@@ -51,8 +63,11 @@ android {
     ndkVersion = "29.0.14206865"
 }
 
-dependencies {
+configurations.all {
+    exclude(group = "com.intellij", module = "annotations")
+}
 
+dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -79,20 +94,18 @@ dependencies {
     //Swipe Decorator
     implementation(libs.swipe.decorator)
 
-    //Google Maps activity
-    implementation (libs.google.play.services.maps)
-    implementation (libs.google.play.services.location)
-    implementation (libs.material.searchbar)
-    implementation (libs.google.places)
+    implementation(libs.google.play.services.maps)
+    implementation(libs.google.play.services.location)
+    implementation(libs.material.searchbar)
+    implementation(libs.google.places)
 
     //Image View And Compiler
     implementation(libs.picasso)
     implementation(libs.glide)
 
-    //Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.gson.converter)
-    implementation (libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.gson.converter)
+    implementation(libs.okhttp.logging.interceptor)
 
     //Image Cropper
     implementation(libs.imageprocessor)
@@ -105,6 +118,7 @@ dependencies {
 
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
+    implementation(libs.room.compiler)
 
 
     testImplementation(libs.junit)

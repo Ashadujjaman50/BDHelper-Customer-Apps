@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.krishibarirangpur.bdhelper.BuildConfig;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.api.BarikoiApiService;
 import com.krishibarirangpur.bdhelper.api.BarikoiCacheHelper;
@@ -94,7 +95,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
 
         // Initialize map and Places API
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        Places.initialize(this, getString(R.string.google_maps_key));
+        Places.initialize(this, BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
         token = AutocompleteSessionToken.newInstance();
         apiInterface = BarikoiClient.getClient();

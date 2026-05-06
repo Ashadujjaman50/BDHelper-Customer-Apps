@@ -38,6 +38,7 @@ okhttp-logging-interceptor = "5.0.0-alpha.11"
 firebaseFirestore = "26.2.0"
 playServicesAuth = "21.5.1"
 googleFirebaseCrashlytics = "3.0.7"
+roomCompiler = "2.8.4"
 
 
 [libraries]
@@ -81,6 +82,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson-converter" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-logging-interceptor" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 
 
 
