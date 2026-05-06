@@ -229,7 +229,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 break;
 
             case "done":
-                setStatus(holder, "Done", R.color.primaryMid, R.drawable.ic_done);
+                setStatus(holder, "Done", R.color.primaryMid, R.drawable.ic_done_24);
                 if ("pending".equals(post.getPaymentInfo().getPayStatus())) {
                     setBidAction(holder, R.string.pay_now, R.drawable.ic_payment, R.drawable.ic_arrow_drop_down);
                 }
@@ -239,7 +239,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
                 break;
 
             case "complete":
-                setStatus(holder, "Complete", R.color.green, R.drawable.ic_done);
+                setStatus(holder, "Complete", R.color.green, R.drawable.ic_done_24);
                 setBidAction(holder, R.string.review, R.drawable.ic_review, R.drawable.ic_arrow_drop_down);
                 break;
 

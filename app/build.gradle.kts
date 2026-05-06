@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.play.services.auth)
 
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.database)
@@ -94,8 +95,7 @@ dependencies {
     implementation (libs.okhttp.logging.interceptor)
 
     //Image Cropper
-    implementation(libs.ucrop.imagecropper)
-    implementation(libs.play.services.auth)
+    implementation(libs.imageprocessor)
 
     //Lottie
     implementation(libs.lottie)

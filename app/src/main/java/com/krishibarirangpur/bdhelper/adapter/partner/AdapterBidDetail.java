@@ -22,6 +22,7 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
 
 import java.util.ArrayList;
 
@@ -105,14 +106,11 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                 if (!orderList.isEmpty()) {
                     OrderModel order = orderList.get(0);
                     Log.d("OrderInfo", "Status: " + order.getOrderInfo().getStatus());
-                    holder.loadLocationTv.setText(CommonClass.formatAddress(order.getRouteInfo().getLoad()).first);
-                    holder.loadAreaTv.setText(CommonClass.formatAddress(order.getRouteInfo().getLoad()).second);
 
-                    holder.unLoadLocationTv.setText(CommonClass.formatAddress(order.getRouteInfo().getUnload()).first);
-                    holder.unLoadAreaTv.setText(CommonClass.formatAddress(order.getRouteInfo().getUnload()).second);
-
-                    holder.locationNameTv.setText(CommonClass.formatAddress(order.getRouteInfo().getRentLocation()).first);
-                    holder.locationAreaTv.setText(CommonClass.formatAddress(order.getRouteInfo().getRentLocation()).second);
+                    // UIHelper update in: 06-05-2026
+                    UIHelper.bindAddress(holder.loadLocationTv,    holder.loadAreaTv,    order.getRouteInfo().getLoad());
+                    UIHelper.bindAddress(holder.unLoadLocationTv,  holder.unLoadAreaTv,  order.getRouteInfo().getUnload());
+                    UIHelper.bindAddress(holder.locationNameTv,    holder.locationAreaTv, order.getRouteInfo().getRentLocation());
 
                     holder.postDescriptionTv.setText(order.getSpecInfo().getDesc());
 
@@ -181,7 +179,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                         else if ("done".equalsIgnoreCase(bidStatus)) {
                             holder.bidStatusTv.setText("Done");
                             holder.bidStatusTv.setTextColor(context.getColor(R.color.green));
-                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                            holder.bidStatusTv.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_done_24, 0, 0, 0);
 
                             holder.moreBtn.setVisibility(View.GONE);
                             holder.callBtn.setVisibility(View.GONE);

@@ -430,9 +430,20 @@ public class LoadUnloadFormFragment extends Fragment{
                     array_list.add(getString(R.string.construction_product));
                     array_list.add(getString(R.string.others));
                     break;
+                case "কাভার্ড ভ্যান":
+                case "Covered Van":
+                    array_list.add(getString(R.string.feed));
+                    array_list.add(getString(R.string.agricultural_products));
+                    array_list.add(getString(R.string.furniture));
+                    array_list.add(getString(R.string.glassware));
+                    array_list.add(getString(R.string.household_products));
+                    array_list.add(getString(R.string.construction_product));
+                    array_list.add(getString(R.string.others));
+                    break;
                 default:
                     array_list.add(getString(R.string.animal));
                     array_list.add(getString(R.string.feed));
+                    array_list.add(getString(R.string.agricultural_products));
                     array_list.add(getString(R.string.furniture));
                     array_list.add(getString(R.string.glassware));
                     array_list.add(getString(R.string.household_products));
@@ -573,18 +584,25 @@ public class LoadUnloadFormFragment extends Fragment{
                                     quantity
                             );
 
+
                             new Handler().postDelayed(() -> {
-                                Intent intent;
-                                if (subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)) {
-                                    intent = new Intent(requireContext(), AddressActivity.class);
-                                } else {
-                                    intent = new Intent(requireContext(), SubCategoryActivity.class);
+                                // চেক করে নিন ফ্র্যাগমেন্টটি এখনো অ্যাক্টিভিটির সাথে যুক্ত আছে কি না
+                                if (isAdded() && getContext() != null) {
+                                    Intent intent;
+                                    if (subCategoryId.equals(MyUtils.SUB_LOW_BED_ID)) {
+                                        intent = new Intent(getContext(), AddressActivity.class);
+                                    } else {
+                                        intent = new Intent(getContext(), SubCategoryActivity.class);
+                                    }
+                                    intent.putExtra(MyUtils.categoryId, categoryId);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(intent);
+
+                                    if (getActivity() != null) {
+                                        getActivity().finish();
+                                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                    }
                                 }
-                                intent.putExtra(MyUtils.categoryId, categoryId);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                startActivity(intent);
-                                requireActivity().finish();
-                                requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             }, SPLASH_TIME_OUT);
 
                         })

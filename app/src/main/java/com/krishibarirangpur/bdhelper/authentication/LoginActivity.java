@@ -60,26 +60,32 @@ public class LoginActivity extends BaseActivity {
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setCancelable(false);
 
-        //Google Sign In Helper
+        // Google Sign In Helper
         googleSignInHelper = new GoogleSignInHelper(this, new GoogleSignInHelper.OnGoogleSignInSuccessListener() {
             @Override
             public void onSignInSuccess(FirebaseUser user) {
-                loadingDialog.setMessage("লগইন হচ্ছে...");
-                loadingDialog.show();
-                // 🔁 Go to next activity or dashboard
-                gotoNextActivity(MyUtils.USER_TYPE_GOOGLE);
-                Log.d("GoogleLog", "Google: "+ user.getEmail());
-                //Toast.makeText(LoginActivity.this, "Welcome " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                // ✅ অ্যাক্টিভিটি চালু আছে কি না তা চেক করুন
+                if (!isFinishing() && !isDestroyed()) {
+                    loadingDialog.setMessage("লগইন হচ্ছে...");
+                    loadingDialog.show();
+
+                    // 🔁 Go to next activity
+                    gotoNextActivity(MyUtils.USER_TYPE_GOOGLE);
+                    Log.d("GoogleLog", "Google: " + user.getEmail());
+                }
             }
 
             @Override
             public void onSignInFailure(String errorMessage, Exception exception) {
-                loadingDialog.dismiss();
-                if (exception instanceof GetCredentialCancellationException) {
-                    // User closed the Google Sign-In prompt, do nothing
-                    Log.d("GoogleSignIn", "Sign-in cancelled by user");
-                } else {
-                    MyToast.showShort(LoginActivity.this, errorMessage);
+                // ✅ অ্যাক্টিভিটি চালু আছে কি না তা চেক করুন
+                if (!isFinishing() && !isDestroyed()) {
+                    loadingDialog.dismiss();
+
+                    if (exception instanceof GetCredentialCancellationException) {
+                        Log.d("GoogleSignIn", "Sign-in cancelled by user");
+                    } else {
+                        MyToast.showShort(LoginActivity.this, errorMessage);
+                    }
                 }
             }
         });

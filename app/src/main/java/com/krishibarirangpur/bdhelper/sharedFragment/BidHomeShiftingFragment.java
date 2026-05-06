@@ -50,6 +50,7 @@ import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
@@ -292,11 +293,9 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                             binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
                             binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
 
-                            binding.postLoadLocation.setText(CommonClass.formatAddress(loadLocation).first);
-                            binding.loadArea.setText(CommonClass.formatAddress(loadLocation).second);
-
-                            binding.postUnLoadLocation.setText(CommonClass.formatAddress(unLoadLocation).first);
-                            binding.unLoadArea.setText(CommonClass.formatAddress(unLoadLocation).second);
+                            // UIHelper update in: 06-05-2026
+                            UIHelper.bindAddress(binding.postLoadLocation,   binding.loadArea,   loadLocation);
+                            UIHelper.bindAddress(binding.postUnLoadLocation, binding.unLoadArea, unLoadLocation);
 
 
                             binding.durationTv.setText(duration);
@@ -582,13 +581,6 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (orderListener != null) {
-            orderListener.remove();
-        }
-    }
 
     private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
 
@@ -649,99 +641,6 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                 });
     }
 
-    /*public void onConfirmOrderClicked(BidModel bidModel) {
-        try {
-            // rentTime যেহেতু millisecond string, তাই long এ convert করো
-            long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
-            long todayMillis = CommonClass.getTodayStartMillis();
-
-            // 🔹 Compare করো (rentTime আজকের বা ভবিষ্যতের হলে valid)
-            if (rentMillis >= todayMillis) {
-                Log.d("DateCheck", "✅ Valid rent date (future or today)");
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
-                builder.setView(dialogView);
-
-                AlertDialog dialog = builder.create();
-
-                Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-                Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-                btnCancel.setOnClickListener(v1 -> dialog.dismiss());
-
-                btnConfirm.setOnClickListener(v2 -> {
-                    dialog.dismiss();
-
-                    loadingDialog.show();
-
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    String bidId = bidModel.getBidInfo().getBidId();
-                    String orderId = bidModel.getOrderInfo().getOrderId();
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
-
-                    // ✅ 1️⃣ bidForOrder -> status update
-                    db.collection("bidForOrder")
-                            .document(bidId)
-                            .update("bidInfo.status", "confirmed")
-                            .addOnSuccessListener(aVoid -> {
-
-                                // ✅ 2️⃣ orders -> bidInfo update
-                                Map<String, Object> bidInfoUpdate = new HashMap<>();
-                                bidInfoUpdate.put("bidInfo.bidId", bidId);
-                                bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
-                                bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
-                                bidInfoUpdate.put("orderInfo.status", "confirmed");
-
-                                db.collection("orders")
-                                        .document(orderId)
-                                        .update(bidInfoUpdate)
-                                        .addOnSuccessListener(unused -> {
-                                            loadingDialog.dismiss();
-
-                                            //Send Custom Notice
-                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
-                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
-
-                                            MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
-                                            Log.d("ConfirmOrder", "Order & Bid updated successfully.");
-                                            getCurrentOrderInfo();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            loadingDialog.dismiss();
-                                            Log.e("ConfirmOrder", "❌ Failed to update order: " + e.getMessage());
-                                            MyToast.showShort(getContext(), "Failed to update order.");
-                                        });
-
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                Log.e("ConfirmOrder", "❌ Failed to update bid: " + e.getMessage());
-                                MyToast.showShort(getContext(), "Failed to confirm bid.");
-                            });
-                });
-
-
-                dialog.show();
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog.getWindow().setGravity(Gravity.CENTER);
-
-            }
-            else {
-                Log.d("DateCheck", "❌ Invalid rent date (past)");
-                MyToast.showShort(getContext(), "⚠️ Already Expired this requirement");
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("DateCheck", "Error parsing rentTime: " + e.getMessage());
-        }
-    }
-*/
 
     public void onEditClicked(String bidId, String orderId) {
         partnerBidEdit.startEditProcess(bidId, orderId);
@@ -750,6 +649,14 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
         BidActionManager.deleteBid(requireContext(), bidId, loadingDialog);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (orderListener != null) {
+            orderListener.remove();
+        }
     }
 
 }

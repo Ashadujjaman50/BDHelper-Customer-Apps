@@ -23,6 +23,7 @@ import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -96,14 +97,10 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
         holder.postNameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
         holder.orderIdTv.setText(orderId);
 
-        holder.loadLocation.setText(CommonClass.formatAddress(loadLocation).first);
-        holder.loadArea.setText(CommonClass.formatAddress(loadLocation).second);
-
-        holder.unLoadLocation.setText(CommonClass.formatAddress(unLoadLocation).first);
-        holder.unLoadArea.setText(CommonClass.formatAddress(unLoadLocation).second);
-
-        holder.locationNameTv.setText(CommonClass.formatAddress(rentArea).first);
-        holder.locationArea.setText(CommonClass.formatAddress(rentArea).second);
+        // UIHelper update in: 06-05-2026
+        UIHelper.bindAddress(holder.loadLocation,     holder.loadArea,      loadLocation);
+        UIHelper.bindAddress(holder.unLoadLocation,   holder.unLoadArea,    unLoadLocation);
+        UIHelper.bindAddress(holder.locationNameTv,   holder.locationArea,  rentArea);
 
         holder.postDescription.setText(postDescription);
         //holder.quantityTv.setText(quantity);
@@ -120,6 +117,7 @@ public class OrderPartnerAdapter extends RecyclerView.Adapter<OrderPartnerAdapte
         setServiceInfo(holder, subCategoryId, types, quantity, capacity, landArea);
 
     }
+
 
     // 🔹 Service Info based on subCategory
     @SuppressLint("SetTextI18n")

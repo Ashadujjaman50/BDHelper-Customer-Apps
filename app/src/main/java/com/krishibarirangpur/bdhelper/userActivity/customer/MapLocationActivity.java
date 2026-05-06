@@ -453,18 +453,23 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         helper.getLocation(lat, lng, new BarikoiCacheHelper.LocationCallback() {
             @Override
             public void onSuccess(BarikoiResponse.Place place) {
+                // place নাল কি না চেক করা ভালো
+                if (place != null) {
+                    String address = place.getAddress_bn();
 
-                String address = place.getAddress_bn();
-
-                Log.d("ADDRESS", address);
-
+                    // অ্যাড্রেস নাল কি না চেক করে লগ করুন
+                    if (address != null) {
+                        Log.d("ADDRESS", address);
+                        return;
+                    }
+                    Log.d("ADDRESS", "Barikoi Address Cache done");
+                }
             }
 
             @Override
             public void onError(String error) {
-
-                Log.e("ERROR", error);
-
+                // এরর মেসেজ নাল কি না চেক করুন
+                Log.e("ERROR", Objects.requireNonNullElse(error, "Unknown error occurred in Barikoi helper"));
             }
         });
     }

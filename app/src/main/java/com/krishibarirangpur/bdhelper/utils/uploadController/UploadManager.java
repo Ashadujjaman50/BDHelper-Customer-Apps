@@ -1,11 +1,16 @@
 package com.krishibarirangpur.bdhelper.utils.uploadController;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 
+import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -99,4 +104,48 @@ public class UploadManager {
                     failureListener.onFailure(e);
                 });
     }
+
+    public static void uploadProfileImage(Context context, String userId, Uri imageUri, LoadingDialog loadingDialog, ImageUploadHelper.UploadCallback callback) {
+        if (imageUri == null) {
+            Toast.makeText(context, "প্রোফাইলের ছবি সিলেক্ট করুন !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        loadingDialog.setMessage("ছবি আপলোড হচ্ছে...");
+        loadingDialog.show();
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        StorageReference profilePicPath = storageReference.child("Profile/profile_" + userId + ".jpg");
+        profilePicPath.putFile(imageUri)
+                .continueWithTask(task -> {
+                    if (!task.isSuccessful()) throw task.getException();
+                    return profilePicPath.getDownloadUrl();
+                })
+                .addOnSuccessListener(downloadUri -> {
+                    String downloadUrl = downloadUri.toString();
+                    Map<String, Object> docLinks = new HashMap<>();
+                    docLinks.put("profileImage", downloadUrl);
+
+                    db.collection("users")
+                            .document(userId)
+                            .collection("Document")
+                            .document("info")
+                            .set(docLinks, SetOptions.merge())
+                            .addOnSuccessListener(aVoid -> {
+                                loadingDialog.dismiss();
+                                if (callback != null) callback.onSuccess(downloadUrl);
+                            })
+                            .addOnFailureListener(e -> {
+                                loadingDialog.dismiss();
+                                if (callback != null) callback.onFailure(e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    loadingDialog.dismiss();
+                    if (callback != null) callback.onFailure(e);
+                });
+    }
+
 }

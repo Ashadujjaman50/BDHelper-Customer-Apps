@@ -286,34 +286,6 @@ public class CommonClass {
     }
 
 
-    public static Pair<String, String> formatAddress(String text) {
-        if (text == null || text.isEmpty()) return new Pair<>("", "");
-
-        String[] parts = text.split(",");
-
-        if (parts.length == 1) {
-            // কোন কমা নেই, সবটুকু প্রথম লাইনে
-            return new Pair<>(text.trim(), "");
-        }
-
-        StringBuilder firstLine = new StringBuilder();
-        StringBuilder secondLine = new StringBuilder();
-
-        // মোট কমা count দেখে ভাগ করব
-        int mid = parts.length / 2; // প্রায় দুই ভাগে ভাগ
-
-        for (int i = 0; i < parts.length; i++) {
-            if (i < mid) {
-                if (firstLine.length() > 0) firstLine.append(", ");
-                firstLine.append(parts[i].trim());
-            } else {
-                if (secondLine.length() > 0) secondLine.append(", ");
-                secondLine.append(parts[i].trim());
-            }
-        }
-
-        return new Pair<>(firstLine.toString(), secondLine.toString());
-    }
 
     /**
      * Convert a millisecond String to long

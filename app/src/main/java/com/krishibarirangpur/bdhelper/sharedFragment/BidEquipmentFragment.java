@@ -50,6 +50,7 @@ import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
@@ -165,6 +166,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 .orderBy("bidInfo.bidAmount", Query.Direction.ASCENDING)
                 .addSnapshotListener((querySnapshot, error)->{
 
+                    if (!isAdded()) return;
+
                     if (error != null) {
                         Log.d("Firestore", "loadAllData: " + error.getMessage());
                         return;
@@ -214,7 +217,9 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         orderListener = db.collection("orders")
                 .document(orderId)
                 .addSnapshotListener((documentSnapshot, e) -> {
-                    if (isAdded()) preloadingDialog.dismiss();
+                    if (!isAdded()) return;
+                    
+                    preloadingDialog.dismiss();
 
                     if (e != null) {
                         Log.e("BidEquipment", "Listen failed.", e);
@@ -249,6 +254,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
     @SuppressLint("SetTextI18n")
     private void setupOrderUI(OrderModel order, long timestamp) {
+        if (!isAdded() || getContext() == null) return;
+
         String landAreaConvert = landArea != null ? Replacement.ReplacementNumberInLocal(getContext(), landArea) : getContext().getString(R.string.zero);
         if (subCategoryId.equals(MyUtils.SUB_TRACTOR_ID) || subCategoryId.equals(MyUtils.HARVESTER_MACHINE_ID)){
             binding.landAreaLL.setVisibility(View.VISIBLE);
@@ -262,12 +269,13 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         binding.orderIdTv.setText(orderId);
         binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
         binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), order.getRouteInfo().getRentTime()));
-        binding.locationNameTv.setText(CommonClass.formatAddress(order.getRouteInfo().getRentLocation()).first);
-        binding.locationArea.setText(CommonClass.formatAddress(order.getRouteInfo().getRentLocation()).second);
         binding.durationTv.setText(order.getSpecInfo().getDuration());
         binding.quantityTv.setText(Replacement.ReplacementQtyToLocal(getContext(), order.getSpecInfo().getQuantity()));
         binding.postDescriptionTv.setText(order.getSpecInfo().getDesc());
         binding.postedDateTv.setText(CommonClass.formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
+
+        // UIHelper update in: 06-05-2026
+        UIHelper.bindAddress(binding.locationNameTv, binding.locationArea, order.getRouteInfo().getRentLocation());
 
         // Refresh Visibility logic
         refreshCountdown();
@@ -316,7 +324,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void refreshCountdown() {
-        if (orderTimestamp == 0 || !isAdded()) return;
+        if (!isAdded() || orderTimestamp == 0) return;
 
         CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
                 binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
@@ -327,21 +335,23 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void calculateTotalPrice(String inputStr) {
-        if (!inputStr.isEmpty()) {
-            try {
-                String englishInput = Replacement.ReplacementNumberBnToEn(inputStr);
-                double total = Double.parseDouble(englishInput) * Double.parseDouble(landArea);
-                binding.amountEt.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(total)));
-            } catch (Exception e) {
-                binding.amountEt.setText("");
-            }
-        } else {
+        if (!isAdded() || inputStr.isEmpty()) {
+            binding.amountEt.setText("");
+            return;
+        }
+        try {
+            String englishInput = Replacement.ReplacementNumberBnToEn(inputStr);
+            double total = Double.parseDouble(englishInput) * Double.parseDouble(landArea);
+            binding.amountEt.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(total)));
+        } catch (Exception e) {
             binding.amountEt.setText("");
         }
     }
 
     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     private void loadPartnerReview() {
+        if (!isAdded()) return;
+        
         binding.ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> binding.ratingTv.setText(rating+"/5"));
         ArrayList<ReviewModel> reviewList = new ArrayList<>();
         ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviewList);
@@ -352,6 +362,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 .whereEqualTo("customerId", currentUserId)
                 .get()
                 .addOnSuccessListener(snapshot -> {
+                    if (!isAdded()) return;
+                    
                     reviewList.clear();
                     if (!snapshot.isEmpty()) {
                         binding.reviewRvCard.setVisibility(View.VISIBLE);
@@ -385,6 +397,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
             db.collection("reviews").document(reviewId).set(data)
                     .addOnSuccessListener(aVoid -> {
+                        if (!isAdded()) return;
                         binding.progressBar.setVisibility(View.GONE);
                         MyToast.showShort(getContext(), "Review submitted ✅");
                         loadPartnerReview();
@@ -393,6 +406,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void loadCurrentPartnerBid() {
+        if (!isAdded()) return;
+        
         bidModelArrayList = new ArrayList<>();
         bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList);
         bidPartnerAdapter.setListener(this);
@@ -402,6 +417,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 .whereEqualTo("orderInfo.orderId", orderId)
                 .whereEqualTo("bidInfo.vendorId", currentUserId)
                 .addSnapshotListener((querySnapshot, error) -> {
+                    if (!isAdded()) return;
+                    
                     if (error != null) return;
                     bidModelArrayList.clear();
                     if (querySnapshot != null && !querySnapshot.isEmpty()) {
@@ -421,6 +438,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void loadPartnerInfo() {
+        if (!isAdded()) return;
+        
         serviceModelArrayList = new ArrayList<>();
         db.collection("users").document(currentUserId).collection("services")
                 .whereEqualTo("serviceStatus", "active")
@@ -428,6 +447,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 .whereEqualTo("subCategoryId", subCategoryId)
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
+                    if (!isAdded()) return;
+                    
                     serviceModelArrayList.clear();
                     for (DocumentSnapshot doc : querySnapshots) {
                         ServiceModel model = doc.toObject(ServiceModel.class);
@@ -439,7 +460,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     @SuppressLint("SetTextI18n")
     private void setupServicePicker() {
         binding.selectVehicleNameTv.setOnClickListener(v -> {
-            if (serviceModelArrayList.isEmpty()) {
+            if (!isAdded() || serviceModelArrayList.isEmpty()) {
                 MyToast.showShort(getContext(), "কোনো Verified Vehicle পাওয়া যায়নি!");
                 return;
             }
@@ -457,16 +478,30 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
     private void bidDataSubmitInDatabase(ServiceModel model) {
+        if (!isAdded()) return;
+        
         loadingDialog.setMessage("বিড সাবমিট হচ্ছে...");
         loadingDialog.show();
 
         String bidAmount = Replacement.ReplacementNumberBnToEn(binding.amountEt.getText().toString().trim());
         String timestamp = String.valueOf(System.currentTimeMillis());
 
-        Map<String, Object> bid = BidMapBuilder.createBidMap(model, timestamp, bidAmount, userId, currentUserId, orderId, rentTime, categoryId, subCategoryId);
+        Map<String, Object> bid = BidMapBuilder.createBidMap(
+                model,
+                timestamp,
+                bidAmount,
+                userId,
+                currentUserId,
+                orderId,
+                rentTime,
+                categoryId,
+                subCategoryId
+        );
 
         db.collection("bidForOrder").document(timestamp).set(bid)
                 .addOnSuccessListener(aVoid->{
+                    if (!isAdded()) return;
+                    
                     loadingDialog.dismiss();
                     hasCurrentPartnerBidded = true;
                     refreshCountdown();
@@ -475,11 +510,14 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                     //sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
                     // বিড সাবমিট করার পর
                     BidActionManager.sendNotice(getContext(), user_type, userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+
                     loadCurrentPartnerBid();
                 });
     }
 
     private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
+        if (!isAdded()) return;
+        
         String sender = "partner".equals(user_type) ? MyUtils.NOTICE_SENDER_PARTNER : MyUtils.NOTICE_SENDER_CUSTOMER;
         String messageForUser, messageForAdmin;
 
@@ -497,95 +535,11 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
 
-
     @Override
     public void onCallClicked(BidModel bidModel) {
         BidActionManager.handleCall(getContext(), bidModel);
     }
 
-    /*public void onConfirmOrderClicked(BidModel bidModel) {
-        try {
-            long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
-            long todayMillis = CommonClass.getTodayStartMillis();
-
-            if (rentMillis >= todayMillis) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
-                builder.setView(dialogView);
-
-                AlertDialog dialog = builder.create();
-
-                Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-                Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-                btnCancel.setOnClickListener(v1 -> dialog.dismiss());
-
-                btnConfirm.setOnClickListener(v2 -> {
-                    dialog.dismiss();
-                    loadingDialog.show();
-
-                    String bidId = bidModel.getBidInfo().getBidId();
-                    String orderId = bidModel.getOrderInfo().getOrderId();
-                    String categoryID = bidModel.getOrderInfo().getCategoryId();
-
-                    String finalBidAmount;
-                    if (categoryID.equals(MyUtils.HARVESTER_MACHINE_ID)){
-                        finalBidAmount = CommonClass.getRoundedCommissionValue(false, bidModel.getBidInfo().getBidAmount(), landArea);
-//                        String HarvesterAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_HARVESTER);
-//                        double calculatedAmount = PartnerCommissionUtils.COMMISSION_HARVESTER_DEFAULT + Double.parseDouble(HarvesterAmount);
-//                        finalBidAmount = String.valueOf(calculatedAmount);
-                    }
-                    else {
-                        finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_EQUIPMENT);
-                    }
-
-                    db.collection("bidForOrder")
-                            .document(bidId)
-                            .update("bidInfo.status", "confirmed")
-                            .addOnSuccessListener(aVoid -> {
-
-                                Map<String, Object> bidInfoUpdate = new HashMap<>();
-                                bidInfoUpdate.put("bidInfo.bidId", bidId);
-                                bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
-                                bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
-                                bidInfoUpdate.put("orderInfo.status", "confirmed");
-
-                                db.collection("orders")
-                                        .document(orderId)
-                                        .update(bidInfoUpdate)
-                                        .addOnSuccessListener(unused -> {
-                                            loadingDialog.dismiss();
-                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
-                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
-
-                                            MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
-                                            loadCurrentOrderBid();
-                                            getCurrentOrderInfo();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            loadingDialog.dismiss();
-                                            MyToast.showShort(getContext(), "Failed to update order.");
-                                        });
-
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                MyToast.showShort(getContext(), "Failed to confirm bid.");
-                            });
-                });
-
-                dialog.show();
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            }
-            else {
-                MyToast.showShort(getContext(), "⚠️ Already Expired this requirement");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
     public void onConfirmOrderClicked(BidModel bidModel) {
         BidActionManager.confirmOrder(requireContext(), bidModel, user_type, landArea,
                 PartnerCommissionUtils.COMMISSION_EQUIPMENT, loadingDialog, () -> {
