@@ -37,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
 
+import java.util.Locale;
+
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
@@ -179,12 +181,19 @@ public class ProfileFragment extends Fragment {
                         String district = documentSnapshot.getString("district"); // Always English
 
                         binding.userNameTV.setText(name);
-                        // ✅ Null check & set rating
-                        if (rating != null) {
-                            binding.rattingTV.setText(String.valueOf((int) Math.round(rating)));
-                        } else {
-                            binding.rattingTV.setText("0"); // Default rating
-                        }
+
+                        // User Rating: Show from Reviews if available, else from Database
+                        CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                            if (totalReviews > 0) {
+                                binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
+                            } else {
+                                if (rating != null) {
+                                    binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", rating));
+                                } else {
+                                    binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
+                                }
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(e -> {

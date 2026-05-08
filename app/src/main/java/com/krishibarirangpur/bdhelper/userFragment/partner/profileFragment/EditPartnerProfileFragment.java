@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -120,7 +119,7 @@ public class EditPartnerProfileFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(requireActivity(), "আপডেট ব্যর্থ হয়েছে");
+                    ToastMessage( "আপডেট ব্যর্থ হয়েছে");
                 });
     }
 
@@ -150,7 +149,7 @@ public class EditPartnerProfileFragment extends Fragment {
 
     private void showError(View view, String message) {
         ValidationClass.setErrorWatcher(view, true);
-        MyToast.showShort(requireActivity(), message);
+        ToastMessage(message);
     }
 
     private void loadCurrentPartnerInfo() {
@@ -209,7 +208,7 @@ public class EditPartnerProfileFragment extends Fragment {
                         uploadImage(croppedUri);
                     }
                 } else if (result.getResultCode() == RESULT_CANCELED) {
-                    MyToast.showShort(requireActivity(), "Crop cancelled");
+                    ToastMessage("Crop cancelled");
                 }
             }
     );
@@ -238,7 +237,7 @@ public class EditPartnerProfileFragment extends Fragment {
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) imageManager.openCamera(cameraLauncher);
-                else MyToast.showShort(requireActivity(), "Camera permission denied");
+                else ToastMessage("Camera permission denied");
             }
     );
 
@@ -247,13 +246,17 @@ public class EditPartnerProfileFragment extends Fragment {
             @Override
             public void onSuccess(String imageUrl) {
                 Picasso.get().load(imageUrl).placeholder(R.drawable.ic_profile).into(binding.userProfilePicIV);
-                Toast.makeText(requireContext(), "ছবি আপলোড সফল হয়েছে!", Toast.LENGTH_SHORT).show();
+                ToastMessage("ছবি আপলোড সফল হয়েছে!");
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(requireContext(), "ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                ToastMessage( "ব্যর্থ: " + e.getMessage());
             }
         });
+    }
+
+    private void ToastMessage(String message) {
+        MyToast.showShort(getContext(), message);
     }
 }

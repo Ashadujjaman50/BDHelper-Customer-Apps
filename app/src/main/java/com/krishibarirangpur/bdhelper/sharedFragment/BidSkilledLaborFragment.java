@@ -37,8 +37,10 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
+import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
+import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -58,6 +60,7 @@ import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -92,9 +95,9 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user_type = getArguments().getString("user_type");
-            orderId = getArguments().getString("orderId");
-            subCategoryId = getArguments().getString("subCategoryId");
+            user_type = getArguments().getString(MyUtils.USER_TYPE);
+            orderId = getArguments().getString(MyUtils.orderId);
+            subCategoryId = getArguments().getString(MyUtils.subCategoryId);
         }
     }
 
@@ -125,7 +128,10 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         //get current Order info
         getCurrentOrderInfo();
 
-        if (user_type.equals("partner")){
+        if (user_type.equals(MyUtils.PARTNER)){
+            //Rating Review Card show (Customer)
+            binding.ratingReviewCard.setVisibility(View.VISIBLE);
+
             //Load Current Partner Bid
             loadCurrentPartnerBid();
 
@@ -169,7 +175,11 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                 else bidDataSubmitInDatabase(selectedServiceModel);
             });
         }
-        else if (user_type.equals("customer")) {
+        else if (user_type.equals(MyUtils.CUSTOMER)) {
+            //Rating Review Card show (Customer)
+            binding.ratingReviewCard.setVisibility(View.GONE);
+            binding.bottomPart.setVisibility(View.GONE);
+
             binding.bidRunMsgTv.setText("বিডিং চলছে");
             binding.bidMsgTv.setVisibility(View.VISIBLE);
             binding.bidRV.setVisibility(View.VISIBLE);
@@ -177,6 +187,135 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
             //loadCurrent order bid
             loadCurrentOrderBid();
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getCurrentOrderInfo() {
+        if (orderId == null || orderId.isEmpty()) return;
+
+        if (orderTimestamp == 0) preloadingDialog.show();
+
+        orderListener = db.collection("orders")
+                .document(orderId)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isAdded()) preloadingDialog.dismiss();
+
+                    if (e != null) {
+                        Log.e("BidSkilledLabor", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        OrderModel order = documentSnapshot.toObject(OrderModel.class);
+
+                        if (order != null) {
+
+                            // ============ Order Info ============
+                            categoryId = order.getOrderInfo().getCategoryId();
+                            orderStatus = order.getOrderInfo().getStatus();
+                            orderTimestamp = order.getOrderInfo().getTimestamp();
+                            userId = order.getOrderInfo().getUid();
+                            vendorId= order.getBidInfo().getVendorId();
+
+                            // ============ Route Info ============
+                            String rentArea = order.getRouteInfo().getRentLocation();
+                            String rentDateAndTime = order.getRouteInfo().getRentTime();
+
+                            // ============ Specification ============
+                            String quantity = order.getSpecInfo().getQuantity();
+                            String capacity = order.getSpecInfo().getCapacity();
+                            String duration = order.getSpecInfo().getDuration();
+                            String types = order.getSpecInfo().getTypes();
+                            String postDescription = order.getSpecInfo().getDesc();
+                            rentTime = order.getRouteInfo().getRentTime();
+
+                            // ✅ যদি user_type customer হয় এবং orderStatus complete/done হয়
+                            if (MyUtils.CUSTOMER.equals(user_type) &&
+                                    (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete"))) {
+
+                                // 🔹 রিভিউ ফর্ম লোড করো
+                                loadPartnerReview();
+                            }
+                            if (MyUtils.PARTNER.equals(user_type)){
+                                CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                                    if (totalReviews > 0) {
+                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
+                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", totalReviews)+")");
+                                    } else {
+                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
+                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", 0)+")");
+                                    }
+                                });
+
+
+                                //Count Total Trip in orderList
+                                CommonClass.getUserOrderCount(userId, new CommonClass.OnCountListener() {
+                                    @Override
+                                    public void onSuccess(int count) {
+                                        if (isAdded() && binding != null) {
+                                            // সংখ্যাটিকে লোকাল ল্যাঙ্গুয়েজে (বাংলা/ইংরেজি) রূপান্তর করে দেখানো
+                                            binding.totalTripTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(count)));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        if (isAdded() && binding != null) {
+                                            binding.totalTripTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                                        }
+                                    }
+                                });
+
+
+                                binding.detailsTv.setOnClickListener(v -> {
+                                    Intent intent = new Intent(getContext(), RatingReviewActivity.class);
+                                    intent.putExtra(MyUtils.userId, userId);
+                                    intent.putExtra(MyUtils.USER_TYPE, user_type);
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(0, 0);
+                                });
+
+                            }
+
+
+                            // Set icon
+                            int iconRes = CommonClass.getIconForSubCategory(subCategoryId);
+                            binding.postImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
+
+                            // binding data
+                            binding.orderIdTv.setText(orderId);
+                            binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
+                            binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
+
+                            // UIHelper update in: 06-05-2026
+                            UIHelper.bindAddress(binding.locationNameTv, binding.locationArea, rentArea);
+
+                            binding.quantityTv.setText(Replacement.ReplacementPersonInLocal(getContext(), quantity));
+                            binding.postDescriptionTv.setText(postDescription);
+                            binding.postedDateTv.setText(CommonClass.formatTime(String.valueOf(orderTimestamp), "dd-MMM-yy  hh:mm aa"));
+
+
+                            // Refresh Visibility logic
+                            refreshCountdown();
+
+                            binding.typesTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tags,0,0);
+                            binding.typesTv.setText(types);
+
+                            binding.capacityTv.setText(Replacement.ReplacementExperienceInLocal(getContext(),capacity)+" "+getString(R.string.experience));
+
+                            if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID)){
+                                binding.capacityTv.setVisibility(View.VISIBLE);
+                                binding.dividerOne.setVisibility(View.VISIBLE);
+                            }
+
+
+                        }
+                    }
+                    else {
+                        if (isAdded()) preloadingDialog.dismiss();
+                        MyToast.showShort(getContext(),"No order found for ID: " + orderId);
+                    }
+                });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -233,105 +372,18 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private void getCurrentOrderInfo() {
-        if (orderId == null || orderId.isEmpty()) {
-            return;
-        }
-
-        if (orderTimestamp == 0) preloadingDialog.show();
-
-        orderListener = db.collection("orders")
-                .document(orderId)
-                .addSnapshotListener((documentSnapshot, e) -> {
-                    if (isAdded()) preloadingDialog.dismiss();
-
-                    if (e != null) {
-                        Log.e("BidSkilledLabor", "Listen failed.", e);
-                        return;
-                    }
-
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-                        OrderModel order = documentSnapshot.toObject(OrderModel.class);
-
-                        if (order != null) {
-
-                            // ============ Order Info ============
-                            categoryId = order.getOrderInfo().getCategoryId();
-                            orderStatus = order.getOrderInfo().getStatus();
-                            orderTimestamp = order.getOrderInfo().getTimestamp();
-                            userId = order.getOrderInfo().getUid();
-                            vendorId= order.getBidInfo().getVendorId();
-
-                            // ============ Route Info ============
-                            String rentArea = order.getRouteInfo().getRentLocation();
-                            String rentDateAndTime = order.getRouteInfo().getRentTime();
-
-                            // ============ Specification ============
-                            String quantity = order.getSpecInfo().getQuantity();
-                            String capacity = order.getSpecInfo().getCapacity();
-                            String duration = order.getSpecInfo().getDuration();
-                            String types = order.getSpecInfo().getTypes();
-                            String postDescription = order.getSpecInfo().getDesc();
-                            rentTime = order.getRouteInfo().getRentTime();
-
-                            // ✅ যদি user_type customer হয় এবং orderStatus complete/done হয়
-                            if ("customer".equals(user_type) &&
-                                    (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete"))) {
-
-                                // 🔹 রিভিউ ফর্ম লোড করো
-                                loadPartnerReview();
-                            }
-
-
-                            // Set icon
-                            int iconRes = CommonClass.getIconForSubCategory(subCategoryId);
-                            binding.postImage.setImageDrawable(ContextCompat.getDrawable(requireContext(), iconRes));
-
-                            // binding data
-                            binding.orderIdTv.setText(orderId);
-                            binding.postNameTv.setText(CommonClass.getSubCategoryName(requireContext(), subCategoryId));
-                            binding.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(getContext(), rentDateAndTime));
-
-                            // UIHelper update in: 06-05-2026
-                            UIHelper.bindAddress(binding.locationNameTv, binding.locationArea, rentArea);
-
-                            binding.quantityTv.setText(Replacement.ReplacementPersonInLocal(getContext(), quantity));
-                            binding.postDescriptionTv.setText(postDescription);
-                            binding.postedDateTv.setText(CommonClass.formatTime(String.valueOf(orderTimestamp), "dd-MMM-yy  hh:mm aa"));
-
-
-                            // Refresh Visibility logic
-                            refreshCountdown();
-
-                            binding.typesTv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tags,0,0);
-                            binding.typesTv.setText(types);
-
-                            binding.capacityTv.setText(Replacement.ReplacementExperienceInLocal(getContext(),capacity)+" "+getString(R.string.experience));
-
-                            if (subCategoryId.equals(MyUtils.SUB_DRIVER_ID)){
-                                binding.capacityTv.setVisibility(View.VISIBLE);
-                                binding.dividerOne.setVisibility(View.VISIBLE);
-                            }
-
-
-                        }
-                    }
-                    else {
-                        if (isAdded()) preloadingDialog.dismiss();
-                        MyToast.showShort(getContext(),"No order found for ID: " + orderId);
-                    }
-                });
-    }
-
     private void refreshCountdown() {
-        if (orderTimestamp == 0 || !isAdded()) return;
-
-        CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
-                binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
-
-        if ("partner".equals(user_type) && hasCurrentPartnerBidded) {
+        if (orderTimestamp == 0 || !isAdded()) return;        // যদি ইউজার পার্টনার হয় এবং সে এখনও বিড না করে থাকে
+        if ("partner".equals(user_type) && !hasCurrentPartnerBidded) {
+            // কাউন্টডাউন মেথডকে bottomPart পাস করা হলো যাতে সময় থাকলে এটি দেখায়
+            CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
+                    binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
+        } else {
+            // অন্য সব ক্ষেত্রে (কাস্টমার বা বিড করা পার্টনার) bottomPart লুকানো থাকবে
             binding.bottomPart.setVisibility(View.GONE);
+            // কাউন্টডাউন মেথডকে null পাস করা হলো যাতে এটি bottomPart-কে VISIBLE করতে না পারে
+            CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
+                    binding.bidingTimeTv, binding.bidRunTimeLl, null);
         }
     }
 
@@ -527,7 +579,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                     .setItems(vehicleItems, (dialog, which) -> {
                         selectedServiceModel = serviceModelArrayList.get(which); // ✅ সিলেক্টেড সার্ভিস সেট
                         binding.selectVehicleNameTv.setText(selectedServiceModel.getServiceRegistrationNumber());
-                        Log.d("BidTransportFragment", "✅ Selected Vehicle: " +
+                        Log.d("BidSkilledLaborFragment", "✅ Selected Vehicle: " +
                                 selectedServiceModel.getServiceModelNumber());
                     })
                     .show();
@@ -566,7 +618,9 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
                     //Custome Notice Send
                     String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
-                    sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+                    //sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+                    // বিড সাবমিট করার পর
+                    BidActionManager.sendNotice(getContext(), user_type, userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
 
 
                     loadCurrentPartnerBid();
@@ -630,105 +684,15 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
     // 🔹 Handle Call Button Click
     @Override
     public void onCallClicked(BidModel bidModel) {
-        //String phone = bidModel.getBidInfo().getBidId() != null ? bidModel.getOrderInfo().getOrderId() : null;
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + MyUtils.HOTLINE_NUMBER));
-        startActivity(intent);
+        BidActionManager.handleCall(getContext(), bidModel);
     }
 
     // 🔹 Handle Confirm Button Click
     public void onConfirmOrderClicked(BidModel bidModel) {
-        try {
-            // rentTime যেহেতু millisecond string, তাই long এ convert করো
-            long rentMillis = CommonClass.parseMillis(bidModel.getOrderInfo().getRentTime());
-            long todayMillis = CommonClass.getTodayStartMillis();
-
-            // 🔹 Compare করো (rentTime আজকের বা ভবিষ্যতের হলে valid)
-            if (rentMillis >= todayMillis) {
-                Log.d("DateCheck", "✅ Valid rent date (future or today)");
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
-                builder.setView(dialogView);
-
-                AlertDialog dialog = builder.create();
-
-                Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-                Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-                btnCancel.setOnClickListener(v1 -> dialog.dismiss());
-
-                btnConfirm.setOnClickListener(v2 -> {
-                    dialog.dismiss();
-
-                    loadingDialog.show();
-
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    String bidId = bidModel.getBidInfo().getBidId();
-                    String orderId = bidModel.getOrderInfo().getOrderId();
-                    String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
-
-                    // ✅ 1️⃣ bidForOrder -> status update
-                    db.collection("bidForOrder")
-                            .document(bidId)
-                            .update("bidInfo.status", "confirmed")
-                            .addOnSuccessListener(aVoid -> {
-
-                                // ✅ 2️⃣ orders -> bidInfo update
-                                Map<String, Object> bidInfoUpdate = new HashMap<>();
-                                bidInfoUpdate.put("bidInfo.bidId", bidId);
-                                bidInfoUpdate.put("bidInfo.vendorId", bidModel.getBidInfo().getVendorId());
-                                bidInfoUpdate.put("bidInfo.vendorPrice", Double.valueOf(finalBidAmount));
-                                bidInfoUpdate.put("bidInfo.bidStatus", "confirmed");
-                                bidInfoUpdate.put("orderInfo.status", "confirmed");
-
-                                db.collection("orders")
-                                        .document(orderId)
-                                        .update(bidInfoUpdate)
-                                        .addOnSuccessListener(unused -> {
-                                            loadingDialog.dismiss();
-
-                                            //Send Custom Notice
-                                            sendCustomNotice(bidModel.getBidInfo().getVendorId(), bidModel.getBidInfo().getUserId(), orderId,
-                                                    bidModel.getOrderInfo().getSubCategoryId(), finalBidAmount, MyUtils.NOTICE_TYPE_BID_CONFIRM);
-
-                                            MyToast.showShort(getContext(), "✅ Order confirmed successfully!");
-                                            Log.d("ConfirmOrder", "Order & Bid updated successfully.");
-                                            loadCurrentOrderBid();
-                                            getCurrentOrderInfo();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            loadingDialog.dismiss();
-                                            Log.e("ConfirmOrder", "❌ Failed to update order: " + e.getMessage());
-                                            MyToast.showShort(getContext(), "Failed to update order.");
-                                        });
-
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                Log.e("ConfirmOrder", "❌ Failed to update bid: " + e.getMessage());
-                                MyToast.showShort(getContext(), "Failed to confirm bid.");
-                            });
+        BidActionManager.confirmOrder(requireContext(), bidModel, user_type, "",
+                PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR, loadingDialog, () -> {
+                    getCurrentOrderInfo(); // সাকসেস হলে ডেটা রিফ্রেশ
                 });
-
-
-                dialog.show();
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog.getWindow().setGravity(Gravity.CENTER);
-
-            }
-            else {
-                Log.d("DateCheck", "❌ Invalid rent date (past)");
-                MyToast.showShort(getContext(), "⚠️ Already Expired this requirement");
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("DateCheck", "Error parsing rentTime: " + e.getMessage());
-        }
     }
 
     public void onEditClicked(String bidId, String orderId) {
@@ -737,21 +701,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
-        DueWarningAlertDialog.showDeleteBidDialog(requireContext(),()->{
-            loadingDialog.show();
-            db.collection("bidForOrder")
-                    .document(bidId)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Bid deleted successfully.");
-                        // Snapshot listener will handle UI update
-                    })
-                    .addOnFailureListener(e -> {
-                        loadingDialog.dismiss();
-                        MyToast.showShort(getContext(), "Failed to delete bid: " + e.getMessage());
-                    });
-        });
+        BidActionManager.deleteBid(requireContext(), bidId, loadingDialog);
     }
 
     @Override

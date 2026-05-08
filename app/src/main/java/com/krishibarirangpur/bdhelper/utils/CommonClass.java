@@ -16,33 +16,80 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
-import android.util.Pair;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.AggregateSource;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class CommonClass {
+
+    // 🔹 গড় রেটিং বের করার মেথড
+    public static void getVendorRatingInfo(String vendorId, RatingCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("reviews")
+                .whereEqualTo("vendorId", vendorId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        callback.onRatingCalculated(0.0f, 0);
+                        return;
+                    }
+
+                    float totalRatingSum = 0;
+                    int count = queryDocumentSnapshots.size();
+
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        ReviewModel model = doc.toObject(ReviewModel.class);
+                        if (model != null) {
+                            totalRatingSum += model.getRating();
+                        }
+                    }
+
+                    float average = totalRatingSum / count;
+                    callback.onRatingCalculated(average, count);
+                })
+                .addOnFailureListener(e -> callback.onRatingCalculated(0.0f, 0));
+    }
+
+    public interface RatingCallback {
+        void onRatingCalculated(float averageRating, int totalReviews);
+    }
+
+    // user Total Order Count
+    public static void getUserOrderCount(String userId, OnCountListener listener) {
+        FirebaseFirestore.getInstance()
+                .collection("orders")
+                .whereEqualTo("orderInfo.uid", userId)
+                .count()
+                .get(AggregateSource.SERVER)
+                .addOnSuccessListener(aggregateQuerySnapshot -> {
+                    int count = (int) aggregateQuerySnapshot.getCount();
+                    listener.onSuccess(count);
+                })
+                .addOnFailureListener(listener::onFailure);
+    }
+
+    public interface OnCountListener {
+        void onSuccess(int count);
+        void onFailure(Exception e);
+    }
 
     public static void socialMediaClickToResponse(ImageView facebookIV, ImageView twitterIV,
                                                   ImageView instagramIV, ImageView linkedinIV) {
@@ -336,8 +383,8 @@ public class CommonClass {
 
             // 🔹 addPercent যদি 100-এর কম হয়
             if (addPercent < 100) {
-                if (addPercent < 30){
-                    return String.valueOf(amount+20);
+                if (addPercent < 5){
+                    return String.valueOf(amount+5);
                 }
                 else {
                     return String.valueOf(amount+addPercent);
@@ -350,12 +397,12 @@ public class CommonClass {
             long roundedValue = (long) increased;
             long lastTwoDigits = roundedValue % 100;
 
-            // 🔹 nearest 100 বা 50 অনুযায়ী রাউন্ড করো
-            if (lastTwoDigits < 50) {
+            // 🔹 nearest 100 বা 10 অনুযায়ী রাউন্ড করো
+            if (lastTwoDigits < 10) {
                 roundedValue = roundedValue - lastTwoDigits; // নিচে round
-            } else {
-                roundedValue = roundedValue + (100 - lastTwoDigits); // উপরে round
-            }
+            } /*else {
+                roundedValue = roundedValue + lastTwoDigits; // উপরে round
+            }*/
 
             // 🔹 Local number format এ রিটার্ন করো
             return String.valueOf(roundedValue);
@@ -403,6 +450,7 @@ public class CommonClass {
      * @param timestamp      The original timestamp in milliseconds
      * @param hoursToAdd     Hours to add to the timestamp
      * @param countdownTv    TextView to update with countdown
+     * @param bottomPart     The view to show/hide based on countdown (Optional)
      */
 
     private static CountDownTimer countDownTimer;
@@ -422,7 +470,7 @@ public class CommonClass {
 
             if (millisUntilFinished > 0) {
                 countdownLayout.setVisibility(View.VISIBLE);
-                bottomPart.setVisibility(View.VISIBLE);
+                if (bottomPart != null) bottomPart.setVisibility(View.VISIBLE);
 
                 countDownTimer = new CountDownTimer(millisUntilFinished, 1000) {
                     @Override
@@ -443,7 +491,7 @@ public class CommonClass {
                         // 5 সেকেন্ড delay দিয়ে hide
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
                             countdownLayout.setVisibility(View.GONE);
-                            bottomPart.setVisibility(View.GONE);
+                            if (bottomPart != null) bottomPart.setVisibility(View.GONE);
                         }, 3000); // 3000 milliseconds = 3 seconds
                     }
                 }.start();
@@ -451,7 +499,7 @@ public class CommonClass {
                 // Time already expired
                 countdownTv.setText("00:00:00");
                 countdownLayout.setVisibility(View.GONE); // hide layout when countdown ends
-                bottomPart.setVisibility(View.GONE); // hide layout when countdown ends
+                if (bottomPart != null) bottomPart.setVisibility(View.GONE); // hide layout when countdown ends
             }
 
         } else {
@@ -460,7 +508,7 @@ public class CommonClass {
                 countDownTimer.cancel();
             }
             countdownLayout.setVisibility(View.GONE);
-            bottomPart.setVisibility(View.GONE);
+            if (bottomPart != null) bottomPart.setVisibility(View.GONE);
         }
     }
 

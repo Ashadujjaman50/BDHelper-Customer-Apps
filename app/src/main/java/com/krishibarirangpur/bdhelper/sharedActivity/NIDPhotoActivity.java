@@ -134,7 +134,7 @@ public class NIDPhotoActivity extends BaseActivity {
                         }
                     }
                 } else if (result.getResultCode() == RESULT_CANCELED) {
-                    MyToast.showShort(this, "Crop cancelled");
+                    ToastMessage( "Crop cancelled");
                 }
             }
     );
@@ -163,13 +163,13 @@ public class NIDPhotoActivity extends BaseActivity {
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) imageManager.openCamera(cameraLauncher);
-                else MyToast.showShort(this, "Camera permission denied");
+                else ToastMessage( "Camera permission denied");
             }
     );
 
     private void submitAllPhoto() {
         if (fontImageUrl == null && backImageUrl == null) {
-            MyToast.showShort(this, "এনআইডির ছবি সিলেক্ট করুন!");
+            ToastMessage( "এনআইডির ছবি সিলেক্ট করুন!");
             return;
         }
 
@@ -211,7 +211,12 @@ public class NIDPhotoActivity extends BaseActivity {
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(this, "ছবি আপলোড ব্যর্থ: " + e.getMessage());
+                    ToastMessage( "ছবি আপলোড ব্যর্থ: " + e.getMessage());
                 });
+    }
+
+
+    private void ToastMessage(String message) {
+        MyToast.showShort(NIDPhotoActivity.this, message);
     }
 }

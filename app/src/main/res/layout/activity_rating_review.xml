@@ -35,13 +35,13 @@
                     app:tint="@color/icon_color" />
 
                 <TextView
-                    android:id="@+id/subCategoryNameTV"
+                    android:id="@+id/appBarTitleTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/backBtn"
                     android:layout_centerVertical="true"
-                    android:text="আপনার রেটিং &amp; রিভিউ"
+                    android:text="@string/your_rating_review"
                     android:textColor="@color/text_primary"
                     android:textStyle="bold"
                     android:textSize="17sp" />
@@ -64,6 +64,7 @@
 
                     <!-- Rating Summary Card -->
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/ratingSummaryCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="6dp"
@@ -71,6 +72,7 @@
                         app:cardElevation="2dp">
 
                         <LinearLayout
+                            android:id="@+id/ratingSummaryLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -79,10 +81,12 @@
 
                             <!-- Average Rating -->
                             <TextView
+                                android:id="@+id/averageRatingTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="16dp"
+                                android:layout_marginEnd="32dp"
+                                android:layout_marginStart="12dp"
                                 android:text="৫.০"
                                 android:textSize="28sp"
                                 android:textStyle="bold"
@@ -94,6 +98,7 @@
 
                             <!-- Rating Distribution -->
                             <LinearLayout
+                                android:id="@+id/ratingDistributionLayout"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -101,12 +106,14 @@
 
                                 <!-- 5 star -->
                                 <LinearLayout
+                                    android:id="@+id/fiveStarLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
                                     <TextView
+                                        android:id="@+id/fiveStarLabelTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="৫ ⭐"
@@ -114,6 +121,7 @@
                                         android:textColor="@color/text_primary"/>
 
                                     <ProgressBar
+                                        android:id="@+id/fiveStarProgress"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="0dp"
                                         android:layout_height="8dp"
@@ -123,6 +131,7 @@
                                         android:layout_marginHorizontal="8dp"/>
 
                                     <TextView
+                                        android:id="@+id/fiveStarPercentTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="১০০%"
@@ -132,12 +141,14 @@
 
                                 <!-- 4 star -->
                                 <LinearLayout
+                                    android:id="@+id/fourStarLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
                                     <TextView
+                                        android:id="@+id/fourStarLabelTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="৪ ⭐"
@@ -145,6 +156,7 @@
                                         android:textColor="@color/text_primary"/>
 
                                     <ProgressBar
+                                        android:id="@+id/fourStarProgress"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="0dp"
                                         android:layout_height="8dp"
@@ -154,6 +166,7 @@
                                         android:layout_marginHorizontal="8dp"/>
 
                                     <TextView
+                                        android:id="@+id/fourStarPercentTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="০%"
@@ -163,12 +176,14 @@
 
                                 <!-- 3 star -->
                                 <LinearLayout
+                                    android:id="@+id/threeStarLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
                                     <TextView
+                                        android:id="@+id/threeStarLabelTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="৩ ⭐"
@@ -176,6 +191,7 @@
                                         android:textColor="@color/text_primary"/>
 
                                     <ProgressBar
+                                        android:id="@+id/threeStarProgress"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="0dp"
                                         android:layout_height="8dp"
@@ -185,6 +201,7 @@
                                         android:layout_marginHorizontal="8dp"/>
 
                                     <TextView
+                                        android:id="@+id/threeStarPercentTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="০%"
@@ -194,12 +211,14 @@
 
                                 <!-- 2 star -->
                                 <LinearLayout
+                                    android:id="@+id/twoStarLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
                                     <TextView
+                                        android:id="@+id/twoStarLabelTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="২ ⭐"
@@ -207,6 +226,7 @@
                                         android:textColor="@color/text_primary"/>
 
                                     <ProgressBar
+                                        android:id="@+id/twoStarProgress"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="0dp"
                                         android:layout_height="8dp"
@@ -216,6 +236,7 @@
                                         android:layout_marginHorizontal="8dp"/>
 
                                     <TextView
+                                        android:id="@+id/twoStarPercentTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="০%"
@@ -225,12 +246,14 @@
 
                                 <!-- 1 star -->
                                 <LinearLayout
+                                    android:id="@+id/oneStarLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:gravity="center_vertical">
 
                                     <TextView
+                                        android:id="@+id/oneStarLabelTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="১ ⭐"
@@ -238,6 +261,7 @@
                                         android:textColor="@color/text_primary"/>
 
                                     <ProgressBar
+                                        android:id="@+id/oneStarProgress"
                                         style="?android:attr/progressBarStyleHorizontal"
                                         android:layout_width="0dp"
                                         android:layout_height="8dp"
@@ -247,6 +271,7 @@
                                         android:layout_marginHorizontal="8dp"/>
 
                                     <TextView
+                                        android:id="@+id/oneStarPercentTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="০%"
@@ -254,13 +279,15 @@
                                         android:textColor="@color/text_primary"/>
                                 </LinearLayout>
 
-
                             </LinearLayout>
+
                         </LinearLayout>
+
                     </androidx.cardview.widget.CardView>
 
                     <!-- Filter Section -->
                     <LinearLayout
+                        android:id="@+id/filterSectionLayout"
                         android:layout_marginTop="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -268,7 +295,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/yourReviewTv"
+                            android:id="@+id/yourReviewCountTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="আপনার রিভিউ (০)"
@@ -280,14 +307,18 @@
                             android:id="@+id/sortTv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
+                            android:gravity="center_vertical|end"
                             android:text="নতুন থেকে পুরানো"
                             android:textSize="14sp"
-                            android:textColor="@color/text_primary"/>
+                            android:textColor="@color/text_primary"
+                            app:drawableEndCompat="@drawable/ic_sort"
+                            android:drawablePadding="4dp"/>
+
                     </LinearLayout>
 
                     <!-- Filter Chips -->
                     <HorizontalScrollView
+                        android:id="@+id/filterScrollView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollbars="none"
@@ -295,12 +326,14 @@
                         android:layout_marginTop="8dp">
 
                         <LinearLayout
+                            android:id="@+id/filterButtonContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/allFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="সব"
                                 android:textSize="12sp"
@@ -309,7 +342,8 @@
                                 android:layout_marginEnd="8dp"/>
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/fiveStarFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="৫ ⭐"
                                 android:textSize="12sp"
@@ -318,7 +352,8 @@
                                 android:layout_marginEnd="8dp"/>
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/fourStarFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="৪ ⭐"
                                 android:textSize="12sp"
@@ -327,7 +362,8 @@
                                 android:layout_marginEnd="8dp"/>
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/threeStarFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="৩ ⭐"
                                 android:textSize="12sp"
@@ -336,7 +372,8 @@
                                 android:layout_marginEnd="8dp"/>
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/twoStarFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="২ ⭐"
                                 android:textSize="12sp"
@@ -345,7 +382,8 @@
                                 android:layout_marginEnd="8dp"/>
 
                             <Button
-                                android:layout_width="wrap_content"
+                                android:id="@+id/oneStarFilterBtn"
+                                android:layout_width="75dp"
                                 android:layout_height="wrap_content"
                                 android:text="১ ⭐"
                                 android:textSize="12sp"

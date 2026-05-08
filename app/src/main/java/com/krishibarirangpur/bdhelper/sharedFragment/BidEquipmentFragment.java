@@ -33,6 +33,7 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
+import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
@@ -55,6 +56,7 @@ import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -69,7 +71,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
-
     ArrayList<ServiceModel> serviceModelArrayList;
     ServiceModel selectedServiceModel; // ✅ সিলেক্টেড সার্ভিস রাখবে এখানে
 
@@ -90,9 +91,9 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user_type = getArguments().getString("user_type");
-            orderId = getArguments().getString("orderId");
-            subCategoryId = getArguments().getString("subCategoryId");
+            user_type = getArguments().getString(MyUtils.USER_TYPE);
+            orderId = getArguments().getString(MyUtils.orderId);
+            subCategoryId = getArguments().getString(MyUtils.subCategoryId);
         }
     }
 
@@ -123,7 +124,11 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         //get current Order info
         getCurrentOrderInfo();
 
-        if ("partner".equals(user_type)){
+        if (user_type.equals(MyUtils.PARTNER)){
+            //Rating Review Card show (Customer)
+            binding.ratingReviewCard.setVisibility(View.VISIBLE);
+
+            //Load Current Partner Bid
             loadCurrentPartnerBid();
 
             //loadPartner ServiceInfo
@@ -132,6 +137,32 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             // Setup vehicle picker dialog
             setupServicePicker();
 
+            binding.amountEt.addTextChangedListener(new TextWatcher() {
+                boolean isEditing;
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (isEditing) return;
+
+                    isEditing = true;
+
+                    String original = s.toString();
+                    String converted = Replacement.ReplacementNumberInLocal(getContext(), original);
+
+                    binding.amountEt.setText(converted);
+                    binding.amountEt.setSelection(converted.length());
+
+                    isEditing = false;
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
 
             // ✅ submit button click
             binding.bidSubmitBtn.setOnClickListener(v -> {
@@ -144,7 +175,11 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 bidDataSubmitInDatabase(selectedServiceModel);
             });
         }
-        else if ("customer".equals(user_type)) {
+        else if (user_type.equals(MyUtils.CUSTOMER)) {
+            //Rating Review Card show (Customer)
+            binding.ratingReviewCard.setVisibility(View.GONE);
+            binding.bottomPart.setVisibility(View.GONE);
+
             binding.bidRunMsgTv.setText("বিডিং চলছে");
             binding.bidMsgTv.setVisibility(View.VISIBLE);
             binding.bidRV.setVisibility(View.VISIBLE);
@@ -152,6 +187,87 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             //loadCurrent order bid
             loadCurrentOrderBid();
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getCurrentOrderInfo() {
+        if (orderId == null || orderId.isEmpty()) return;
+
+        if (orderTimestamp == 0) preloadingDialog.show();
+
+        orderListener = db.collection("orders")
+                .document(orderId)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isAdded()) preloadingDialog.dismiss();
+
+                    if (e != null) {
+                        Log.e("BidTransport", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        OrderModel order = documentSnapshot.toObject(OrderModel.class);
+                        if (order != null) {
+                            categoryId = order.getOrderInfo().getCategoryId();
+                            orderStatus = order.getOrderInfo().getStatus();
+                            userId = order.getOrderInfo().getUid();
+                            vendorId = order.getBidInfo().getVendorId();
+                            landArea = order.getSpecInfo().getLandArea();
+                            rentTime = order.getRouteInfo().getRentTime();
+                            orderTimestamp = order.getOrderInfo().getTimestamp();
+
+                            // 🔹 landArea পাওয়ার পর কাস্টমার বিড লোড করো
+                            if (MyUtils.CUSTOMER.equals(user_type)) {
+                                loadCurrentOrderBid();
+                                if (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete")) {
+                                    loadPartnerReview();
+                                }
+                            }
+
+                            if (MyUtils.PARTNER.equals(user_type)){
+                                CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                                    if (totalReviews > 0) {
+                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
+                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", totalReviews)+")");
+                                    } else {
+                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
+                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", 0)+")");
+                                    }
+                                });
+
+
+                                //Count Total Trip in orderList
+                                CommonClass.getUserOrderCount(userId, new CommonClass.OnCountListener() {
+                                    @Override
+                                    public void onSuccess(int count) {
+                                        if (isAdded() && binding != null) {
+                                            // সংখ্যাটিকে লোকাল ল্যাঙ্গুয়েজে (বাংলা/ইংরেজি) রূপান্তর করে দেখানো
+                                            binding.totalTripTv.setText(Replacement.ReplacementNumberInLocal(getContext(), String.valueOf(count)));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        if (isAdded() && binding != null) {
+                                            binding.totalTripTv.setText(Replacement.ReplacementNumberInLocal(getContext(), "0"));
+                                        }
+                                    }
+                                });
+
+                                binding.detailsTv.setOnClickListener(v -> {
+                                    Intent intent = new Intent(getContext(), RatingReviewActivity.class);
+                                    intent.putExtra(MyUtils.userId, userId);
+                                    intent.putExtra(MyUtils.USER_TYPE, user_type);
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(0, 0);
+                                });
+                            }
+
+                            // UI setup
+                            setupOrderUI(order, orderTimestamp);
+                        }
+                    }
+                });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -203,50 +319,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                         } else {
                             binding.noOneBidYet.setVisibility(View.GONE);
                             binding.bidMsgTv.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void getCurrentOrderInfo() {
-        if (orderId == null || orderId.isEmpty()) return;
-
-        if (orderTimestamp == 0) preloadingDialog.show();
-
-        orderListener = db.collection("orders")
-                .document(orderId)
-                .addSnapshotListener((documentSnapshot, e) -> {
-                    if (!isAdded()) return;
-                    
-                    preloadingDialog.dismiss();
-
-                    if (e != null) {
-                        Log.e("BidEquipment", "Listen failed.", e);
-                        return;
-                    }
-
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-                        OrderModel order = documentSnapshot.toObject(OrderModel.class);
-                        if (order != null) {
-                            categoryId = order.getOrderInfo().getCategoryId();
-                            orderStatus = order.getOrderInfo().getStatus();
-                            userId = order.getOrderInfo().getUid();
-                            vendorId = order.getBidInfo().getVendorId();
-                            landArea = order.getSpecInfo().getLandArea();
-                            rentTime = order.getRouteInfo().getRentTime();
-                            orderTimestamp = order.getOrderInfo().getTimestamp();
-
-                            // 🔹 landArea পাওয়ার পর কাস্টমার বিড লোড করো
-                            if ("customer".equals(user_type)) {
-                                loadCurrentOrderBid();
-                                if (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete")) {
-                                    loadPartnerReview();
-                                }
-                            }
-
-                            // UI setup
-                            setupOrderUI(order, orderTimestamp);
                         }
                     }
                 });
@@ -323,17 +395,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         }
     }
 
-    private void refreshCountdown() {
-        if (!isAdded() || orderTimestamp == 0) return;
-
-        CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
-                binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
-
-        if ("partner".equals(user_type) && hasCurrentPartnerBidded) {
-            binding.bottomPart.setVisibility(View.GONE);
-        }
-    }
-
     private void calculateTotalPrice(String inputStr) {
         if (!isAdded() || inputStr.isEmpty()) {
             binding.amountEt.setText("");
@@ -347,6 +408,22 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             binding.amountEt.setText("");
         }
     }
+
+    private void refreshCountdown() {
+        if (orderTimestamp == 0 || !isAdded()) return;        // যদি ইউজার পার্টনার হয় এবং সে এখনও বিড না করে থাকে
+        if ("partner".equals(user_type) && !hasCurrentPartnerBidded) {
+            // কাউন্টডাউন মেথডকে bottomPart পাস করা হলো যাতে সময় থাকলে এটি দেখায়
+            CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
+                    binding.bidingTimeTv, binding.bidRunTimeLl, binding.bottomPart);
+        } else {
+            // অন্য সব ক্ষেত্রে (কাস্টমার বা বিড করা পার্টনার) bottomPart লুকানো থাকবে
+            binding.bottomPart.setVisibility(View.GONE);
+            // কাউন্টডাউন মেথডকে null পাস করা হলো যাতে এটি bottomPart-কে VISIBLE করতে না পারে
+            CommonClass.startConditionalCountdown(orderTimestamp, 3, orderStatus,
+                    binding.bidingTimeTv, binding.bidRunTimeLl, null);
+        }
+    }
+
 
     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     private void loadPartnerReview() {
@@ -467,9 +544,14 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             String[] vehicleItems = new String[serviceModelArrayList.size()];
             for (int i = 0; i < serviceModelArrayList.size(); i++) {
                 ServiceModel s = serviceModelArrayList.get(i);
-                vehicleItems[i] = s.getServiceRegistrationNumber()  +" "+ s.getSubCategoryName()+ " (" + s.getServiceCategoryAndYear() + ") - " + s.getServiceModelNumber();
+                vehicleItems[i] = s.getServiceRegistrationNumber()  +" "+
+                        s.getSubCategoryName()+ " (" +
+                        s.getServiceCategoryAndYear() + ") - " +
+                        s.getServiceModelNumber();
             }
-            new AlertDialog.Builder(requireContext())
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setCustomTitle(LayoutInflater.from(getContext()).inflate(R.layout.custom_title_dialog, null))
+
                     .setItems(vehicleItems, (dialog, which) -> {
                         selectedServiceModel = serviceModelArrayList.get(which);
                         binding.selectVehicleNameTv.setText(selectedServiceModel.getServiceModelNumber()+", "+selectedServiceModel.getServiceCategoryAndYear());

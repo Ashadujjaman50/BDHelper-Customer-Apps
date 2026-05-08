@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityLoginBinding;
+import com.krishibarirangpur.bdhelper.utils.authWidget.UserAction;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
@@ -159,6 +160,15 @@ public class LoginActivity extends BaseActivity {
                         if (document.exists()) {
                             // User exists in "users" table, go to MainActivity or Dashboard
                             String userType = document.getString("userType");
+                            String verifyStatus = document.getString("verifyStatus");
+
+                            // 🔴 Blocked / Rejected User
+                            if ("rejected".equalsIgnoreCase(verifyStatus)) {
+                                loadingDialog.dismiss();
+                                UserAction.blockAccountCheck(this);
+                                return;
+                            }
+
                             if ("customer".equals(userType)) {
                                 sharedPrefHelper.putString(USER_LOGIN_MODE, "customer");
                                 intent = new Intent(LoginActivity.this, MainActivity.class);

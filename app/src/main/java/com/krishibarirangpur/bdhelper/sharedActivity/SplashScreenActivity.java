@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +27,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivitySplashScreenBinding;
 import com.krishibarirangpur.bdhelper.introScreen.IntroActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
+import com.krishibarirangpur.bdhelper.utils.authWidget.UserAction;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
@@ -116,7 +118,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document != null && document.exists()) {
                             String userType = document.getString("userType");
+                            String verifyStatus = document.getString("verifyStatus");
                             Class<?> targetClass;
+
+                            // 🔴 Blocked / Rejected User
+                            if ("rejected".equalsIgnoreCase(verifyStatus)) {
+                                UserAction.blockAccountCheck(this);
+                                return;
+                            }
+
 
                             if ("customer".equals(userType)) {
                                 sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, "customer");
@@ -139,6 +149,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void goToLoginWithError(String errorMessage) {
         if (errorMessage != null) MyToast.showShort(this, errorMessage);

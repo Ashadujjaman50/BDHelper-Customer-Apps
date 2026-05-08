@@ -25,55 +25,41 @@
 
             <ImageView
                 android:id="@+id/profileImage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="@drawable/bg_circle_white"
+                android:backgroundTint="@color/bg_color"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile"
+                android:src="@drawable/ic_star_rate_24"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/vendor_profile" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/customerNameTv"
+                    android:id="@+id/customerRatingTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customer Name"
-                    android:textColor="@color/text_primary"
+                    android:text="5.0"
+                    android:textColor="@color/star_color"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/ratingDateTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="2dp">
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/demo_date_time"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"/>
 
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_star_24"
-                        app:tint="@color/star_color" />
-
-                    <TextView
-                        android:id="@+id/customerRatingTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="4.5"
-                        android:textColor="@color/star_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <!-- Divider -->

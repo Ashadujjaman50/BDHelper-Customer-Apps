@@ -79,15 +79,15 @@ public class ServiceDocumentActivity extends BaseActivity {
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.setCancelable(false);
 
-        cropOptions = ImageUploadHelper.getCropOptions(CropOptions.FrameType.RECTANGLE, 16, 12);
+
     }
 
     private void setupListeners() {
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 
-        binding.brtaDocumentBtn.setOnClickListener(v -> openImagePicker(KEY_BRTA));
-        binding.transportBtn.setOnClickListener(v -> openImagePicker(KEY_TRANSPORT));
-        binding.drivingLicenceBtn.setOnClickListener(v -> openImagePicker(KEY_DRIVING));
+        binding.brtaDocumentBtn.setOnClickListener(v -> openImagePicker(KEY_BRTA,12,16));
+        binding.transportBtn.setOnClickListener(v -> openImagePicker(KEY_TRANSPORT,1,1));
+        binding.drivingLicenceBtn.setOnClickListener(v -> openImagePicker(KEY_DRIVING,16,12));
 
         binding.submitBtn.setOnClickListener(v -> {
             if (validateImages()) {
@@ -96,8 +96,9 @@ public class ServiceDocumentActivity extends BaseActivity {
         });
     }
 
-    private void openImagePicker(String key) {
+    private void openImagePicker(String key, int x, int y) {
         currentImageKey = key;
+        cropOptions = ImageUploadHelper.getCropOptions(CropOptions.FrameType.RECTANGLE, x, y);
         ImageUploadHelper.showImagePickerDialog(this, imageManager, galleryLauncher, cameraLauncher, requestPermissionLauncher);
     }
 

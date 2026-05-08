@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 app/src/main/res/raw/service_account.json
+app/google-services.json
+/app/release/

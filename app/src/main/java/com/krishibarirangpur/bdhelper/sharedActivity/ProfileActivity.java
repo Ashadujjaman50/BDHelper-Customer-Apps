@@ -3,7 +3,6 @@ package com.krishibarirangpur.bdhelper.sharedActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -119,7 +118,7 @@ public class ProfileActivity extends BaseActivity {
                         uploadImage(croppedUri);
                     }
                 } else if (result.getResultCode() == RESULT_CANCELED) {
-                    MyToast.showShort(this, "Crop cancelled");
+                    ToastMessage( "Crop cancelled");
                 }
             }
     );
@@ -148,7 +147,7 @@ public class ProfileActivity extends BaseActivity {
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) imageManager.openCamera(cameraLauncher);
-                else MyToast.showShort(this, "Camera permission denied");
+                else ToastMessage( "Camera permission denied");
             }
     );
 
@@ -157,13 +156,17 @@ public class ProfileActivity extends BaseActivity {
             @Override
             public void onSuccess(String imageUrl) {
                 Picasso.get().load(imageUrl).placeholder(R.drawable.ic_profile).into(binding.userProfilePicIV);
-                Toast.makeText(ProfileActivity.this, "ছবি সফলভাবে আপডেট হয়েছে!", Toast.LENGTH_SHORT).show();
+                ToastMessage( "ছবি সফলভাবে আপডেট হয়েছে!");
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(ProfileActivity.this, "ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                ToastMessage( "ব্যর্থ: " + e.getMessage());
             }
         });
+    }
+
+    private void ToastMessage(String message) {
+        MyToast.showShort(ProfileActivity.this, message);
     }
 }

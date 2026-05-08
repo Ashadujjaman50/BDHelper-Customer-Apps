@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
 
 import java.util.ArrayList;
 
@@ -42,29 +43,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         holder.customerReviewTv.setText(model.getReview());
         holder.customerRatingTv.setText(String.valueOf(model.getRating()));
+        holder.ratingDateTv.setText(CommonClass.formatTime(String.valueOf(model.getCreatedAt()), "dd MMM, yyyy") );
 
-        // ✅ Firebase থেকে Customer নাম ও ছবি লোড করা
-        db.collection("users")
-                .document(model.getCustomerId())
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    if (snapshot.exists()) {
-                        String name = snapshot.getString("name");
-                        String profileUrl = snapshot.getString("profileImage");
 
-                        holder.customerNameTv.setText(name != null ? name : "Customer");
-
-                        if (profileUrl != null && !profileUrl.isEmpty()) {
-                            Glide.with(context)
-                                    .load(profileUrl)
-                                    .placeholder(R.drawable.ic_profile)
-                                    .into(holder.profileImage);
-                        } else {
-                            holder.profileImage.setImageResource(R.drawable.ic_profile);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> holder.customerNameTv.setText("Customer"));
     }
 
     @Override
@@ -74,12 +55,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView profileImage;
-        TextView customerNameTv, customerRatingTv, customerReviewTv;
+        TextView ratingDateTv, customerRatingTv, customerReviewTv;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             profileImage = itemView.findViewById(R.id.profileImage);
-            customerNameTv = itemView.findViewById(R.id.customerNameTv);
+            ratingDateTv = itemView.findViewById(R.id.ratingDateTv);
             customerRatingTv = itemView.findViewById(R.id.customerRatingTv);
             customerReviewTv = itemView.findViewById(R.id.customerReviewTv);
         }

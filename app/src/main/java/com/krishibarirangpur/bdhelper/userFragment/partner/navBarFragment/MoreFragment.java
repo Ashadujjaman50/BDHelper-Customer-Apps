@@ -128,6 +128,9 @@ public class MoreFragment extends Fragment {
 
         showCachedBidSummary();
 
+        
+
+
         /// Show Android Version And Apps Version Name
         binding.applicationVersionTv.setText(CommonClass.showAndroidVersionAndAppVersion(requireActivity()));
 
@@ -227,12 +230,19 @@ public class MoreFragment extends Fragment {
 
                         binding.userNameTV.setText(name);
                         binding.mobileTV.setText(phone);
-                        // ✅ Null check & set rating
-                        if (rating != null) {
-                            binding.rattingTV.setText(String.valueOf((int) Math.round(rating)));
-                        } else {
-                            binding.rattingTV.setText("0"); // Default rating
-                        }
+
+                        // User Rating: Show from Reviews if available, else from Database
+                        CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                            if (totalReviews > 0) {
+                                binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
+                            } else {
+                                if (rating != null) {
+                                    binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", rating));
+                                } else {
+                                    binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
+                                }
+                            }
+                        });
 
                         binding.statusPendingTV.setVisibility(View.GONE);
                         binding.statusVerifiedTV.setVisibility(View.GONE);

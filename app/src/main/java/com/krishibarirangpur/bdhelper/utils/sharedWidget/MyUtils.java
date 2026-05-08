@@ -47,6 +47,10 @@ public class MyUtils {
 
     //User Type
     public static final String USER_TYPE = "user_type";
+    public static final String PARTNER = "partner";
+    public static final String CUSTOMER = "customer";
+
+
     //User Role /Mode
     public static final String USER_LOGIN_MODE = "user_role";
 
@@ -73,6 +77,7 @@ public class MyUtils {
     public static String rentLocation= "rentLocation";
 
     //Common String
+    public static String userId = "userId";
     public static String vendorId = "vendorId";
     public static String orderId = "orderId";
     public static String bidId = "bidId";
