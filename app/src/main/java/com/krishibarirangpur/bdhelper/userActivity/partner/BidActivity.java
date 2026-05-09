@@ -41,6 +41,7 @@ public class BidActivity extends BaseActivity {
                 case "new" -> getString(R.string.bid);
                 case "confirmed" -> getString(R.string.accepted_bid);
                 case "pending" -> getString(R.string.pending_bid);
+                case "done" -> getString(R.string.done_bid);
                 default -> title;
             };
         }
@@ -51,7 +52,7 @@ public class BidActivity extends BaseActivity {
         binding.titleTv.setText(title);
 
 
-        if (bidAction != null && bidAction.equals("new")) {
+        if (bidAction != null && bidAction.equals("new") || bidAction.equals("done")) {
             // Get data from intent
             orderId = getIntent().getStringExtra(MyUtils.orderId);
             categoryId = getIntent().getStringExtra(MyUtils.categoryId);
@@ -79,9 +80,12 @@ public class BidActivity extends BaseActivity {
             if (fragment != null) {
                 // Pass data using Bundle
                 Bundle bundle = new Bundle();
-                bundle.putString("user_type", user_type);
+                bundle.putString(MyUtils.USER_TYPE, user_type);
                 bundle.putString(MyUtils.orderId, orderId);
                 bundle.putString(MyUtils.subCategoryId, subCategoryId);
+                if (bidAction.equals("done")){
+                    bundle.putString(MyUtils.bidAction, bidAction);
+                }
                 fragment.setArguments(bundle);
 
                 // Load fragment

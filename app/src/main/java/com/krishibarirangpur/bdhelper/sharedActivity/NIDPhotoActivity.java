@@ -72,7 +72,7 @@ public class NIDPhotoActivity extends BaseActivity {
             userId = firebaseAuth.getCurrentUser().getUid();
         }
 
-        cropOptions = ImageUploadHelper.getCropOptions(CropOptions.FrameType.RECTANGLE, 340, 210);
+
     }
 
     private void setupListeners() {
@@ -80,15 +80,21 @@ public class NIDPhotoActivity extends BaseActivity {
 
         binding.openNidFrontImage.setOnClickListener(v -> {
             isNidFront = true;
-            ImageUploadHelper.showImagePickerDialog(this, imageManager, galleryLauncher, cameraLauncher, requestPermissionLauncher);
+            openImagePicker();
         });
 
         binding.openNidBackImage.setOnClickListener(v -> {
             isNidFront = false;
-            ImageUploadHelper.showImagePickerDialog(this, imageManager, galleryLauncher, cameraLauncher, requestPermissionLauncher);
+            openImagePicker();
         });
 
         binding.saveBtn.setOnClickListener(v -> submitAllPhoto());
+    }
+
+
+    private void openImagePicker() {
+        cropOptions = ImageUploadHelper.getCropOptions(CropOptions.FrameType.RECTANGLE, 340, 210);
+        ImageUploadHelper.showImagePickerDialog(this, imageManager, galleryLauncher, cameraLauncher, requestPermissionLauncher);
     }
 
     private void loadCurrentUserDocument() {

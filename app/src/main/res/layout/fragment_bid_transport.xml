@@ -10,7 +10,7 @@
         android:background="@color/bg_color"
         tools:context=".sharedFragment.BidTransportFragment">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_above="@+id/bottomPart"
             android:layout_width="match_parent"
@@ -725,7 +725,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/bottomPart"

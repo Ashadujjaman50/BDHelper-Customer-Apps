@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -232,7 +233,7 @@ public class MoreFragment extends Fragment {
                         binding.mobileTV.setText(phone);
 
                         // User Rating: Show from Reviews if available, else from Database
-                        CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                        CommonClass.getUserRatingInfo(MyUtils.vendorId,userId,MyUtils.CUSTOMER, (averageRating, totalReviews) -> {
                             if (totalReviews > 0) {
                                 binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
                             } else {

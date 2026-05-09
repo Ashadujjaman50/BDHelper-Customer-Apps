@@ -123,7 +123,7 @@
     <string name="which_types">Which types</string>
     <string name="types">Types</string>
 
-    <string name="size_dot"><i>Size: </i></string>
+    <string name="size_dot">Size:</string>
     <string name="type_dot">Type: </string>
     <string name="work_type_dot">Work type: </string>
     <string name="work_area_dot">Work area: </string>
@@ -594,6 +594,7 @@
     <string name="accepted_bid">Successful bid</string>
     <string name="pending_bid">Pending bid</string>
     <string name="cancel_bid">Cancel bid</string>
+    <string name="done_bid">Done bid</string>
     <string name="total_bid">Total bid</string>
     <string name="referral_code">Referral Code</string>
     <string name="referral_code_optional">Referral Code (optional)</string>

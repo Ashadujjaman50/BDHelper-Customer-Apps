@@ -8,12 +8,13 @@ public class ReviewModel {
     private float rating;
     private String review;
     private long createdAt;
+    private String reviewer; // New field to identify who gave the review
 
     public ReviewModel() {
         // Firestore এর জন্য empty constructor দরকার
     }
 
-    public ReviewModel(String reviewId, String vendorId, String customerId, String orderId, float rating, String review, long createdAt) {
+    public ReviewModel(String reviewId, String vendorId, String customerId, String orderId, float rating, String review, long createdAt, String reviewer) {
         this.reviewId = reviewId;
         this.vendorId = vendorId;
         this.customerId = customerId;
@@ -21,6 +22,7 @@ public class ReviewModel {
         this.rating = rating;
         this.review = review;
         this.createdAt = createdAt;
+        this.reviewer = reviewer;
     }
 
     // ✅ Getters
@@ -31,8 +33,9 @@ public class ReviewModel {
     public float getRating() { return rating; }
     public String getReview() { return review; }
     public long getCreatedAt() { return createdAt; }
+    public String getReviewer() { return reviewer; }
 
-    // ✅ Setters (optional)
+    // ✅ Setters
     public void setReviewId(String reviewId) { this.reviewId = reviewId; }
     public void setVendorId(String vendorId) { this.vendorId = vendorId; }
     public void setCustomerId(String customerId) { this.customerId = customerId; }
@@ -40,4 +43,5 @@ public class ReviewModel {
     public void setRating(float rating) { this.rating = rating; }
     public void setReview(String review) { this.review = review; }
     public void setCreatedAt(long createdAt) { this.createdAt = createdAt; }
+    public void setReviewer(String reviewer) { this.reviewer = reviewer; }
 }

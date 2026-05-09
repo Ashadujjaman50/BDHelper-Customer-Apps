@@ -14,8 +14,8 @@ android {
         applicationId = "com.krishibarirangpur.bdhelper"
         minSdk = 28
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.0.6"
+        versionCode = 7
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -118,7 +118,10 @@ dependencies {
 
     implementation(libs.app.update)
     implementation(libs.app.update.ktx)
-    implementation(libs.room.compiler)
+    
+    // Room components
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 
 
     testImplementation(libs.junit)

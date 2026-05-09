@@ -1,6 +1,7 @@
 package com.krishibarirangpur.bdhelper.userFragment.partner;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.partner.AdapterBidDetail;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidBinding;
 import com.krishibarirangpur.bdhelper.model.BidModel;
+import com.krishibarirangpur.bdhelper.model.OrderModel;
+import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
@@ -137,93 +140,6 @@ public class BidFragment extends Fragment implements AdapterBidDetail.OnBidDetai
                         Log.e("PaymentReceiver", "Failed to get paymentReceiver", e)
                 );
     }
-
-
-
-    @Override
-    public void onItemClick(int position, int confirmOrderPrice, int bidValue) {
-        if ("confirmed".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
-            showAlertDialog(position, confirmOrderPrice+"",bidValue);
-        }
-    }
-
-    private void showAlertDialog(int position, String confirmOrderPrice, int bidValue){
-
-        String bidId = bidModelArrayList.get(position).getBidInfo().getBidId();
-        String orderId = bidModelArrayList.get(position).getOrderInfo().getOrderId();
-        String bidAmount = String.valueOf(bidValue);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
-        builder.setView(dialogView);
-
-        AlertDialog dialog = builder.create();
-
-        ImageView iconImage = dialogView.findViewById(R.id.iconImage);
-        TextView titleText = dialogView.findViewById(R.id.titleText);
-        TextView messageText = dialogView.findViewById(R.id.messageText);
-        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-        Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-        //dialog.setCanceledOnTouchOutside(false);
-
-        titleText.setText(R.string.are_you_sure_alert_title);
-        messageText.setText(R.string.are_you_sure_alert_msg);
-        btnConfirm.setText(R.string.yes);
-
-        iconImage.setImageResource(CommonClass.getIconForSubCategory(bidModelArrayList.get(position).getOrderInfo().getSubCategoryId()));
-        // 🔹 Tint set
-        iconImage.setColorFilter(ContextCompat.getColor(requireContext(), R.color.icon_color), android.graphics.PorterDuff.Mode.SRC_IN);
-
-        btnCancel.setOnClickListener(v1 -> dialog.dismiss());
-
-        btnConfirm.setOnClickListener(v2 -> {
-            dialog.dismiss();
-            loadingDialog.setMessage("আপডেট হচ্ছে ...");
-            loadingDialog.show();
-
-            // ✅ 1️⃣ bidForOrder -> status update
-            db.collection("bidForOrder")
-                    .document(bidId)
-                    .update("bidInfo.status", "done")
-                    .addOnSuccessListener(aVoid ->
-                            db.collection("orders")
-                                    .document(orderId)
-                                    .update("orderInfo.status", "done")
-                                    .addOnSuccessListener(unused -> {
-                                        loadingDialog.dismiss();
-                                        preloadingDialog.show();
-                                        MyToast.showShort(getContext(), "✅ Service done!");
-                                        Log.d("ConfirmOrder", "Service status updated successfully.");
-
-                                        //Reload Bid List
-                                        getAllCurrentVendorBid();
-
-                                        //Update Financial Ledger in Partner
-                                        fm.createLedgerAndUpdateBalance(bidId, orderId, currentUserId, bidAmount,confirmOrderPrice, paymentReceiver); // 10% company
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        loadingDialog.dismiss();
-                                        Log.e("ConfirmOrder", "❌ Failed to update order: " + e.getMessage());
-                                        MyToast.showShort(getContext(), "Failed to update order.");
-                                    }))
-                    .addOnFailureListener(e -> {
-                        loadingDialog.dismiss();
-                        Log.e("ConfirmOrder", "❌ Failed to update bid: " + e.getMessage());
-                        MyToast.showShort(getContext(), "Failed to confirm bid.");
-                    });
-
-        });
-
-
-        dialog.show();
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.CENTER);
-    }
-
-
 
 
    private void getAllCurrentVendorBid() {
@@ -347,6 +263,101 @@ public class BidFragment extends Fragment implements AdapterBidDetail.OnBidDetai
             default: return 3;
         }
     }
+
+
+
+
+    @Override
+    public void onItemClick(int position, int confirmOrderPrice, int bidValue, OrderModel order) {
+        if ("confirmed".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
+            showAlertDialog(position, confirmOrderPrice+"",bidValue);
+        } else if ("done".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
+            Intent intent = new Intent(getContext(), BidActivity.class);
+            intent.putExtra(MyUtils.bidAction, "done");
+            intent.putExtra("user_type", "partner");
+            intent.putExtra(MyUtils.orderId, order.getOrderInfo().getOrderId());
+            intent.putExtra(MyUtils.categoryId, order.getOrderInfo().getCategoryId());
+            intent.putExtra(MyUtils.subCategoryId, order.getOrderInfo().getSubCategoryId());
+            startActivity(intent);
+        }
+    }
+
+    private void showAlertDialog(int position, String confirmOrderPrice, int bidValue){
+
+        String bidId = bidModelArrayList.get(position).getBidInfo().getBidId();
+        String orderId = bidModelArrayList.get(position).getOrderInfo().getOrderId();
+        String bidAmount = String.valueOf(bidValue);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_confirmation, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        ImageView iconImage = dialogView.findViewById(R.id.iconImage);
+        TextView titleText = dialogView.findViewById(R.id.titleText);
+        TextView messageText = dialogView.findViewById(R.id.messageText);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+        Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+        //dialog.setCanceledOnTouchOutside(false);
+
+        titleText.setText(R.string.are_you_sure_alert_title);
+        messageText.setText(R.string.are_you_sure_alert_msg);
+        btnConfirm.setText(R.string.yes);
+
+        iconImage.setImageResource(CommonClass.getIconForSubCategory(bidModelArrayList.get(position).getOrderInfo().getSubCategoryId()));
+        // 🔹 Tint set
+        iconImage.setColorFilter(ContextCompat.getColor(requireContext(), R.color.icon_color), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        btnCancel.setOnClickListener(v1 -> dialog.dismiss());
+
+        btnConfirm.setOnClickListener(v2 -> {
+            dialog.dismiss();
+            loadingDialog.setMessage("আপডেট হচ্ছে ...");
+            loadingDialog.show();
+
+            // ✅ 1️⃣ bidForOrder -> status update
+            db.collection("bidForOrder")
+                    .document(bidId)
+                    .update("bidInfo.status", "done")
+                    .addOnSuccessListener(aVoid ->
+                            db.collection("orders")
+                                    .document(orderId)
+                                    .update("orderInfo.status", "done")
+                                    .addOnSuccessListener(unused -> {
+                                        loadingDialog.dismiss();
+                                        preloadingDialog.show();
+                                        MyToast.showShort(getContext(), "✅ Service done!");
+                                        Log.d("ConfirmOrder", "Service status updated successfully.");
+
+                                        //Reload Bid List
+                                        getAllCurrentVendorBid();
+
+                                        //Update Financial Ledger in Partner
+                                        fm.createLedgerAndUpdateBalance(bidId, orderId, currentUserId, bidAmount,confirmOrderPrice, paymentReceiver); // 10% company
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        loadingDialog.dismiss();
+                                        Log.e("ConfirmOrder", "❌ Failed to update order: " + e.getMessage());
+                                        MyToast.showShort(getContext(), "Failed to update order.");
+                                    }))
+                    .addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
+                        Log.e("ConfirmOrder", "❌ Failed to update bid: " + e.getMessage());
+                        MyToast.showShort(getContext(), "Failed to confirm bid.");
+                    });
+
+        });
+
+
+        dialog.show();
+        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
+    }
+
 
 
 

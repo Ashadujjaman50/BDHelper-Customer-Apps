@@ -78,6 +78,7 @@ public class MyUtils {
 
     //Common String
     public static String userId = "userId";
+    public static String customerId = "customerId";
     public static String vendorId = "vendorId";
     public static String orderId = "orderId";
     public static String bidId = "bidId";

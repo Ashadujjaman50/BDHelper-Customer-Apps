@@ -216,26 +216,49 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                             rentTime = order.getRouteInfo().getRentTime();
                             orderTimestamp = order.getOrderInfo().getTimestamp();
 
-                            // 🔹 landArea পাওয়ার পর কাস্টমার বিড লোড করো
-                            if (MyUtils.CUSTOMER.equals(user_type)) {
-                                loadCurrentOrderBid();
-                                if (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete")) {
-                                    loadPartnerReview();
-                                }
+                            // ✅ যদি orderStatus complete/done হয়, রিভিউ সেকশন লোড করো
+                            if (orderStatus.equalsIgnoreCase("done") || orderStatus.equalsIgnoreCase("complete")) {
+                                loadReviewSection();
                             }
 
+
+                            String targetField;
+                            String targetUserId;
+                            String targetReviewer;
+
+                            if (MyUtils.PARTNER.equals(user_type)) {
+
+                                // এখন customer profile open করা হয়েছে
+                                // তাই customer কে যেসব partner review দিয়েছে সেগুলো দেখাবে
+
+                                targetField = "customerId";
+                                targetUserId = userId;
+                                targetReviewer = MyUtils.PARTNER;
+
+                            } else {
+
+                                // এখন partner profile open করা হয়েছে
+                                // তাই partner কে যেসব customer review দিয়েছে সেগুলো দেখাবে
+
+                                targetField = "vendorId";
+                                targetUserId = vendorId;
+                                targetReviewer = MyUtils.CUSTOMER;
+                            }
+
+                            CommonClass.getUserRatingInfo(
+                                    targetField,
+                                    targetUserId,
+                                    targetReviewer,
+                                    (averageRating, totalReviews) -> {
+
+                                        binding.averageRatingTv.setText(
+                                                String.format(Locale.getDefault(), "%.1f", averageRating));
+
+                                        binding.reviewCountTv.setText(
+                                                "(" + totalReviews + ")");
+                                    });
+
                             if (MyUtils.PARTNER.equals(user_type)){
-                                CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
-                                    if (totalReviews > 0) {
-                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
-                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", totalReviews)+")");
-                                    } else {
-                                        binding.averageRatingTv.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
-                                        binding.reviewCountTv.setText("("+String.format(Locale.getDefault(), "%d", 0)+")");
-                                    }
-                                });
-
-
                                 //Count Total Trip in orderList
                                 CommonClass.getUserOrderCount(userId, new CommonClass.OnCountListener() {
                                     @Override
@@ -296,7 +319,8 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                         for (DocumentSnapshot doc : querySnapshot) {
                             BidModel bidModel = doc.toObject(BidModel.class);
                             if (bidModel != null) {
-                                if ("confirmed".equalsIgnoreCase(bidModel.getBidInfo().getStatus())) {
+                                String status = bidModel.getBidInfo().getStatus();
+                                if ("confirmed".equalsIgnoreCase(status) || "done".equalsIgnoreCase(status)) {
                                     confirmedBid = bidModel;
                                     break;
                                 }
@@ -426,61 +450,101 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
 
     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
-    private void loadPartnerReview() {
-        if (!isAdded()) return;
-        
-        binding.ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> binding.ratingTv.setText(rating+"/5"));
+    private void loadReviewSection() {
+
+        binding.ratingBar.setOnRatingBarChangeListener( (ratingBar, rating, fromUser) -> {
+            //Rating BAr Count
+            binding.ratingTv.setText(rating+"/5");
+        });
+
         ArrayList<ReviewModel> reviewList = new ArrayList<>();
         ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviewList);
         binding.reviewRv.setAdapter(reviewAdapter);
 
         db.collection("reviews")
                 .whereEqualTo("orderId", orderId)
-                .whereEqualTo("customerId", currentUserId)
+                .whereEqualTo("reviewerId", currentUserId)
                 .get()
                 .addOnSuccessListener(snapshot -> {
-                    if (!isAdded()) return;
-                    
                     reviewList.clear();
                     if (!snapshot.isEmpty()) {
                         binding.reviewRvCard.setVisibility(View.VISIBLE);
+
+                        //recycleView
                         for (var doc : snapshot.getDocuments()) {
                             ReviewModel model = doc.toObject(ReviewModel.class);
                             if (model != null) reviewList.add(model);
                         }
                     }
+
                     reviewAdapter.notifyDataSetChanged();
-                    binding.reviewCard.setVisibility(reviewList.isEmpty() ? View.VISIBLE : View.GONE);
-                    binding.reviewRvCard.setVisibility(reviewList.isEmpty() ? View.GONE : View.VISIBLE);
+
+                    if (reviewList.isEmpty()) {
+                        binding.reviewCard.setVisibility(View.VISIBLE);
+                        binding.reviewRvCard.setVisibility(View.GONE);
+                    }
+                    else {
+                        binding.reviewCard.setVisibility(View.GONE);
+                        binding.reviewRvCard.setVisibility(View.VISIBLE);
+                    }
+
                 });
+
 
         binding.reviewSubmit.setOnClickListener(v -> {
             float rating = binding.ratingBar.getRating();
             String review = binding.customerReviewEt.getText().toString().trim();
+
             if (rating == 0) {
                 MyToast.showShort(getContext(), "Please give a rating");
                 return;
             }
+
             binding.progressBar.setVisibility(View.VISIBLE);
+
+            // 🔹 Generate unique reviewId
             String reviewId = db.collection("reviews").document().getId();
+
             Map<String, Object> data = new HashMap<>();
             data.put("reviewId", reviewId);
-            data.put("vendorId", vendorId);
-            data.put("customerId", currentUserId);
             data.put("orderId", orderId);
             data.put("rating", rating);
             data.put("review", review);
             data.put("createdAt", System.currentTimeMillis());
+            data.put("reviewerId", currentUserId);
 
-            db.collection("reviews").document(reviewId).set(data)
+            // সঠিকভাবে ID গুলো সেট করা
+            if (MyUtils.PARTNER.equals(user_type)) {
+                data.put("vendorId", currentUserId); // আমি পার্টনার
+                data.put("customerId", userId);      // সে কাস্টমার
+                data.put("reviewer", MyUtils.PARTNER);
+            } else {
+                data.put("vendorId", vendorId);      // সে পার্টনার
+                data.put("customerId", currentUserId); // আমি কাস্টমার
+                data.put("reviewer", MyUtils.CUSTOMER);
+            }
+
+            // 🔹 Save to Firestore with fixed ID
+            db.collection("reviews")
+                    .document(reviewId)
+                    .set(data)
                     .addOnSuccessListener(aVoid -> {
-                        if (!isAdded()) return;
                         binding.progressBar.setVisibility(View.GONE);
                         MyToast.showShort(getContext(), "Review submitted ✅");
-                        loadPartnerReview();
+                        loadReviewSection();
+                        // Optional: clear input fields
+                        binding.customerReviewEt.setText("");
+                        binding.ratingBar.setRating(0);
+
+                        binding.reviewCard.setVisibility(View.GONE);
+                        binding.reviewRvCard.setVisibility(View.VISIBLE);
+                    })
+                    .addOnFailureListener(e -> {
+                        MyToast.showShort(getContext(), "Failed: " + e.getMessage());
                     });
         });
     }
+
 
     private void loadCurrentPartnerBid() {
         if (!isAdded()) return;
@@ -595,25 +659,6 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
                     loadCurrentPartnerBid();
                 });
-    }
-
-    private void sendCustomNotice(String userId, String currentUserId, String orderId, String subCategoryId, String bidAmount, String noticeType) {
-        if (!isAdded()) return;
-        
-        String sender = "partner".equals(user_type) ? MyUtils.NOTICE_SENDER_PARTNER : MyUtils.NOTICE_SENDER_CUSTOMER;
-        String messageForUser, messageForAdmin;
-
-        if ("partner".equals(user_type)) {
-            String bnAmount = Replacement.ReplacementNumberEnToBn(bidAmount.replace(".0", ""));
-            messageForUser = "একজন " + CommonClass.getSubCategoryName(requireContext(), subCategoryId) + " পার্টনার " + bnAmount + "/= বিড করেছেন।";
-            messageForAdmin = messageForUser;
-        } else {
-            messageForUser = "কাস্টমার আপনার করা বিড কনফার্ম করেছেন।";
-            messageForAdmin = "অর্ডার " + orderId + " এর বিড কনফার্ম হয়েছে।";
-        }
-
-        NoticeSend.sendNotice(sender, noticeType, currentUserId, userId, orderId, messageForUser);
-        NoticeSend.sendNotice(sender, noticeType, currentUserId, MyUtils.NOTICE_RECEIVER_ADMIN, orderId, messageForAdmin);
     }
 
 

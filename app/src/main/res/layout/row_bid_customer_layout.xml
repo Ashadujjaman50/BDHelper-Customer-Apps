@@ -4,258 +4,273 @@
     android:id="@+id/cardLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:elevation="5dp"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/order_card_bg_color"
-    app:cardCornerRadius="5dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/order_card_bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="10dp">
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="12dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <!-- Rating -->
+            <LinearLayout
+                android:id="@+id/ratingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rating"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_star_rate_24"
+                    app:tint="#F4B400" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="রেটিং"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ratingTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="৫.০"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/icon_color" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/confirmIcon"
+                android:visibility="gone"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="end"
+                android:layout_margin="3dp"
+                android:contentDescription="@string/app_name"
+                android:layout_alignParentEnd="true"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/ic_checked" />
+
+        </RelativeLayout>
+
+        <!-- Main Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/serviceNameTv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="@string/name_dot"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/nameTV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:text="Vendor name"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="3dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/divider_color" />
-
-        <LinearLayout
-            android:id="@+id/transportLl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
-
+            <!-- Left Info -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="2"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/registerNameTv"
-                    android:layout_width="0dp"
+                <!-- Name -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="রেজিস্টেশন নাম্বারঃ "
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/vehicleRegNoTv"
-                    android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/serviceNameTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="নাম:"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/nameTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Tata"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Registration -->
+                <LinearLayout
+                    android:id="@+id/transportLl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="TATA - 2020"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/registerNameTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="রেজিস্ট্রেশন নাম্বার:"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/vehicleRegNoTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Dha-Ta 245163"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Model -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/modelAndTypeTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="মডেল ও ধরন:"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/modelAndYear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Ex2"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
             <!-- Divider -->
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="3dp"
-                android:layout_marginHorizontal="8dp"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
                 android:background="@color/divider_color" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/modelAndTypeTv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/model_and_type"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/modelAndYear"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="TATA - 2020"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="3dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@color/divider_color" />
-
-        <RelativeLayout
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            <!-- Right Price -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/budget"
-                    android:textSize="15sp" />
+                    android:text="৳"
+                    android:textColor="#0A9447"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/bidAmount"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1000"
-                    android:textColor="@color/primaryMid"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:drawablePadding="3dp"
-                    app:drawableStartCompat="@drawable/ic_taka_symbol"
-                    app:drawableTint="@color/icon_color" />
+                    android:layout_marginStart="2dp"
+                    android:text="0"
+                    android:textColor="#0A9447"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/priceDiscount"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="5dp"
-                android:padding="1dp"
-                android:text="5000"
-                android:textSize="14sp"
-                android:drawablePadding="3dp"
-                app:drawableStartCompat="@drawable/ic_taka_symbol"
-                app:drawableTint="@color/icon_color" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
+        <!-- Bottom Buttons -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp">
+            android:layout_marginTop="14dp">
 
+            <!-- Confirm Button -->
             <TextView
                 android:id="@+id/confirmOrderBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="8dp"
                 android:background="@drawable/custom_button_gradient"
-                android:clickable="true"
-                android:focusable="true"
+                android:gravity="center"
                 android:text="Confirm"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- OR -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_toEndOf="@+id/confirmOrderBtn"
-                android:layout_toStartOf="@+id/callBtn"
                 android:layout_centerVertical="true"
-                android:padding="5dp"
-                android:text="@string/or"
+                android:layout_toStartOf="@+id/callBtn"
+                android:layout_toEndOf="@id/confirmOrderBtn"
                 android:textAlignment="center"
-                android:textColor="@color/text_primary"
-                android:textSize="12sp"
+                android:text="অথবা"
+                android:textColor="#8A8A8A"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Call Button -->
             <TextView
                 android:id="@+id/callBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_alignParentEnd="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/bg_button_stroke_gray"
+                android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
-                android:paddingHorizontal="15dp"
-                android:gravity="center_vertical|end"
-                android:text="@string/call_to_confirm"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/bg_button_outline"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="প্রয়োজনে কল করুন"
                 android:textColor="@color/text_primary"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:drawablePadding="8dp"
                 app:drawableEndCompat="@drawable/ic_call_outline"
                 app:drawableTint="@color/icon_color" />
 
-            <TextView
-                android:id="@+id/mobileNumberTv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="+8801XXXXXXXXX"
-                android:textSize="14sp"
-                android:visibility="gone" />
+
 
         </RelativeLayout>
 
 
+
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/confirmIcon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_gravity="end"
-        android:layout_margin="5dp"
-        android:contentDescription="@string/app_name"
-        android:padding="5dp"
-        android:scaleType="fitXY"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_checked" />
-
 </androidx.cardview.widget.CardView>
-
-

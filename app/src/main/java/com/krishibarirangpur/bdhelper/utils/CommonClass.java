@@ -41,31 +41,44 @@ import java.util.Random;
 public class CommonClass {
 
     // 🔹 গড় রেটিং বের করার মেথড
-    public static void getVendorRatingInfo(String vendorId, RatingCallback callback) {
+    public static void getUserRatingInfo(
+            String fieldName,
+            String userId,
+            String reviewer,
+            RatingCallback callback
+    ) {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection("reviews")
-                .whereEqualTo("vendorId", vendorId)
+                .whereEqualTo(fieldName, userId)
+                .whereEqualTo("reviewer", reviewer)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+
                     if (queryDocumentSnapshots.isEmpty()) {
-                        callback.onRatingCalculated(0.0f, 0);
+                        callback.onRatingCalculated(0f, 0);
                         return;
                     }
 
-                    float totalRatingSum = 0;
-                    int count = queryDocumentSnapshots.size();
+                    float total = 0;
 
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+
                         ReviewModel model = doc.toObject(ReviewModel.class);
+
                         if (model != null) {
-                            totalRatingSum += model.getRating();
+                            total += model.getRating();
                         }
                     }
 
-                    float average = totalRatingSum / count;
-                    callback.onRatingCalculated(average, count);
+                    int totalReviews = queryDocumentSnapshots.size();
+                    float average = total / totalReviews;
+
+                    callback.onRatingCalculated(average, totalReviews);
                 })
-                .addOnFailureListener(e -> callback.onRatingCalculated(0.0f, 0));
+                .addOnFailureListener(e ->
+                        callback.onRatingCalculated(0f, 0));
     }
 
     public interface RatingCallback {

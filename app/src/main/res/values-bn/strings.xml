@@ -123,7 +123,7 @@
     <string name="which_types">কি ধরনের</string>
     <string name="types">ধরন</string>
 
-    <string name="size_dot"><i>সাইজঃ </i></string>
+    <string name="size_dot">সাইজঃ</string>
     <string name="type_dot">ধরণঃ </string>
     <string name="work_type_dot">কাজের ধরণঃ </string>
     <string name="work_area_dot">কাজের এলাকাঃ </string>
@@ -593,6 +593,7 @@
     <string name="accepted_bid">সফল বিড</string>
     <string name="pending_bid">পেন্ডিং বিড</string>
     <string name="cancel_bid">বাতিল বিড</string>
+    <string name="done_bid">সম্পন্ন বিড</string>
     <string name="total_bid">মোট বিড</string>
     <string name="referral_code">রেফারেল কোড</string>
     <string name="referral_code_optional">রেফারেল কোড (অপশনাল)</string>

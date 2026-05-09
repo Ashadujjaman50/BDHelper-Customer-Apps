@@ -218,7 +218,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                     });
 
                     holder.itemView.setOnClickListener(v -> {
-                        listener.onItemClick(position, vendorPrice, bidValue);
+                        listener.onItemClick(position, vendorPrice, bidValue, order);
                     });
 
                 }
@@ -367,7 +367,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
 
     //Interface for handling actions from activity
     public interface OnBidDetailActionListener {
-        void onItemClick(int position, int confirmOrderPrice, int bidAmount);
+        void onItemClick(int position, int confirmOrderPrice, int bidAmount, OrderModel order);
 
     }
 

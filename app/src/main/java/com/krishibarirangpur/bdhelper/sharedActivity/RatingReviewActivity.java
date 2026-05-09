@@ -65,6 +65,11 @@ public class RatingReviewActivity extends BaseActivity {
                 return;
             }
             userId = firebaseAuth.getCurrentUser().getUid();
+
+            if (user_type != null && user_type.equals(MyUtils.PARTNER)) {
+                binding.takeTripBtn.setVisibility(View.GONE);
+                binding.getTripBtn.setVisibility(View.VISIBLE);
+            }
         }
         else {
             if (user_type.equals(MyUtils.PARTNER)){
@@ -73,13 +78,12 @@ public class RatingReviewActivity extends BaseActivity {
             else {
                 binding.appBarTitleTV.setText(R.string.partner_rating_review);
             }
+
+            binding.takeTripBtn.setVisibility(View.GONE);
+            binding.getTripBtn.setVisibility(View.GONE);
         }
 
-        String userType = getIntent().getStringExtra(MyUtils.USER_TYPE);
-        if (userType != null && userType.equals(MyUtils.PARTNER)) {
-            binding.takeTripBtn.setVisibility(View.GONE);
-            binding.getTripBtn.setVisibility(View.VISIBLE);
-        }
+
 
         //init views
         binding.backBtn.setOnClickListener(v -> finishOnBack());
@@ -89,7 +93,13 @@ public class RatingReviewActivity extends BaseActivity {
         setupSortButton();
         
         loadProfileInfo(); // প্রোফাইল থেকে রেটিং লোড করা
-        loadUserAllReviews();
+        if (user_type.equals(MyUtils.PARTNER)){
+            loadUserAllReviews(MyUtils.vendorId, MyUtils.CUSTOMER);
+        }
+        else {
+            loadUserAllReviews(MyUtils.customerId, MyUtils.PARTNER);
+        }
+
     }
 
     private void loadProfileInfo() {
@@ -214,9 +224,10 @@ public class RatingReviewActivity extends BaseActivity {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void loadUserAllReviews() {
+    private void loadUserAllReviews(String fieldName, String reviewer) {
         db.collection("reviews")
-                .whereEqualTo("vendorId", userId)
+                .whereEqualTo(fieldName, userId)
+                .whereEqualTo("reviewer", reviewer)
                 .addSnapshotListener((snapshot, error) -> {
                     if (error != null) {
                         MyToast.showShort(this, "Error: " + error.getMessage());

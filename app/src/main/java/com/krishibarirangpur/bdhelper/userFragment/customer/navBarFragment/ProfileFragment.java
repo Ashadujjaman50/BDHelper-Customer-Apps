@@ -183,7 +183,7 @@ public class ProfileFragment extends Fragment {
                         binding.userNameTV.setText(name);
 
                         // User Rating: Show from Reviews if available, else from Database
-                        CommonClass.getVendorRatingInfo(userId, (averageRating, totalReviews) -> {
+                        CommonClass.getUserRatingInfo(MyUtils.customerId, userId, MyUtils.PARTNER, (averageRating, totalReviews) -> {
                             if (totalReviews > 0) {
                                 binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
                             } else {

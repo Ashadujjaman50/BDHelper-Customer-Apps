@@ -1,7 +1,9 @@
 package com.krishibarirangpur.bdhelper.adapter.customer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
+import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.HolderViewBid> {
 
@@ -85,6 +89,27 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         // Handle Status and Dates
         handleStatusAndDates(holder, status, rentTime);
 
+
+        CommonClass.getUserRatingInfo(MyUtils.vendorId, bidModel.getBidInfo().getVendorId(), MyUtils.CUSTOMER, (averageRating, totalReviews) -> {
+            if (totalReviews > 0) {
+                holder.ratingTv.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
+            } else {
+                holder.ratingTv.setText(String.format(Locale.getDefault(), "%.1f", 5.0));
+            }
+        });
+        //click to goto Review and Rating Page
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RatingReviewActivity.class);
+            intent.putExtra(MyUtils.userId, bidModel.getBidInfo().getVendorId());
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.CUSTOMER);
+            context.startActivity(intent);
+            // Animation remove
+            if (context instanceof Activity) {
+                ((Activity) context).overridePendingTransition(0, 0);
+            }
+        });
+
+
         // Click Listeners
         holder.callBtn.setOnClickListener(v -> listener.onCallClicked(bidModel));
         holder.confirmOrderBtn.setOnClickListener(v -> listener.onConfirmOrderClicked(bidModel));
@@ -119,7 +144,13 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
             holder.nameTv.setText(vehicleRegNo);
             holder.vehicleRegNoTv.setText(Replacement.ReplacementPersonInLocal(context, vehicleModel));
             holder.modelAndYear.setText(vehicleCatAndYear);
+        } else if (subCategoryId.equals(MyUtils.SUB_EXCAVATOR_ID)){
+            holder.serviceNameTv.setText(R.string.size_dot);
+            holder.vehicleRegNoTv.setText(vehicleRegNo);
+            holder.modelAndYear.setText(vehicleCatAndYear);
+            holder.transportLl.setVisibility(vehicleRegNo.isEmpty() ? View.GONE : View.VISIBLE);
         } else {
+            holder.serviceNameTv.setText(R.string.team_leader_dot);
             holder.vehicleRegNoTv.setText(vehicleRegNo);
             holder.modelAndYear.setText(vehicleCatAndYear);
             holder.transportLl.setVisibility(vehicleRegNo.isEmpty() ? View.GONE : View.VISIBLE);
@@ -155,13 +186,14 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
     }
 
     static class HolderViewBid extends RecyclerView.ViewHolder {
-        TextView serviceNameTv, nameTv, mobile, rentTimeTv, amountTv, registerNameTv, modelAndTypeTv, modelAndYear, vehicleRegNoTv;
+        TextView ratingTv, serviceNameTv, nameTv, mobile, rentTimeTv, amountTv, registerNameTv, modelAndTypeTv, modelAndYear, vehicleRegNoTv;
         TextView confirmOrderBtn, callBtn;
         ImageView confirmIcon;
         CardView cardLayout;
         LinearLayout transportLl;
         public HolderViewBid(@NonNull View itemView) {
             super(itemView);
+            ratingTv = itemView.findViewById(R.id.ratingTv);
             serviceNameTv = itemView.findViewById(R.id.serviceNameTv);
             nameTv = itemView.findViewById(R.id.nameTV);
             mobile = itemView.findViewById(R.id.mobileNumberTv);
