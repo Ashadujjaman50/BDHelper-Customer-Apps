@@ -10,7 +10,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivityRegistrationBinding;
 import com.krishibarirangpur.bdhelper.userFragment.customer.authFragment.CustomerRegisterFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.authFragment.PartnerRegisterFragment;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 
 public class RegistrationActivity extends BaseActivity {
 
@@ -19,7 +19,7 @@ public class RegistrationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট করব
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration);
         //setContentView(R.layout.activity_sign_up);

@@ -26,7 +26,7 @@ import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,7 +59,7 @@ public class ServiceRequestActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট কর
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_service_request);
 

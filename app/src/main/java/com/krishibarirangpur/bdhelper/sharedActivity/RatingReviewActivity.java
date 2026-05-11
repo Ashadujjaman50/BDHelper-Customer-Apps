@@ -18,7 +18,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivityRatingReviewBinding;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
@@ -47,7 +47,7 @@ public class RatingReviewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট কর
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_rating_review);
 
@@ -225,6 +225,8 @@ public class RatingReviewActivity extends BaseActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadUserAllReviews(String fieldName, String reviewer) {
+//        Log.d("Review", "loadReviews: "+fieldName+" "+userId+" "+reviewer+"");
+//        MyToast.showShort(this,fieldName+" "+userId+" "+reviewer);
         db.collection("reviews")
                 .whereEqualTo(fieldName, userId)
                 .whereEqualTo("reviewer", reviewer)

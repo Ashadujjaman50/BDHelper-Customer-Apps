@@ -50,6 +50,28 @@ public class MyUtils {
     public static final String PARTNER = "partner";
     public static final String CUSTOMER = "customer";
 
+    //Disccount/Promo Type
+    public static final String DISCOUNT_TYPE = "discount_type";
+    public static final String DISCOUNT = "discount";
+    public static final String PROMO = "promo";
+
+    //Picker
+    public static final String IS_PICKER = "isPicker";
+
+
+    //Activity Type
+    public static final String ACTIVITY_TYPE = "activity_type";
+    public static final String PAYMENT_METHOD_FRAG = "payment_method";
+    public static final String PAYMENT_HISTORY_FRAG = "payment_history";
+
+    //Category Type
+    public static final String CATEGORY_TYPE = "category_type";
+    public static final String HOME_CATEGORY_TRENDING = "Trending";
+    public static final String HOME_CATEGORY_POPULAR = "Popular";
+    public static final String HOME_CATEGORY_RECOMMEND = "Recommend";
+
+
+
 
     //User Role /Mode
     public static final String USER_LOGIN_MODE = "user_role";

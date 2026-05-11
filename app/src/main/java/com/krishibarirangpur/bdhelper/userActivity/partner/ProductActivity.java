@@ -14,7 +14,7 @@ import com.krishibarirangpur.bdhelper.adapter.ViewPagerProductAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityProductBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.android.material.tabs.TabLayout;
 
 public class ProductActivity extends BaseActivity {
@@ -26,7 +26,7 @@ public class ProductActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট কর
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product);
 

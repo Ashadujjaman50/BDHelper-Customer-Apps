@@ -2,11 +2,8 @@ package com.krishibarirangpur.bdhelper.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.EditText;
 
 import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.databinding.DataBindingUtil;
@@ -20,7 +17,7 @@ import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +40,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট করব
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         //setContentView(R.layout.activity_login);

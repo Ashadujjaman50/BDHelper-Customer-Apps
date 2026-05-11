@@ -1,38 +1,35 @@
 package com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
-import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
 import com.krishibarirangpur.bdhelper.databinding.FragmentMoreBinding;
 import com.krishibarirangpur.bdhelper.model.BidSummaryModel;
+import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
+import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.PaymentActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.SettingActivity;
 import com.krishibarirangpur.bdhelper.utils.CacheManager;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
-import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
-import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
-import com.krishibarirangpur.bdhelper.userActivity.partner.PaymentActivity;
-import com.krishibarirangpur.bdhelper.userActivity.partner.SettingActivity;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Source;
-import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
+import com.krishibarirangpur.bdhelper.utils.core.LanguageDialogHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeDialogHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.squareup.picasso.Picasso;
 
@@ -59,6 +56,7 @@ public class MoreFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,14 +121,10 @@ public class MoreFragment extends Fragment {
             });
         }
 
-
         //Load Current Partner info
         loadCurrentPartnerInfo();
 
         showCachedBidSummary();
-
-        
-
 
         /// Show Android Version And Apps Version Name
         binding.applicationVersionTv.setText(CommonClass.showAndroidVersionAndAppVersion(requireActivity()));
@@ -139,7 +133,7 @@ public class MoreFragment extends Fragment {
         //Rating And Review
         binding.rattingTV.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), RatingReviewActivity.class);
-            intent.putExtra("user_type","partner");
+            intent.putExtra(MyUtils.USER_TYPE,MyUtils.PARTNER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -147,38 +141,38 @@ public class MoreFragment extends Fragment {
 
         binding.settingBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SettingActivity.class);
-            intent.putExtra("user_type","partner");
+            intent.putExtra(MyUtils.USER_TYPE,MyUtils.PARTNER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         binding.paymentMethodRl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PaymentActivity.class);
-            intent.putExtra("type","payment_method");
+            intent.putExtra(MyUtils.ACTIVITY_TYPE, MyUtils.PAYMENT_METHOD_FRAG);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         binding.paymentHistoryRL.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PaymentActivity.class);
-            intent.putExtra("type","payment_history");
+            intent.putExtra(MyUtils.ACTIVITY_TYPE, MyUtils.PAYMENT_HISTORY_FRAG);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         // Theme change logic
-        binding.setThemeTv.setText(" (" + ThemeUtil.getThemeName(requireActivity()) + ")"); // Current Set theme (System/Light/Dark)
-        binding.themeRl.setOnClickListener(v -> showBottomSheetThemeDialog());
+        binding.setThemeTv.setText(" (" + ThemeHelper.getThemeName(requireActivity()) + ")"); // Current Set theme (System/Light/Dark)
+        binding.themeRl.setOnClickListener(v -> ThemeDialogHelper.showBottomSheetThemeDialog(requireActivity()));
 
         // Language change logic
-        binding.languageRL.setOnClickListener(v -> showBottomSheetLanguageDialog());
+        binding.languageRL.setOnClickListener(v -> LanguageDialogHelper.showBottomSheetLanguageDialog(requireActivity()));
 
 
         //share App
         binding.shareAppLl.setOnClickListener(v -> {
             //share();
             Intent intent = new Intent(requireActivity(), ReferenceActivity.class);
-            intent.putExtra("user_type", "partner");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -290,67 +284,5 @@ public class MoreFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadCurrentPartnerInfo(); // 🔁 Force reload every time Activity resumes
-    }
-
-    private void showBottomSheetLanguageDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_bottom_sheet_language_layout);
-
-        TextView bangla = bottomSheetDialog.findViewById(R.id.banglaTV);
-        TextView english = bottomSheetDialog.findViewById(R.id.englishTV);
-
-        bottomSheetDialog.show();
-
-        if (bangla != null) {
-            bangla.setOnClickListener(v -> {
-                LocaleHelper.setLocale(requireContext(), "bn");
-                requireActivity().recreate(); // Recreate current activity
-                bottomSheetDialog.dismiss();
-            });
-        }
-
-        if (english != null) {
-            english.setOnClickListener(v -> {
-                LocaleHelper.setLocale(requireContext(), "en");
-                requireActivity().recreate(); // Recreate current activity
-                bottomSheetDialog.dismiss();
-            });
-        }
-    }
-
-    private void showBottomSheetThemeDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_bottom_sheet_theme_layout);
-
-        TextView defaultMode = bottomSheetDialog.findViewById(R.id.defaultTV);
-        TextView lightMode = bottomSheetDialog.findViewById(R.id.lightTV);
-        TextView darkMode = bottomSheetDialog.findViewById(R.id.darkTV);
-
-        bottomSheetDialog.show();
-        View.OnClickListener themeClickListener = v -> {
-            int mode;
-            if (v.getId() == R.id.defaultTV) {
-                mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-            } else if (v.getId() == R.id.lightTV) {
-                mode = AppCompatDelegate.MODE_NIGHT_NO;
-            } else {
-                mode = AppCompatDelegate.MODE_NIGHT_YES;
-            }
-
-            ThemeUtil.setTheme(requireContext(), mode);
-
-            // Refresh navbar menu before recreation
-            if (getActivity() instanceof MainActivity) {
-                ((DashboardActivity) getActivity()).refreshCurrentMenuItem();
-            }
-
-            requireActivity().recreate();
-            bottomSheetDialog.dismiss();
-        };
-        if (defaultMode != null) defaultMode.setOnClickListener(themeClickListener);
-        if (lightMode != null) lightMode.setOnClickListener(themeClickListener);
-        if (darkMode != null) darkMode.setOnClickListener(themeClickListener);
-
-
     }
 }

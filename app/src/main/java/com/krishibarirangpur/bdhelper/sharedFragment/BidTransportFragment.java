@@ -275,7 +275,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
                             if (MyUtils.PARTNER.equals(user_type)){
                                 //Count Total Trip in orderList
-                                CommonClass.getUserOrderCount(userId, new CommonClass.OnCountListener() {
+                                CommonClass.getUserOrderCount(targetUserId, new CommonClass.OnCountListener() {
                                     @Override
                                     public void onSuccess(int count) {
                                         if (isAdded() && binding != null) {
@@ -294,8 +294,8 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
                                 binding.detailsTv.setOnClickListener(v -> {
                                     Intent intent = new Intent(getContext(), RatingReviewActivity.class);
-                                    intent.putExtra(MyUtils.userId, userId);
-                                    intent.putExtra(MyUtils.USER_TYPE, user_type);
+                                    intent.putExtra(MyUtils.userId, targetUserId);
+                                    intent.putExtra(MyUtils.USER_TYPE, MyUtils.CUSTOMER);
                                     startActivity(intent);
                                     getActivity().overridePendingTransition(0, 0);
                                 });
@@ -570,10 +570,10 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                 .whereEqualTo("subCategoryId", targetSubCategoryId.trim()) // trim() ব্যবহার করা হলো
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
-                    Log.d("PartnerInfo", "✅ Query success, size: " + querySnapshots.size());
+                    //Log.d("PartnerInfo", "✅ Query success, size: " + querySnapshots.size());
 
                     if (querySnapshots.isEmpty()) {
-                        Log.w("PartnerInfo", "⚠️ No matching services found!");
+                        //Log.w("PartnerInfo", "⚠️ No matching services found!");
                         //MyToast.showShort(getContext(), "কোনো verified সার্ভিস পাওয়া যায়নি!");
                         return;
                     }
@@ -587,7 +587,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                         }
                     }
 
-                    Log.d("PartnerInfo", "✅ Final List Size: " + serviceModelArrayList.size());
+                    //Log.d("PartnerInfo", "✅ Final List Size: " + serviceModelArrayList.size());
 
                 })
                 .addOnFailureListener(e -> {

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityDashboardBinding;
@@ -25,7 +24,7 @@ import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
 import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.MainFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.MoreFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.RentFragment;
@@ -44,7 +43,7 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 

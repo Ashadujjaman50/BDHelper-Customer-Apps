@@ -1,41 +1,36 @@
 package com.krishibarirangpur.bdhelper.userFragment.customer.navBarFragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.krishibarirangpur.bdhelper.sharedActivity.ProfileActivity;
-import com.krishibarirangpur.bdhelper.sharedActivity.PermissionActivity;
-import com.krishibarirangpur.bdhelper.sharedActivity.PromoActivity;
-import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
-import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
-import com.krishibarirangpur.bdhelper.utils.CommonClass;
-import com.krishibarirangpur.bdhelper.utils.authWidget.LogoutHelper;
-import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.userActivity.customer.AddressBookActivity;
-import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
-import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.databinding.FragmentProfileBinding;
-import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
+import com.krishibarirangpur.bdhelper.R;
+import com.krishibarirangpur.bdhelper.databinding.FragmentProfileBinding;
+import com.krishibarirangpur.bdhelper.sharedActivity.PermissionActivity;
+import com.krishibarirangpur.bdhelper.sharedActivity.ProfileActivity;
+import com.krishibarirangpur.bdhelper.sharedActivity.PromoActivity;
+import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
+import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
+import com.krishibarirangpur.bdhelper.userActivity.customer.AddressBookActivity;
+import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.authWidget.LogoutHelper;
+import com.krishibarirangpur.bdhelper.utils.core.LanguageDialogHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeDialogHelper;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
 
 import java.util.Locale;
 
@@ -73,7 +68,7 @@ public class ProfileFragment extends Fragment {
         binding.rattingTV.setOnClickListener(v -> {
 
             Intent intent = new Intent(requireActivity(), RatingReviewActivity.class);
-            intent.putExtra("user_type", "customer");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.CUSTOMER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -91,8 +86,7 @@ public class ProfileFragment extends Fragment {
         //Address Book Activity
         binding.addressBookRl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), AddressBookActivity.class);
-            intent.putExtra("controlType", "addressList");
-            intent.putExtra("isPicker", false);
+            intent.putExtra(MyUtils.IS_PICKER, false);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -101,7 +95,7 @@ public class ProfileFragment extends Fragment {
         //Promo Activity (Type of discount)
         binding.discountRl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PromoActivity.class);
-            intent.putExtra("discountType", "discount");
+            intent.putExtra(MyUtils.DISCOUNT_TYPE, MyUtils.DISCOUNT);
             startActivity(intent);
             requireActivity().overridePendingTransition(0, 0);
         });
@@ -109,7 +103,7 @@ public class ProfileFragment extends Fragment {
         //Promo Activity (Type of Promo Code)
         binding.promoRl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PromoActivity.class);
-            intent.putExtra("discountType", "promo");
+            intent.putExtra(MyUtils.DISCOUNT_TYPE, MyUtils.PROMO);
             startActivity(intent);
             requireActivity().overridePendingTransition(0, 0);
         });
@@ -135,11 +129,11 @@ public class ProfileFragment extends Fragment {
 
 
         // Theme change logic
-        binding.setThemeTv.setText(" ("+ThemeUtil.getThemeName(requireContext())+")");  //Current Set theme (System/Light/Dark)
-        binding.themeRl.setOnClickListener(v -> showBottomSheetThemeDialog());
+        binding.setThemeTv.setText(" ("+ ThemeHelper.getThemeName(requireContext())+")");  //Current Set theme (System/Light/Dark)
+        binding.themeRl.setOnClickListener(v -> ThemeDialogHelper.showBottomSheetThemeDialog(requireActivity()));
 
         // Language change logic
-        binding.languageRL.setOnClickListener(v -> showBottomSheetLanguageDialog());
+        binding.languageRL.setOnClickListener(v -> LanguageDialogHelper.showBottomSheetLanguageDialog(requireActivity()));
 
         //share App
         binding.shareAppRl.setOnClickListener(v -> {
@@ -150,7 +144,7 @@ public class ProfileFragment extends Fragment {
         //Reference
         binding.referAppRl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ReferenceActivity.class);
-            intent.putExtra("user_type", "customer");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.CUSTOMER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -175,10 +169,7 @@ public class ProfileFragment extends Fragment {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         String name = documentSnapshot.getString("name");
-                        String phone = documentSnapshot.getString("phone");
                         Double rating = documentSnapshot.getDouble("rating");
-                        String location = documentSnapshot.getString("location");
-                        String district = documentSnapshot.getString("district"); // Always English
 
                         binding.userNameTV.setText(name);
 
@@ -221,70 +212,6 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadCurrentUserInfo(); // 🔁 Force reload every time Activity resumes
-
-    }
-
-
-    private void showBottomSheetLanguageDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_bottom_sheet_language_layout);
-
-        TextView bangla = bottomSheetDialog.findViewById(R.id.banglaTV);
-        TextView english = bottomSheetDialog.findViewById(R.id.englishTV);
-
-        bottomSheetDialog.show();
-
-        if (bangla != null) {
-            bangla.setOnClickListener(v -> {
-                LocaleHelper.setLocale(requireContext(), "bn");
-                requireActivity().recreate();  // recreate entire activity
-                bottomSheetDialog.dismiss();
-            });
-        }
-
-        if (english != null) {
-            english.setOnClickListener(v -> {
-                LocaleHelper.setLocale(requireContext(), "en");
-                requireActivity().recreate();
-                bottomSheetDialog.dismiss();
-            });
-        }
-    }
-
-    private void showBottomSheetThemeDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        bottomSheetDialog.setContentView(R.layout.dialog_bottom_sheet_theme_layout);
-
-        TextView defaultMode = bottomSheetDialog.findViewById(R.id.defaultTV);
-        TextView lightMode = bottomSheetDialog.findViewById(R.id.lightTV);
-        TextView darkMode = bottomSheetDialog.findViewById(R.id.darkTV);
-
-        bottomSheetDialog.show();
-
-        View.OnClickListener themeClickListener = v -> {
-            int mode;
-            if (v.getId() == R.id.defaultTV) {
-                mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-            } else if (v.getId() == R.id.lightTV) {
-                mode = AppCompatDelegate.MODE_NIGHT_NO;
-            } else {
-                mode = AppCompatDelegate.MODE_NIGHT_YES;
-            }
-
-            ThemeUtil.setTheme(requireContext(), mode);
-
-            // Refresh navbar menu before recreation
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).refreshCurrentMenuItem();
-            }
-
-            requireActivity().recreate();
-            bottomSheetDialog.dismiss();
-        };
-
-        if (defaultMode != null) defaultMode.setOnClickListener(themeClickListener);
-        if (lightMode != null) lightMode.setOnClickListener(themeClickListener);
-        if (darkMode != null) darkMode.setOnClickListener(themeClickListener);
     }
 
 }

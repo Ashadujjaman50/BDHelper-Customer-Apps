@@ -1,24 +1,21 @@
 package com.krishibarirangpur.bdhelper.utils.core;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
 import androidx.appcompat.app.AppCompatDelegate;
 
 /**
  * Utility class to manage application theme (light, dark, system default).
  */
-public class ThemeUtil {
+public class ThemeHelper {
 
-    private static final String PREF_NAME = "theme_pref";
     private static final String KEY_THEME_MODE = "theme_mode";
 
     /**
      * Apply the saved theme when the app starts.
      */
     public static void applyTheme(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        int mode = prefs.getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        SharedPrefHelper helper = new SharedPrefHelper(context);
+        int mode = helper.getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         AppCompatDelegate.setDefaultNightMode(mode);
     }
 
@@ -29,8 +26,8 @@ public class ThemeUtil {
      * @param mode AppCompatDelegate mode: MODE_NIGHT_YES / NO / FOLLOW_SYSTEM
      */
     public static void setTheme(Context context, int mode) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putInt(KEY_THEME_MODE, mode).apply();
+        SharedPrefHelper helper = new SharedPrefHelper(context);
+        helper.putInt(KEY_THEME_MODE, mode);
         AppCompatDelegate.setDefaultNightMode(mode);
     }
 
@@ -40,10 +37,9 @@ public class ThemeUtil {
      * @return One of: MODE_NIGHT_YES, MODE_NIGHT_NO, or MODE_NIGHT_FOLLOW_SYSTEM
      */
     public static int getTheme(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return prefs.getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        SharedPrefHelper helper = new SharedPrefHelper(context);
+        return helper.getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }
-
 
     public static String getThemeName(Context context) {
         int mode = getTheme(context);
@@ -58,16 +54,13 @@ public class ThemeUtil {
         }
     }
 
-
-
     /**
      * Check if the current theme is dark.
      *
      * @return true if dark mode is active
      */
     public static boolean isDarkMode(Context context) {
-        int mode = getTheme(context);
-        return mode == AppCompatDelegate.MODE_NIGHT_YES;
+        return getTheme(context) == AppCompatDelegate.MODE_NIGHT_YES;
     }
 
     /**
@@ -76,8 +69,7 @@ public class ThemeUtil {
      * @return true if light mode is active
      */
     public static boolean isLightMode(Context context) {
-        int mode = getTheme(context);
-        return mode == AppCompatDelegate.MODE_NIGHT_NO;
+        return getTheme(context) == AppCompatDelegate.MODE_NIGHT_NO;
     }
 
     /**
@@ -86,7 +78,6 @@ public class ThemeUtil {
      * @return true if system theme is used
      */
     public static boolean isSystemDefault(Context context) {
-        int mode = getTheme(context);
-        return mode == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        return getTheme(context) == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
     }
 }

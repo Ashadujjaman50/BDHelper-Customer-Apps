@@ -27,8 +27,20 @@ public class SharedPrefHelper {
         return preferences.getString(key, defaultValue);
     }
 
+    public void putInt(String key, int value) {
+        preferences.edit().putInt(key, value).apply();
+    }
+
+    public int getInt(String key, int defaultValue) {
+        return preferences.getInt(key, defaultValue);
+    }
+
     // ✅ Remove specific key
     public void remove(String key) {
         preferences.edit().remove(key).apply();
+    }
+
+    public void clear() {
+        preferences.edit().clear().apply();
     }
 }

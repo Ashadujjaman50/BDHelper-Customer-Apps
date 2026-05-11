@@ -101,7 +101,7 @@ public class BidCustomerAdapter extends RecyclerView.Adapter<BidCustomerAdapter.
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RatingReviewActivity.class);
             intent.putExtra(MyUtils.userId, bidModel.getBidInfo().getVendorId());
-            intent.putExtra(MyUtils.USER_TYPE, MyUtils.CUSTOMER);
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);
             context.startActivity(intent);
             // Animation remove
             if (context instanceof Activity) {

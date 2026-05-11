@@ -34,13 +34,15 @@ import com.krishibarirangpur.bdhelper.databinding.ActivityAddressBookBinding;
 import com.krishibarirangpur.bdhelper.model.AddressBookModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +68,7 @@ public class AddressBookActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_book);
 
@@ -107,7 +109,7 @@ public class AddressBookActivity extends BaseActivity {
         addressBookAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View model, int position) {
-                if (getIntent().getBooleanExtra("isPicker", false)) {
+                if (getIntent().getBooleanExtra(MyUtils.IS_PICKER, false)) {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("result", addressBookArrayList.get(position).getAddress());
                     setResult(RESULT_OK, resultIntent);
@@ -201,7 +203,8 @@ public class AddressBookActivity extends BaseActivity {
 
     private void populateLocationUI(String locationData) {
         String[] parts = locationData.split(",", 2);
-        if (parts.length > 0) binding.showGetAddressTitleTv.setText(parts[0].trim());
+        binding.addressNameEt.setText(parts[0].trim());
+        binding.showGetAddressTitleTv.setText(parts[0].trim());
         if (parts.length > 1) binding.showGetAddressTv.setText(parts[1].trim());
     }
 
@@ -212,11 +215,16 @@ public class AddressBookActivity extends BaseActivity {
         String recipientName = binding.recipientNameEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(addressName)) {
-            setErrorWatcher(binding.addressNameEt, true);
+            ValidationClass.setErrorWatcher(binding.addressNameEt, true);
             return;
         }
         if (TextUtils.isEmpty(recipientMobile)) {
-            setErrorWatcher(binding.recipientMobileEt, true);
+            ValidationClass.setErrorWatcher(binding.recipientMobileEt, true);
+            return;
+        }
+
+        if (TextUtils.isEmpty(recipientName)) {
+            ValidationClass.setErrorWatcher(binding.recipientNameEt, true);
             return;
         }
 
@@ -374,20 +382,6 @@ public class AddressBookActivity extends BaseActivity {
         }
         finishOnBack(); // Exit activity
         return false;
-    }
-
-    private void setErrorWatcher(View view, boolean hasError) {
-        if (hasError) {
-            view.setBackgroundResource(R.drawable.bg_edit_text_error);
-            if (view instanceof EditText) {
-                EditText editText = (EditText) view;
-                editText.addTextChangedListener(new TextWatcher() {
-                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { editText.setBackgroundResource(R.drawable.bg_edit_text); }
-                    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                    @Override public void afterTextChanged(Editable s) {}
-                });
-            }
-        } else view.setBackgroundResource(R.drawable.bg_edit_text);
     }
 
     @Override

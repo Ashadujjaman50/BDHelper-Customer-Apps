@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
@@ -42,7 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         ReviewModel model = reviewList.get(position);
 
         holder.customerReviewTv.setText(model.getReview());
-        holder.customerRatingTv.setText(String.valueOf(model.getRating()));
+        holder.customerRatingTv.setText(String.format(Locale.getDefault(), "%.1f", model.getRating()));
         holder.ratingDateTv.setText(CommonClass.formatTime(String.valueOf(model.getCreatedAt()), "dd MMM, yyyy") );
 
 

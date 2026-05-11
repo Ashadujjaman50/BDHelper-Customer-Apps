@@ -80,28 +80,28 @@ public class HomeFragment extends Fragment {
 
         binding.trendingLl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), TrendingCategoryActivity.class);
-            intent.putExtra("categoryType", "Trending");
+            intent.putExtra(MyUtils.CATEGORY_TYPE, MyUtils.HOME_CATEGORY_TRENDING);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         binding.popularLl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), TrendingCategoryActivity.class);
-            intent.putExtra("categoryType", "Popular");
+            intent.putExtra(MyUtils.CATEGORY_TYPE, MyUtils.HOME_CATEGORY_POPULAR);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         binding.recommendLl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), TrendingCategoryActivity.class);
-            intent.putExtra("categoryType", "Recommend");
+            intent.putExtra(MyUtils.CATEGORY_TYPE, MyUtils.HOME_CATEGORY_RECOMMEND);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
         binding.promoLl.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), PromoActivity.class);
-            intent.putExtra("discountType", "promo");
+            intent.putExtra(MyUtils.DISCOUNT_TYPE, MyUtils.PROMO);
             startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });

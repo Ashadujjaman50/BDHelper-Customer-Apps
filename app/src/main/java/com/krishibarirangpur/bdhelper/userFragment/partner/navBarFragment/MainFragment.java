@@ -88,7 +88,7 @@ public class MainFragment extends Fragment {
         binding.successBidLL.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), BidActivity.class);
             intent.putExtra(MyUtils.bidAction,"confirmed");
-            intent.putExtra(MyUtils.USER_TYPE, "partner");
+            intent.putExtra(MyUtils.USER_TYPE,  MyUtils.PARTNER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
@@ -97,7 +97,7 @@ public class MainFragment extends Fragment {
         binding.pendingBidLL.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), BidActivity.class);
             intent.putExtra(MyUtils.bidAction,"pending");
-            intent.putExtra(MyUtils.USER_TYPE, "partner");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);
             requireActivity().startActivity(intent);
             requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });

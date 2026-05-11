@@ -9,7 +9,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityRentFormBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeUtil;
+import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.userFragment.customer.requirementFragment.HomesShiftingFormFragment;
 import com.krishibarirangpur.bdhelper.userFragment.customer.requirementFragment.LoadUnloadFormFragment;
 import com.krishibarirangpur.bdhelper.userFragment.customer.requirementFragment.RentLocationFormFragment;
@@ -24,7 +24,7 @@ public class RentFormActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট কর
-        ThemeUtil.applyTheme(this);
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_rent_form);
 
