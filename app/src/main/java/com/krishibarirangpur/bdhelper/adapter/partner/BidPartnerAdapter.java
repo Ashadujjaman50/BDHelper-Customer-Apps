@@ -129,6 +129,14 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             holder.infoMessageTv.setVisibility(View.GONE);
         }
 
+        int editCount = bidModel.getBidInfo().getEditCount();
+        if (editCount < 5) {
+            holder.moreBtn.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.moreBtn.setVisibility(View.GONE);
+        }
+
 
         holder.moreBtn.setOnClickListener(v -> {
             if (bidModel.getBidInfo().getStatus().equals("pending")){
@@ -163,7 +171,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
 
 
     static class HolderViewBid extends RecyclerView.ViewHolder {
-        TextView serviceNameTv, postNameTv, bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
+        TextView serviceNameTv,  bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
                 vehicleRegNoTv,modelAndTypeTv, vehicleModel, vehicleCatAndYearTv, rentTimeTv;
         ImageView call;
         ImageButton moreBtn;
@@ -175,7 +183,6 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
 
             modelYearLL = itemView.findViewById(R.id.modelYearLL);
             serviceNameTv = itemView.findViewById(R.id.serviceNameTv);
-            postNameTv = itemView.findViewById(R.id.postNameTv);
             bidDateTv = itemView.findViewById(R.id.bidDateTv);
             vendorNameTV = itemView.findViewById(R.id.vendorNameTV);
             mobileNumberTv = itemView.findViewById(R.id.mobileNumberTv);

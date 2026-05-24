@@ -73,10 +73,10 @@ public class RatingReviewActivity extends BaseActivity {
         }
         else {
             if (user_type.equals(MyUtils.PARTNER)){
-                binding.appBarTitleTV.setText(R.string.customer_rating_review);
+                binding.appBarTitleTV.setText(R.string.partner_rating_review);
             }
             else {
-                binding.appBarTitleTV.setText(R.string.partner_rating_review);
+                binding.appBarTitleTV.setText(R.string.shipper_rating_review);
             }
 
             binding.takeTripBtn.setVisibility(View.GONE);

@@ -661,9 +661,7 @@
     <string name="alert_icon">Alert Icon</string>
     <string name="vendor_profile">Vendor profile</string>
     <string name="shipper_rating_review">শিপার রেটিং ও রিভিউ</string>
-
     <string name="your_rating_review">আপনার রেটিং &amp; রিভিউ</string>
-    <string name="customer_rating_review">কাস্টমার রেটিং &amp; রিভিউ</string>
     <string name="partner_rating_review">পার্টনার রেটিং &amp; রিভিউ</string>
 
     <!--Demo Text-->

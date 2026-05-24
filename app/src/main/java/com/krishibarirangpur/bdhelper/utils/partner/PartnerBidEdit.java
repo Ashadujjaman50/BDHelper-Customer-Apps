@@ -1,15 +1,23 @@
 package com.krishibarirangpur.bdhelper.utils.partner;
 
 import android.content.Context;
-import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
+
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +41,7 @@ public class PartnerBidEdit {
                 OrderModel order = documentSnapshot.toObject(OrderModel.class);
                 if (order != null && "confirmed".equalsIgnoreCase(order.getOrderInfo().getStatus())) {
                     loadingDialog.dismiss();
-                    MyToast.showShort(context, "Order already confirmed, you cannot edit bid.");
+                    MyToast.showShort(context, "অর্ডার ইতিমধ্যে কনফার্ম করা হয়েছে, আপনি বিড পরিবর্তন করতে পারবেন না।");
                 } else {
                     db.collection("bidForOrder").document(bidId).get().addOnSuccessListener(bidSnapshot -> {
                         if (bidSnapshot.exists()) {
@@ -45,7 +53,7 @@ public class PartnerBidEdit {
                                     showEditBidDialog(bidId, bid.getBidInfo().getBidAmount(), editCount);
                                 } else {
                                     loadingDialog.dismiss();
-                                    MyToast.showShort(context, "You have reached the maximum edit limit.");
+                                    MyToast.showShort(context, "আপনি বিড পরিবর্তনের সর্বোচ্চ সীমা অতিক্রম করেছেন।");
                                 }
                             }
                         }
@@ -56,7 +64,7 @@ public class PartnerBidEdit {
                 }
             } else {
                  loadingDialog.dismiss();
-                 MyToast.showShort(context, "Order not found.");
+                 MyToast.showShort(context, "অর্ডার পাওয়া যায়নি।");
             }
         }).addOnFailureListener(e -> {
             loadingDialog.dismiss();
@@ -66,30 +74,42 @@ public class PartnerBidEdit {
 
     private void showEditBidDialog(String bidId, String currentAmount, int editCount) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Edit Bid");
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_bid_edit_alert, null);
+        builder.setView(view);
 
-        final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setText(currentAmount);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        builder.setView(input);
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false); // বাইরে ক্লিক করলে ডায়ালগ বন্ধ হবে না
 
-        builder.setPositiveButton("Update", (dialog, which) -> {
-            String newAmount = input.getText().toString();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            // ডায়ালগ খোলার সাথে সাথে কিবোর্ড দেখানোর জন্য সফট ইনপুট মোড সেট করা
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+
+        EditText bidAmountEt = view.findViewById(R.id.bidAmountEt);
+        TextView currentBidAmountTv = view.findViewById(R.id.currentBidAmountTv);
+        TextView cancelBtn = view.findViewById(R.id.cancelBtn);
+        Button updateBtn = view.findViewById(R.id.updateBtn);
+
+        currentBidAmountTv.setText(Replacement.ReplacementNumberInLocal(context, currentAmount));
+        bidAmountEt.setText(""); // ইনপুট বক্স খালি থাকবে
+        bidAmountEt.requestFocus();
+
+        cancelBtn.setOnClickListener(v -> dialog.dismiss());
+
+        updateBtn.setOnClickListener(v -> {
+            String newAmount = bidAmountEt.getText().toString().trim();
             if (!newAmount.isEmpty() && !newAmount.equals(currentAmount)) {
                 updateBid(bidId, newAmount, editCount + 1);
+                dialog.dismiss();
             } else if (newAmount.isEmpty()) {
-                 MyToast.showShort(context, "Amount cannot be empty.");
+                MyToast.showShort(context, "নতুন পরিমাণ লিখুন।");
             } else {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        builder.show();
+        dialog.show();
     }
 
     private void updateBid(String bidId, String newAmount, int newEditCount) {
@@ -101,11 +121,11 @@ public class PartnerBidEdit {
         db.collection("bidForOrder").document(bidId).update(updates)
                 .addOnSuccessListener(aVoid -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(context, "Bid updated successfully.");
+                    MyToast.showShort(context, "বিড সফলভাবে আপডেট করা হয়েছে।");
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(context, "Failed to update bid: " + e.getMessage());
+                    MyToast.showShort(context, "আপডেট করতে ব্যর্থ হয়েছে: " + e.getMessage());
                 });
     }
 

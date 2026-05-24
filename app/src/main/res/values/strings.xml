@@ -659,9 +659,7 @@
     <string name="alert_icon">Alert Icon</string>
     <string name="vendor_profile">Vendor profile</string>
     <string name="shipper_rating_review">Shipper Rating &amp; Review</string>
-
     <string name="your_rating_review">Your Rating &amp; Review</string>
-    <string name="customer_rating_review">Customer Rating &amp; Review</string>
     <string name="partner_rating_review">Partner Rating &amp; Review</string>
 
     <!--Demo Text-->
