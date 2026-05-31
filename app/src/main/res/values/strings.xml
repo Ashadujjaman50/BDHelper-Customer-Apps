@@ -640,6 +640,7 @@
 
     <!--Bid-->
     <string name="bid">Bid Now</string>
+    <string name="edit_bid">Edit Your Bid</string>
     <string name="you_just_can_see_your_own_bid">You can only view your own bids.</string>
     <string name="order_list">Order list</string>
     <string name="all_order_rent">All order</string>
@@ -650,7 +651,12 @@
     <string name="bid_date_dot">Bid date:</string>
     <string name="customer_payable_dot">Customer payable:</string>
     <string name="bid_placed_dot">Bid placed:</string>
+    <string name="bid_price_dot">Bid Price</string>
     <string name="company_receivable_dot">Company receivable:</string>
+    <string name="company_commission_bid">Company Commission</string>
+    <string name="bid_summary">Bid Summary</string>
+    <string name="btn_ok">OK</string>
+    <string name="bd_currency_format">৳ %s</string>
 
     <string name="write_your_review">Write your review</string>
     <string name="give_your_valuable_feedback">Give your valuable feedback</string>

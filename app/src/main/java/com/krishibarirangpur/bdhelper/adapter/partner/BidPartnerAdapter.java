@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
@@ -28,6 +29,7 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
     Context context;
     ArrayList<BidModel> bidModelArrayList;
     private BidPartnerListener listener;
+    private String landArea;
 
     public interface BidPartnerListener {
         void onEditClicked(String bidId, String orderId);
@@ -38,9 +40,10 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         this.listener = listener;
     }
 
-    public BidPartnerAdapter(Context context, ArrayList<BidModel> bidModelArrayList) {
+    public BidPartnerAdapter(Context context, ArrayList<BidModel> bidModelArrayList, String landArea) {
         this.context = context;
         this.bidModelArrayList = bidModelArrayList;
+        this.landArea = landArea;
     }
 
     @NonNull
@@ -79,7 +82,16 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         holder.bidDateTv.setText(CommonClass.formatTime(bidTime, "dd-MMM-yy  hh:mm aa"));
 
         //set data
-        holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, bidAmount));
+        String finalBidAmount = "";
+        switch (categoryId) {
+            case MyUtils.HARVESTER_MACHINE_ID -> finalBidAmount = CommonClass.getRoundedCommissionValue(true, bidAmount, landArea);
+            case MyUtils.EQUIPMENT_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
+            case MyUtils.ROAD_TRANSPORT_ID, MyUtils.RENT_A_CAR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_TRANSPORT);
+            case MyUtils.SKILLED_LABOR_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
+            case MyUtils.HOME_SHIFTING_ID -> finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
+        }
+        holder.amountTv.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(finalBidAmount)));
+
         holder.vehicleModel.setText(vehicleModel);
         holder.vehicleCatAndYearTv.setText(vehicleCatAndYear);
         if (subCategoryId.equals(MyUtils.SUB_TRUCK_ID)||subCategoryId.equals(MyUtils.SUB_PICKUP_ID) ||
@@ -131,34 +143,35 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
 
         int editCount = bidModel.getBidInfo().getEditCount();
         if (editCount < 5) {
-            holder.moreBtn.setVisibility(View.VISIBLE);
+            holder.bidEditLl.setVisibility(View.VISIBLE);
         }
         else {
-            holder.moreBtn.setVisibility(View.GONE);
+            holder.bidEditLl.setVisibility(View.GONE);
         }
 
 
-        holder.moreBtn.setOnClickListener(v -> {
+        holder.bidEditLl.setOnClickListener(v -> {
             if (bidModel.getBidInfo().getStatus().equals("pending")){
-                PopupMenu popupMenu = new PopupMenu(context, holder.moreBtn, Gravity.BOTTOM);
+                if (listener != null) {
+                    listener.onEditClicked(bidId, orderId);
+                }
+                /*PopupMenu popupMenu = new PopupMenu(context, holder.bidEditLl, Gravity.BOTTOM);
                 popupMenu.getMenu().add(0,1, 1,"Edit");
-                //popupMenu.getMenu().add(0,2, 1,"Delete");
+                popupMenu.getMenu().add(0,2, 1,"Delete");
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     int id =item.getItemId();
                     if (id==1){
+
+                    }
+                    else if (id==2){
                         if (listener != null) {
-                            listener.onEditClicked(bidId, orderId);
+                            listener.onDeleteClicked(bidId, orderId);
                         }
                     }
-//                    else if (id==2){
-//                        if (listener != null) {
-//                            listener.onDeleteClicked(bidId, orderId);
-//                        }
-//                    }
                     return false;
                 });
-                popupMenu.show();
+                popupMenu.show();*/
             }
         });
 
@@ -174,8 +187,8 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
         TextView serviceNameTv,  bidDateTv, vendorNameTV, mobileNumberTv, amountTv, infoMessageTv, checkedConfirmTv,
                 vehicleRegNoTv,modelAndTypeTv, vehicleModel, vehicleCatAndYearTv, rentTimeTv;
         ImageView call;
-        ImageButton moreBtn;
-        LinearLayout vehicleRegisterLL, modelYearLL;
+
+        LinearLayout vehicleRegisterLL, modelYearLL, bidEditLl;
         public HolderViewBid(@NonNull View itemView) {
             super(itemView);
             //init views
@@ -188,7 +201,8 @@ public class BidPartnerAdapter extends RecyclerView.Adapter<BidPartnerAdapter.Ho
             mobileNumberTv = itemView.findViewById(R.id.mobileNumberTv);
             amountTv = itemView.findViewById(R.id.bidAmountTv);
             call = itemView.findViewById(R.id.call);
-            moreBtn = itemView.findViewById(R.id.moreBtn);
+            bidEditLl = itemView.findViewById(R.id.bidEditLl);
+
             checkedConfirmTv = itemView.findViewById(R.id.checkedConfirmTv);
             vehicleRegNoTv = itemView.findViewById(R.id.vehicleRegNoTv);
             modelAndTypeTv = itemView.findViewById(R.id.modelAndTypeTv);

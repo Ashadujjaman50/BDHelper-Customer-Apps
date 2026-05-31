@@ -115,7 +115,7 @@
                 android:layout_margin="8dp"
                 android:drawablePadding="8dp"
                 android:text="Verified"
-                android:textColor="#F001CC45"
+                android:textColor="@color/status_approved_text"
                 android:visibility="gone"
                 app:drawableStartCompat="@drawable/ic_verified" />
 

@@ -27,6 +27,8 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.partner.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidAllOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.krishibarirangpur.bdhelper.userActivity.partner.AddServiceActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
@@ -100,12 +102,12 @@ public class BidAllOrderFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void fetchAllOrders() {
-        long todayMillis = CommonClass.getTodayStartMillis();
+        long currentMillis = System.currentTimeMillis();
 
-        // Optimized: Filter by multiple statuses and date in query
+        // Use currentMillis instead of todayStartMillis to filter out past orders
         Query query = db.collection("orders")
                 .whereIn("orderInfo.status", Arrays.asList("pending", "process"))
-                .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(todayMillis))
+                .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(currentMillis))
                 .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING);
 
         orderListener = query.addSnapshotListener((snapshots, error) -> {

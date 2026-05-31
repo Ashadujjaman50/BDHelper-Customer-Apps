@@ -22,7 +22,6 @@ import com.krishibarirangpur.bdhelper.adapter.partner.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidByCategoryOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
-import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
@@ -91,7 +90,7 @@ public class BidByCategoryOrderFragment extends Fragment {
             return;
         }
 
-        long today = CommonClass.getTodayStartMillis();
+        long today = System.currentTimeMillis();
 
         // Optimized: Only fetch orders matching partner's subCategoryIds
         Query query = db.collection("orders")

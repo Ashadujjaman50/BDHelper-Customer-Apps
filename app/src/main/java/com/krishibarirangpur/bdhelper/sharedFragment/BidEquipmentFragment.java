@@ -550,7 +550,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         if (!isAdded()) return;
         
         bidModelArrayList = new ArrayList<>();
-        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList);
+        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList, landArea);
         bidPartnerAdapter.setListener(this);
         binding.bidRV.setAdapter(bidPartnerAdapter);
 

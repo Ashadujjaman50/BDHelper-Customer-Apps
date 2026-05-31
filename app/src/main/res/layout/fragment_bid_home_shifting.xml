@@ -585,6 +585,55 @@
                     app:drawableTint="@color/icon_color"
                     android:drawablePadding="10dp"/>
 
+                <RelativeLayout
+                    android:id="@+id/bidPositionRl"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F4F8FB"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:id="@+id/tvTotalBids"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="৩০ টি"
+                        android:textColor="#E67E22"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@id/tvTotalBids"
+                        android:layout_marginStart="6dp"
+                        android:text="বিডের মধ্যে আপনার অবস্থান"
+                        android:textColor="#555555"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/tvRank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/tvStatusText"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_circle_red"
+                        android:layout_marginStart="10dp"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
+                        android:text="# ২"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
                 <!--Total Bid For RecycleView-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bidRV"

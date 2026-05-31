@@ -514,7 +514,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
     private void loadCurrentPartnerBid() {
 
         bidModelArrayList = new ArrayList<>();
-        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList);
+        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList, "");
         bidPartnerAdapter.setListener(this); // Set listener!
         binding.bidRV.setAdapter(bidPartnerAdapter);
 

@@ -37,6 +37,8 @@ import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
+import com.krishibarirangpur.bdhelper.utils.partner.bidPositionAndCount;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -187,7 +189,6 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         }
 
     }
-
 
     @SuppressLint("SetTextI18n")
     private void getCurrentOrderInfo() {
@@ -351,7 +352,6 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                     }
                 });
     }
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -525,7 +525,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentPartnerBid() {
         bidModelArrayList = new ArrayList<>();
-        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList);
+        bidPartnerAdapter = new BidPartnerAdapter(getContext(), bidModelArrayList, "");
         bidPartnerAdapter.setListener(this); // Set listener!
         binding.bidRV.setAdapter(bidPartnerAdapter);
 
@@ -549,12 +549,48 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                         }
                         bidPartnerAdapter.notifyDataSetChanged();
                         binding.bidRV.setVisibility(View.VISIBLE);
+
+                        //call Bid Position
+                        if (!bidModelArrayList.isEmpty()) {
+
+                            BidModel model = bidModelArrayList.get(0);
+
+                            String bidId = model.getBidInfo().getBidId();
+                            String orderId = model.getOrderInfo().getOrderId();
+
+                            binding.bidPositionRl.setVisibility(View.VISIBLE);
+
+                            callBidPositionAndCount(bidId, orderId);
+                        }
                     } else {
                         hasCurrentPartnerBidded = false;
                         binding.bidRV.setVisibility(View.GONE);
                     }
                     refreshCountdown();
                 });
+
+
+    }
+
+    ListenerRegistration bidListener;
+    private void callBidPositionAndCount(String bidId, String orderId) {
+        // লিসেনার শুরু করতে
+        bidListener = bidPositionAndCount.getBidStatsRealtime(orderId, bidId, new bidPositionAndCount.BidStatsCallback() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResult(int position, int totalBids) {
+                // এখানে ডাটা আপডেট হলে সাথে সাথে কল হবে
+                binding.tvTotalBids.setText(Replacement.ReplacementNumberInLocal(getContext(), ""+totalBids)+" টি" );
+                binding.tvRank.setText("# "+Replacement.ReplacementNumberInLocal(getContext(), ""+position));
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // এরর হ্যান্ডেল করুন
+            }
+        });
+
+
     }
 
     private void loadPartnerInfo(String targetSubCategoryId) {
@@ -658,12 +694,11 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                     binding.amountEt.setText("");
                     binding.selectVehicleNameTv.setText("");
 
-
+                    // বিড সাবমিট করার পর
                     //Custome Notice Send
                     String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_TRANSPORT);
-                    //sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
-                    // বিড সাবমিট করার পর
                     BidActionManager.sendNotice(getContext(), user_type, userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+                    new PartnerAlertDialog.BidSummary(getContext(), bidAmount, finalBidAmount).show();
 
                     loadCurrentPartnerBid();
                 })
@@ -707,6 +742,10 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         if (orderListener != null) {
             orderListener.remove();
         }
+        if (bidListener != null) {
+            bidListener.remove(); // লিসেনার বন্ধ করা
+        }
     }
+
 
 }

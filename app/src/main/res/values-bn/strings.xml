@@ -641,6 +641,7 @@
 
     <!--Bid-->
     <string name="bid">বিড করুন</string>
+    <string name="edit_bid">বিড পরিবর্তন করুন</string>
     <string name="you_just_can_see_your_own_bid">আপনি শুধু আপনার নিজের বিড দেখতে পারবেন</string>
     <string name="order_list">অর্ডার লিস্ট</string>
     <string name="all_order_rent">সকল অর্ডার</string>
@@ -651,7 +652,12 @@
     <string name="bid_date_dot">বিডের তারিখঃ</string>
     <string name="customer_payable_dot">কাস্টমার দিবেঃ </string>
     <string name="bid_placed_dot">বিড করেছেনঃ </string>
+    <string name="bid_price_dot">বিড করেছেন</string>
     <string name="company_receivable_dot">কোম্পানি পাবেঃ</string>
+    <string name="company_commission_bid">কোম্পানি কমিশন</string>
+    <string name="bid_summary">বিড সারসংক্ষেপ</string>
+    <string name="btn_ok">ঠিক আছে</string>
+    <string name="bd_currency_format">৳ %s</string>
 
     <string name="write_your_review">আপনার মতামত লিখুন</string>
     <string name="give_your_valuable_feedback">আপনার মূল্যবান মতামত দিন</string>

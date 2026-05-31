@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/card_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bid_summary"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Bid Price Label -->
+        <TextView
+            android:id="@+id/lblBidPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/bid_price_dot"
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <!-- Bid Price Value -->
+        <TextView
+            android:id="@+id/tvBidPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="৳ 0"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/lblBidPrice"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Company Commission Label -->
+        <TextView
+            android:id="@+id/lblCommission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/company_commission_bid"
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblBidPrice" />
+
+        <!-- Company Commission Value -->
+        <TextView
+            android:id="@+id/tvCommission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="৳ 0"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/lblCommission"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Divider Line -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toBottomOf="@id/lblCommission" />
+
+        <!-- Customer Pay Label -->
+        <TextView
+            android:id="@+id/lblCustomerPay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/customer_payable_dot"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <!-- Customer Pay Value -->
+        <TextView
+            android:id="@+id/tvCustomerPay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="৳ 0"
+            android:textColor="#2E7D32"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/lblCustomerPay"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- OK Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_ok"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/primaryMid"
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/lblCustomerPay"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
