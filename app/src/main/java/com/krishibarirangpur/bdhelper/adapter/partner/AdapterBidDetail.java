@@ -113,7 +113,7 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                         case MyUtils.HOME_SHIFTING_ID -> CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_HOME_SHIFTING);
                         default -> bidAmount;
                     };
-                    finalBidPrice = Integer.parseInt(finalBidAmountStr);
+                    finalBidPrice = (int) Double.parseDouble(finalBidAmountStr);;
                     companyAmount = finalBidPrice - bidValue;
                 } else {
                     finalBidPrice = order.getBidInfo().getVendorPrice();

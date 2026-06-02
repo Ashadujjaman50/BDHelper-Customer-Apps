@@ -1,15 +1,20 @@
 package com.krishibarirangpur.bdhelper.utils.partner;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.widget.TextView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.krishibarirangpur.bdhelper.model.BidModel;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class bidPositionAndCount {
+public class BidPositionAndCount {
 
     /**
      * Interface to handle the result.
@@ -73,4 +78,26 @@ public class bidPositionAndCount {
                     }
                 });
     }
+
+    /**
+     * Binds the bid stats to the UI components and handles localization.
+     */
+    public static ListenerRegistration bindBidStatsToUI(Context context, String orderId, String bidId, TextView tvTotalBids, TextView tvRank) {
+        return getBidStatsRealtime(orderId, bidId, new BidStatsCallback() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResult(int position, int totalBids) {
+                if (context != null) {
+                    tvTotalBids.setText(Replacement.ReplacementNumberInLocal(context, String.valueOf(totalBids)) + " টি");
+                    tvRank.setText("# " + Replacement.ReplacementNumberInLocal(context, String.valueOf(position)));
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Silently handle error or log it
+            }
+        });
+    }
+    
 }

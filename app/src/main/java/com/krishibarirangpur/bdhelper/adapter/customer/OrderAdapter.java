@@ -86,7 +86,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.HolderViewOr
         String postDescription = post.getSpecInfo().getDesc();
 
         // ============ Time Formatting ============
-        holder.rentTimeTv.setText(CommonClass.formatTime(rentDateAndTime, "dd MMMM, hh:mm aa"));
+        holder.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(context, rentDateAndTime));
         holder.postedDate.setText(CommonClass.formatTime(String.valueOf(timestamp), "dd-MMM-yy  hh:mm aa"));
 
         // ============ Common Info ============

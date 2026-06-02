@@ -37,6 +37,8 @@ import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
+import com.krishibarirangpur.bdhelper.utils.partner.BidPositionAndCount;
+import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
@@ -68,6 +70,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     private long orderTimestamp = 0;
     private boolean hasCurrentPartnerBidded = false;
     private ListenerRegistration orderListener;
+    private ListenerRegistration bidListener;
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
@@ -546,6 +549,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadCurrentPartnerBid() {
         if (!isAdded()) return;
         
@@ -570,6 +574,21 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                         }
                         bidPartnerAdapter.notifyDataSetChanged();
                         binding.bidRV.setVisibility(View.VISIBLE);
+
+                        //call Bid Position
+                        if (!bidModelArrayList.isEmpty()) {
+
+                            BidModel model = bidModelArrayList.get(0);
+
+                            String bidId = model.getBidInfo().getBidId();
+                            String orderId = model.getOrderInfo().getOrderId();
+
+                            binding.bidPositionRl.setVisibility(View.VISIBLE);
+
+                            if (bidListener != null) bidListener.remove();
+                            bidListener = BidPositionAndCount.bindBidStatsToUI(getContext(), orderId, bidId, binding.tvTotalBids, binding.tvRank);
+                        }
+
                     } else {
                         hasCurrentPartnerBidded = false;
                         binding.bidRV.setVisibility(View.GONE);
@@ -651,11 +670,12 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                     loadingDialog.dismiss();
                     hasCurrentPartnerBidded = true;
                     refreshCountdown();
-                    
-                    String finalBidAmount = categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) ? CommonClass.getRoundedCommissionValue(true, bidAmount, landArea) : CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
-                    //sendCustomNotice(userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+
                     // বিড সাবমিট করার পর
+                    //Custome Notice Send
+                    String finalBidAmount = categoryId.equals(MyUtils.HARVESTER_MACHINE_ID) ? CommonClass.getRoundedCommissionValue(true, bidAmount, landArea) : CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_EQUIPMENT);
                     BidActionManager.sendNotice(getContext(), user_type, userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
+                    new PartnerAlertDialog.BidSummary(getContext(), bidAmount, finalBidAmount).show();
 
                     loadCurrentPartnerBid();
                 });

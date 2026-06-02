@@ -2,9 +2,6 @@ package com.krishibarirangpur.bdhelper.sharedFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,11 +14,9 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
@@ -38,10 +33,9 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
-import com.krishibarirangpur.bdhelper.utils.partner.bidPositionAndCount;
+import com.krishibarirangpur.bdhelper.utils.partner.BidPositionAndCount;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.NoticeSend;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +44,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
@@ -69,6 +62,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     private long orderTimestamp = 0;
     private boolean hasCurrentPartnerBidded = false;
     private ListenerRegistration orderListener;
+    private ListenerRegistration bidListener;
 
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
@@ -560,36 +554,16 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
                             binding.bidPositionRl.setVisibility(View.VISIBLE);
 
-                            callBidPositionAndCount(bidId, orderId);
+                            if (bidListener != null) bidListener.remove();
+                            bidListener = BidPositionAndCount.bindBidStatsToUI(getContext(), orderId, bidId, binding.tvTotalBids, binding.tvRank);
                         }
+
                     } else {
                         hasCurrentPartnerBidded = false;
                         binding.bidRV.setVisibility(View.GONE);
                     }
                     refreshCountdown();
                 });
-
-
-    }
-
-    ListenerRegistration bidListener;
-    private void callBidPositionAndCount(String bidId, String orderId) {
-        // লিসেনার শুরু করতে
-        bidListener = bidPositionAndCount.getBidStatsRealtime(orderId, bidId, new bidPositionAndCount.BidStatsCallback() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onResult(int position, int totalBids) {
-                // এখানে ডাটা আপডেট হলে সাথে সাথে কল হবে
-                binding.tvTotalBids.setText(Replacement.ReplacementNumberInLocal(getContext(), ""+totalBids)+" টি" );
-                binding.tvRank.setText("# "+Replacement.ReplacementNumberInLocal(getContext(), ""+position));
-            }
-
-            @Override
-            public void onError(Exception e) {
-                // এরর হ্যান্ডেল করুন
-            }
-        });
-
 
     }
 
@@ -713,7 +687,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     }
 
 
-    // 🔹 Handle Call Button Click
+    // 🔹 Handle Button Click Customer
     @Override
     public void onCallClicked(BidModel bidModel) {
         BidActionManager.handleCall(getContext(), bidModel);
@@ -726,7 +700,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                 });
     }
 
-
+    // 🔹 Handle Button Click Partner
     public void onEditClicked(String bidId, String orderId) {
         partnerBidEdit.startEditProcess(bidId, orderId);
     }
@@ -741,9 +715,6 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         super.onDestroyView();
         if (orderListener != null) {
             orderListener.remove();
-        }
-        if (bidListener != null) {
-            bidListener.remove(); // লিসেনার বন্ধ করা
         }
     }
 
