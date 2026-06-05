@@ -274,11 +274,21 @@ public class BidFragment extends Fragment implements AdapterBidDetail.OnBidDetai
         } else if ("done".equalsIgnoreCase(bidModelArrayList.get(position).getBidInfo().getStatus())) {
             Intent intent = new Intent(getContext(), BidActivity.class);
             intent.putExtra(MyUtils.bidAction, "done");
-            intent.putExtra("user_type", "partner");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);
             intent.putExtra(MyUtils.orderId, order.getOrderInfo().getOrderId());
             intent.putExtra(MyUtils.categoryId, order.getOrderInfo().getCategoryId());
             intent.putExtra(MyUtils.subCategoryId, order.getOrderInfo().getSubCategoryId());
             startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(requireContext(), BidActivity.class);
+            intent.putExtra(MyUtils.bidAction, "new");
+            intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);
+            intent.putExtra(MyUtils.orderId, order.getOrderInfo().getOrderId());
+            intent.putExtra(MyUtils.categoryId, order.getOrderInfo().getCategoryId());
+            intent.putExtra(MyUtils.subCategoryId, order.getOrderInfo().getSubCategoryId());
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 

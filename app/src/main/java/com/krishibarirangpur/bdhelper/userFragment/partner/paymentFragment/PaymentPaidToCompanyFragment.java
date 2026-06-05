@@ -123,8 +123,11 @@ public class PaymentPaidToCompanyFragment extends Fragment {
 
                         // ডেটা না থাকলে মেসেজ দেখানো
                         if (paymentList.isEmpty()) {
-                            MyToast.showShort(getContext(), "কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি");
+                            binding.noPaymentAccountFound.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.noPaymentAccountFound.setVisibility(View.GONE);
                         }
+
                     }
                 });
     }

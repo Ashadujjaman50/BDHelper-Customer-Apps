@@ -603,8 +603,9 @@
     <string name="no_payment_account">কোন পেমেন্ট একাউন্ট নেই</string>
     <string name="payment_account_found">আপনার পেমেন্ট একাউন্ট সমূহ</string>
     <string name="add_payment_account">একাউন্ট যোগ করুন</string>
-    <string name="no_payment_history">কোন পেমেন্ট নেই</string>
+    <string name="no_payment_history">কোনো পেমেন্ট রেকর্ড পাওয়া যায়নি</string>
     <string name="withdraw_request">ব্যালেন্স উত্তোলন করুন</string>
+    <string name="no_withdraw_request_found">কোনো উইথড্র রিকোয়েস্ট পাওয়া যায়নি</string>
     <string name="settlement_of_dues">বকেয়া পরিশোধ করুন</string>
 
     <string name="withdraw">উত্তোলন করুন</string>

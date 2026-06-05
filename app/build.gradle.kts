@@ -122,6 +122,7 @@ dependencies {
     // Room components
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
+    implementation(libs.core.splashscreen)
 
 
     testImplementation(libs.junit)

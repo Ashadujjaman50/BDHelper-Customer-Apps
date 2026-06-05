@@ -2,7 +2,7 @@ package com.krishibarirangpur.bdhelper.adapter.partner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
+import com.krishibarirangpur.bdhelper.userActivity.partner.UpdateServiceActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
@@ -26,7 +28,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
     private Context context;
     private List<ServiceModel> serviceList;
-    private OnItemClickListener mListener; // static নয়, instance variable
+    private OnItemClickListener mListener;
 
     public ServiceAdapter(Context context, List<ServiceModel> serviceList) {
         this.context = context;
@@ -46,10 +48,38 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
         // Bind data
         holder.subCategoryNameTv.setText(service.getSubCategoryName());
-        holder.serviceModelNumberTV.setText(service.getServiceModelNumber());
-        holder.serviceCategoryAndYearTV.setText(service.getServiceCategoryAndYear());
 
-        String regNumber = service.getServiceRegistrationNumber();
+        String mfgYear = service.getSafeManufacturingYear();
+        if (mfgYear == null || mfgYear.trim().isEmpty()) {
+            holder.serviceCategoryAndYearTV.setVisibility(View.GONE);
+        } else {
+            holder.serviceCategoryAndYearTV.setVisibility(View.VISIBLE);
+            holder.serviceCategoryAndYearTV.setText(mfgYear);
+        }
+
+        String brandModel = service.getSafeBrandOrModel();
+        if (brandModel == null || brandModel.trim().isEmpty()) {
+            holder.serviceModelNumberTV.setVisibility(View.GONE);
+        } else {
+            holder.serviceModelNumberTV.setVisibility(View.VISIBLE);
+            holder.serviceModelNumberTV.setText(brandModel);
+        }
+
+        String sizeCap = service.getSafeSizeAndCapacity();
+        if (sizeCap == null || sizeCap.trim().isEmpty()) {
+            holder.sizeAndCapacityTV.setVisibility(View.GONE);
+        } else {
+            holder.sizeAndCapacityTV.setVisibility(View.VISIBLE);
+            if (MyUtils.HOME_SHIFTING_ID.equals(service.getCategoryId())) {
+                holder.sizeAndCapacityTV.setText(Replacement.ReplacementPersonInLocal(context, sizeCap));
+            } else if (MyUtils.SKILLED_LABOR_ID.equals(service.getCategoryId())) {
+                holder.sizeAndCapacityTV.setText(Replacement.ReplacementExperienceInLocal(context, sizeCap));
+            } else {
+                holder.sizeAndCapacityTV.setText(sizeCap);
+            }
+        }
+
+        String regNumber = service.getSafeRegistrationNumber();
         if (regNumber == null || regNumber.trim().isEmpty()) {
             holder.serviceRegistrationNumberTV.setVisibility(View.GONE);
         } else {
@@ -60,7 +90,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             else {
                 holder.serviceRegistrationNumberTV.setText(regNumber);
             }
-
         }
 
         // Verified status
@@ -85,10 +114,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
         // Load transport image
         Glide.with(context)
-                .load(service.getTransportImage())
+                .load(service.getSafeTransportImage())
                 .placeholder(R.drawable.ic_logo)
                 .error(R.drawable.ic_logo)
                 .into(holder.transportImageIv);
+        
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UpdateServiceActivity.class);
+            intent.putExtra("serviceId", service.getServiceId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -98,7 +133,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
     static class ServiceViewHolder extends RecyclerView.ViewHolder {
         ImageView transportImageIv;
-        TextView subCategoryNameTv, serviceRegistrationNumberTV, serviceModelNumberTV, serviceCategoryAndYearTV;
+        TextView subCategoryNameTv, serviceRegistrationNumberTV, sizeAndCapacityTV, serviceModelNumberTV, serviceCategoryAndYearTV;
         TextView serviceStatusTv, verifiedMessageTv, verifiedMessagePendingTv;
         ImageButton uploadBtn;
 
@@ -107,6 +142,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             transportImageIv = itemView.findViewById(R.id.transportImageIv);
             subCategoryNameTv = itemView.findViewById(R.id.subCategoryNameTv);
             serviceRegistrationNumberTV = itemView.findViewById(R.id.serviceRegistrationNumberTV);
+            sizeAndCapacityTV = itemView.findViewById(R.id.sizeAndCapacityTV);
             serviceModelNumberTV = itemView.findViewById(R.id.serviceModelNumberTV);
             serviceCategoryAndYearTV = itemView.findViewById(R.id.serviceCategoryAndYearTV);
             serviceStatusTv = itemView.findViewById(R.id.serviceStatusTv);
@@ -131,5 +167,3 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         notifyDataSetChanged();
     }
 }
-
-

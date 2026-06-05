@@ -75,12 +75,14 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
         String rentTime = bidModel.getOrderInfo().getRentTime();
 
         // Time Formatting
-        holder.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(context, rentTime));
         holder.bidDateTv.setText(CommonClass.formatTime(bidTime, "dd-MMMM-yy  hh:mm aa"));
 
         holder.orderIdTv.setText(context.getString(R.string.order_no_dot) + " " + orderId);
         holder.postImage.setImageResource(CommonClass.getIconForSubCategory(subCategoryId));
         holder.postNameTv.setText(CommonClass.getSubCategoryName(context, subCategoryId));
+
+        // Initial rent time show (from BidModel) while loading full OrderInfo
+        holder.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(context, rentTime));
 
         //get order info by OrderID
         CommonClass.getOrderInfoById(orderId, new CommonClass.FirestoreOrderCallback() {
@@ -89,6 +91,11 @@ public class AdapterBidDetail extends RecyclerView.Adapter<AdapterBidDetail.Hold
                 if (orderList.isEmpty()) return;
 
                 OrderModel order = orderList.get(0);
+
+                if (order.getRouteInfo() != null && order.getRouteInfo().getRentTime() != null){
+                    holder.rentTimeTv.setText(CommonClass.millisToTimeWithLocal(context, order.getRouteInfo().getRentTime()));
+                }
+
                 UIHelper.bindAddress(holder.loadLocationTv, holder.loadAreaTv, order.getRouteInfo().getLoad());
                 UIHelper.bindAddress(holder.unLoadLocationTv, holder.unLoadAreaTv, order.getRouteInfo().getUnload());
                 UIHelper.bindAddress(holder.locationNameTv, holder.locationAreaTv, order.getRouteInfo().getRentLocation());

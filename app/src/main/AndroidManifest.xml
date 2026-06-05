@@ -42,6 +42,10 @@
         tools:targetApi="33">
 
         <activity
+            android:name=".userActivity.partner.UpdateServiceActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".userActivity.partner.BidActivity"
             android:exported="false" />
         <activity
@@ -137,6 +141,7 @@
         <activity
             android:name=".sharedActivity.SplashScreenActivity"
             android:exported="true"
+            android:theme="@style/Theme.App.Starting"
             tools:ignore="CustomSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

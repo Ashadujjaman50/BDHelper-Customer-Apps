@@ -173,18 +173,29 @@ public class Replacement {
 
     // 🔹 Auto Local Method In Experience
     public static String ReplacementExperienceInLocal(Context context, String number){
+        if (number == null) return "";
         String lang = LocaleHelper.getLanguage(context); // en or bn
 
-        String replace;
         if ("bn".equals(lang)){
-            replace = ReplacementNumberEnToBn(number);
-            replace = replace.replace("Year", "বছর");
+            String replace = ReplacementNumberEnToBn(number);
+            if (replace.toLowerCase().contains("year")) {
+                return replace.replaceAll("(?i)year", "বছর");
+            } else if (!replace.contains("বছর")) {
+                return replace.trim() + " বছর";
+            } else {
+                return replace;
+            }
         }
         else {
-            replace = ReplacementNumberBnToEn(number);
-            replace = replace.replace( "বছর", "Year");
+            String replace = ReplacementNumberBnToEn(number);
+            if (replace.contains("বছর")) {
+                return replace.replace("বছর", "Year");
+            } else if (!replace.toLowerCase().contains("year")) {
+                return replace.trim() + " Year";
+            } else {
+                return replace;
+            }
         }
-        return replace;
     }
 
 

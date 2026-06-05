@@ -111,7 +111,14 @@ public class ServiceDocumentActivity extends BaseActivity {
                 new UploadManager.UploadCallback() {
                     @Override
                     public void onUploadSuccess(Map<String, String> downloadUrls) {
-                        saveToFirestore(downloadUrls);
+                        // ৩. মিডিয়া ফাইল (media) ম্যাপ তৈরি
+                        Map<String, String> mediaMap = new HashMap<>();
+                        mediaMap.put("transportImage", downloadUrls.getOrDefault("transportImage", ""));
+                        mediaMap.put("brtaImage", downloadUrls.getOrDefault("brtaImage", ""));
+                        mediaMap.put("driverLicence", downloadUrls.getOrDefault("driverLicence", ""));
+
+                        saveToFirestore(mediaMap);
+
                     }
 
                     @Override
@@ -122,11 +129,13 @@ public class ServiceDocumentActivity extends BaseActivity {
                 });
     }
 
-    private void saveToFirestore(Map<String, String> downloadUrls) {
+    private void saveToFirestore(Map<String, String> mediaMap) {
         Map<String, Object> serviceMap = new HashMap<>();
         serviceMap.put("serviceStatus", "active");
         serviceMap.put("serviceVerified", "process");
-        serviceMap.putAll(downloadUrls);
+
+        // মূল ম্যাপে media যুক্ত করা
+        serviceMap.put("media", mediaMap);
 
         db.collection("users")
                 .document(firebaseUser.getUid())

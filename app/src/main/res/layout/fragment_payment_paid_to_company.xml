@@ -9,12 +9,18 @@
         tools:context=".userFragment.partner.paymentFragment.PaymentPaidToCompanyFragment">
 
         <!-- RecycleView Withdraw List -->
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/bg_color"
-            android:orientation="vertical"
             android:paddingHorizontal="2dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/paymentAccountRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_partner_payment" />
 
             <TextView
                 android:id="@+id/noPaymentAccountFound"
@@ -26,15 +32,7 @@
                 android:textSize="22sp"
                 android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/paymentAccountRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_partner_payment" />
-
-        </LinearLayout>
-
+        </FrameLayout>
 
         <TextView
             android:id="@+id/PayNowButton"

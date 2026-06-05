@@ -606,6 +606,7 @@
     <string name="add_payment_account">Add payment account</string>
     <string name="no_payment_history">No payment history</string>
     <string name="withdraw_request">Withdraw balance</string>
+    <string name="no_withdraw_request_found">No withdrawal requests found</string>
     <string name="settlement_of_dues">Settlement of Dues</string>
 
     <string name="withdraw">Withdraw</string>

@@ -123,24 +123,25 @@
                             android:orientation="horizontal"
                             android:padding="3dp">
 
-                            <EditText
-                                android:id="@+id/modelNumberEt"
+                            <TextView
+                                android:id="@+id/serviceSizeAndCapacityEt"
                                 android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="5dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:autofillHints=""
+                                android:layout_marginEnd="5dp"
                                 android:background="@drawable/bg_edit_text"
-                                android:fontFamily="@font/amaranth"
-                                android:hint="Ex: Tata Ex2"
-                                android:imeOptions="actionDone"
+                                android:hint="সিলেক্ট করুন"
                                 android:padding="10dp"
-                                android:textSize="17sp" />
+                                android:textColor="@color/text_primary"
+                                android:textSize="17sp"
+                                android:drawablePadding="5dp"
+                                app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
 
                             <TextView
                                 android:id="@+id/categoryOrYearEt"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:background="@drawable/bg_edit_text"
                                 android:hint="সিলেক্ট করুন"
                                 android:padding="10dp"

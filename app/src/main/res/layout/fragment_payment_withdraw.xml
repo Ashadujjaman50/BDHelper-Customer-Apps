@@ -11,32 +11,30 @@
         tools:context=".userFragment.partner.paymentFragment.PaymentWithdrawFragment">
 
         <!-- RecycleView Withdraw List -->
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/bg_color"
-            android:orientation="vertical"
             android:paddingHorizontal="2dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/paymentAccountRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_withdraw_request" />
 
             <TextView
                 android:id="@+id/noPaymentAccountFound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/no_payment_history"
+                android:text="@string/no_withdraw_request_found"
                 android:textColor="@color/text_secondary"
                 android:textSize="22sp"
                 android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/paymentAccountRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/row_withdraw_request" />
-
-        </LinearLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/withdrawPaymentButton"

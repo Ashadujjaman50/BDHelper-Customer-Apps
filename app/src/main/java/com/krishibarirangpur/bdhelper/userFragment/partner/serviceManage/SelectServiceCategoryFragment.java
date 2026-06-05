@@ -48,7 +48,7 @@ public class SelectServiceCategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //init vieww
+        //init view
         //Recyclerview Setup
         subCategoryModelList = new ArrayList<>();
         binding.categoryRv.setHasFixedSize(true);
