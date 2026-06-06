@@ -58,7 +58,7 @@ public class CustomerRegisterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            userSignWith = getArguments().getString("userSignWith");
+            userSignWith = getArguments().getString(MyUtils.USER_SIGN_IN_WITH);
         }
     }
 
@@ -165,7 +165,7 @@ public class CustomerRegisterFragment extends Fragment {
 
             Map<String, Object> userMap = UserMapBuilder.createUserMap(
                     userId,
-                    "customer",
+                    MyUtils.CUSTOMER,
                     name,
                     email,
                     mobile,
@@ -188,7 +188,7 @@ public class CustomerRegisterFragment extends Fragment {
                         @Override
                         public void onSuccess() {
 
-                            prefHelper.remove("userSignWith");
+                            prefHelper.remove(MyUtils.USER_SIGN_IN_WITH);
                             loadingDialog.dismiss();
 
                             customNoticeSend(true, userId, userMap.get("district"));

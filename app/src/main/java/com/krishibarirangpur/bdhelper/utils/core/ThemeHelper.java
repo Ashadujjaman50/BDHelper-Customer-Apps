@@ -16,7 +16,9 @@ public class ThemeHelper {
     public static void applyTheme(Context context) {
         SharedPrefHelper helper = new SharedPrefHelper(context);
         int mode = helper.getInt(KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        AppCompatDelegate.setDefaultNightMode(mode);
+        if (AppCompatDelegate.getDefaultNightMode() != mode) {
+            AppCompatDelegate.setDefaultNightMode(mode);
+        }
     }
 
     /**

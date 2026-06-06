@@ -26,12 +26,15 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.customer.DistrictAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentEditUserProfileBinding;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +44,6 @@ public class EditUserProfileFragment extends Fragment {
 
     private FragmentEditUserProfileBinding binding;
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     String userId;
 
@@ -66,9 +68,10 @@ public class EditUserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // init
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        assert firebaseAuth.getCurrentUser() != null;
         userId = firebaseAuth.getCurrentUser().getUid();
 
         loadingDialog = new LoadingDialog(requireActivity());
@@ -93,20 +96,20 @@ public class EditUserProfileFragment extends Fragment {
         selectDistrict = binding.userDistrictEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)) {
-            setErrorWatcher(binding.userNameEt, true);
-            Toast.makeText(requireActivity(), "আপনার নাম লিখুন", Toast.LENGTH_SHORT).show();
+            ValidationClass.setErrorWatcher(binding.userNameEt, true);
+            toastMessage( "আপনার নাম লিখুন");
         }
         else if (TextUtils.isEmpty(mobile) ||  mobile.length() < 11) {
-            setErrorWatcher(binding.userMobileEt, true);
-            Toast.makeText(requireActivity(), "আপনার ১১ ডিজিট এর মোবাইল নাম্বার দিন", Toast.LENGTH_SHORT).show();
+            ValidationClass.setErrorWatcher(binding.userMobileEt, true);
+            toastMessage( "আপনার ১১ ডিজিট এর মোবাইল নাম্বার দিন");
         }
         else if (TextUtils.isEmpty(location)) {
-            setErrorWatcher(binding.userLocationEt, true);
-            Toast.makeText(requireActivity(), "আপনার ঠিকানা লিখুন", Toast.LENGTH_SHORT).show();
+            ValidationClass.setErrorWatcher(binding.userLocationEt, true);
+            toastMessage( "আপনার ঠিকানা লিখুন");
         }
         else if (TextUtils.isEmpty(selectDistrict)) {
             binding.userDistrictEt.setBackgroundResource(R.drawable.bg_edit_text_error);
-            Toast.makeText(requireActivity(), "আপনার জেলা নির্বাচন করুন", Toast.LENGTH_SHORT).show();
+            toastMessage("আপনার জেলা নির্বাচন করুন");
         }
         else {
             loadingDialog.setMessage("আপনার তথ্য আপডেট হচ্ছে...");
@@ -133,8 +136,7 @@ public class EditUserProfileFragment extends Fragment {
             //updateMap .put("userLastLogin", timestamp);
             //updateMap .put("rating", rating);
 
-            FirebaseFirestore.getInstance()
-                    .collection("users")
+            db.collection(FirebaseCollectionTable.USERS)
                     .document(userId)
                     .update(updateMap )
                     .addOnSuccessListener(unused -> {
@@ -150,23 +152,13 @@ public class EditUserProfileFragment extends Fragment {
         }
     }
 
-
-    private void setErrorWatcher(EditText editText, boolean hasError) {
-        if (hasError) {
-            editText.setBackgroundResource(R.drawable.bg_edit_text_error);
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    editText.setBackgroundResource(R.drawable.bg_edit_text);
-                }
-                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                @Override public void afterTextChanged(Editable s) {}
-            });
-        }
+    private void toastMessage(String msg){
+        MyToast.showShort(getContext(), msg);
     }
 
 
     private void loadCurrentUserInfo() {
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {

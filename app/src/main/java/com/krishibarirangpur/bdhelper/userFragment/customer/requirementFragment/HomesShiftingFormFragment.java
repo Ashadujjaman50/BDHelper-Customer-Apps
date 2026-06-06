@@ -30,6 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
 import com.krishibarirangpur.bdhelper.utils.customer.SubmitPostBottomSheetDialog;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.CustomDateAndTimePicker;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
@@ -282,7 +283,7 @@ public class HomesShiftingFormFragment extends Fragment {
     }
 
     private void getUserInfo() {
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -369,7 +370,7 @@ public class HomesShiftingFormFragment extends Fragment {
         // 🔽 CommonClass থেকে OrderId জেনারেট করব
         GenerateOrderId.newOrderId(
                 db,
-                "orders",
+                FirebaseCollectionTable.ORDERS,
                 "orderInfo.orderId",
                 "BOL",
                 5,
@@ -396,7 +397,7 @@ public class HomesShiftingFormFragment extends Fragment {
                         postDistrict
                 );
 
-                db.collection("orders")
+                db.collection(FirebaseCollectionTable.ORDERS)
                         .document(orderId)
                         .set(order)
                         .addOnSuccessListener(aVoid -> {

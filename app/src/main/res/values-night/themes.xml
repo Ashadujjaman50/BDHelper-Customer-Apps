@@ -5,7 +5,7 @@
         <item name="android:colorPrimary">@color/transparent</item>
         <item name="colorSecondary">@color/secondaryColor_dark</item>
         <item name="colorAccent">@color/accentColor_dark</item>
-        <item name="android:background">@color/background_dark</item>
+        <item name="android:windowBackground">@color/background_dark</item>
         <item name="android:colorBackground">@color/background_dark</item>
         <item name="colorSurface">@color/surface_dark</item>
         <item name="colorOnPrimary">@color/on_primary_dark</item>
@@ -22,7 +22,7 @@
         <item name="android:fontFamily">@font/solaiman_lipi</item> <!-- ✅ for most Views -->
         <item name="fontFamily">@font/solaiman_lipi</item> <!-- ✅ for some components -->
 
-        <item name="android:background">@color/transparent</item>
+        <item name="android:background">@color/background_dark</item>
         <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
     </style>
 
@@ -46,8 +46,8 @@
     <!-- Splash Screen Theme for Night Mode -->
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/background_dark</item>
+        <item name="android:windowBackground">@color/background_dark</item>
         <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
-        <item name="windowSplashScreenAnimationDuration">0</item>
         <item name="postSplashScreenTheme">@style/Theme.BDHelper</item>
     </style>
 </resources>

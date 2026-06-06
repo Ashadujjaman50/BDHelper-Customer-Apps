@@ -27,6 +27,7 @@ import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentPaidToCompanyBi
 import com.krishibarirangpur.bdhelper.model.PaymentModel;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 
@@ -101,7 +102,7 @@ public class PaymentPaidToCompanyFragment extends Fragment {
         binding.paymentAccountRv.setAdapter(adapter);
 
         // 🔹 বর্তমান ইউজারের আইডি (userId) দিয়ে ফিল্টার করা হয়েছে
-        db.collection("partnerPayments")
+        db.collection(FirebaseCollectionTable.PARTNER_PAYMENTS)
                 .whereEqualTo("vendorId", userId)
                 .orderBy("createdAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -131,8 +132,6 @@ public class PaymentPaidToCompanyFragment extends Fragment {
                     }
                 });
     }
-
-
 
     private void partnerFinanceSummaryLoad() {
 
@@ -230,7 +229,7 @@ public class PaymentPaidToCompanyFragment extends Fragment {
     public void submitPartnerPayment(String vendorId, double amount,String accountNumber, String trxId){
         loadingDialog.show();
 
-        db.collection("partnerPayments")
+        db.collection(FirebaseCollectionTable.PARTNER_PAYMENTS)
                 .whereEqualTo("vendorId", vendorId)
                 .whereEqualTo("status", "pending")
                 .get()
@@ -252,7 +251,7 @@ public class PaymentPaidToCompanyFragment extends Fragment {
                         paymentMap.put("status", "pending");
                         paymentMap.put("createdAt", System.currentTimeMillis());
 
-                        db.collection("partnerPayments")
+                        db.collection(FirebaseCollectionTable.PARTNER_PAYMENTS)
                                 .add(paymentMap)
                                 .addOnSuccessListener(documentReference -> loadingDialog.dismiss())
                                 .addOnFailureListener(e -> loadingDialog.dismiss());

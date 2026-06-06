@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.text.NumberFormat;
@@ -50,7 +51,7 @@ public class CommonClass {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("reviews")
+        db.collection(FirebaseCollectionTable.REVIEWS)
                 .whereEqualTo(fieldName, userId)
                 .whereEqualTo("reviewer", reviewer)
                 .get()
@@ -88,7 +89,7 @@ public class CommonClass {
     // user Total Order Count
     public static void getUserOrderCount(String userId, OnCountListener listener) {
         FirebaseFirestore.getInstance()
-                .collection("orders")
+                .collection(FirebaseCollectionTable.ORDERS)
                 .whereEqualTo("orderInfo.uid", userId)
                 .count()
                 .get(AggregateSource.SERVER)
@@ -345,8 +346,6 @@ public class CommonClass {
         }
     }
 
-
-
     /**
      * Convert a millisecond String to long
      */
@@ -531,7 +530,7 @@ public class CommonClass {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<OrderModel> orderList = new ArrayList<>();
 
-        db.collection("orders")
+        db.collection(FirebaseCollectionTable.ORDERS)
                 .whereEqualTo("orderInfo.orderId", orderId) // nested field match
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

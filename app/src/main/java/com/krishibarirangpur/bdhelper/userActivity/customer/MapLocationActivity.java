@@ -80,6 +80,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
     private List<AutocompletePrediction> predictionList;
     private AutocompleteSessionToken token;
 
+    private BarikoiCacheHelper cacheHelper;
     List<Address> addressList;
 
     BarikoiApiService apiInterface;
@@ -302,14 +303,14 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         mMap.setOnCameraIdleListener(() -> {
             LatLng pickerLatLng = mMap.getCameraPosition().target;
             if (pickerLatLng.latitude != 0 && pickerLatLng.longitude != 0) {
-                loadDataList(pickerLatLng.latitude, pickerLatLng.longitude);
-                loadDataWithBarikoy(pickerLatLng.latitude, pickerLatLng.longitude);
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions()
                         .position(pickerLatLng)
                         .title("Selected Location")
                         .icon(BitmapDescriptorFactory.fromBitmap(
                                 getBitmapFromVectorDrawable(this, R.drawable.ic_location_select))));
+
+                fetchLocationData(pickerLatLng.latitude, pickerLatLng.longitude);
             }
         });
 
@@ -332,8 +333,7 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, DEFAULT_ZOOM));
 
-                loadDataList(location.getLatitude(), location.getLongitude());
-                loadDataWithBarikoy(location.getLatitude(), location.getLongitude());
+                fetchLocationData(location.getLatitude(), location.getLongitude());
 
                 mMap.addMarker(new MarkerOptions()
                         .position(currentLatLng)
@@ -346,133 +346,93 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         });
     }
 
-    String address, area, city,subDistrict, district;
+    private void fetchLocationData(double lat, double lng) {
+        if (cacheHelper == null) cacheHelper = new BarikoiCacheHelper();
 
-    private void loadDataList(double lat, double lng) {
-
-        Call<BarikoiResponse> call = apiInterface.getPlaceInfo(MyUtils.barikoi_api_key, lng, lat,
-                true, // district
-                true, // post_code
-                true, // country
-                true, // sub_district
-                true, // union
-                true, // pauroshova
-                true, // location_type
-                true, // division
-                true, // address
-                true, // area
-                true // Bangla
-                );
-
-        call.enqueue(new Callback<BarikoiResponse>() {
-            @Override
-            public void onResponse(Call<BarikoiResponse> call, Response<BarikoiResponse> response) {
-                try {
-                    if (response.isSuccessful()) {
-                        BarikoiResponse barikoiResponse = response.body();
-
-                        if (barikoiResponse != null && barikoiResponse.getPlace() != null) {
-                            Log.d("API", "onResponse: " + barikoiResponse);
-
-                            subDistrict = barikoiResponse.getPlace().getSub_district();
-                            district = barikoiResponse.getPlace().getDistrict();
-
-                            if (barikoiResponse.getPlace().getAddress_bn() != null) {
-                                address = barikoiResponse.getPlace().getAddress_bn();
-                            } else {
-                                address = barikoiResponse.getPlace().getAddress();
-                            }
-
-                            if (barikoiResponse.getPlace().getArea_bn() != null) {
-                                area = barikoiResponse.getPlace().getArea_bn();
-                            } else {
-                                area = barikoiResponse.getPlace().getArea();
-                            }
-
-                            if (barikoiResponse.getPlace().getCity_bn() != null) {
-                                city = barikoiResponse.getPlace().getCity_bn();
-                            } else {
-                                city = barikoiResponse.getPlace().getCity();
-                            }
-
-                            boolean check = Replacement.cityCheck(city);
-
-                            if (!TextUtils.isEmpty(address)) {
-                                if (TextUtils.isEmpty(subDistrict)) {
-                                    address = Replacement.checkAddress(address, area, district);
-                                } else {
-                                    address = Replacement.checkAddress(address, subDistrict, district);
-                                }
-                            }
-
-                            String finalAddress;
-                            if (!TextUtils.isEmpty(city) && check) {
-                                if (TextUtils.isEmpty(subDistrict) || Objects.equals(area, subDistrict)) {
-                                    finalAddress = address + ", " + area + ", " + city + " " + "সিটি";
-                                } else {
-                                    finalAddress = address + ", " + subDistrict + ", " + area + ", " + city + " " +  "সিটি";
-                                }
-                            } else {
-                                if (!TextUtils.isEmpty(address)) {
-                                    finalAddress = address + ", " + subDistrict + ", " + district;
-                                } else {
-                                    finalAddress = area + ", " + subDistrict + ", " + district;
-                                }
-                            }
-
-                            String cleanString = Replacement.checkString(finalAddress);
-                            binding.rentLocationTv.setText(Replacement.removeDuplicateAddressParts(cleanString));
-                        }
-                        else {
-                            Log.e("API", "Response body or place is null");
-                        }
-                    } else {
-                        Log.e("API Error", "Error code: " + response.code() );
-                    }
-                }
-                catch (Exception e) {
-                    Log.e("API", "Error processing response", e);
-                    binding.rentLocationTv.setText(R.string.select_location); // fallback UI
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<BarikoiResponse> call, Throwable t) {
-                // Handle network errors here
-                Log.e("API Error", "Network error: " + t.getMessage());
-            }
-        });
-
-    }
-
-
-    //Only Save this Data in database
-    private void loadDataWithBarikoy(double lat, double lng) {
-        BarikoiCacheHelper helper = new BarikoiCacheHelper();
-
-        helper.getLocation(lat, lng, new BarikoiCacheHelper.LocationCallback() {
+        cacheHelper.getLocation(lat, lng, new BarikoiCacheHelper.LocationCallback() {
             @Override
             public void onSuccess(BarikoiResponse.Place place) {
-                // place নাল কি না চেক করা ভালো
-                if (place != null) {
-                    String address = place.getAddress_bn();
+                Log.d("LOCATION_SOURCE", "Data loaded from FIREBASE CACHE");
+                updateAddressUI(place);
+            }
 
-                    // অ্যাড্রেস নাল কি না চেক করে লগ করুন
-                    if (address != null) {
-                        Log.d("ADDRESS", address);
-                        return;
-                    }
-                    Log.d("ADDRESS", "Barikoi Address Cache done");
-                }
+            @Override
+            public void onCacheMiss() {
+                Log.d("LOCATION_SOURCE", "Cache miss! Calling BARIKOI API...");
+                loadDataFromApi(lat, lng);
             }
 
             @Override
             public void onError(String error) {
-                // এরর মেসেজ নাল কি না চেক করুন
-                Log.e("ERROR", Objects.requireNonNullElse(error, "Unknown error occurred in Barikoi helper"));
+                Log.e("LOCATION_SOURCE", "Cache error: " + error + ". Falling back to API.");
+                loadDataFromApi(lat, lng);
             }
         });
+    }
+
+    private void loadDataFromApi(double lat, double lng) {
+        Call<BarikoiResponse> call = apiInterface.getPlaceInfo(MyUtils.barikoi_api_key, lng, lat,
+                true, true, true, true, true, true, true, true, true, true, true);
+
+        call.enqueue(new Callback<BarikoiResponse>() {
+            @Override
+            public void onResponse(Call<BarikoiResponse> call, Response<BarikoiResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getPlace() != null) {
+                    Log.d("LOCATION_SOURCE", "Data received from BARIKOI API successfully");
+                    BarikoiResponse.Place place = response.body().getPlace();
+                    updateAddressUI(place);
+                    cacheHelper.saveToCache(lat, lng, place);
+                } else {
+                    Log.e("API Error", "Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BarikoiResponse> call, Throwable t) {
+                Log.e("API Error", "Network error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void updateAddressUI(BarikoiResponse.Place place) {
+        try {
+            String subDistrict = place.getSub_district();
+            String district = place.getDistrict();
+            String address = (place.getAddress_bn() != null) ? place.getAddress_bn() : place.getAddress();
+            String area = (place.getArea_bn() != null) ? place.getArea_bn() : place.getArea();
+            String city = (place.getCity_bn() != null) ? place.getCity_bn() : place.getCity();
+
+            boolean isCity = Replacement.cityCheck(city);
+
+            if (!TextUtils.isEmpty(address)) {
+                if (TextUtils.isEmpty(subDistrict)) {
+                    address = Replacement.checkAddress(address, area, district);
+                } else {
+                    address = Replacement.checkAddress(address, subDistrict, district);
+                }
+            }
+
+            String finalAddress;
+            if (!TextUtils.isEmpty(city) && isCity) {
+                if (TextUtils.isEmpty(subDistrict) || Objects.equals(area, subDistrict)) {
+                    finalAddress = address + ", " + area + ", " + city + " " + "সিটি";
+                } else {
+                    finalAddress = address + ", " + subDistrict + ", " + area + ", " + city + " " + "সিটি";
+                }
+            } else {
+                if (!TextUtils.isEmpty(address)) {
+                    finalAddress = address + ", " + subDistrict + ", " + district;
+                } else {
+                    finalAddress = area + ", " + subDistrict + ", " + district;
+                }
+            }
+
+            String cleanString = Replacement.checkString(finalAddress);
+            binding.rentLocationTv.setText(Replacement.removeDuplicateAddressParts(cleanString));
+        } catch (Exception e) {
+            Log.e("UI Update", "Error formatting address", e);
+            binding.rentLocationTv.setText(R.string.select_location);
+        }
     }
 
     private void hideKeyboard(Activity activity) {

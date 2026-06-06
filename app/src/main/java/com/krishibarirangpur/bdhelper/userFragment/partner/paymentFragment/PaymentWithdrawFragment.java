@@ -30,6 +30,7 @@ import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentWithdrawBinding
 import com.krishibarirangpur.bdhelper.model.WithdrawRequest;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 
@@ -143,9 +144,9 @@ public class PaymentWithdrawFragment extends Fragment {
     }
 
     private void loadDefaultAccountData() {
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
-                .collection("accounts")
+                .collection(FirebaseCollectionTable.ACCOUNTS)
                 .whereEqualTo("isPrimary", "Default") // ✅ শুধুমাত্র Default account আনবে
                 .limit(1) // নিরাপত্তার জন্য ১টা result নেবে
                 .get()
@@ -176,7 +177,7 @@ public class PaymentWithdrawFragment extends Fragment {
 
         preloadingDialog.show();
 
-        db.collection("withdrawRequests")
+        db.collection(FirebaseCollectionTable.WITHDRAW_REQUESTS)
                 .whereEqualTo("vendorId", userId)
                 .orderBy("requestedAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((querySnapshot, error) -> {
@@ -321,7 +322,7 @@ public class PaymentWithdrawFragment extends Fragment {
 
                 // ✅ প্রথমে চেক করবে কোনো Pending request আছে কি না
                 loadingDialog.show();
-                db.collection("withdrawRequests")
+                db.collection(FirebaseCollectionTable.WITHDRAW_REQUESTS)
                         .whereEqualTo("vendorId", userId)
                         .whereEqualTo("status", "pending")
                         .get()

@@ -16,6 +16,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class PartnerBidEdit {
     public void startEditProcess(String bidId, String orderId) {
         loadingDialog.show();
 
-        db.collection("orders").document(orderId).get().addOnSuccessListener(documentSnapshot -> {
+        db.collection(FirebaseCollectionTable.ORDERS).document(orderId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 OrderModel order = documentSnapshot.toObject(OrderModel.class);
                 if (order != null && "confirmed".equalsIgnoreCase(order.getOrderInfo().getStatus())) {
@@ -118,7 +119,7 @@ public class PartnerBidEdit {
         updates.put("bidInfo.bidAmount", newAmount);
         updates.put("bidInfo.editCount", newEditCount);
 
-        db.collection("bidForOrder").document(bidId).update(updates)
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER).document(bidId).update(updates)
                 .addOnSuccessListener(aVoid -> {
                     loadingDialog.dismiss();
                     MyToast.showShort(context, "বিড সফলভাবে আপডেট করা হয়েছে।");

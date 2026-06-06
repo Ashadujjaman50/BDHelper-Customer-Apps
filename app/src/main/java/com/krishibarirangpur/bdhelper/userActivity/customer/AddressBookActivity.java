@@ -33,6 +33,7 @@ import com.krishibarirangpur.bdhelper.adapter.customer.AddressBookAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityAddressBookBinding;
 import com.krishibarirangpur.bdhelper.model.AddressBookModel;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -233,7 +234,8 @@ public class AddressBookActivity extends BaseActivity {
 
         String timestamp = String.valueOf(System.currentTimeMillis());
         String userId = firebaseUser.getUid();
-        String addressId = db.collection("users").document(userId).collection("addressBook").document().getId();
+        String addressId = db.collection(FirebaseCollectionTable.USERS).document(userId)
+                .collection(FirebaseCollectionTable.ADDRESS_BOOK).document().getId();
 
         Map<String, Object> map = new HashMap<>();
         map.put("addressId", addressId);
@@ -243,7 +245,8 @@ public class AddressBookActivity extends BaseActivity {
         map.put("recipientName", recipientName);
         map.put("timestamp", timestamp);
 
-        db.collection("users").document(userId).collection("addressBook").document(addressId)
+        db.collection(FirebaseCollectionTable.USERS).document(userId)
+                .collection(FirebaseCollectionTable.ADDRESS_BOOK).document(addressId)
                 .set(map)
                 .addOnSuccessListener(unused -> {
                     loadingDialog.dismiss();
@@ -291,7 +294,7 @@ public class AddressBookActivity extends BaseActivity {
         map.put("recipientName", recipientName);
 
         String userId = firebaseUser.getUid();
-        db.collection("users").document(userId).collection("addressBook").document(addressId)
+        db.collection(FirebaseCollectionTable.USERS).document(userId).collection(FirebaseCollectionTable.ADDRESS_BOOK).document(addressId)
                 .update(map)
                 .addOnSuccessListener(unused -> {
                     loadingDialog.dismiss();
@@ -332,8 +335,8 @@ public class AddressBookActivity extends BaseActivity {
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             dialog.dismiss();
-            db.collection("users").document(firebaseUser.getUid())
-                    .collection("addressBook").document(model.getAddressId())
+            db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
+                    .collection(FirebaseCollectionTable.ADDRESS_BOOK).document(model.getAddressId())
                     .delete()
                     .addOnSuccessListener(unused -> MyToast.showShort(AddressBookActivity.this, "Address deleted"))
                     .addOnFailureListener(e -> MyToast.showShort(AddressBookActivity.this, "Failed: " + e.getMessage()));
@@ -352,7 +355,8 @@ public class AddressBookActivity extends BaseActivity {
 
         if (addressBookListener != null) addressBookListener.remove();
 
-        addressBookListener = db.collection("users").document(userId).collection("addressBook")
+        addressBookListener = db.collection(FirebaseCollectionTable.USERS).document(userId)
+                .collection(FirebaseCollectionTable.ADDRESS_BOOK)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) return;

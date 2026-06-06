@@ -1,5 +1,6 @@
 package com.krishibarirangpur.bdhelper.userFragment.customer.navBarFragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.authWidget.LogoutHelper;
 import com.krishibarirangpur.bdhelper.utils.core.LanguageDialogHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeDialogHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.squareup.picasso.Picasso;
 
@@ -53,6 +55,7 @@ public class ProfileFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -163,7 +166,7 @@ public class ProfileFragment extends Fragment {
     private void loadCurrentUserInfo() {
         String  userId = firebaseAuth.getCurrentUser().getUid();
         // 🔹 Load main user document
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .get(Source.SERVER)
                 .addOnSuccessListener(documentSnapshot -> {
@@ -192,7 +195,7 @@ public class ProfileFragment extends Fragment {
                 });
 
         // 🔹 Load profile image
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .collection("Document")
                 .document("info")

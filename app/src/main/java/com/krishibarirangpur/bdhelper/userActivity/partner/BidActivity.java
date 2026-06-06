@@ -96,7 +96,7 @@ public class BidActivity extends BaseActivity {
             Fragment fragment = new BidFragment();
             Bundle bundle = new Bundle();
             bundle.putString(MyUtils.bidAction, bidAction);
-            bundle.putString("user_type", user_type);
+            bundle.putString(MyUtils.USER_TYPE, user_type);
             fragment.setArguments(bundle);
             loadFragment(fragment);
         }

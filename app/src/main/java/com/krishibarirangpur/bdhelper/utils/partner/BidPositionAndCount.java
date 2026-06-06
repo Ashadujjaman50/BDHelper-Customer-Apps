@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +32,7 @@ public class BidPositionAndCount {
     public static ListenerRegistration getBidStatsRealtime(String orderId, String bidId, BidStatsCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        return db.collection("bidForOrder")
+        return db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("orderInfo.orderId", orderId)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {

@@ -30,6 +30,7 @@ import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.core.LanguageDialogHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeDialogHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.squareup.picasso.Picasso;
 
@@ -213,7 +214,7 @@ public class MoreFragment extends Fragment {
     }
 
     private void loadCurrentPartnerInfo() {
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -227,7 +228,7 @@ public class MoreFragment extends Fragment {
                         binding.mobileTV.setText(phone);
 
                         // User Rating: Show from Reviews if available, else from Database
-                        CommonClass.getUserRatingInfo(MyUtils.vendorId,userId,MyUtils.CUSTOMER, (averageRating, totalReviews) -> {
+                        CommonClass.getUserRatingInfo(MyUtils.vendorId,userId, MyUtils.CUSTOMER, (averageRating, totalReviews) -> {
                             if (totalReviews > 0) {
                                 binding.rattingTV.setText(String.format(Locale.getDefault(), "%.1f", averageRating));
                             } else {
@@ -265,7 +266,7 @@ public class MoreFragment extends Fragment {
                 });
 
         // 🔹 Load profile image
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
                 .collection("Document")
                 .document("info")

@@ -23,6 +23,7 @@ import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBatteryOrderBinding;
 import com.krishibarirangpur.bdhelper.utils.customer.GenerateOrderId;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.userActivity.partner.ProductActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -217,7 +218,7 @@ public class BatteryOrderFragment extends Fragment {
 
         GenerateOrderId.newOrderId(
                 db,
-                "batteryOrder",             // collection path
+                FirebaseCollectionTable.BATTERY_ORDER,             // collection path
                 "orderId",                              // Document ID হিসেবে চাইলে documentId ব্যবহার করতে পারো
                 "ord",                                  // prefix
                 4,                                      // initial digit length, যেমন ord0001
@@ -243,7 +244,7 @@ public class BatteryOrderFragment extends Fragment {
                         order.put("deliveryDetails", deliveryDetails);
                         order.put("paymentDetails", paymentDetails);
 
-                        db.collection("batteryOrder")
+                        db.collection(FirebaseCollectionTable.BATTERY_ORDER)
                                 .document(orderId)
                                 .set(order)
                                 .addOnSuccessListener(aVoid -> {

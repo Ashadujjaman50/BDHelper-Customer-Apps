@@ -24,6 +24,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivityServiceRequestBinding;
 import com.krishibarirangpur.bdhelper.model.ModelServiceRequest;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.ValidationClass;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,10 +94,10 @@ public class ServiceRequestActivity extends BaseActivity {
         String district = binding.districtEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(serviceName)){
-            setErrorWatcher(binding.serviceNameEt, true);
+            ValidationClass.setErrorWatcher(binding.serviceNameEt, true);
         }
         else if (TextUtils.isEmpty(district)){
-            setErrorWatcher(binding.districtEt, true);
+            ValidationClass.setErrorWatcher(binding.districtEt, true);
         }
         else {
             //set Dialog
@@ -120,7 +122,7 @@ public class ServiceRequestActivity extends BaseActivity {
             serviceMap.put("status", "pending");
             serviceMap.put("timestamp", timestamp);
 
-            db.collection("serviceRequest")
+            db.collection(FirebaseCollectionTable.SERVICE_REQUEST)
                     .document(serviceId)
                     .set(serviceMap)
                     .addOnSuccessListener(unused -> {
@@ -197,26 +199,6 @@ public class ServiceRequestActivity extends BaseActivity {
         return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private void setErrorWatcher(View view, boolean hasError) {
-        if (hasError) {
-            view.setBackgroundResource(R.drawable.bg_edit_text_error);
-
-            if (view instanceof EditText) {
-                EditText editText = (EditText) view;
-                editText.addTextChangedListener(new TextWatcher() {
-                    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        editText.setBackgroundResource(R.drawable.bg_edit_text);
-                    }
-                    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-                    @Override public void afterTextChanged(Editable s) {}
-                });
-            }
-        }
-        else {
-            view.setBackgroundResource(R.drawable.bg_edit_text);
-        }
-    }
-
     private ListenerRegistration listenerRegistration;
 
     @SuppressLint("NotifyDataSetChanged")
@@ -232,7 +214,7 @@ public class ServiceRequestActivity extends BaseActivity {
         serviceRv.setAdapter(adapterServiceRequest);
 
         // 🔹 Real-time listener
-        listenerRegistration = db.collection("serviceRequest")
+        listenerRegistration = db.collection(FirebaseCollectionTable.SERVICE_REQUEST)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(3)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {

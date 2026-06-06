@@ -41,7 +41,6 @@ public class PartnerRegisterFragment extends Fragment {
     private FragmentPartnerRegisterBinding binding;
     private String userSignWith;
 
-    private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
 
     private LoadingDialog loadingDialog;
@@ -75,7 +74,7 @@ public class PartnerRegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //init views
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
         loadingDialog = new LoadingDialog(requireActivity());
@@ -169,14 +168,14 @@ public class PartnerRegisterFragment extends Fragment {
 
             Map<String, Object> userMap = UserMapBuilder.createUserMap(
                     userId,
-                    "partner",
+                    MyUtils.PARTNER,
                     name,
                     email,
                     mobile,
                     selectDistrict,
                     location,
                     businessName,
-                    "partner",
+                    MyUtils.PAYMENT_RECEIVER_PARTNER,
                     device_token,
                     userSignWith,
                     timestamp,
@@ -192,7 +191,7 @@ public class PartnerRegisterFragment extends Fragment {
                         @Override
                         public void onSuccess() {
 
-                            prefHelper.remove("userSignWith");
+                            prefHelper.remove(MyUtils.USER_SIGN_IN_WITH);
                             loadingDialog.dismiss();
 
                             customNoticeSend(true, userId, userMap.get("district"));

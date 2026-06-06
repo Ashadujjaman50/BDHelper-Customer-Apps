@@ -40,6 +40,7 @@ import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
 import com.krishibarirangpur.bdhelper.utils.partner.BidPositionAndCount;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
@@ -198,7 +199,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
 
         if (orderTimestamp == 0) preloadingDialog.show();
 
-        orderListener = db.collection("orders")
+        orderListener = db.collection(FirebaseCollectionTable.ORDERS)
                 .document(orderId)
                 .addSnapshotListener((documentSnapshot, e) -> {
                     if (isAdded()) preloadingDialog.dismiss();
@@ -351,7 +352,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, "",this);
         binding.bidRV.setAdapter(bidCustomerAdapter);
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("orderInfo.orderId", orderId)        // Filter by orderId
                 .orderBy("bidInfo.bidAmount", Query.Direction.ASCENDING)
                 .addSnapshotListener((querySnapshot, error)->{
@@ -427,7 +428,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviewList);
         binding.reviewRv.setAdapter(reviewAdapter);
 
-        db.collection("reviews")
+        db.collection(FirebaseCollectionTable.REVIEWS)
                 .whereEqualTo("orderId", orderId)
                 .whereEqualTo("reviewerId", currentUserId)
                 .get()
@@ -469,7 +470,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
             binding.progressBar.setVisibility(View.VISIBLE);
 
             // 🔹 Generate unique reviewId
-            String reviewId = db.collection("reviews").document().getId();
+            String reviewId = db.collection(FirebaseCollectionTable.REVIEWS).document().getId();
 
             Map<String, Object> data = new HashMap<>();
             data.put("reviewId", reviewId);
@@ -491,7 +492,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
             }
 
             // 🔹 Save to Firestore with fixed ID
-            db.collection("reviews")
+            db.collection(FirebaseCollectionTable.REVIEWS)
                     .document(reviewId)
                     .set(data)
                     .addOnSuccessListener(aVoid -> {
@@ -521,7 +522,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         bidPartnerAdapter.setListener(this); // Set listener!
         binding.bidRV.setAdapter(bidPartnerAdapter);
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("orderInfo.orderId", orderId)        // Filter by orderId
                 .whereEqualTo("bidInfo.vendorId", currentUserId)   // Filter by current vendor
                 .addSnapshotListener((querySnapshot, error) -> {
@@ -570,9 +571,9 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         serviceModelArrayList = new ArrayList<>();
 
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(currentUserId)
-                .collection("services")
+                .collection(FirebaseCollectionTable.SERVICES)
                 .whereEqualTo("serviceStatus", "active")
                 .whereEqualTo("serviceVerified", "verified")
                 .whereEqualTo("subCategoryId", subCategoryId) // trim() ব্যবহার করা হলো
@@ -655,7 +656,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
         );
 
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .document(timestamp)
                 .set(bid)
                 .addOnSuccessListener(aVoid->{
@@ -665,7 +666,7 @@ public class BidSkilledLaborFragment extends Fragment implements BidCustomerAdap
                     refreshCountdown();
 
                     // বিড সাবমিট করার পর
-                    //Custome Notice Send
+                    //Custom Notice Send
                     String finalBidAmount = CommonClass.getRoundedTenPercentValue(bidAmount, PartnerCommissionUtils.COMMISSION_SKILLED_LABOUR);
                     BidActionManager.sendNotice(getContext(), user_type, userId, currentUserId, orderId, subCategoryId, finalBidAmount, MyUtils.NOTICE_TYPE_BID);
                     new PartnerAlertDialog.BidSummary(getContext(), bidAmount, finalBidAmount).show();

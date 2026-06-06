@@ -39,18 +39,6 @@ public class ServiceFormHelper {
         this.binding = binding;
     }
 
-    public void hideAllLayouts() {
-        binding.transportLL.setVisibility(View.GONE);
-        binding.lowBedLL.setVisibility(View.GONE);
-        binding.equipmentLL.setVisibility(View.GONE);
-        binding.harvesterLL.setVisibility(View.GONE);
-        binding.truckAndOthersLL.setVisibility(View.GONE);
-        binding.carAndMicroLL.setVisibility(View.GONE);
-        binding.ambulanceVanLL.setVisibility(View.GONE);
-        binding.homeOfficeShiftingLL.setVisibility(View.GONE);
-        binding.skilledLaborerLL.setVisibility(View.GONE);
-    }
-
     public void showLayoutByCategory(String categoryId) {
         if (categoryId == null) return;
         switch (categoryId) {

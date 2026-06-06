@@ -3,6 +3,7 @@ package com.krishibarirangpur.bdhelper.utils;
 import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class NoticeSend {
         hashMap.put("timestamp", timestamp);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Notice")
+        db.collection(FirebaseCollectionTable.NOTICE)
                 .document(timestamp)   // timestamp কে documentId হিসেবে ব্যবহার করছ
                 .set(hashMap)
                 .addOnSuccessListener(unused -> {

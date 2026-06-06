@@ -3,6 +3,7 @@ package com.krishibarirangpur.bdhelper.userActivity.partner;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +19,7 @@ import com.krishibarirangpur.bdhelper.utils.ServiceFormHelper;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
@@ -47,7 +49,6 @@ public class UpdateServiceActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_add_service_form);
 
@@ -70,9 +71,7 @@ public class UpdateServiceActivity extends BaseActivity {
 
         binding.nextMenuBtn.setText("Update Service");
 
-        if (categoryId != null && subCategoryId != null) {
-            initActivity();
-        }
+        initActivity();
 
         loadExistingData();
 
@@ -85,8 +84,8 @@ public class UpdateServiceActivity extends BaseActivity {
         loadingDialog.setMessage("ডেটা লোড হচ্ছে...");
         loadingDialog.show();
 
-        db.collection("users").document(firebaseUser.getUid())
-                .collection("services").document(serviceId)
+        db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
+                .collection(FirebaseCollectionTable.SERVICES).document(serviceId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     loadingDialog.dismiss();
@@ -158,11 +157,23 @@ public class UpdateServiceActivity extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void initActivity() {
         binding.transportNameTv.setText(subCategoryName);
-        formHelper.hideAllLayouts();
+        hideAllLayouts();
         formHelper.showLayoutByCategory(categoryId);
         formHelper.showLayoutBySubCategory(subCategoryId, subCategoryName);
         formHelper.setupSubCategoryUI(subCategoryId);
         initClickListeners();
+    }
+
+    private void hideAllLayouts() {
+        binding.transportLL.setVisibility(View.GONE);
+        binding.lowBedLL.setVisibility(View.GONE);
+        binding.equipmentLL.setVisibility(View.GONE);
+        binding.harvesterLL.setVisibility(View.GONE);
+        binding.truckAndOthersLL.setVisibility(View.GONE);
+        binding.carAndMicroLL.setVisibility(View.GONE);
+        binding.ambulanceVanLL.setVisibility(View.GONE);
+        binding.homeOfficeShiftingLL.setVisibility(View.GONE);
+        binding.skilledLaborerLL.setVisibility(View.GONE);
     }
 
     private void initClickListeners() {
@@ -275,16 +286,18 @@ public class UpdateServiceActivity extends BaseActivity {
             specsMap.put("registrationNumber", reg);
             specsMap.put("sizeAndCapacity", size);
             specsMap.put("categoryAndYear", year);
+
             serviceMap.put("specs", specsMap);
 
             Map<String, String> mediaMap = new HashMap<>();
             mediaMap.put("transportImage", serviceModel != null ? serviceModel.getSafeTransportImage() : "");
             mediaMap.put("brtaImage", serviceModel != null ? serviceModel.getSafeBrtaImage() : "");
             mediaMap.put("driverLicence", serviceModel != null ? serviceModel.getSafeDriverLicence() : "");
+
             serviceMap.put("media", mediaMap);
 
-            db.collection("users").document(firebaseUser.getUid())
-                    .collection("services").document(serviceId)
+            db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
+                    .collection(FirebaseCollectionTable.SERVICES).document(serviceId)
                     .set(serviceMap)
                     .addOnSuccessListener(unused -> {
                         loadingDialog.dismiss();
@@ -304,8 +317,8 @@ public class UpdateServiceActivity extends BaseActivity {
             specs.put("sizeAndCapacity", size);
             specs.put("categoryAndYear", year);
 
-            db.collection("users").document(firebaseUser.getUid())
-                    .collection("services").document(serviceId)
+            db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
+                    .collection(FirebaseCollectionTable.SERVICES).document(serviceId)
                     .update("specs", specs)
                     .addOnSuccessListener(unused -> {
                         loadingDialog.dismiss();

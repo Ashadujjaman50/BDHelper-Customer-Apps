@@ -27,7 +27,6 @@ import java.util.Map;
 
 public class PaymentHistoryFragment extends Fragment {
     private FragmentPaymentHistoryBinding binding;
-    private FirebaseFirestore db;
     private String userId;
     private FinanceManager financeManager;
     double partnerEarn;
@@ -50,7 +49,6 @@ public class PaymentHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //init views
-        db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getUid();
         financeManager = new FinanceManager();
 

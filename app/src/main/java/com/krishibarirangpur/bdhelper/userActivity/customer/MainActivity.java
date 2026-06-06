@@ -11,6 +11,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 
 import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
@@ -40,9 +43,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // থিম আগে সেট কর
-        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        // ✅ Handle Status Bar overlap and remove Bottom Gap
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainLayout, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
 
         // Show no internet dialog if offline
         if (!NetworkUtils.isNetworkAvailable(this)) {

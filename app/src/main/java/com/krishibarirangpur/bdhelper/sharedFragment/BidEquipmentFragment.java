@@ -36,6 +36,7 @@ import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.partner.BidActionManager;
 import com.krishibarirangpur.bdhelper.utils.partner.BidPositionAndCount;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
@@ -198,7 +199,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
 
         if (orderTimestamp == 0) preloadingDialog.show();
 
-        orderListener = db.collection("orders")
+        orderListener = db.collection(FirebaseCollectionTable.ORDERS)
                 .document(orderId)
                 .addSnapshotListener((documentSnapshot, e) -> {
                     if (isAdded()) preloadingDialog.dismiss();
@@ -303,7 +304,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         bidCustomerAdapter = new BidCustomerAdapter(getContext(), bidModelArrayList, landArea, this);
         binding.bidRV.setAdapter(bidCustomerAdapter);
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("orderInfo.orderId", orderId)
                 .orderBy("bidInfo.bidAmount", Query.Direction.ASCENDING)
                 .addSnapshotListener((querySnapshot, error)->{
@@ -464,7 +465,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), reviewList);
         binding.reviewRv.setAdapter(reviewAdapter);
 
-        db.collection("reviews")
+        db.collection(FirebaseCollectionTable.REVIEWS)
                 .whereEqualTo("orderId", orderId)
                 .whereEqualTo("reviewerId", currentUserId)
                 .get()
@@ -506,7 +507,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             binding.progressBar.setVisibility(View.VISIBLE);
 
             // 🔹 Generate unique reviewId
-            String reviewId = db.collection("reviews").document().getId();
+            String reviewId = db.collection(FirebaseCollectionTable.REVIEWS).document().getId();
 
             Map<String, Object> data = new HashMap<>();
             data.put("reviewId", reviewId);
@@ -528,7 +529,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
             }
 
             // 🔹 Save to Firestore with fixed ID
-            db.collection("reviews")
+            db.collection(FirebaseCollectionTable.REVIEWS)
                     .document(reviewId)
                     .set(data)
                     .addOnSuccessListener(aVoid -> {
@@ -558,7 +559,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         bidPartnerAdapter.setListener(this);
         binding.bidRV.setAdapter(bidPartnerAdapter);
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("orderInfo.orderId", orderId)
                 .whereEqualTo("bidInfo.vendorId", currentUserId)
                 .addSnapshotListener((querySnapshot, error) -> {
@@ -601,7 +602,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
         if (!isAdded()) return;
         
         serviceModelArrayList = new ArrayList<>();
-        db.collection("users").document(currentUserId).collection("services")
+        db.collection(FirebaseCollectionTable.USERS).document(currentUserId).collection("services")
                 .whereEqualTo("serviceStatus", "active")
                 .whereEqualTo("serviceVerified", "verified")
                 .whereEqualTo("subCategoryId", subCategoryId)
@@ -663,7 +664,7 @@ public class BidEquipmentFragment extends Fragment implements BidCustomerAdapter
                 subCategoryId
         );
 
-        db.collection("bidForOrder").document(timestamp).set(bid)
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER).document(timestamp).set(bid)
                 .addOnSuccessListener(aVoid->{
                     if (!isAdded()) return;
                     

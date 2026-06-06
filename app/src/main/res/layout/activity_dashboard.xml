@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_layout"
         android:background="@color/bg_color"
         style="@style/fontStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".userActivity.partner.DashboardActivity">
 
         <LinearLayout
@@ -26,7 +26,7 @@
                 android:id="@+id/customBottomBar2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/windowBackground"
+                android:background="@color/bg_color"
                 android:theme="@style/Theme.BDHelper"
                 android:elevation="8dp"
                 app:elevation="8dp"

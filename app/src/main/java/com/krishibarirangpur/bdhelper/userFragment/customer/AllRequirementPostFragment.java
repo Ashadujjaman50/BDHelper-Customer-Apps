@@ -19,6 +19,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.customer.OrderAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAllRequirementPostBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
@@ -104,7 +105,7 @@ public class AllRequirementPostFragment extends Fragment {
         binding.noOneBidYet.setVisibility(View.GONE);
         binding.allRentRecyclerView.setVisibility(View.GONE);
 
-        db.collection("orders")
+        db.collection(FirebaseCollectionTable.ORDERS)
                 .whereEqualTo("orderInfo.uid", currentUserId) // ✅ শুধু current user এর order
                 .addSnapshotListener((querySnapshot, error) -> {
                     // 🔹 Loading শেষ

@@ -10,6 +10,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 
 import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
 import com.krishibarirangpur.bdhelper.R;
@@ -20,11 +23,11 @@ import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.CacheManager;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.network.NetworkUtils;
 import com.krishibarirangpur.bdhelper.utils.network.NoInternetDialog;
 import com.krishibarirangpur.bdhelper.utils.network.NotificationPermissionHelper;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.MainFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.MoreFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.navBarFragment.RentFragment;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -43,9 +47,15 @@ public class DashboardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+        // ✅ Handle Status Bar overlap and remove Bottom Gap
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainLayout, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
 
         if (!NetworkUtils.isNetworkAvailable(this)) {
             NoInternetDialog internetDialog = new NoInternetDialog();
@@ -58,7 +68,7 @@ public class DashboardActivity extends BaseActivity {
 
         FCMTokenManager.updateFCMToken();
 
-        SubscribeNotification.handleUserSubscribe("partner");
+        SubscribeNotification.handleUserSubscribe(MyUtils.PARTNER);
 
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
@@ -91,7 +101,7 @@ public class DashboardActivity extends BaseActivity {
             } else if (itemId == R.id.nav_help) {
                 // HelpFragment এ data পাঠানোর জন্য bundle তৈরি করো
                 Bundle bundle = new Bundle();
-                bundle.putString("user_type", "partner");
+                bundle.putString(MyUtils.USER_TYPE, MyUtils.PARTNER);
 
                 HelpFragment helpFragment = new HelpFragment();
                 helpFragment.setArguments(bundle);
@@ -128,7 +138,7 @@ public class DashboardActivity extends BaseActivity {
         long todayMillis = System.currentTimeMillis();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("bidForOrder")
+        db.collection(FirebaseCollectionTable.BID_FOR_ORDER)
                 .whereEqualTo("bidInfo.vendorId", vendorId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {

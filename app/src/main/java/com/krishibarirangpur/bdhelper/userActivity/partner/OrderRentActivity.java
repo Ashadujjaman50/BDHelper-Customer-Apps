@@ -15,6 +15,7 @@ import com.krishibarirangpur.bdhelper.adapter.ViewPagerOrderAdapter;
 import com.krishibarirangpur.bdhelper.databinding.ActivityOrderRentBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class OrderRentActivity extends BaseActivity {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId == null) return;
 
-        db.collection("users").document(userId).collection("services")
+        db.collection(FirebaseCollectionTable.USERS).document(userId).collection(FirebaseCollectionTable.SERVICES)
                 .whereEqualTo("serviceVerified", "verified")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -58,9 +59,8 @@ public class OrderRentActivity extends BaseActivity {
         binding.bidViewPager.setSaveEnabled(false);
 
         // TabLayout with ViewPager2 linking
-        new TabLayoutMediator(binding.bidTabLayout, binding.bidViewPager, (tab, position) -> {
-            tab.setText(position == 0 ? getString(R.string.your_order_rent) : getString(R.string.all_order_rent));
-        }).attach();
+        new TabLayoutMediator(binding.bidTabLayout, binding.bidViewPager, (tab, position) ->
+                tab.setText(position == 0 ? getString(R.string.your_order_rent) : getString(R.string.all_order_rent))).attach();
 
         setupTabStyle();
 

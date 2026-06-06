@@ -10,6 +10,7 @@ import com.krishibarirangpur.bdhelper.databinding.ActivitySettingBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.userFragment.partner.SettingFragment;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 public class SettingActivity extends BaseActivity {
 
@@ -21,8 +22,8 @@ public class SettingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
 
-        String userType = getIntent().getStringExtra("user_type");
-        if (userType != null && userType.equals("partner")) {
+        String userType = getIntent().getStringExtra(MyUtils.USER_TYPE);
+        if (userType != null && userType.equals(MyUtils.PARTNER)) {
             loadFragment(new SettingFragment());
         }
 

@@ -63,13 +63,13 @@ public class MyUtils {
     public static final String ACTIVITY_TYPE = "activity_type";
     public static final String PAYMENT_METHOD_FRAG = "payment_method";
     public static final String PAYMENT_HISTORY_FRAG = "payment_history";
+    public static final String PAYMENT_RECEIVER_PARTNER = "partner";
 
     //Category Type
     public static final String CATEGORY_TYPE = "category_type";
     public static final String HOME_CATEGORY_TRENDING = "Trending";
     public static final String HOME_CATEGORY_POPULAR = "Popular";
     public static final String HOME_CATEGORY_RECOMMEND = "Recommend";
-
 
 
 

@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class ReferralManager {
     private void generateUniqueReferralCode(Map<String, Object> userMap, Runnable onSuccess) {
         String code = (String) userMap.get("referralCode");
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .whereEqualTo("referralCode", code)
                 .get()
                 .addOnSuccessListener(snapshot -> {
@@ -59,7 +60,7 @@ public class ReferralManager {
     // 💾 Save user
     private void saveUser(String newUserId, Map<String, Object> userMap, String inputReferralCode, Callback callback) {
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(newUserId)
                 .set(userMap)
                 .addOnSuccessListener(unused -> {
@@ -77,7 +78,7 @@ public class ReferralManager {
     // 🎁 Referral logic separated
     private void handleReferralBonus(String newUserId, String referralCode, Callback callback) {
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .whereEqualTo("referralCode", referralCode)
                 .get()
                 .addOnSuccessListener(query -> {
@@ -93,7 +94,7 @@ public class ReferralManager {
                     double currentBonus = getSafeDouble(referrer, "bonusBalance");
 
                     // 🎁 Update new user
-                    db.collection("users").document(newUserId)
+                    db.collection(FirebaseCollectionTable.USERS).document(newUserId)
                             .update(
                                     "referredBy", referralCode,
                                     "bonusBalance", REF_BONUS
@@ -120,7 +121,7 @@ public class ReferralManager {
         map.put("bonusGiven", REF_BONUS);
         map.put("createdAt", FieldValue.serverTimestamp());
 
-        db.collection("referrals").add(map);
+        db.collection(FirebaseCollectionTable.REFERRALS).add(map);
     }
 
     // 🛡 Safe double

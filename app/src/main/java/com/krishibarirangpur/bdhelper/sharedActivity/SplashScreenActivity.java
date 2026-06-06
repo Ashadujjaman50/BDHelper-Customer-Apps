@@ -28,6 +28,7 @@ import com.krishibarirangpur.bdhelper.introScreen.IntroActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.DashboardActivity;
 import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.utils.authWidget.UserAction;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
@@ -46,7 +47,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
-        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
 
@@ -89,7 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void proceedToNextScreen() {
         if (mAuth.getCurrentUser() != null) {
-            new Handler().postDelayed(this::gotoNextActivity, 2500);
+            new Handler().postDelayed(this::gotoNextActivity, 1000);
         } else {
             new Handler().postDelayed(() -> {
                 SharedPrefHelper prefHelper = new SharedPrefHelper(this);
@@ -102,7 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     intent = new Intent(this, LoginActivity.class);
                 }
                 startNextActivity(intent);
-            }, 3000);
+            }, 1500);
         }
     }
 
@@ -113,7 +113,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             return;
         }
 
-        db.collection("users").document(currentUser.getUid()).get()
+        db.collection(FirebaseCollectionTable.USERS).document(currentUser.getUid()).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();

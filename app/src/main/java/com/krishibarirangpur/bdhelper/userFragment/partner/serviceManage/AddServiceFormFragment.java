@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAddServiceFormBinding;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.ServiceDocumentActivity;
@@ -112,19 +113,27 @@ public class AddServiceFormFragment extends Fragment {
         binding.nextMenuBtn.setOnClickListener(v -> checkAndNextAction());
     }
 
-
-
-
     @SuppressLint("SetTextI18n")
     private void initActivity() {
         binding.transportNameTv.setText(subCategoryName);
-        formHelper.hideAllLayouts();
+        hideAllLayouts();
         formHelper.showLayoutByCategory(categoryId);
         formHelper.showLayoutBySubCategory(subCategoryId, subCategoryName);
         formHelper.setupSubCategoryUI(subCategoryId);
         initClickListeners();
     }
 
+    private void hideAllLayouts() {
+        binding.transportLL.setVisibility(View.GONE);
+        binding.lowBedLL.setVisibility(View.GONE);
+        binding.equipmentLL.setVisibility(View.GONE);
+        binding.harvesterLL.setVisibility(View.GONE);
+        binding.truckAndOthersLL.setVisibility(View.GONE);
+        binding.carAndMicroLL.setVisibility(View.GONE);
+        binding.ambulanceVanLL.setVisibility(View.GONE);
+        binding.homeOfficeShiftingLL.setVisibility(View.GONE);
+        binding.skilledLaborerLL.setVisibility(View.GONE);
+    }
     private void initClickListeners() {
         binding.metroNameEt.setOnClickListener(v -> formHelper.popupMetroList((item, position) -> selectedMetro = item));
         binding.serialCategoryEt.setOnClickListener(v -> formHelper.popupSerialCategory((item, position) -> selectSerial = item));
@@ -326,10 +335,9 @@ public class AddServiceFormFragment extends Fragment {
         serviceMap.put("media", mediaMap);
 
 
-
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
-                .collection("services")
+                .collection(FirebaseCollectionTable.SERVICES)
                 .document(serviceId)
                 .set(serviceMap)
                 .addOnSuccessListener(unused -> {

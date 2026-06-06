@@ -19,6 +19,7 @@ import com.krishibarirangpur.bdhelper.model.BidModel;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.NoticeSend;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
@@ -38,7 +39,7 @@ public class BidActionManager {
     public static void deleteBid(Context context, String bidId, LoadingDialog loadingDialog) {
         DueWarningAlertDialog.showDeleteBidDialog(context, () -> {
             loadingDialog.show();
-            FirebaseFirestore.getInstance().collection("bidForOrder")
+            FirebaseFirestore.getInstance().collection(FirebaseCollectionTable.BID_FOR_ORDER)
                     .document(bidId)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
@@ -85,7 +86,7 @@ public class BidActionManager {
                     finalBidAmount = CommonClass.getRoundedTenPercentValue(bidModel.getBidInfo().getBidAmount(), commissionPercent);
                 }
 
-                db.collection("bidForOrder").document(bidId)
+                db.collection(FirebaseCollectionTable.BID_FOR_ORDER).document(bidId)
                         .update("bidInfo.status", "confirmed")
                         .addOnSuccessListener(aVoid -> {
                             Map<String, Object> update = new HashMap<>();

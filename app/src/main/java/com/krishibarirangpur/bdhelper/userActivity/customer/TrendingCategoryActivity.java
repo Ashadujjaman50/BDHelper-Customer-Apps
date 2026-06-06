@@ -42,10 +42,10 @@ public class TrendingCategoryActivity extends BaseActivity {
         Intent intent = getIntent();
         categoryType = intent.getStringExtra("categoryType");
 
-        if (categoryType.equals("Trending")){
+        if (MyUtils.HOME_CATEGORY_TRENDING.equals(categoryType)){
             binding.titleTv.setText(getString(R.string.trending));
         }
-        else if (categoryType.equals("Popular")){
+        else if (MyUtils.HOME_CATEGORY_POPULAR.equals(categoryType)){
             binding.titleTv.setText(getString(R.string.popular));
         }
         else {
@@ -134,10 +134,10 @@ public class TrendingCategoryActivity extends BaseActivity {
 
         // প্রথম ৫–৬ টা item নাও (random count করতে চাইলে 5 + random.nextInt(2))
         int count;
-        if (categoryType.equals("Trending")){
+        if (MyUtils.HOME_CATEGORY_TRENDING.equals(categoryType)){
             count = 7 + (int)(Math.random() * 2); // ৭ বা ৮ item হবে
         }
-        else if (categoryType.equals("Popular")){
+        else if (MyUtils.HOME_CATEGORY_POPULAR.equals(categoryType)){
             count = 6 + (int)(Math.random() * 2); // ৬ বা ৭ item হবে
         }
         else {

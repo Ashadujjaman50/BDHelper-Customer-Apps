@@ -21,6 +21,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityServiceDocumentBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.uploadController.ImageUploadHelper;
@@ -137,9 +138,9 @@ public class ServiceDocumentActivity extends BaseActivity {
         // মূল ম্যাপে media যুক্ত করা
         serviceMap.put("media", mediaMap);
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(firebaseUser.getUid())
-                .collection("services")
+                .collection(FirebaseCollectionTable.SERVICES)
                 .document(serviceId)
                 .set(serviceMap, SetOptions.merge())
                 .addOnSuccessListener(unused -> {

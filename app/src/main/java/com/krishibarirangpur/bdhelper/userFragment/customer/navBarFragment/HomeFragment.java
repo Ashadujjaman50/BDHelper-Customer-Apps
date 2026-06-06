@@ -20,6 +20,7 @@ import com.krishibarirangpur.bdhelper.sharedActivity.PromoActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentHomeBinding;
 import com.krishibarirangpur.bdhelper.model.ModelNotice;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.customer.AddressActivity;
@@ -189,7 +190,7 @@ public class HomeFragment extends Fragment {
         String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         DatabaseReference checkNoticeRef = FirebaseDatabase.getInstance()
-                .getReference("NoticeCheck")
+                .getReference(FirebaseCollectionTable.NOTICE_CHECK)
                 .child(currentUserId);
 
         // 🔹 প্রথমে Realtime DB থেকে checkNotice নেবে
@@ -205,7 +206,7 @@ public class HomeFragment extends Fragment {
                     }
 
                     noticeListener = FirebaseFirestore.getInstance()
-                            .collection("Notice")
+                            .collection(FirebaseCollectionTable.NOTICE)
                             .addSnapshotListener((queryDocumentSnapshots, e) -> {
                                 if (e != null) {
                                     Log.e("FirestoreError", "Error fetching notices", e);

@@ -5,11 +5,11 @@
 
     <!-- Main content should be wrapped in one layout (CoordinatorLayout) -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_layout"
         android:background="@color/bg_color"
         style="@style/fontStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".userActivity.customer.MainActivity">
 
         <LinearLayout
@@ -27,7 +27,7 @@
                 android:id="@+id/customBottomBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/windowBackground"
+                android:background="@color/bg_color"
                 android:theme="@style/Theme.BDHelper"
                 android:elevation="8dp"
                 app:elevation="8dp"

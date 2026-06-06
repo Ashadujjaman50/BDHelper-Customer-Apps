@@ -12,6 +12,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.adapter.shared.SliderAdapterAuto;
 import com.krishibarirangpur.bdhelper.model.SlideImageModel;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
@@ -33,7 +34,7 @@ public class BannerSliderManager {
             String audienceType,
             String placementType
     ) {
-        return db.collection("bannersSlide")
+        return db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
                 .orderBy("order", Query.Direction.DESCENDING)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     if (e != null) {
@@ -89,7 +90,7 @@ public class BannerSliderManager {
         sliderView.startAutoCycle();
         sliderView.setAutoCycle(true);
 
-        return db.collection("bannersSlide")
+        return db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
                 .orderBy("order", Query.Direction.DESCENDING)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
 

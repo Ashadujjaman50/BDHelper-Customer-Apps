@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
@@ -136,7 +137,7 @@ public class RentFragment extends Fragment {
         String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
         DatabaseReference checkNoticeRef = FirebaseDatabase.getInstance()
-                .getReference("NoticeCheck")
+                .getReference(FirebaseCollectionTable.NOTICE_CHECK)
                 .child(currentUserId);
 
         // 🔹 প্রথমে Realtime DB থেকে checkNotice নেবে
@@ -152,7 +153,7 @@ public class RentFragment extends Fragment {
                     }
 
                     noticeListener = FirebaseFirestore.getInstance()
-                            .collection("Notice")
+                            .collection(FirebaseCollectionTable.NOTICE)
                             .addSnapshotListener((queryDocumentSnapshots, e) -> {
                                 if (e != null) {
                                     Log.e("FirestoreError", "Error fetching notices", e);

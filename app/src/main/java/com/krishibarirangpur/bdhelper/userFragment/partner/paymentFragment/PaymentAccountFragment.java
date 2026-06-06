@@ -26,6 +26,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.partner.AccountAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentAccountBinding;
 import com.krishibarirangpur.bdhelper.model.AccountModel;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -225,9 +226,9 @@ public class PaymentAccountFragment extends Fragment {
 
             if (setPrimary.equals("Default")) {
                 // আগে অন্য Default কে "No" করে দিব
-                db.collection("users")
+                db.collection(FirebaseCollectionTable.USERS)
                         .document(userId)
-                        .collection("accounts")
+                        .collection(FirebaseCollectionTable.ACCOUNTS)
                         .whereEqualTo("isPrimary", "Default")
                         .get()
                         .addOnSuccessListener(querySnapshot -> {
@@ -241,9 +242,9 @@ public class PaymentAccountFragment extends Fragment {
                             }
 
                             // এবার নিজের টা update করবে
-                            DocumentReference currentDocRef = db.collection("users")
+                            DocumentReference currentDocRef = db.collection(FirebaseCollectionTable.USERS)
                                     .document(userId)
-                                    .collection("accounts")
+                                    .collection(FirebaseCollectionTable.ACCOUNTS)
                                     .document(account.getAccountId());
 
                             batch.update(currentDocRef, updateMap);
@@ -261,9 +262,9 @@ public class PaymentAccountFragment extends Fragment {
             }
             else {
                 // যদি Default না হয় তবে সরাসরি update হবে
-                db.collection("users")
+                db.collection(FirebaseCollectionTable.USERS)
                         .document(userId)
-                        .collection("accounts")
+                        .collection(FirebaseCollectionTable.ACCOUNTS)
                         .document(account.getAccountId())
                         .update(updateMap)
                         .addOnSuccessListener(unused -> {
@@ -306,9 +307,9 @@ public class PaymentAccountFragment extends Fragment {
                 AccountModel accountToDelete = accountList.get(position);
 
                 // Correct Firestore reference
-                DocumentReference docToDeleteRef = db.collection("users")
+                DocumentReference docToDeleteRef = db.collection(FirebaseCollectionTable.USERS)
                         .document(userId)
-                        .collection("accounts")
+                        .collection(FirebaseCollectionTable.ACCOUNTS)
                         .document(accountToDelete.getAccountId());
 
                 // Check if the account to be deleted is the default one
@@ -324,9 +325,9 @@ public class PaymentAccountFragment extends Fragment {
 
                     if (newDefaultAccount != null) {
                         // Another account exists. Set it as default, then delete the old one.
-                        DocumentReference newDefaultRef = db.collection("users")
+                        DocumentReference newDefaultRef = db.collection(FirebaseCollectionTable.USERS)
                                 .document(userId)
-                                .collection("accounts")
+                                .collection(FirebaseCollectionTable.ACCOUNTS)
                                 .document(newDefaultAccount.getAccountId());
 
                         WriteBatch batch = db.batch();
@@ -391,9 +392,9 @@ public class PaymentAccountFragment extends Fragment {
             binding.paymentAccountRv.setAdapter(adapter);
         }
 
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
-                .collection("accounts")
+                .collection(FirebaseCollectionTable.ACCOUNTS)
                 .orderBy("isPrimary", Query.Direction.ASCENDING) // যদি field থাকে
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -496,9 +497,9 @@ public class PaymentAccountFragment extends Fragment {
 
 
             // Create unique document ID
-            String docId = db.collection("users")
+            String docId = db.collection(FirebaseCollectionTable.USERS)
                     .document(userId)
-                    .collection("accounts")
+                    .collection(FirebaseCollectionTable.ACCOUNTS)
                     .document()
                     .getId();
 
@@ -516,9 +517,9 @@ public class PaymentAccountFragment extends Fragment {
                 WriteBatch batch = db.batch();
 
                 // Step 1: পুরোনো Default গুলোকে "No" করে দাও
-                db.collection("users")
+                db.collection(FirebaseCollectionTable.USERS)
                         .document(userId)
-                        .collection("accounts")
+                        .collection(FirebaseCollectionTable.ACCOUNTS)
                         .whereEqualTo("isPrimary", "Default")
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -527,9 +528,9 @@ public class PaymentAccountFragment extends Fragment {
                             }
 
                             // Step 2: নতুন অ্যাকাউন্ট add করো
-                            DocumentReference newDocRef = db.collection("users")
+                            DocumentReference newDocRef = db.collection(FirebaseCollectionTable.USERS)
                                     .document(userId)
-                                    .collection("accounts")
+                                    .collection(FirebaseCollectionTable.ACCOUNTS)
                                     .document(docId);
                             batch.set(newDocRef, accountMap, SetOptions.merge());
 
@@ -551,11 +552,12 @@ public class PaymentAccountFragment extends Fragment {
                             MyToast.showShort(requireContext(), "Failed to check existing primary: " + e.getMessage());
                         });
 
-            } else {
+            }
+            else {
                 // সরাসরি Save করো
-                db.collection("users")
+                db.collection(FirebaseCollectionTable.USERS)
                         .document(userId)
-                        .collection("accounts")
+                        .collection(FirebaseCollectionTable.ACCOUNTS)
                         .document(docId)
                         .set(accountMap, SetOptions.merge())
                         .addOnSuccessListener(unused -> {
