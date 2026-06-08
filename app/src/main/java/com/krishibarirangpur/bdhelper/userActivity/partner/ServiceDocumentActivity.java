@@ -125,7 +125,7 @@ public class ServiceDocumentActivity extends BaseActivity {
                     @Override
                     public void onUploadFailure(String errorMessage) {
                         loadingDialog.dismiss();
-                        MyToast.showShort(ServiceDocumentActivity.this, "Upload Failed: " + errorMessage);
+                        toastMessage( "Upload Failed: " + errorMessage);
                     }
                 });
     }
@@ -145,12 +145,12 @@ public class ServiceDocumentActivity extends BaseActivity {
                 .set(serviceMap, SetOptions.merge())
                 .addOnSuccessListener(unused -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(this, "Service Submitted Successfully!");
+                    toastMessage( "Service Submitted Successfully!");
                     finishOnBack();
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(this, "Firestore Error: " + e.getMessage());
+                    toastMessage( "Firestore Error: " + e.getMessage());
                 });
     }
 
@@ -196,15 +196,15 @@ public class ServiceDocumentActivity extends BaseActivity {
 
     private boolean validateImages() {
         if (!hiddenFields.contains(binding.brtaCv) && brtaImageUri == null) {
-            MyToast.showShort(this, "দয়া করে BRTA ডকুমেন্ট আপলোড করুন");
+            toastMessage( "দয়া করে BRTA ডকুমেন্ট আপলোড করুন");
             return false;
         }
         if (!hiddenFields.contains(binding.transportCv) && transportImageUri == null) {
-            MyToast.showShort(this, "দয়া করে " + subCategoryName + " ডকুমেন্ট আপলোড করুন");
+            toastMessage( "দয়া করে " + subCategoryName + " ডকুমেন্ট আপলোড করুন");
             return false;
         }
         if (!hiddenFields.contains(binding.drivingLicenceCv) && drivingLicenceImageUri == null) {
-            MyToast.showShort(this, "দয়া করে ড্রাইভিং লাইসেন্সের আপলোড করুন");
+            toastMessage("দয়া করে ড্রাইভিং লাইসেন্সের আপলোড করুন");
             return false;
         }
         return true;
@@ -219,7 +219,7 @@ public class ServiceDocumentActivity extends BaseActivity {
                         handleCropSuccess(croppedUri);
                     }
                 } else if (result.getResultCode() == RESULT_CANCELED) {
-                    MyToast.showShort(this, "Crop cancelled");
+                    toastMessage( "Crop cancelled");
                 }
             }
     );
@@ -275,7 +275,11 @@ public class ServiceDocumentActivity extends BaseActivity {
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
                 if (isGranted) imageManager.openCamera(cameraLauncher);
-                else MyToast.showShort(this, "Camera permission denied");
+                else toastMessage( "Camera permission denied");
             }
     );
+
+    private void toastMessage(String msg){
+        MyToast.showShort(this, msg);
+    }
 }

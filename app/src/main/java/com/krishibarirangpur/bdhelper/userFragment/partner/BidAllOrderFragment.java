@@ -104,11 +104,12 @@ public class BidAllOrderFragment extends Fragment {
     private void fetchAllOrders() {
         long currentMillis = System.currentTimeMillis();
 
-        // Use currentMillis instead of todayStartMillis to filter out past orders
+        // Limit(20) যোগ করা হয়েছে যাতে একবারে অনেক রিড না হয়
         Query query = db.collection("orders")
                 .whereIn("orderInfo.status", Arrays.asList("pending", "process"))
                 .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(currentMillis))
-                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING);
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING)
+                .limit(20);
 
         orderListener = query.addSnapshotListener((snapshots, error) -> {
             if (error != null) {

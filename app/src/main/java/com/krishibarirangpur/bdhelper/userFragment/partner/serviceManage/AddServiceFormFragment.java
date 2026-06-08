@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAddServiceFormBinding;
+import com.krishibarirangpur.bdhelper.utils.firebase.ServiceMapHelper;
 import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
@@ -38,7 +39,6 @@ public class AddServiceFormFragment extends Fragment {
 
     private FragmentAddServiceFormBinding binding;
 
-    private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     FirebaseFirestore db;
 
@@ -73,7 +73,7 @@ public class AddServiceFormFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_service_form, container, false);
@@ -85,7 +85,7 @@ public class AddServiceFormFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //init views
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
@@ -306,34 +306,14 @@ public class AddServiceFormFragment extends Fragment {
         String serviceId = "" + System.currentTimeMillis();
         String userId = firebaseUser.getUid();
 
-        // ১. মূল সার্ভিস ম্যাপ তৈরি
-        Map<String, Object> serviceMap = new HashMap<>();
-        serviceMap.put("serviceId", serviceId);
-        serviceMap.put("categoryId", categoryId);
-        serviceMap.put("subCategoryId", subCategoryId);
-        serviceMap.put("subCategoryName", subCategoryName);
-        serviceMap.put("serviceStatus", "Inactive"); // অথবা "active"
-        serviceMap.put("serviceVerified", "pending");    // কুয়েরি সহজ করার জন্য String "pending" এর বদলে boolean false দেওয়া ভালো
+        // ১. Specs ম্যাপ তৈরি
+        Map<String, String> specsMap = ServiceMapHelper.createSpecsMap(serviceModelType, serviceRegistrationNumber, serviceSizeAndCapacity, serviceCategoryAndYear);
 
-        // ২. ডাইনামিক স্পেসিফিকেশন (specs) ম্যাপ তৈরি
-        Map<String, String> specsMap = new HashMap<>();
-        specsMap.put("brandOrModel", serviceModelType);       // যেমন: সোনালিকা, Tata, X Corolla
-        specsMap.put("registrationNumber", serviceRegistrationNumber); // গাড়ির নাম্বার প্লেট বা কাজের বিবরণ
-        specsMap.put("sizeAndCapacity", serviceSizeAndCapacity);     // যেমন: ১৪ ফিট, ৬০ অশ্ব ক্ষমতা, ৮ সারির যন্ত্র
-        specsMap.put("categoryAndYear", serviceCategoryAndYear);   // কার বা মাইক্রোবাসের ম্যানুফ্যাকচারিং সাল (প্রয়োজন হলে)
+        // ২. Media ম্যাপ তৈরি (নতুন সার্ভিসের জন্য খালি)
+        Map<String, String> mediaMap = ServiceMapHelper.createMediaMap("", "", "");
 
-        // মূল ম্যাপে specs যুক্ত করা
-        serviceMap.put("specs", specsMap);
-
-        // ৩. মিডিয়া ফাইল (media) ম্যাপ তৈরি
-        Map<String, String> mediaMap = new HashMap<>();
-        mediaMap.put("transportImage", "");
-        mediaMap.put("brtaImage", "");
-        mediaMap.put("driverLicence", "");
-
-        // মূল ম্যাপে media যুক্ত করা
-        serviceMap.put("media", mediaMap);
-
+        // ৩. সম্পূর্ণ সার্ভিস ম্যাপ তৈরি
+        Map<String, Object> serviceMap = ServiceMapHelper.createFullServiceMap(serviceId, categoryId, subCategoryId, subCategoryName, "Inactive", "pending", specsMap, mediaMap);
 
         db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)

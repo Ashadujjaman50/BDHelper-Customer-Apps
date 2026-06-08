@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityNidphotoBinding;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.utils.uploadController.ImageUploadHelper;
@@ -98,9 +99,9 @@ public class NIDPhotoActivity extends BaseActivity {
     }
 
     private void loadCurrentUserDocument() {
-        db.collection("users")
+        db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
-                .collection("Document")
+                .collection(FirebaseCollectionTable.DOCUMENT)
                 .document("info")
                 .addSnapshotListener((documentSnapshot, e) -> {
                     if (e != null) {
@@ -198,23 +199,21 @@ public class NIDPhotoActivity extends BaseActivity {
         }
 
         Tasks.whenAllComplete(uploadTasks)
-                .addOnSuccessListener(tasks -> {
-                    db.collection("users")
-                            .document(userId)
-                            .collection("Document")
-                            .document("info")
-                            .set(docLinks, SetOptions.merge())
-                            .addOnSuccessListener(aVoid -> {
-                                loadingDialog.dismiss();
-                                fontImageUrl = null;
-                                backImageUrl = null;
-                                Toast.makeText(this, "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                loadingDialog.dismiss();
-                                Toast.makeText(this, "সংরক্ষণ ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
-                })
+                .addOnSuccessListener(tasks -> db.collection(FirebaseCollectionTable.USERS)
+                        .document(userId)
+                        .collection(FirebaseCollectionTable.DOCUMENT)
+                        .document("info")
+                        .set(docLinks, SetOptions.merge())
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            fontImageUrl = null;
+                            backImageUrl = null;
+                            Toast.makeText(this, "ছবি আপলোড এবং সংরক্ষণ সফল হয়েছে!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Toast.makeText(this, "সংরক্ষণ ব্যর্থ: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }))
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
                     ToastMessage( "ছবি আপলোড ব্যর্থ: " + e.getMessage());

@@ -29,8 +29,6 @@ public class HelpFragment extends Fragment {
 
     String userType;
 
-    ListenerRegistration registration;
-
     public HelpFragment() {
         // Required empty public constructor
     }
@@ -100,7 +98,7 @@ public class HelpFragment extends Fragment {
     private void fetchSlides(View view, String audienceType) {
         SliderView sliderView = view.findViewById(R.id.imageSlider);
         BannerSliderManager manager = new BannerSliderManager();
-        registration = manager.loadAutoSlider(
+        manager.loadAutoSlider(
                 getContext(),
                 sliderView,
                 audienceType,
@@ -110,9 +108,6 @@ public class HelpFragment extends Fragment {
 
     public void onDestroy() {
         super.onDestroy();
-        if (registration != null) {
-            registration.remove(); // 🔹 Firestore Listener remove করতে হবে
-        }
     }
 
 }

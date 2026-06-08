@@ -14,6 +14,7 @@ import com.krishibarirangpur.bdhelper.adapter.shared.AdapterChat;
 import com.krishibarirangpur.bdhelper.databinding.ActivityChatBinding;
 import com.krishibarirangpur.bdhelper.model.ModelChat;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,10 +54,7 @@ public class ChatActivity extends BaseActivity {
 
         currentUid = FirebaseAuth.getInstance().getUid();
 
-
         binding.backBtn.setOnClickListener(v -> finishOnBack());
-
-
 
         //readMessage
         readMessage();
@@ -96,7 +94,7 @@ public class ChatActivity extends BaseActivity {
         hashMap.put("userType", "customer");
 
         // Chats node এ push করো
-        ref.child("Chats").push().setValue(hashMap)
+        ref.child(FirebaseCollectionTable.CHATS).push().setValue(hashMap)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Chat", "Message sent!");
                     sendPushNotification(receiverUid, message);
@@ -104,7 +102,7 @@ public class ChatActivity extends BaseActivity {
                 .addOnFailureListener(e -> Log.e("Chat", "Error: " + e.getMessage()));
 
         // ChatList update করো (only once check)
-        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("ChatList")
+        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference(FirebaseCollectionTable.CHAT_LIST)
                 .child(currentUid)
                 .child(receiverUid);
         chatRef1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,7 +119,7 @@ public class ChatActivity extends BaseActivity {
             }
         });
 
-        DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("ChatList")
+        DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference(FirebaseCollectionTable.CHAT_LIST)
                 .child(receiverUid)
                 .child(currentUid);
         chatRef2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -141,7 +139,7 @@ public class ChatActivity extends BaseActivity {
 
     private void sendPushNotification(String receiverUid, String message) {
         FirebaseFirestore.getInstance()
-                .collection("users")
+                .collection(FirebaseCollectionTable.USERS)
                 .document(receiverUid)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -156,13 +154,12 @@ public class ChatActivity extends BaseActivity {
                 .addOnFailureListener(e -> Log.e("FCM", "❌ Failed to fetch token", e));
     }
 
-
     private void readMessage() {
         chatList = new ArrayList<>();
         adapterChat = new AdapterChat(ChatActivity.this, chatList, MyUtils.admin_profile_photo_url);
         binding.chatRv.setAdapter(adapterChat);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(FirebaseCollectionTable.USERS);
         ref.keepSynced(true);
         ref.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -189,13 +186,14 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void seenMessage() {
-        userRefForSeen =FirebaseDatabase.getInstance().getReference("Chats");
+        userRefForSeen =FirebaseDatabase.getInstance().getReference(FirebaseCollectionTable.USERS);
         seenListener = userRefForSeen.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds: snapshot.getChildren()){
                     ModelChat chat = ds.getValue(ModelChat.class);
-                    if (chat != null && chat.getReceiver() != null && chat.getSender() != null && chat.getReceiver().equals(currentUid) && chat.getSender().equals(receiverUid)){
+                    if (chat != null && chat.getReceiver() != null && chat.getSender() != null &&
+                            chat.getReceiver().equals(currentUid) && chat.getSender().equals(receiverUid)){
                         HashMap<String, Object> hasSeenMap = new HashMap<>();
                         hasSeenMap.put("isSeen","true");
                         ds.getRef().updateChildren(hasSeenMap);

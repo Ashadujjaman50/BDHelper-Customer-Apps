@@ -28,28 +28,22 @@ public class BannerSliderManager {
     }
 
 
-    // 🔹 For ImageSlider (Home Screens) - Updated for Realtime & Cache
-    public ListenerRegistration loadImageSlider(
+    // 🔹 For ImageSlider (Home Screens) - Optimized with Server-side filtering
+    public void loadImageSlider(
             ImageSlider imageSlider,
             String audienceType,
             String placementType
     ) {
-        return db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
-                .orderBy("order", Query.Direction.DESCENDING)
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                    if (e != null) {
-                        Log.e("BannerSlider", "Error loading ImageSlider", e);
-                        return;
-                    }
-
+        db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
+                .whereIn("audience", java.util.Arrays.asList(audienceType, "Both"))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots != null) {
                         List<SlideModel> imageList = new ArrayList<>();
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             SlideImageModel slide = doc.toObject(SlideImageModel.class);
 
                             if (slide != null
-                                    && (slide.getAudience().equals(audienceType)
-                                    || slide.getAudience().equals("Both"))
                                     && (slide.getPlacement().equals(placementType)
                                     || slide.getPlacement().equals("Both"))) {
 
@@ -65,12 +59,13 @@ public class BannerSliderManager {
                             imageSlider.startSliding(2000);
                         }
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.e("BannerSlider", "Error loading ImageSlider", e));
     }
 
 
-    // 🔹 For SliderView (Help Screen)
-    public ListenerRegistration loadAutoSlider(
+    // 🔹 For SliderView (Help Screen) - Optimized
+    public void loadAutoSlider(
             Context context,
             SliderView sliderView,
             String audienceType,
@@ -90,35 +85,26 @@ public class BannerSliderManager {
         sliderView.startAutoCycle();
         sliderView.setAutoCycle(true);
 
-        return db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
-                .orderBy("order", Query.Direction.DESCENDING)
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-
-                    if (e != null) {
-                        Log.e("BannerSlider", "Error loading SliderView", e);
-                        return;
-                    }
-
+        db.collection(FirebaseCollectionTable.BANNERS_SLIDE)
+                .whereIn("audience", java.util.Arrays.asList(audienceType, "Both"))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots != null) {
-
                         List<SlideImageModel> newList = new ArrayList<>();
-
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             SlideImageModel slide = doc.toObject(SlideImageModel.class);
 
                             if (slide != null
-                                    && (slide.getAudience().equals(audienceType)
-                                    || slide.getAudience().equals("Both"))
                                     && (slide.getPlacement().equals(placementType)
                                     || slide.getPlacement().equals("Both"))) {
 
                                 newList.add(slide);
                             }
                         }
-
                         adapter.updateList(newList);
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.e("BannerSlider", "Error loading SliderView", e));
     }
 }
 

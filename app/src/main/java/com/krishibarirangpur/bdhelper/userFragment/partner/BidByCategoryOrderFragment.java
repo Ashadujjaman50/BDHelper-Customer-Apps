@@ -92,11 +92,12 @@ public class BidByCategoryOrderFragment extends Fragment {
 
         long today = System.currentTimeMillis();
 
-        // Optimized: Only fetch orders matching partner's subCategoryIds
+        // Optimized: Only fetch orders matching partner's subCategoryIds with Limit
         Query query = db.collection("orders")
                 .whereIn("orderInfo.subCategoryId", subCategoryIds)
                 .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(today))
-                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING);
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING)
+                .limit(20);
 
         query.addSnapshotListener((snapshots, error) -> {
             if (error != null) {

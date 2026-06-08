@@ -182,7 +182,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private ListenerRegistration noticeListener, sliderListener;
     private long checkNotice = 0;
 
     private void loadNotificationCount() {
@@ -200,52 +199,42 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     checkNotice = Long.parseLong("" + dataSnapshot.child("checkNotice").getValue());
 
-                    // 🔹 Firestore Listener দিয়ে রিয়েলটাইম Notice শুনবে
-                    if (noticeListener != null) {
-                        noticeListener.remove();
-                    }
-
-                    noticeListener = FirebaseFirestore.getInstance()
+                    // 🔹 Firestore Query - Server-side filtering যোগ করা হয়েছে
+                    FirebaseFirestore.getInstance()
                             .collection(FirebaseCollectionTable.NOTICE)
-                            .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                                if (e != null) {
-                                    Log.e("FirestoreError", "Error fetching notices", e);
-                                    return;
-                                }
-
+                            .whereGreaterThanOrEqualTo("noticeId", String.valueOf(checkNotice))
+                            .get() // রিয়েলটাইম লিসেনারের বদলে get() ব্যবহার করা হয়েছে খরচ কমাতে
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
                                 if (queryDocumentSnapshots != null) {
                                     noticeArrayList.clear();
 
                                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
-
                                         String receivedUserId = doc.getString("receivedUserId");
                                         String senderType = doc.getString("senderType");
-                                        long noticeId = Long.parseLong(Objects.requireNonNull(doc.getString("noticeId")));
 
-                                        if (noticeId >= checkNotice) {
-                                            ModelNotice modelNotice = doc.toObject(ModelNotice.class);
-                                            assert receivedUserId != null;
-                                            if ((receivedUserId.equals(currentUserId) ||
-                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_ALL) ||
-                                                    receivedUserId.equals(MyUtils.NOTICE_RECEIVER_CUSTOMER))) {
-                                                assert senderType != null;
-                                                if (senderType.equals(MyUtils.NOTICE_SENDER_ADMIN) || senderType.equals(MyUtils.NOTICE_SENDER_PARTNER)) {
+                                        if (receivedUserId != null &&
+                                                (receivedUserId.equals(currentUserId) ||
+                                                        receivedUserId.equals(MyUtils.NOTICE_RECEIVER_ALL) ||
+                                                        receivedUserId.equals(MyUtils.NOTICE_RECEIVER_CUSTOMER))) {
 
-                                                    noticeArrayList.add(modelNotice);
-                                                }
+                                            if (senderType != null && (senderType.equals(MyUtils.NOTICE_SENDER_ADMIN) || senderType.equals(MyUtils.NOTICE_SENDER_PARTNER))) {
+                                                noticeArrayList.add(doc.toObject(ModelNotice.class));
                                             }
                                         }
                                     }
 
                                     // 🔹 UI আপডেট
-                                    if (!noticeArrayList.isEmpty()) {
-                                        binding.notificationCountTv.setText(String.valueOf(noticeArrayList.size()));
-                                        binding.notificationCountTv.setVisibility(View.VISIBLE);
-                                    } else {
-                                        binding.notificationCountTv.setVisibility(View.GONE);
+                                    if (binding != null) {
+                                        if (!noticeArrayList.isEmpty()) {
+                                            binding.notificationCountTv.setText(String.valueOf(noticeArrayList.size()));
+                                            binding.notificationCountTv.setVisibility(View.VISIBLE);
+                                        } else {
+                                            binding.notificationCountTv.setVisibility(View.GONE);
+                                        }
                                     }
                                 }
-                            });
+                            })
+                            .addOnFailureListener(e -> Log.e("FirestoreError", "Error fetching notices", e));
                 } else {
                     binding.notificationCountTv.setVisibility(View.GONE);
                 }
@@ -262,19 +251,12 @@ public class HomeFragment extends Fragment {
     private void fetchSlides(View view) {
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         BannerSliderManager manager = new BannerSliderManager();
-        // লিসেনারটি ভেরিয়েবলে রাখুন
-        sliderListener = manager.loadImageSlider(imageSlider, "Customer", "Home");
+        manager.loadImageSlider(imageSlider, "Customer", "Home");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (noticeListener != null) {
-            noticeListener.remove();
-        }
-        if (sliderListener != null) {
-            sliderListener.remove();
-        }
     }
 
 

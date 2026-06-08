@@ -16,23 +16,21 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAddServiceFormBinding;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.utils.ServiceFormHelper;
+import com.krishibarirangpur.bdhelper.utils.firebase.ServiceMapHelper;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.core.LocaleHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UpdateServiceActivity extends BaseActivity {
 
     private FragmentAddServiceFormBinding binding;
-    private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore db;
 
@@ -59,7 +57,7 @@ public class UpdateServiceActivity extends BaseActivity {
             subCategoryName = getIntent().getStringExtra(MyUtils.subCategoryName);
         }
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
@@ -103,7 +101,7 @@ public class UpdateServiceActivity extends BaseActivity {
                 })
                 .addOnFailureListener(e -> {
                     loadingDialog.dismiss();
-                    MyToast.showShort(UpdateServiceActivity.this, "Error: " + e.getMessage());
+                    toastMessage("Error: " + e.getMessage());
                 });
     }
 
@@ -235,7 +233,6 @@ public class UpdateServiceActivity extends BaseActivity {
                         case MyUtils.SUB_AMBULANCE_ID: updateServiceData(prefix, ambulanceCategory,"", ambulanceVanType); break;
                         case MyUtils.SUB_CHARGER_VAN_ID: updateServiceData("", chargerVanName,"", ambulanceVanType); break;
                         case MyUtils.SUB_DUMP_TRUCK_ID: updateServiceData(prefix,"", equipmentCapability, equipmentCategory); break;
-                        case MyUtils.SUB_TRACTOR_ID: updateServiceData(prefix,"", serviceSizeAndCapacity, categoryAndYear); break;
                         default: updateServiceData(prefix,"", serviceSizeAndCapacity, categoryAndYear); break;
                     }
                 }
@@ -266,70 +263,57 @@ public class UpdateServiceActivity extends BaseActivity {
             idLong = Long.parseLong(serviceId);
         } catch (Exception ignored) {}
 
+        // Specs ম্যাপ তৈরি
+        Map<String, String> specsMap = ServiceMapHelper.createSpecsMap(model, reg, size, year);
+
         // User specific cutoff: 06 June 2026 (Assuming 1780694400000L)
-        long cutoff = 1780694400000L; // Setting to June 6, 2024 as it's more logical for migration
+        long cutoff = 1780694400000L;
 
         if (idLong > 0 && idLong < cutoff) {
-            // Migration logic: Re-structure the whole document like submitServiceData()
-            Map<String, Object> serviceMap = new HashMap<>();
-            serviceMap.put("serviceId", serviceId);
-            serviceMap.put("categoryId", categoryId);
-            serviceMap.put("subCategoryId", subCategoryId);
-            serviceMap.put("subCategoryName", subCategoryName);
+            // Migration logic: Re-structure the whole document
+            String status = serviceModel != null ? serviceModel.getServiceStatus() : "Inactive";
+            String verified = serviceModel != null ? serviceModel.getServiceVerified() : "pending";
 
-            // Preserve status and verification
-            serviceMap.put("serviceStatus", serviceModel != null ? serviceModel.getServiceStatus() : "Inactive");
-            serviceMap.put("serviceVerified", serviceModel != null ? serviceModel.getServiceVerified() : "pending");
+            Map<String, String> mediaMap = ServiceMapHelper.createMediaMap(
+                    serviceModel != null ? serviceModel.getSafeTransportImage() : "",
+                    serviceModel != null ? serviceModel.getSafeBrtaImage() : "",
+                    serviceModel != null ? serviceModel.getSafeDriverLicence() : ""
+            );
 
-            Map<String, String> specsMap = new HashMap<>();
-            specsMap.put("brandOrModel", model);
-            specsMap.put("registrationNumber", reg);
-            specsMap.put("sizeAndCapacity", size);
-            specsMap.put("categoryAndYear", year);
-
-            serviceMap.put("specs", specsMap);
-
-            Map<String, String> mediaMap = new HashMap<>();
-            mediaMap.put("transportImage", serviceModel != null ? serviceModel.getSafeTransportImage() : "");
-            mediaMap.put("brtaImage", serviceModel != null ? serviceModel.getSafeBrtaImage() : "");
-            mediaMap.put("driverLicence", serviceModel != null ? serviceModel.getSafeDriverLicence() : "");
-
-            serviceMap.put("media", mediaMap);
+            Map<String, Object> serviceMap = ServiceMapHelper.createFullServiceMap(serviceId, categoryId, subCategoryId, subCategoryName, status, verified, specsMap, mediaMap);
 
             db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
                     .collection(FirebaseCollectionTable.SERVICES).document(serviceId)
                     .set(serviceMap)
                     .addOnSuccessListener(unused -> {
                         loadingDialog.dismiss();
-                        MyToast.showShort(UpdateServiceActivity.this, "Updated and Migrated Successfully!");
+                        toastMessage("Updated and Migrated Successfully!");
                         finish();
                     })
                     .addOnFailureListener(e -> {
                         loadingDialog.dismiss();
-                        MyToast.showShort(UpdateServiceActivity.this, "Failed: " + e.getMessage());
+                        toastMessage("Failed: " + e.getMessage());
                     });
         }
         else {
             // Standard update for newer documents
-            Map<String, String> specs = new HashMap<>();
-            specs.put("brandOrModel", model);
-            specs.put("registrationNumber", reg);
-            specs.put("sizeAndCapacity", size);
-            specs.put("categoryAndYear", year);
-
             db.collection(FirebaseCollectionTable.USERS).document(firebaseUser.getUid())
                     .collection(FirebaseCollectionTable.SERVICES).document(serviceId)
-                    .update("specs", specs)
+                    .update("specs", specsMap)
                     .addOnSuccessListener(unused -> {
                         loadingDialog.dismiss();
-                        MyToast.showShort(UpdateServiceActivity.this, "Updated Successfully!");
+                        toastMessage("Updated Successfully!");
                         finish();
                     })
                     .addOnFailureListener(e -> {
                         loadingDialog.dismiss();
-                        MyToast.showShort(UpdateServiceActivity.this, "Failed: " + e.getMessage());
+                        toastMessage("Failed: " + e.getMessage());
                     });
         }
+    }
+    
+    private void toastMessage(String msg){
+        MyToast.showShort(this, msg);
     }
 
 }
