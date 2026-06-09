@@ -42,9 +42,11 @@
         tools:targetApi="33">
 
         <activity
+            android:name=".reserve.BackUpDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".userActivity.partner.UpdateServiceActivity"
             android:exported="false" />
-
         <activity
             android:name=".userActivity.partner.BidActivity"
             android:exported="false" />
@@ -164,7 +166,9 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${mapsApiKey}"/>
+            android:value="${mapsApiKey}" />
+
+
     </application>
 
 </manifest>

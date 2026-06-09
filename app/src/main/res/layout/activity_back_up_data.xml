@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        style="@style/fontStyle"
+        tools:context=".reserve.BackUpDataActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Toolbar-->
+            <RelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/bg_toolbar_color"
+                android:elevation="2dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_back_arrow"
+                    app:tint="@color/icon_color" />
+
+                <TextView
+                    android:id="@+id/titleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/backBtn"
+                    android:layout_centerVertical="true"
+                    android:text="Back up"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="17sp" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:src="@drawable/bg_bottom_design" />
+
+            <LinearLayout
+                android:layout_below="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="3dp">
+
+                <!-- Real Time Backup Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:id="@+id/backupRl"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/barikoiIcon"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_backup_outline"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/barikoiIcon"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Real-Time Backup"
+                                android:textStyle="bold"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/amaranth"
+                                android:textColor="@color/text_primary"/>
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:textAlignment="center"
+                                android:text="Synchronize and store Barikoi cache data automatically for faster access and recovery."
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"/>
+
+                            <TextView
+                                android:id="@+id/backupNowTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:paddingHorizontal="28dp"
+                                android:paddingVertical="6dp"
+                                android:background="@drawable/bg_round_button"
+                                android:text="BACKUP NOW"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="10sp"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Audit Logs Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:id="@+id/reStoreRl"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/auditIcon"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_restore_outline"
+                            android:contentDescription="@null" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/auditIcon"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="34dp"
+                                android:fontFamily="@font/amaranth"
+                                android:text="Restore Backup"
+                                android:textColor="@color/text_primary"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:textAlignment="center"
+                                android:text="Restore backup, system changes and data operations with detailed."
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"/>
+
+                            <TextView
+                                android:id="@+id/viewLogsTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:paddingHorizontal="28dp"
+                                android:paddingVertical="6dp"
+                                android:background="@drawable/bg_round_button"
+                                android:text="VIEW LOGS"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="10sp"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

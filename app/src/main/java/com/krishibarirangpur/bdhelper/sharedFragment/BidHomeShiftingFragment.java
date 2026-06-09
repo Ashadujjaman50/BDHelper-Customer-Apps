@@ -2,9 +2,6 @@ package com.krishibarirangpur.bdhelper.sharedFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,11 +14,9 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.ashadujjaman.loadingdialog.LoadingDialog;
 import com.krishibarirangpur.bdhelper.R;
@@ -34,6 +29,7 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.UpdateServiceActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
@@ -42,7 +38,6 @@ import com.krishibarirangpur.bdhelper.utils.partner.BidPositionAndCount;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
-import com.krishibarirangpur.bdhelper.utils.NoticeSend;
 import com.krishibarirangpur.bdhelper.utils.core.PreloadingDialog;
 import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,7 +46,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.krishibarirangpur.bdhelper.utils.partner.DueWarningAlertDialog;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerBidEdit;
 import com.krishibarirangpur.bdhelper.utils.partner.PartnerCommissionUtils;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.UIHelper;
@@ -137,7 +131,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
             loadCurrentPartnerBid();
 
             //loadPartner ServiceInfo
-            loadPartnerInfo();
+            loadPartnerServiceInfo();
 
             // Setup vehicle picker dialog
             setupServicePicker();
@@ -568,7 +562,7 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
                 });
     }
 
-    private void loadPartnerInfo( ) {
+    private void loadPartnerServiceInfo( ) {
 
         serviceModelArrayList = new ArrayList<>();
 
@@ -617,19 +611,36 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
             String[] vehicleItems = new String[serviceModelArrayList.size()];
             for (int i = 0; i < serviceModelArrayList.size(); i++) {
                 ServiceModel s = serviceModelArrayList.get(i);
-                vehicleItems[i] = s.getServiceRegistrationNumber()  +" "+ s.getSubCategoryName()+ " (" +
-                        s.getServiceCategoryAndYear() + ") - " +
-                        s.getServiceModelNumber() ;
+                String team = Replacement.ReplacementPersonInLocal(getContext(), s.getSafeSizeAndCapacity());
+                vehicleItems[i] = s.getSafeRegistrationNumber() + " ( " +
+                        s.getSafeManufacturingYear() + " ) - " + team ;
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setCustomTitle(LayoutInflater.from(getContext()).inflate(R.layout.custom_title_dialog, null))
 
                     .setItems(vehicleItems, (dialog, which) -> {
-                        selectedServiceModel = serviceModelArrayList.get(which); // ✅ সিলেক্টেড সার্ভিস সেট
-                        binding.selectVehicleNameTv.setText(selectedServiceModel.getServiceRegistrationNumber());
-                        Log.d("BidTransportFragment", "✅ Selected Vehicle: " +
-                                selectedServiceModel.getServiceModelNumber());
+                        ServiceModel selected = serviceModelArrayList.get(which);
+
+                        // User specific cutoff: 09 June 2026 (Assuming 1780953600000L)
+                        long cutoff = System.currentTimeMillis() - (20 * 1000L);
+                        long serviceIdLong = 0;
+                        try {
+                            serviceIdLong = Long.parseLong(selected.getServiceId());
+                        } catch (Exception ignored) {}
+
+                        boolean isMissingInfo = (selected.getSpecs() == null && selected.getMedia() == null);
+
+                        if (serviceIdLong < cutoff && isMissingInfo) {
+                            MyToast.showShort(getContext(), "দয়া করে আপনার সার্ভিসের তথ্য আপডেট করুন।");
+                            Intent intent = new Intent(getContext(), UpdateServiceActivity.class);
+                            intent.putExtra("serviceId", selected.getServiceId());
+                            getActivity().startActivity(intent);
+                            return;
+                        }
+
+                        selectedServiceModel = selected; // ✅ সিলেক্টেড সার্ভিস সেট
+                        binding.selectVehicleNameTv.setText(vehicleItems[which]);
                     })
                     .show();
         });
@@ -704,6 +715,12 @@ public class BidHomeShiftingFragment extends Fragment implements BidCustomerAdap
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
         BidActionManager.deleteBid(requireContext(), bidId, loadingDialog);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadPartnerServiceInfo();
     }
 
     @Override

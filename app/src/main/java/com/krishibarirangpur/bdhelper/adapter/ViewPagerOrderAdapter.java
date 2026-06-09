@@ -9,6 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.krishibarirangpur.bdhelper.userFragment.partner.BidAllOrderFragment;
 import com.krishibarirangpur.bdhelper.userFragment.partner.BidByCategoryOrderFragment;
+import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,18 @@ import java.util.List;
 public class ViewPagerOrderAdapter extends FragmentStateAdapter {
 
     private final ArrayList<String> subCategoryIds;
+    private final ArrayList<String> categoryIds;
+    private final ArrayList<String> sizeAndCapacities;
+    private final ArrayList<String> categoryAndYears;
 
-    public ViewPagerOrderAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<String> subCategoryIds) {
+    public ViewPagerOrderAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, 
+                                ArrayList<String> subCategoryIds, ArrayList<String> categoryIds, 
+                                ArrayList<String> sizeAndCapacities, ArrayList<String> categoryAndYears) {
         super(fragmentManager, lifecycle);
-        this.subCategoryIds = subCategoryIds != null ? new ArrayList<>(subCategoryIds) : new ArrayList<>();
+        this.subCategoryIds = subCategoryIds;
+        this.categoryIds = categoryIds;
+        this.sizeAndCapacities = sizeAndCapacities;
+        this.categoryAndYears = categoryAndYears;
     }
 
     @NonNull
@@ -28,6 +37,9 @@ public class ViewPagerOrderAdapter extends FragmentStateAdapter {
         Fragment fragment = (position == 0) ? new BidByCategoryOrderFragment() : new BidAllOrderFragment();
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("subCategoryIds", subCategoryIds);
+        bundle.putStringArrayList("categoryIds", categoryIds);
+        bundle.putStringArrayList("sizeAndCapacities", sizeAndCapacities);
+        bundle.putStringArrayList("categoryAndYears", categoryAndYears);
         fragment.setArguments(bundle);
         return fragment;
     }

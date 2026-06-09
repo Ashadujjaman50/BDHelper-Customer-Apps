@@ -45,6 +45,7 @@ public class UpdateServiceActivity extends BaseActivity {
             ambulanceCategory, ambulanceVanType, teamLeaderName, teamMember, workArea, serviceSkill,
             serviceExperience, serviceArea;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,10 +267,12 @@ public class UpdateServiceActivity extends BaseActivity {
         // Specs ম্যাপ তৈরি
         Map<String, String> specsMap = ServiceMapHelper.createSpecsMap(model, reg, size, year);
 
-        // User specific cutoff: 06 June 2026 (Assuming 1780694400000L)
-        long cutoff = 1780694400000L;
+        // User specific cutoff: 09 June 2026 (Assuming 1780953600000L)
+        long cutoff = System.currentTimeMillis() - (2 * 60 * 1000L);
 
-        if (idLong > 0 && idLong < cutoff) {
+        boolean isMissingInfo = (serviceModel.getSpecs() == null && serviceModel.getMedia() == null);
+
+        if (idLong > 0 && idLong < cutoff && isMissingInfo) {
             // Migration logic: Re-structure the whole document
             String status = serviceModel != null ? serviceModel.getServiceStatus() : "Inactive";
             String verified = serviceModel != null ? serviceModel.getServiceVerified() : "pending";

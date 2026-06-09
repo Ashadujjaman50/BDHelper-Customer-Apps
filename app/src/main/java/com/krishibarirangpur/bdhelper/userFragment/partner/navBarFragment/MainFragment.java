@@ -192,7 +192,7 @@ public class MainFragment extends Fragment {
     private void fetchSlides(View view) {
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         BannerSliderManager manager = new BannerSliderManager();
-        manager.loadImageSlider(imageSlider, "Partner", "Home");
+        manager.loadImageSlider(getContext(), imageSlider, "Partner", "Home");
     }
 
 

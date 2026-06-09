@@ -247,11 +247,10 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     private void fetchSlides(View view) {
         ImageSlider imageSlider = view.findViewById(R.id.image_slider);
         BannerSliderManager manager = new BannerSliderManager();
-        manager.loadImageSlider(imageSlider, "Customer", "Home");
+        manager.loadImageSlider(getContext(), imageSlider, "Customer", "Home");
     }
 
     @Override

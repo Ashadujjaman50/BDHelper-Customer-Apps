@@ -22,6 +22,7 @@ import com.krishibarirangpur.bdhelper.adapter.partner.OrderPartnerAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentBidByCategoryOrderBinding;
 import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
+import com.krishibarirangpur.bdhelper.utils.Replacement;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class BidByCategoryOrderFragment extends Fragment {
 
     private FragmentBidByCategoryOrderBinding binding;
     private ArrayList<String> subCategoryIds;
+    private ArrayList<String> categoryIds;
+    private ArrayList<String> sizeAndCapacities;
+    private ArrayList<String> categoryAndYears;
+    
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private OrderPartnerAdapter adapter;
     private final ArrayList<OrderModel> orderList = new ArrayList<>();
@@ -39,6 +44,10 @@ public class BidByCategoryOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             subCategoryIds = getArguments().getStringArrayList("subCategoryIds");
+            categoryIds = getArguments().getStringArrayList("categoryIds");
+            sizeAndCapacities = getArguments().getStringArrayList("sizeAndCapacities");
+            categoryAndYears = getArguments().getStringArrayList("categoryAndYears");
+            Log.d("BidByCategoryLog", "Args: servicesCount=" + (subCategoryIds != null ? subCategoryIds.size() : 0));
         }
     }
 
@@ -57,7 +66,6 @@ public class BidByCategoryOrderFragment extends Fragment {
 
         fetchFilteredOrders();
 
-        // ল্যাম্বডার পরিবর্তে Anonymous Inner Class ব্যবহার করা হয়েছে
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -71,15 +79,8 @@ public class BidByCategoryOrderFragment extends Fragment {
                 startActivity(intent);
             }
 
-            @Override
-            public void onShowItemClick(int position) {
-                // প্রয়োজন না থাকলে খালি রাখুন
-            }
-
-            @Override
-            public void onDeleteItemClick(int position) {
-                // প্রয়োজন না থাকলে খালি রাখুন
-            }
+            @Override public void onShowItemClick(int position) {}
+            @Override public void onDeleteItemClick(int position) {}
         });
     }
 
@@ -92,33 +93,85 @@ public class BidByCategoryOrderFragment extends Fragment {
 
         long today = System.currentTimeMillis();
 
-        // Optimized: Only fetch orders matching partner's subCategoryIds with Limit
+        // Optimized: Only fetch orders matching partner's subCategoryIds
         Query query = db.collection("orders")
                 .whereIn("orderInfo.subCategoryId", subCategoryIds)
                 .whereGreaterThanOrEqualTo("routeInfo.rentTime", String.valueOf(today))
-                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING)
-                .limit(20);
+                .orderBy("routeInfo.rentTime", Query.Direction.ASCENDING);
 
         query.addSnapshotListener((snapshots, error) -> {
             if (error != null) {
-                Log.e("BidByCategory", "Query failed", error);
+                Log.e("BidByCategoryLog", "Firestore Error: " + error.getMessage(), error);
                 return;
             }
 
             if (snapshots != null) {
+                Log.d("BidByCategoryLog", "Snapshots size: " + snapshots.size());
                 orderList.clear();
                 for (DocumentSnapshot doc : snapshots.getDocuments()) {
                     OrderModel order = doc.toObject(OrderModel.class);
                     if (order != null) {
                         String status = order.getOrderInfo().getStatus();
                         if ("pending".equals(status) || "process".equals(status)) {
-                            orderList.add(order);
+                            
+                            if (isOrderMatchingAnyPartnerService(order)) {
+                                orderList.add(order);
+                            }
                         }
                     }
                 }
+                Log.d("BidByCategoryLog", "Final List size: " + orderList.size());
                 binding.noOnePostYet.setVisibility(orderList.isEmpty() ? View.VISIBLE : View.GONE);
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private boolean isOrderMatchingAnyPartnerService(OrderModel order) {
+        String orderSubCatId = order.getOrderInfo().getSubCategoryId();
+        String orderCatId = order.getOrderInfo().getCategoryId();
+        
+        for (int i = 0; i < subCategoryIds.size(); i++) {
+            String pSubId = subCategoryIds.get(i);
+            String pCatId = categoryIds.get(i);
+            String pSize = sizeAndCapacities.get(i);
+            String pYear = categoryAndYears.get(i);
+
+            // ১. ক্যাটাগরি এবং সাব-ক্যাটাগরি ম্যাচিং
+            if (pSubId.equals(orderSubCatId) && pCatId.equals(orderCatId)) {
+                
+                // ২. Road Transport এর ক্ষেত্রে স্পেসিফিকেশন চেক
+                if (MyUtils.ROAD_TRANSPORT_ID.equals(pCatId) || MyUtils.HARVESTER_MACHINE_ID.equals(pCatId)) {
+                    // Charger Van হলে সরাসরি ম্যাচ
+                    if (MyUtils.SUB_CHARGER_VAN_ID.equals(pSubId)) {
+                        return true;
+                    }
+                    // অন্য যানের ক্ষেত্রে সাইজ ম্যাচিং
+                    String orderCapacity = order.getSpecInfo() != null ? order.getSpecInfo().getCapacity() : null;
+                    if (isMetadataMatched(pSize, orderCapacity)) {
+                        return true;
+                    }
+                } 
+                // ৩. Harvester/Equipment এর ক্ষেত্রে স্পেসিফিকেশন চেক
+                /*else if (MyUtils.EQUIPMENT_ID.equals(pCatId)) {
+                    String orderType = order.getSpecInfo() != null ? order.getSpecInfo().getTypes() : null;
+                    if (isMetadataMatched(pSize, orderType)) {
+                        return true;
+                    }
+                }*/
+                // ৪. অন্যান্য ক্যাটাগরির জন্য (যেমন: Rent a car) সরাসরি ম্যাচ
+                else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isMetadataMatched(String partnerValue, String orderValue) {
+        if (partnerValue == null || orderValue == null) return false;
+        String pNormalized = Replacement.normalizeMetadata(partnerValue);
+        String oNormalized = Replacement.normalizeMetadata(orderValue);
+        return pNormalized.equals(oNormalized);
     }
 }

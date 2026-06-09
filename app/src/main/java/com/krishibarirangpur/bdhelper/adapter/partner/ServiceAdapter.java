@@ -26,8 +26,8 @@ import java.util.List;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceViewHolder> {
 
-    private Context context;
-    private List<ServiceModel> serviceList;
+    private final Context context;
+    private final List<ServiceModel> serviceList;
     private OnItemClickListener mListener;
 
     public ServiceAdapter(Context context, List<ServiceModel> serviceList) {
@@ -119,11 +119,11 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
                 .error(R.drawable.ic_logo)
                 .into(holder.transportImageIv);
         
-        holder.itemView.setOnClickListener(v -> {
+        /*holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateServiceActivity.class);
             intent.putExtra("serviceId", service.getServiceId());
             context.startActivity(intent);
-        });
+        });*/
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.krishibarirangpur.bdhelper.model.OrderModel;
 import com.krishibarirangpur.bdhelper.model.ReviewModel;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
+import com.krishibarirangpur.bdhelper.userActivity.partner.UpdateServiceActivity;
 import com.krishibarirangpur.bdhelper.utils.CommonClass;
 import com.krishibarirangpur.bdhelper.utils.firebase.BidMapBuilder;
 import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
@@ -59,7 +60,8 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
    private FragmentBidTransportBinding binding;
 
-    private String bidAction, currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, orderStatus, vendorId;
+    private String currentUserId, userId, orderId, rentTime, categoryId, subCategoryId, user_type, orderStatus, vendorId;
+    String bidAction;
     private long orderTimestamp = 0;
     private boolean hasCurrentPartnerBidded = false;
     private ListenerRegistration orderListener;
@@ -98,7 +100,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_bid_transport, container, false);
@@ -132,7 +134,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
             loadCurrentPartnerBid();
 
             //loadPartner ServiceInfo
-            loadPartnerInfo(subCategoryId);
+            loadPartnerServiceInfo();
 
             // Setup vehicle picker dialog
             setupServicePicker();
@@ -568,17 +570,16 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
 
     }
 
-    private void loadPartnerInfo(String targetSubCategoryId) {
+    private void loadPartnerServiceInfo() {
 
         serviceModelArrayList = new ArrayList<>();
-
 
         db.collection(FirebaseCollectionTable.USERS)
                 .document(currentUserId)
                 .collection(FirebaseCollectionTable.SERVICES)
                 .whereEqualTo("serviceStatus", "active")
                 .whereEqualTo("serviceVerified", "verified")
-                .whereEqualTo("subCategoryId", targetSubCategoryId.trim()) // trim() ব্যবহার করা হলো
+                .whereEqualTo("subCategoryId", subCategoryId) // trim() ব্যবহার করা হলো
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
                     //Log.d("PartnerInfo", "✅ Query success, size: " + querySnapshots.size());
@@ -606,7 +607,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                     //MyToast.showShort(getContext(), "Error: " + e.getMessage());
                 });
     }
-
+    
     @SuppressLint("InflateParams")
     private void setupServicePicker() {
         binding.selectVehicleNameTv.setOnClickListener(v -> {
@@ -615,20 +616,46 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
                 return;
             }
 
-            String[] vehicleItems = new String[serviceModelArrayList.size()];
+            String[] vehicleItemsBn = new String[serviceModelArrayList.size()];
             for (int i = 0; i < serviceModelArrayList.size(); i++) {
                 ServiceModel s = serviceModelArrayList.get(i);
-                vehicleItems[i] = s.getServiceModelNumber() + " (" +
-                        s.getServiceCategoryAndYear() + ") - " +
-                        s.getServiceRegistrationNumber();
+
+                String regNo = s.getSafeRegistrationNumber();
+                if (!MyUtils.SUB_CHARGER_VAN_ID.equals(subCategoryId)) {
+                    regNo = Replacement.convertVehicleRegByLocale(getContext(), regNo);
+                }
+                else {
+                    regNo = s.getSafeBrandOrModel();
+                }
+
+                vehicleItemsBn[i] = regNo + " (" + s.getSafeSizeAndCapacity()+" " + Replacement.ReplacementNumberInLocal(getActivity(), s.getSafeManufacturingYear())+ ")" ;
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setCustomTitle(LayoutInflater.from(getContext()).inflate(R.layout.custom_title_dialog, null))
 
-                    .setItems(vehicleItems, (dialog, which) -> {
-                        selectedServiceModel = serviceModelArrayList.get(which); // ✅ সিলেক্টেড সার্ভিস সেট
-                        binding.selectVehicleNameTv.setText(selectedServiceModel.getServiceModelNumber());
+                    .setItems(vehicleItemsBn, (dialog, which) -> {
+                        ServiceModel selected = serviceModelArrayList.get(which);
+
+                        // User specific cutoff: 09 June 2026 (Assuming 1780953600000L)
+                        long cutoff = System.currentTimeMillis() - (20 * 1000L);
+                        long serviceIdLong = 0;
+                        try {
+                            serviceIdLong = Long.parseLong(selected.getServiceId());
+                        } catch (Exception ignored) {}
+
+                        boolean isMissingInfo = (selected.getSpecs() == null && selected.getMedia() == null);
+
+                        if (serviceIdLong < cutoff && isMissingInfo) {
+                            MyToast.showShort(getContext(), "দয়া করে আপনার সার্ভিসের তথ্য আপডেট করুন।");
+                            Intent intent = new Intent(getContext(), UpdateServiceActivity.class);
+                            intent.putExtra("serviceId", selected.getServiceId());
+                            getActivity().startActivity(intent);
+                            return;
+                        }
+
+                        selectedServiceModel = selected; // ✅ সিলেক্টেড সার্ভিস সেট
+                        binding.selectVehicleNameTv.setText(vehicleItemsBn[which]);
                         Log.d("BidTransportFragment", "✅ Selected Vehicle: " +
                                 selectedServiceModel.getServiceModelNumber());
                     })
@@ -636,7 +663,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         });
     }
 
-    private void bidDataSubmitInDatabase(ServiceModel model) {
+    private void bidDataSubmitInDatabase(ServiceModel serviceModel) {
         loadingDialog.setMessage("বিড সাবমিট হচ্ছে...");
         loadingDialog.show();
 
@@ -645,7 +672,7 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
         String timestamp = String.valueOf(System.currentTimeMillis());
 
         Map<String, Object> bid = BidMapBuilder.createBidMap(
-                model,
+                serviceModel,
                 timestamp,
                 bidAmount,
                 userId,
@@ -709,6 +736,12 @@ public class BidTransportFragment extends Fragment implements BidCustomerAdapter
     @Override
     public void onDeleteClicked(String bidId, String orderId) {
         BidActionManager.deleteBid(requireContext(), bidId, loadingDialog);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadPartnerServiceInfo();
     }
 
     @Override

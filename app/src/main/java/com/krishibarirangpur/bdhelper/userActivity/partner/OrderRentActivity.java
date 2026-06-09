@@ -44,17 +44,35 @@ public class OrderRentActivity extends BaseActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     ArrayList<String> subCategoryIds = new ArrayList<>();
+                    ArrayList<String> categoryIds = new ArrayList<>();
+                    ArrayList<String> sizeAndCapacities = new ArrayList<>();
+                    ArrayList<String> categoryAndYears = new ArrayList<>();
+
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        String id = doc.getString("subCategoryId");
-                        if (id != null) subCategoryIds.add(id);
+                        String subId = doc.getString("subCategoryId");
+                        if (subId != null) {
+                            subCategoryIds.add(subId);
+                            categoryIds.add(doc.getString("categoryId"));
+                            
+                            Object specsObj = doc.get("specs");
+                            if (specsObj instanceof java.util.Map) {
+                                java.util.Map<String, Object> specs = (java.util.Map<String, Object>) specsObj;
+                                sizeAndCapacities.add((String) specs.get("sizeAndCapacity"));
+                                categoryAndYears.add((String) specs.get("categoryAndYear"));
+                            } else {
+                                sizeAndCapacities.add(null);
+                                categoryAndYears.add(null);
+                            }
+                        }
                     }
-                    setupViewPager(subCategoryIds);
+                    Log.d("OrderRentLog", "Total verified services: " + subCategoryIds.size());
+                    setupViewPager(subCategoryIds, categoryIds, sizeAndCapacities, categoryAndYears);
                 })
                 .addOnFailureListener(e -> Log.e("OrderRent", "Error: " + e.getMessage()));
     }
 
-    private void setupViewPager(ArrayList<String> subCategoryIds) {
-        ViewPagerOrderAdapter adapter = new ViewPagerOrderAdapter(getSupportFragmentManager(), getLifecycle(), subCategoryIds);
+    private void setupViewPager(ArrayList<String> subCategoryIds, ArrayList<String> categoryIds, ArrayList<String> sizeAndCapacities, ArrayList<String> categoryAndYears) {
+        ViewPagerOrderAdapter adapter = new ViewPagerOrderAdapter(getSupportFragmentManager(), getLifecycle(), subCategoryIds, categoryIds, sizeAndCapacities, categoryAndYears);
         binding.bidViewPager.setAdapter(adapter);
         binding.bidViewPager.setSaveEnabled(false);
 

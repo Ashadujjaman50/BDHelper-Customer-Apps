@@ -18,6 +18,7 @@ import com.google.firebase.firestore.Source;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.FragmentMoreBinding;
 import com.krishibarirangpur.bdhelper.model.BidSummaryModel;
+import com.krishibarirangpur.bdhelper.reserve.BackUpDataActivity;
 import com.krishibarirangpur.bdhelper.sharedActivity.RatingReviewActivity;
 import com.krishibarirangpur.bdhelper.sharedActivity.ReferenceActivity;
 import com.krishibarirangpur.bdhelper.userActivity.partner.PaymentActivity;
@@ -130,6 +131,11 @@ public class MoreFragment extends Fragment {
         /// Show Android Version And Apps Version Name
         binding.applicationVersionTv.setText(CommonClass.showAndroidVersionAndAppVersion(requireActivity()));
 
+        /*binding.userProfilePicIV.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), BackUpDataActivity.class);
+            requireActivity().startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });*/
 
         //Rating And Review
         binding.rattingTV.setOnClickListener(v -> {

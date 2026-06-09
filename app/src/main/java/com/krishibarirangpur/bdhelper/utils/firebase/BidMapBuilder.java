@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class BidMapBuilder {
     public static Map<String, Object> createBidMap(
-            ServiceModel model,
+            ServiceModel serviceModel,
             String timestamp,
             String bidAmount,
             String userId,
@@ -19,9 +19,10 @@ public class BidMapBuilder {
     ) {
 
         int bidValue = (int) Double.parseDouble(bidAmount);
-        String modelName = model.getServiceModelNumber();
-        String licenceNumber = model.getServiceRegistrationNumber();
-        String modelYear = model.getServiceCategoryAndYear();
+        String modelName = serviceModel.getSafeBrandOrModel();
+        String sizeAndCapacity = serviceModel.getSafeSizeAndCapacity();
+        String licenceNumber = serviceModel.getSafeRegistrationNumber();
+        String modelYear = serviceModel.getSafeManufacturingYear();
 
         Map<String, Object> bid = new HashMap<>();
 
@@ -30,6 +31,7 @@ public class BidMapBuilder {
         serviceInfo.put("vehicleModel", modelName);
         serviceInfo.put("vehicleRegNo", licenceNumber);
         serviceInfo.put("vehicleCatAndYear", modelYear);
+        serviceInfo.put("vehicleSizeAndCapacity", sizeAndCapacity);
 
         // 🔹 bid Info
         Map<String, Object> bidInfo = new HashMap<>();

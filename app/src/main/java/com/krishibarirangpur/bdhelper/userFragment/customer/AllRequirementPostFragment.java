@@ -3,17 +3,23 @@ package com.krishibarirangpur.bdhelper.userFragment.customer;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.Interface.OnItemClickListener;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.customer.OrderAdapter;
@@ -23,10 +29,6 @@ import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.BidActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,12 @@ public class AllRequirementPostFragment extends Fragment {
     ArrayList<OrderModel> orderModelArrayList;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
+
+    // Pagination variables
+    private DocumentSnapshot lastVisible;
+    private boolean isLastItemReached = false;
+    private boolean isLoading = false;
+    private static final int PAGE_SIZE = 10;
 
     public AllRequirementPostFragment() {
         // Required empty public constructor
@@ -59,7 +67,25 @@ public class AllRequirementPostFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        orderModelArrayList = new ArrayList<>();
+        orderAdapter = new OrderAdapter(getContext(), orderModelArrayList);
+        binding.allRentRecyclerView.setAdapter(orderAdapter);
+
         loadAllData();
+
+        binding.allRentRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == orderModelArrayList.size() - 1) {
+                    if (!isLoading && !isLastItemReached) {
+                        loadMoreData();
+                    }
+                }
+            }
+        });
 
         orderAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -94,30 +120,25 @@ public class AllRequirementPostFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadAllData() {
-        orderModelArrayList = new ArrayList<>();
-        orderAdapter = new OrderAdapter(getContext(), orderModelArrayList);
-        binding.allRentRecyclerView.setAdapter(orderAdapter);
+        if (isLoading) return;
+        isLoading = true;
+        isLastItemReached = false;
 
-        String currentUserId = firebaseUser.getUid(); // 🔑 current user id
+        String currentUserId = firebaseUser.getUid();
 
-        // 🔹 Loading শুরু
         binding.loading.setVisibility(View.VISIBLE);
         binding.noOneBidYet.setVisibility(View.GONE);
-        binding.allRentRecyclerView.setVisibility(View.GONE);
 
         db.collection(FirebaseCollectionTable.ORDERS)
-                .whereEqualTo("orderInfo.uid", currentUserId) // ✅ শুধু current user এর order
-                .addSnapshotListener((querySnapshot, error) -> {
-                    // 🔹 Loading শেষ
+                .whereEqualTo("orderInfo.uid", currentUserId)
+                .orderBy("orderInfo.timestamp", Query.Direction.DESCENDING)
+                .limit(PAGE_SIZE)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
                     binding.loading.setVisibility(View.GONE);
+                    isLoading = false;
 
-                    if (error != null) {
-                        MyToast.showShort(getContext(), "❌ Error: " + error.getMessage());
-                        Log.d("Firestore", "loadAllData: "+error.getMessage());
-                        return;
-                    }
-
-                    if (querySnapshot != null) {
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
                         orderModelArrayList.clear();
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                             OrderModel order = doc.toObject(OrderModel.class);
@@ -127,16 +148,65 @@ public class AllRequirementPostFragment extends Fragment {
                         }
                         orderAdapter.notifyDataSetChanged();
 
-                        // ✅ data আছে কিনা চেক
-                        if (orderModelArrayList.isEmpty()) {
-                            binding.noOneBidYet.setVisibility(View.VISIBLE);
-                            binding.allRentRecyclerView.setVisibility(View.GONE);
-                        } else {
-                            binding.noOneBidYet.setVisibility(View.GONE);
-                            binding.allRentRecyclerView.setVisibility(View.VISIBLE);
+                        lastVisible = querySnapshot.getDocuments().get(querySnapshot.size() - 1);
+                        if (querySnapshot.size() < PAGE_SIZE) {
+                            isLastItemReached = true;
                         }
-                    }
-                });
 
+                        binding.noOneBidYet.setVisibility(View.GONE);
+                        binding.allRentRecyclerView.setVisibility(View.VISIBLE);
+                    } else {
+                        isLastItemReached = true;
+                        binding.noOneBidYet.setVisibility(View.VISIBLE);
+                        binding.allRentRecyclerView.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    binding.loading.setVisibility(View.GONE);
+                    isLoading = false;
+                    MyToast.showShort(getContext(), "❌ Error: " + e.getMessage());
+                    Log.e("Firestore", "loadAllData", e);
+                });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadMoreData() {
+        if (isLoading || isLastItemReached) return;
+
+        isLoading = true;
+        binding.loading.setVisibility(View.VISIBLE);
+
+        db.collection(FirebaseCollectionTable.ORDERS)
+                .whereEqualTo("orderInfo.uid", firebaseUser.getUid())
+                .orderBy("orderInfo.timestamp", Query.Direction.DESCENDING)
+                .startAfter(lastVisible)
+                .limit(PAGE_SIZE)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    binding.loading.setVisibility(View.GONE);
+                    isLoading = false;
+
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            OrderModel order = doc.toObject(OrderModel.class);
+                            if (order != null) {
+                                orderModelArrayList.add(order);
+                            }
+                        }
+                        orderAdapter.notifyDataSetChanged();
+
+                        lastVisible = querySnapshot.getDocuments().get(querySnapshot.size() - 1);
+                        if (querySnapshot.size() < PAGE_SIZE) {
+                            isLastItemReached = true;
+                        }
+                    } else {
+                        isLastItemReached = true;
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    binding.loading.setVisibility(View.GONE);
+                    isLoading = false;
+                    Log.e("Firestore", "loadMoreData", e);
+                });
     }
 }

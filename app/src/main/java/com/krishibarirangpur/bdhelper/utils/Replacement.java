@@ -324,6 +324,26 @@ public class Replacement {
         return result;
     }
 
+    /**
+     * ডাটা ম্যাচিং এর জন্য স্ট্রিং নরমালাইজ করে (বাংলা সংখ্যা -> ইংরেজি এবং লোয়ারকেস)
+     */
+    public static String normalizeMetadata(String input) {
+        if (input == null) return "";
+
+        // ১. বাংলা সংখ্যাকে ইংরেজিতে রূপান্তর
+        String result = ReplacementNumberBnToEn(input);
+
+        // ২. সাধারণ বাংলা শব্দগুলোকে ইংরেজিতে রূপান্তর এবং লোয়ারকেস
+        result = result.toLowerCase()
+                .replace("ফিট", "feet")
+                .replace("টন", "ton")
+                .replace("বছর", "year")
+                .replace("জন", "person")
+                .replace("টি", "")
+                .replace(" ", ""); // স্পেস রিমুভ করছি নিখুঁতভাবে ম্যাচ করার জন্য
+
+        return result.trim();
+    }
 
 
 }

@@ -54,16 +54,16 @@ public class HelpFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //init views
 
-        if (userType.equals("partner")){
+        if (userType.equals(MyUtils.PARTNER)){
             binding.reqServiceLl.setVisibility(View.GONE);
         }
 
         //Slider Image Load and View
-        if (userType.equals("partner")){
-            fetchSlides(view, "Partner");
+        if (userType.equals(MyUtils.PARTNER)){
+            fetchSlides(view, MyUtils.PARTNER);
         }
         else {
-            fetchSlides(view, "Customer");
+            fetchSlides(view, MyUtils.CUSTOMER);
         }
 
 

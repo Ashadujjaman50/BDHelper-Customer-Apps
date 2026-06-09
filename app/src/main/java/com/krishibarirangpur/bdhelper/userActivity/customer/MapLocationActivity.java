@@ -346,7 +346,21 @@ public class MapLocationActivity extends BaseActivity implements OnMapReadyCallb
         });
     }
 
+    private LatLng lastQueriedLatLng;
+
     private void fetchLocationData(double lat, double lng) {
+        // ম্যাপ যদি খুব সামান্য সরে (যেমন ২ মিটারের কম), তবে রিকোয়েস্ট পাঠানোর দরকার নেই
+        if (lastQueriedLatLng != null) {
+            float[] results = new float[1];
+            Location.distanceBetween(lastQueriedLatLng.latitude, lastQueriedLatLng.longitude, lat, lng, results);
+            if (results[0] < 2) return; 
+        }
+        
+        lastQueriedLatLng = new LatLng(lat, lng);
+        
+        // UI-তে লোডিং স্ট্যাটাস দেখানো
+        binding.rentLocationTv.setText("লোকেশন খোঁজা হচ্ছে...");
+
         if (cacheHelper == null) cacheHelper = new BarikoiCacheHelper();
 
         cacheHelper.getLocation(lat, lng, new BarikoiCacheHelper.LocationCallback() {
