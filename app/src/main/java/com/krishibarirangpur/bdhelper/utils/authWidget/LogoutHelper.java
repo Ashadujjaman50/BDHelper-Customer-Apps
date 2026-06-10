@@ -16,6 +16,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.krishibarirangpur.bdhelper.sharedActivity.NotificationActivity;
+import com.krishibarirangpur.bdhelper.utils.FinanceCache;
 import com.krishibarirangpur.bdhelper.utils.FinanceManager;
 import com.krishibarirangpur.bdhelper.utils.SubscribeNotification;
 
@@ -42,6 +43,7 @@ public class LogoutHelper {
             SubscribeNotification.unSubscribeFromAll();
             // লগআউট করার সময় এটি কল করবেন
             NotificationActivity.cachedNoticeList.clear();
+            FinanceCache.invalidateCache();
 
             FirebaseAuth.getInstance().signOut();
 

@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 
 public class FCMTokenManager {
 
@@ -24,14 +25,14 @@ public class FCMTokenManager {
                     }
 
                     String token = task.getResult();
-                    Log.d(TAG, "✅ Current FCM Token: " + token);
+                    //Log.d(TAG, "✅ Current FCM Token: " + token);
 
                     // Update token in Firestore
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     if (auth.getCurrentUser() != null) {
                         String userId = auth.getCurrentUser().getUid();
                         FirebaseFirestore.getInstance()
-                                .collection("users")
+                                .collection(FirebaseCollectionTable.USERS)
                                 .document(userId)
                                 .update("device_token", token)
                                 .addOnSuccessListener(aVoid -> Log.d(TAG, "✅ Token updated in Firestore"))
@@ -68,7 +69,7 @@ public class FCMTokenManager {
 
             // ২. Firestore রেফারেন্স (users -> {userId})
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference userRef = db.collection("users").document(uid);
+            DocumentReference userRef = db.collection(FirebaseCollectionTable.USERS).document(uid);
 
             // ৩. 'device_token' ফিল্ডটি আপডেট করা
             userRef.update("device_token", token)

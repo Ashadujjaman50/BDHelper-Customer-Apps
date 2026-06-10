@@ -66,8 +66,7 @@ public class DashboardActivity extends BaseActivity {
         preloadVendorBidSummary(); // ✅ preload once
 
 
-        FCMTokenManager.updateFCMToken();
-
+        //FCMTokenManager.updateFCMToken();
         SubscribeNotification.handleUserSubscribe(MyUtils.PARTNER);
 
         //Post Notification Enable
@@ -125,10 +124,7 @@ public class DashboardActivity extends BaseActivity {
         FinanceManager fm = new FinanceManager();
 
         fm.getPartnerFinanceSummary(currentUserId, (totalEarned, partnerReceivable, companyReceivable) -> {
-            FinanceCache.totalEarned = totalEarned;
-            FinanceCache.partnerReceivable = partnerReceivable;
-            FinanceCache.companyReceivable = companyReceivable;
-            FinanceCache.isLoaded = true;
+            FinanceCache.updateCache(totalEarned, partnerReceivable, companyReceivable);
             Log.d("FinanceCache", "✅ Preloaded finance summary");
         });
     }

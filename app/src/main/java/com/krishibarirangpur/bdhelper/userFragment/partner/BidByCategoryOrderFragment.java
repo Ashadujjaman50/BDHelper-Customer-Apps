@@ -33,7 +33,7 @@ public class BidByCategoryOrderFragment extends Fragment {
     private ArrayList<String> subCategoryIds;
     private ArrayList<String> categoryIds;
     private ArrayList<String> sizeAndCapacities;
-    private ArrayList<String> categoryAndYears;
+    //private ArrayList<String> categoryAndYears;
     
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private OrderPartnerAdapter adapter;
@@ -46,7 +46,7 @@ public class BidByCategoryOrderFragment extends Fragment {
             subCategoryIds = getArguments().getStringArrayList("subCategoryIds");
             categoryIds = getArguments().getStringArrayList("categoryIds");
             sizeAndCapacities = getArguments().getStringArrayList("sizeAndCapacities");
-            categoryAndYears = getArguments().getStringArrayList("categoryAndYears");
+            //categoryAndYears = getArguments().getStringArrayList("categoryAndYears");
             Log.d("BidByCategoryLog", "Args: servicesCount=" + (subCategoryIds != null ? subCategoryIds.size() : 0));
         }
     }
@@ -135,7 +135,7 @@ public class BidByCategoryOrderFragment extends Fragment {
             String pSubId = subCategoryIds.get(i);
             String pCatId = categoryIds.get(i);
             String pSize = sizeAndCapacities.get(i);
-            String pYear = categoryAndYears.get(i);
+            //String pYear = categoryAndYears.get(i);
 
             // ১. ক্যাটাগরি এবং সাব-ক্যাটাগরি ম্যাচিং
             if (pSubId.equals(orderSubCatId) && pCatId.equals(orderCatId)) {

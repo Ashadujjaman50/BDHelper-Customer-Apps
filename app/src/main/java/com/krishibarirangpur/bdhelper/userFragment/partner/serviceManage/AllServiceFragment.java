@@ -18,6 +18,7 @@ import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.adapter.partner.ServiceAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentAllServiceBinding;
 import com.krishibarirangpur.bdhelper.model.ServiceModel;
+import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.userActivity.partner.ServiceDocumentActivity;
@@ -101,9 +102,9 @@ public class AllServiceFragment extends Fragment {
         String userId = firebaseUser.getUid();
         binding.allRentServiceRv.setAdapter(adapter);
 
-        listenerRegistration = db.collection("users")
+        listenerRegistration = db.collection(FirebaseCollectionTable.USERS)
                 .document(userId)
-                .collection("services")
+                .collection(FirebaseCollectionTable.SERVICES)
                 .orderBy("serviceId", Query.Direction.ASCENDING)
                 .addSnapshotListener((queryServiceSnapshots, error) -> {
                     if (error != null) {
@@ -131,8 +132,6 @@ public class AllServiceFragment extends Fragment {
 
                     }
                 });
-
-
 
     }
 

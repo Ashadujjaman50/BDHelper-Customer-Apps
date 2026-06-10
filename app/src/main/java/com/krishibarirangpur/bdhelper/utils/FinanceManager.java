@@ -99,8 +99,10 @@ public class FinanceManager {
 
                     transaction.set(balanceRef, updateData, SetOptions.merge());
                     return null;
-                }).addOnSuccessListener(aVoid ->
-                        Log.d(TAG, "✅ Partner balance updated successfully"))
+                }).addOnSuccessListener(aVoid -> {
+                        FinanceCache.invalidateCache();
+                        Log.d(TAG, "✅ Partner balance updated successfully");
+                })
                 .addOnFailureListener(e ->
                         Log.e(TAG, "❌ Failed to update partner balance: " + e.getMessage(), e));
     }
@@ -185,6 +187,7 @@ public class FinanceManager {
 
             return null;
         }).addOnSuccessListener(aVoid -> {
+            FinanceCache.invalidateCache();
             Log.d(TAG, "✅ Withdraw approved and balance deducted");
 
             // ✅ Ledger entry (maintaining original schema)
@@ -243,12 +246,7 @@ public class FinanceManager {
                     calculatePartnerReceivable(vendorId, partnerReceivable ->
                             calculateCompanyReceivable(vendorId, companyReceivable -> {
 
-                                FinanceCache.totalEarned = finalTotalEarned;
-                                FinanceCache.partnerReceivable = partnerReceivable;
-                                FinanceCache.companyReceivable = companyReceivable;
-                                FinanceCache.lastUpdated = System.currentTimeMillis();
-                                FinanceCache.isLoaded = true;
-
+                                FinanceCache.updateCache(finalTotalEarned, partnerReceivable, companyReceivable);
                                 callback.onSummary(finalTotalEarned, partnerReceivable, companyReceivable);
                             })
                     );

@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
             internetDialog.show(getSupportFragmentManager(), "NoInternetDialog");
         }
 
-        FCMTokenManager.updateFCMToken();
+        //FCMTokenManager.updateFCMToken();
         SubscribeNotification.handleUserSubscribe("customer");
         //Post Notification Enable
         SharedPrefHelper sharedPrefHelper = new SharedPrefHelper(this);
