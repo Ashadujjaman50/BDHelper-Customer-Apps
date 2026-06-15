@@ -126,6 +126,10 @@
             android:name=".sharedActivity.ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".FirebaseMessaging.NotificationRoutingActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
             android:name=".authentication.UserTypeSelectionActivity"
             android:exported="false" />
         <activity

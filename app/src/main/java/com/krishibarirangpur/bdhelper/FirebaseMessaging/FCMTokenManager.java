@@ -1,16 +1,24 @@
 package com.krishibarirangpur.bdhelper.FirebaseMessaging;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FCMTokenManager {
 
@@ -25,21 +33,7 @@ public class FCMTokenManager {
                     }
 
                     String token = task.getResult();
-                    //Log.d(TAG, "✅ Current FCM Token: " + token);
-
-                    // Update token in Firestore
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                    if (auth.getCurrentUser() != null) {
-                        String userId = auth.getCurrentUser().getUid();
-                        FirebaseFirestore.getInstance()
-                                .collection(FirebaseCollectionTable.USERS)
-                                .document(userId)
-                                .update("device_token", token)
-                                .addOnSuccessListener(aVoid -> Log.d(TAG, "✅ Token updated in Firestore"))
-                                .addOnFailureListener(e -> Log.e(TAG, "❌ Failed to update token in Firestore", e));
-                    } else {
-                        Log.w(TAG, "⚠️ No user logged in. Token not updated.");
-                    }
+                    updateTokenToFirestore(token);
                 });
     }
 
@@ -61,6 +55,8 @@ public class FCMTokenManager {
     }
 
     public static void updateTokenToFirestore(String token) {
+        if (token == null || token.isEmpty()) return;
+
         // ১. বর্তমান লগইন থাকা ইউজারের আইডি নেওয়া
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -71,16 +67,21 @@ public class FCMTokenManager {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection(FirebaseCollectionTable.USERS).document(uid);
 
-            // ৩. 'device_token' ফিল্ডটি আপডেট করা
-            userRef.update("device_token", token)
-                    .addOnSuccessListener(aVoid ->
-                            Log.d("FCM_TOKEN", "টোকেন সফলভাবে আপডেট হয়েছে"))
-                    .addOnFailureListener(e -> {
-                        Log.e("FCM_TOKEN", "টোকেন আপডেট করতে সমস্যা হয়েছে: " + e.getMessage());
 
-                        // যদি ডকুমেন্টটি আগে থেকে তৈরি না থাকে, তবে সেট করতে পারেন
-                        // db.collection("users").document(uid).set(data, SetOptions.merge());
+            // ৩. 'device_token' ফিল্ড ডিলিট করা (রেডান্ডেন্সি কমাতে) এবং অ্যারে আপডেট করা
+            Map<String, Object> tokenUpdate = new HashMap<>();
+            tokenUpdate.put("device_token", FieldValue.delete()); // String ফিল্ডটি রিমুভ করা হচ্ছে
+            tokenUpdate.put("device_tokens", FieldValue.arrayUnion(token));
+
+            userRef.set(tokenUpdate, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "✅ টোকেন সফলভাবে আপডেট হয়েছে (Array updated, String deleted)");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "❌ টোকেন আপডেট করতে সমস্যা হয়েছে: " + e.getMessage());
                     });
+        } else {
+            Log.w(TAG, "⚠️ No user logged in. Token not updated to Firestore.");
         }
     }
 

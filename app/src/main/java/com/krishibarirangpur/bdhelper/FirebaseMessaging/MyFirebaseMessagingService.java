@@ -16,10 +16,14 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,55 +36,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
         String title = (remoteMessage.getNotification() != null) ? remoteMessage.getNotification().getTitle() : data.get("title");
         String body = (remoteMessage.getNotification() != null) ? remoteMessage.getNotification().getBody() : data.get("body");
+        String imageUrl = (remoteMessage.getNotification() != null && remoteMessage.getNotification().getImageUrl() != null) 
+                ? remoteMessage.getNotification().getImageUrl().toString() : null;
 
         if (title != null || body != null) {
-            handleNotificationFilter(title, body, data);
+            handleNotificationFilter(title, body, imageUrl, data);
         }
     }
 
-    private void handleNotificationFilter(String title, String body, Map<String, String> data) {
+    private void handleNotificationFilter(String title, String body, String imageUrl, Map<String, String> data) {
         String type = data.get("type");
-        Log.d("FCM_DEBUG", "Received Type: " + type); // এই লগটি চেক করবেন
+        Log.d("FCM_DEBUG", "Received Type: " + type);
 
         SharedPrefHelper sharedPreferences = new SharedPrefHelper(getApplicationContext());
         String currentUserRole = sharedPreferences.getString(MyUtils.USER_LOGIN_MODE, "");
         Log.d("FCM_DEBUG", "Current User Role: " + currentUserRole);
 
-        // অ্যাডমিন থেকে আসা অফার বা নোটিশ সবার জন্য (টপিক অনুযায়ী অলরেডি ফিল্টার হয়ে এসেছে)
-        // ১. অফার বা নোটিশ (সবার জন্য)
-        if ("OFFER".equals(type) || "NOTICE".equals(type)) {
-            sendNotification(title, body, data, currentUserRole);
+        // ১. সাধারণ নোটিশ, অফার বা জেনারেল (সবার জন্য)
+        if ("OFFER".equals(type) || "NOTICE".equals(type) || "GENERAL".equals(type)) {
+            sendNotification(title, body, imageUrl, data);
         }
-        // ২. নতুন অর্ডার (শুধুমাত্র পার্টনার পাবে)
-        else if ("NEW_ORDER".equals(type) || "BID_CONFIRMED".equals(type)) { // দুইটাই পার্টনারের জন্য
+        // ২. নতুন অর্ডার বা বিড কনফার্মেশন (শুধুমাত্র পার্টনার)
+        else if ("NEW_ORDER".equals(type) || "BID_CONFIRMED".equals(type)) {
             if ("partner".equalsIgnoreCase(currentUserRole)) {
-                sendNotification(title, body, data, currentUserRole);
-            } else {
-                Log.e("FCM_LOG", "Role mismatch! Expected partner but got: " + currentUserRole);
+                sendNotification(title, body, imageUrl, data);
             }
         }
-        // ৩. নতুন বিড অ্যালার্ট (শুধুমাত্র কাস্টমার পাবে)
+        // ৩. নতুন বিড অ্যালার্ট (শুধুমাত্র কাস্টমার)
         else if ("NEW_BID".equals(type)) {
             if ("customer".equalsIgnoreCase(currentUserRole)) {
-                sendNotification(title, body, data, currentUserRole);
+                sendNotification(title, body, imageUrl, data);
             }
         }
-        else {
-            // অন্য কোনো সাধারণ নোটিফিকেশন হলে
-            sendNotification(title, body, data, currentUserRole);
-        }
+        // ৪. অন্যান্য ইনডিভিজুয়াল টাইপ
+        /*else {
+            sendNotification(title, body, imageUrl, data);
+        }*/
     }
 
-    private void sendNotification(String title, String body, Map<String, String> data, String target) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    private void sendNotification(String title, String body, String imageUrl, Map<String, String> data) {
+        Intent intent = new Intent(this, NotificationRoutingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         if (data != null) {
             intent.putExtra("orderId", data.get("orderId"));
-            intent.putExtra("noti_type", data.get("type"));
-            intent.putExtra("target", target);
+            intent.putExtra("type", data.get("type"));
+            intent.putExtra("categoryId", data.get("categoryId"));
+            intent.putExtra("subCategoryId", data.get("subCategoryId"));
         }
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, new Random().nextInt(), intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -93,6 +97,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent);
 
+        // ইমেজ হ্যান্ডলিং (BigPictureStyle)
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Bitmap bitmap = getBitmapFromUrl(imageUrl);
+            if (bitmap != null) {
+                builder.setLargeIcon(bitmap);
+                builder.setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(bitmap)
+                        .bigLargeIcon((Bitmap) null));
+            }
+        }
+
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "BD Helper", NotificationManager.IMPORTANCE_HIGH);
@@ -101,10 +116,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         manager.notify(new Random().nextInt(), builder.build());
     }
 
+    private Bitmap getBitmapFromUrl(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (Exception e) {
+            Log.e("FCM_IMAGE", "Error downloading image: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        // আপনার মেথডটি কল করা
+        // Context (this) সহ মেথডটি কল করা
         FCMTokenManager.updateTokenToFirestore(token);
     }
 

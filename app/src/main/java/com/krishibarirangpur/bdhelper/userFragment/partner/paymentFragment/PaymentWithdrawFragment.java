@@ -25,7 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.krishibarirangpur.bdhelper.R;
-import com.krishibarirangpur.bdhelper.adapter.WithdrawAdapter;
+import com.krishibarirangpur.bdhelper.adapter.partner.WithdrawAdapter;
 import com.krishibarirangpur.bdhelper.databinding.FragmentPaymentWithdrawBinding;
 import com.krishibarirangpur.bdhelper.model.WithdrawRequest;
 import com.krishibarirangpur.bdhelper.utils.FinanceCache;

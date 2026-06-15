@@ -1,5 +1,6 @@
 package com.krishibarirangpur.bdhelper.adapter.shared;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -48,9 +49,9 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
     public void onBindViewHolder(@NonNull HolderViewNotice holder, int position) {
         //get data
         ModelNotice modelNotice = noticeArrayList.get(position);
-        String noticeId = modelNotice.getNoticeId();
+        //String noticeId = modelNotice.getNoticeId();
         String orderId = modelNotice.getOrderId();   //If notice with image Then This Is Used Image Url
-        String noticeTitle = modelNotice.getNoticeTitle();;
+        String noticeTitle = modelNotice.getNoticeTitle();
         String noticeCategory = modelNotice.getNoticeCategory();
         String noticeDesc = modelNotice.getNoticeDescription();
         String senderType = modelNotice.getSenderType();
@@ -69,7 +70,7 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
         holder.noticeDescriptionTv.setText(noticeDesc);
         holder.noticeTimeTv.setText(noticeDate);
 
-        //If Notice With Image Then Order Id Used Image Url
+        //If Notice With Image Then Order id Used Image Url
         // 🔹 default state (VERY IMPORTANT)
         holder.noticeImageIV.setVisibility(View.GONE);
         holder.noticeCard.setBackgroundColor(
@@ -186,15 +187,6 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
         }
 
 
-        //Click to Next
-        /*holder.itemView.setOnClickListener(v -> {
-            if (noticeCategory.equals(MyUtils.NOTICE_TYPE_POST) ||
-                    noticeCategory.equals(MyUtils.NOTICE_TYPE_BID)){
-                //
-                MyToast.showShort(context, noticeDesc);
-            }
-        }); */
-
     }
 
     @Override
@@ -229,6 +221,7 @@ public class AdapterNotice extends RecyclerView.Adapter<AdapterNotice.HolderView
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
         notifyDataSetChanged();

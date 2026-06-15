@@ -1,4 +1,4 @@
-package com.krishibarirangpur.bdhelper.adapter;
+package com.krishibarirangpur.bdhelper.adapter.partner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

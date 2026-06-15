@@ -3,12 +3,13 @@ package com.krishibarirangpur.bdhelper.model;
 public class ModelNotice {
 
     private String noticeId, sendUserId, receivedUserId, senderType, orderId, noticeCategory,
-            noticeTitle, postDistrict, noticeDescription, timestamp;
+            noticeTitle, postDistrict, noticeDescription;
+    private Object timestamp; // 🔥 Field type changed to Object to handle both String and Long
 
     public ModelNotice() {
     }
 
-    public ModelNotice(String noticeId, String sendUserId, String receivedUserId, String senderType, String orderId, String noticeCategory, String noticeTitle, String postDistrict, String noticeDescription, String timestamp) {
+    public ModelNotice(String noticeId, String sendUserId, String receivedUserId, String senderType, String orderId, String noticeCategory, String noticeTitle, String postDistrict, String noticeDescription, Object timestamp) {
         this.noticeId = noticeId;
         this.sendUserId = sendUserId;
         this.receivedUserId = receivedUserId;
@@ -93,11 +94,32 @@ public class ModelNotice {
         this.noticeDescription = noticeDescription;
     }
 
+    // ✅ Dynamic Getter: Always returns String regardless of type in DB
     public String getTimestamp() {
-        return timestamp;
+        if (timestamp instanceof Long) {
+            return String.valueOf(timestamp);
+        } else if (timestamp instanceof String) {
+            return (String) timestamp;
+        }
+        return timestamp != null ? timestamp.toString() : "";
     }
 
-    public void setTimestamp(String timestamp) {
+    // ✅ Helper Getter: If you need it as Long for sorting or formatting
+    public long getTimestampLong() {
+        try {
+            if (timestamp instanceof Long) {
+                return (Long) timestamp;
+            } else if (timestamp instanceof String) {
+                return Long.parseLong((String) timestamp);
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+        return 0;
+    }
+
+    // ✅ Dynamic Setter: Handles Firestore's data mapping
+    public void setTimestamp(Object timestamp) {
         this.timestamp = timestamp;
     }
 }

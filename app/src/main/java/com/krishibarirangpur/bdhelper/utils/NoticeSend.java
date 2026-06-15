@@ -37,7 +37,7 @@ public class NoticeSend {
         hashMap.put("postDistrict", "");
         hashMap.put("noticeTitle", title);
         hashMap.put("noticeDescription", msg);
-        hashMap.put("timestamp", timestamp);
+        hashMap.put("timestamp", noticeId);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(FirebaseCollectionTable.NOTICE)
