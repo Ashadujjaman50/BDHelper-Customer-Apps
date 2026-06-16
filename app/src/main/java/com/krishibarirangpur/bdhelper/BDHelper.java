@@ -25,7 +25,7 @@ public class BDHelper extends Application {
 
         // Update FCM Token if logged in
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FCMTokenManager.updateFCMToken();
+            FCMTokenManager.updateFCMToken(this);
         }
     }
 

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.krishibarirangpur.bdhelper.FirebaseMessaging.FCMTokenManager;
+import com.krishibarirangpur.bdhelper.FirebaseMessaging.NotificationRoutingActivity;
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.authentication.LoginActivity;
 import com.krishibarirangpur.bdhelper.authentication.UserTypeSelectionActivity;
@@ -32,13 +33,12 @@ import com.krishibarirangpur.bdhelper.utils.firebase.FirebaseCollectionTable;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyToast;
 import com.krishibarirangpur.bdhelper.utils.core.AppUpdateChecker;
 import com.krishibarirangpur.bdhelper.utils.core.SharedPrefHelper;
-import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private ActivitySplashScreenBinding binding;
+    ActivitySplashScreenBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private AppUpdateChecker appUpdateChecker;
@@ -66,7 +66,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         textView.setTypeface(customFont);
 
         //Token update
-        FCMTokenManager.updateFCMToken();
+        FCMTokenManager.updateFCMToken(this);
 
         // অ্যাপ আপডেট চেক করা হচ্ছে
         appUpdateChecker = new AppUpdateChecker(this);
@@ -128,14 +128,23 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 return;
                             }
 
+                            //if User Click System Notification Go To
+                            if (getIntent().hasExtra(MyUtils.orderId)) {
+                                Intent routeIntent = new Intent(SplashScreenActivity.this, NotificationRoutingActivity.class);
+                                routeIntent.putExtras(getIntent());
+                                startNextActivity(routeIntent);
+                                return;
+                            }
 
-                            if ("customer".equals(userType)) {
-                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, "customer");
+                            if (MyUtils.CUSTOMER.equals(userType)) {
+                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, MyUtils.CUSTOMER);
                                 targetClass = MainActivity.class;
-                            } else if ("partner".equals(userType)) {
-                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, "partner");
+                            }
+                            else if (MyUtils.PARTNER.equals(userType)) {
+                                sharedPrefHelper.putString(MyUtils.USER_LOGIN_MODE, MyUtils.PARTNER);
                                 targetClass = DashboardActivity.class;
-                            } else {
+                            }
+                            else {
                                 mAuth.signOut();
                                 goToLoginWithError("অন্য email দিয়ে চেষ্টা করুন");
                                 return;

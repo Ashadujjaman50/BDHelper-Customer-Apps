@@ -106,7 +106,7 @@ public class MyUtils {
     public static String bidId = "bidId";
     public static String bidAction = "bidAction";
 
-    //category Id
+    //categoryId
     public static final String ROAD_TRANSPORT_ID = "-OWJvq2HExIAqHIaTCKc";
     public static final String EQUIPMENT_ID = "-OWVRgLBx03T4y98N8VR";
     public static final String HARVESTER_MACHINE_ID = "-OWJvtXbXzYNjGM1ttcU";

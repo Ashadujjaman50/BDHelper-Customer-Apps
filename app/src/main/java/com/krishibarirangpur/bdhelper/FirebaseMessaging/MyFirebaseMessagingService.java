@@ -134,7 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         // Context (this) সহ মেথডটি কল করা
-        FCMTokenManager.updateTokenToFirestore(token);
+        FCMTokenManager.updateTokenToFirestore(this, token);
     }
 
 }

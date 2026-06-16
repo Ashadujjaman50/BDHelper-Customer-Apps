@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,8 +21,9 @@ import java.util.Map;
 public class FCMTokenManager {
 
     private static final String TAG = "FCMTokenManager";
+    private static final String PREF_LAST_FCM_TOKEN = "last_fcm_token";
 
-    public static void updateFCMToken() {
+    public static void updateFCMToken(Context context) {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
@@ -33,7 +32,7 @@ public class FCMTokenManager {
                     }
 
                     String token = task.getResult();
-                    updateTokenToFirestore(token);
+                    updateTokenToFirestore(context, token);
                 });
     }
 
@@ -54,37 +53,37 @@ public class FCMTokenManager {
                 });
     }
 
-    public static void updateTokenToFirestore(String token) {
+    public static void updateTokenToFirestore(Context context, String token) {
         if (token == null || token.isEmpty()) return;
 
-        // ১. বর্তমান লগইন থাকা ইউজারের আইডি নেওয়া
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser != null) {
             String uid = currentUser.getUid();
-
-            // ২. Firestore রেফারেন্স (users -> {userId})
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection(FirebaseCollectionTable.USERS).document(uid);
 
+            SharedPrefHelper prefs = new SharedPrefHelper(context);
+            String oldToken = prefs.getString(PREF_LAST_FCM_TOKEN, "");
 
-            // ৩. 'device_token' ফিল্ড ডিলিট করা (রেডান্ডেন্সি কমাতে) এবং অ্যারে আপডেট করা
             Map<String, Object> tokenUpdate = new HashMap<>();
-            tokenUpdate.put("device_token", FieldValue.delete()); // String ফিল্ডটি রিমুভ করা হচ্ছে
-            tokenUpdate.put("device_tokens", FieldValue.arrayUnion(token));
+            tokenUpdate.put("device_token", FieldValue.delete()); // String ফিল্ড ডিলিট
+            tokenUpdate.put("device_tokens", FieldValue.arrayUnion(token)); // নতুন টোকেন অ্যাড
+
+            // যদি আগে কোনো টোকেন সেভ থাকে এবং তা নতুনটার থেকে আলাদা হয়, তবে পুরনোটা রিমুভ করব
+            if (!oldToken.isEmpty() && !oldToken.equals(token)) {
+                userRef.update("device_tokens", FieldValue.arrayRemove(oldToken))
+                        .addOnSuccessListener(aVoid -> Log.d(TAG, "Old token removed from array"));
+            }
 
             userRef.set(tokenUpdate, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         Log.d(TAG, "✅ টোকেন সফলভাবে আপডেট হয়েছে (Array updated, String deleted)");
+                        prefs.putString(PREF_LAST_FCM_TOKEN, token);
                     })
                     .addOnFailureListener(e -> {
                         Log.e(TAG, "❌ টোকেন আপডেট করতে সমস্যা হয়েছে: " + e.getMessage());
                     });
-        } else {
-            Log.w(TAG, "⚠️ No user logged in. Token not updated to Firestore.");
         }
     }
-
-
-
 }

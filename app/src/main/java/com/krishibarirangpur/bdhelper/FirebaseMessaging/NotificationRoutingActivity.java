@@ -48,6 +48,7 @@ public class NotificationRoutingActivity extends Activity {
         intent.putExtra(MyUtils.orderId, orderId);
         intent.putExtra(MyUtils.categoryId, categoryId);
         intent.putExtra(MyUtils.subCategoryId, subCategoryId);
+        intent.putExtra("fromNotification", true);
 
         if ("partner".equalsIgnoreCase(userRole)) {
             intent.putExtra(MyUtils.USER_TYPE, MyUtils.PARTNER);

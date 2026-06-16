@@ -1,5 +1,6 @@
 package com.krishibarirangpur.bdhelper.userActivity.partner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import com.krishibarirangpur.bdhelper.R;
 import com.krishibarirangpur.bdhelper.databinding.ActivityBidBinding;
+import com.krishibarirangpur.bdhelper.userActivity.customer.MainActivity;
 import com.krishibarirangpur.bdhelper.utils.core.BaseActivity;
 import com.krishibarirangpur.bdhelper.utils.sharedWidget.MyUtils;
 import com.krishibarirangpur.bdhelper.utils.core.ThemeHelper;
@@ -21,6 +23,7 @@ public class BidActivity extends BaseActivity {
     private ActivityBidBinding binding;
 
     String bidAction, user_type, orderId, categoryId, subCategoryId;
+    boolean fromNotification = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class BidActivity extends BaseActivity {
         // init views
         bidAction = getIntent().getStringExtra(MyUtils.bidAction);
         user_type = getIntent().getStringExtra(MyUtils.USER_TYPE);
+        fromNotification = getIntent().getBooleanExtra("fromNotification", false);
 
         //header title
         String title = "";
@@ -104,6 +108,23 @@ public class BidActivity extends BaseActivity {
 
         binding.backBtn.setOnClickListener(v -> finishOnBack());
 
+    }
+
+    @Override
+    protected boolean handleCustomBack() {
+        if (fromNotification) {
+            Intent intent;
+            if (MyUtils.PARTNER.equals(user_type)) {
+                intent = new Intent(this, DashboardActivity.class);
+            } else {
+                intent = new Intent(this, MainActivity.class);
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return false;
     }
 
     private void loadFragment(Fragment fragment) {
